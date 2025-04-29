@@ -61,4 +61,18 @@ describe('useToggle', () => {
     const [value] = result.current
     expect(value).toBe(false)
   })
+
+  it('여러번 상태 변경 후 원하는 토글로 변경', () => {
+    const { result } = renderHook(() => useToggle(true))
+    const [, , setValue] = result.current
+
+    act(() => {
+      setValue(false)
+      setValue(true)
+      setValue(false)
+    })
+
+    const [value] = result.current
+    expect(value).toBe(false)
+  })
 })
