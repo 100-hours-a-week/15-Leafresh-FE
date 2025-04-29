@@ -1,0 +1,21 @@
+{
+  "React TypeScript Component (tscmp)": {
+    "prefix": "tscmp",
+    "body": [
+      "import { ReactNode } from 'react';",
+      "",
+      "interface ComponentProps {",
+      "  className?: string;",
+      "}",
+      "",
+      "const Component = ({ className }: ComponentProps): ReactNode => {",
+      "  return (",
+      "    <div className={className}>Component</div>",
+      "  );",
+      "};",
+      "",
+      "export default Component;"
+    ],
+    "description": "TypeScript React Component Template with fixed Component name"
+  }
+}
