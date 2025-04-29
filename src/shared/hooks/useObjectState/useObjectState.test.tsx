@@ -43,20 +43,20 @@ describe('useObjectState', () => {
 
   it('초기 상태를 정확히 반환', () => {
     const { result } = renderHook(() => useObjectState<TestObject>(initialState))
-    const [state] = result.current
+    const { state } = result.current
 
     expect(state).toEqual(initialState)
   })
 
   it('updateState를 사용해 일부 필드 수정 여부', () => {
     const { result } = renderHook(() => useObjectState<TestObject>(initialState))
-    const [, , updateState] = result.current
+    const { updateState } = result.current
 
     act(() => {
       updateState({ name: '사랑둥이' })
     })
 
-    const [state] = result.current
+    const { state } = result.current
     expect(state).toEqual({
       id: 1,
       name: '사랑둥이',
@@ -66,7 +66,7 @@ describe('useObjectState', () => {
 
   it('setState를 사용하여 전체 객체 교체', () => {
     const { result } = renderHook(() => useObjectState<TestObject>(initialState))
-    const [, setState] = result.current
+    const { setState } = result.current
 
     const newState: TestObject = {
       id: 2,
@@ -78,13 +78,13 @@ describe('useObjectState', () => {
       setState(newState)
     })
 
-    const [state] = result.current
+    const { state } = result.current
     expect(state).toEqual(newState)
   })
 
   it('resetState를 사용하여 초기 상태로 복구', () => {
     const { result } = renderHook(() => useObjectState<TestObject>(initialState))
-    const [, setState, , resetState] = result.current
+    const { setState, resetState } = result.current
 
     const firstModifiedState: TestObject = {
       id: 99,
@@ -112,7 +112,7 @@ describe('useObjectState', () => {
       resetState()
     })
 
-    const [state] = result.current
+    const { state } = result.current
     expect(state).toEqual(initialState)
   })
 })

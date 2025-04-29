@@ -20,5 +20,5 @@ export function useObjectState<T extends object>(initialState: T) {
     setState(initialRef.current)
   }, [])
 
-  return [state, setState, updateState, resetState] as const
+  return { state, setState, updateState, resetState }
 }
