@@ -13,7 +13,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
-  { ignores: ['.next'] },
+  { ignores: ['.next', '.lintstagedrc.js'] },
   {
     plugins: { 'simple-import-sort': simpleImportSort, 'unused-imports': unusedImport }, // 플러그인 추가
     rules: {
@@ -34,7 +34,10 @@ const eslintConfig = [
 
       // unusedImport
       'unused-imports/no-unused-imports': 'error',
-      'unused-imports/no-unused-vars': ['warn', { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }],
+      'unused-imports/no-unused-vars': [
+        'warn',
+        { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
+      ],
 
       // typescript
 
