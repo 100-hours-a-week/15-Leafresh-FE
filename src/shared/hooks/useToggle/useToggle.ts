@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react'
  * @param initialValue 초기값 (기본값: false)
  */
 export function useToggle(initialValue = false) {
-  const [toggleValue, setToggleValue] = useState<boolean>(initialValue)
+  const [value, setToggleValue] = useState<boolean>(initialValue)
 
   /**
    * 현재 상태를 반전시키는 함수
@@ -22,5 +22,5 @@ export function useToggle(initialValue = false) {
     setToggleValue(nextValue)
   }, [])
 
-  return [toggleValue, toggle, setValue] as const
+  return { value, toggle, setValue }
 }
