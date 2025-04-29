@@ -14,8 +14,8 @@
       "  );",
       "};",
       "",
-      "export default Component;"
+      "export default Component;",
     ],
-    "description": "TypeScript React Component Template with fixed Component name"
-  }
+    "description": "TypeScript React Component Template with fixed Component name",
+  },
 }
