@@ -5,22 +5,17 @@ import { useCallback, useRef, useState } from 'react'
  * @param initialState - 초기 상태 객체
  */
 export function useObjectState<T extends object>(initialState: T) {
-  const [state, setState] = useState<T>(initialState)
+  if (typeof initialState !== 'object' || initialState === null || Array.isArray(initialState)) {
+    throw new Error('useObjectState: initialState must be a non-null object')
+  }
 
-  // 초기 상태를 기억하기 위한 ref
+  const [state, setState] = useState<T>(initialState)
   const initialRef = useRef(initialState)
 
-  /**
-   * 객체의 일부만 업데이트하는 함수
-   * @param partialState - 업데이트할 부분 객체
-   */
   const updateState = useCallback((partialState: Partial<T>) => {
     setState(prev => ({ ...prev, ...partialState }))
   }, [])
 
-  /**
-   * 상태를 초기값으로 리셋하는 함수
-   */
   const resetState = useCallback(() => {
     setState(initialRef.current)
   }, [])
