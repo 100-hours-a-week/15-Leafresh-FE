@@ -16,6 +16,10 @@ type SupportedKeyType =
   | 'Control'
   | 'Alt'
 
+const normalizeKey = (key: SupportedKeyType): string => {
+  if (key === 'Space') return ' '
+  return key
+}
 /**
  * 특정 키 입력 시 콜백을 실행하는 커스텀 훅
  * @param ref 감지할 요소의 ref
@@ -39,7 +43,7 @@ export function useKeyClose<T extends HTMLElement, F extends (...args: any[]) =>
 
       if (!ref.current.contains(event.target as Node)) return
 
-      if (event.key === key) {
+      if (event.key === normalizeKey(key)) {
         callback()
       }
     }
