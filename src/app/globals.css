@@ -40,3 +40,23 @@ a {
     color-scheme: dark;
   }
 }
+
+/* globals.css */
+html {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  background-color: black;
+}
+
+body {
+  width: 390px;
+  height: 100dvh;
+
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
