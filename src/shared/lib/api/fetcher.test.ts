@@ -1,155 +1,151 @@
-// import { describe, it, expect, beforeEach, vi } from 'vitest'
-// import type { ApiResponse, ErrorResponse } from './fetcher'
+// src/shared/lib/fetcher.test.ts
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { fetchRequest, ApiResponse, ErrorResponse } from './fetcher'
+import type { EndpointType } from '@shared/constants/endpoint'
 
-// describe('fetcher.request', () => {
-//   beforeEach(() => {
-//     // global.fetch를 Vitest mock 함수로 교체
-//     globalThis.fetch = vi.fn()
-//   })
+describe('fetchRequest 유틸', () => {
+  beforeEach(() => {
+    globalThis.fetch = vi.fn()
+  })
 
-//   it('JSON 성공 응답을 반환한다', async () => {
-//     const mockData: ApiResponse<number[]> = {
-//       status: 200,
-//       message: 'ok',
-//       data: [1, 2, 3],
-//     }
-//     ;(globalThis.fetch as any).mockResolvedValueOnce({
-//       ok: true,
-//       status: 200,
-//       headers: { get: () => 'application/json' },
-//       json: async () => mockData,
-//       text: async () => '',
-//     })
+  it('GET JSON 성공 응답을 반환한다', async () => {
+    const fakeEndpoint = { method: 'GET', path: '/dummy' } as EndpointType
+    const mockData: ApiResponse<number[]> = {
+      status: 200,
+      message: 'ok',
+      data: [1, 2, 3],
+    }
 
-//     const res = await fetcher.request<ApiResponse<number[]>>(
-//       () => ({ method: 'GET', path: '/dummy' })
-//     )
-//     expect(res).toEqual(mockData)
-//   })
+    ;(globalThis.fetch as any).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      headers: { get: () => 'application/json' },
+      json: async () => mockData,
+      text: async () => '',
+    })
 
-//   it('text/plain 응답은 text() 결과를 반환한다', async () => {
-//     ;(globalThis.fetch as any).mockResolvedValueOnce({
-//       ok: true,
-//       status: 200,
-//       headers: { get: () => 'text/plain' },
-//       json: async () => { throw new Error('json 호출되지 않아야 함') },
-//       text: async () => 'hello world',
-//     })
+    const res = await fetchRequest<ApiResponse<number[]>>(fakeEndpoint)
+    expect(res).toEqual(mockData)
+  })
 
-//     const res = await fetcher.request<string>(
-//       () => ({ method: 'GET', path: '/dummy' })
-//     )
-//     expect(res).toBe('hello world')
-//   })
+  it('GET text/plain 응답은 텍스트 결과를 반환한다', async () => {
+    const fakeEndpoint = { method: 'GET', path: '/txt' } as EndpointType
 
-//   it('query 파라미터를 URL에 잘 붙인다', async () => {
-//     let capturedUrl: string | null = null
+    ;(globalThis.fetch as any).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      headers: { get: () => 'text/plain' },
+      json: async () => { throw new Error('json 호출되지 않아야 함') },
+      text: async () => 'plain text',
+    })
 
-//     ;(globalThis.fetch as any).mockImplementationOnce((input: string) => {
-//       capturedUrl = input
-//       return Promise.resolve({
-//         ok: true,
-//         status: 200,
-//         headers: { get: () => 'application/json' },
-//         json: async () => ({ status: 200, message: 'ok', data: null }),
-//         text: async () => '',
-//       })
-//     })
+    const res = await fetchRequest<string>(fakeEndpoint)
+    expect(res).toBe('plain text')
+  })
 
-//     await fetcher.request<ErrorResponse>(
-//       () => ({ method: 'GET', path: '/items' }),
-//       { query: { a: 1, b: 'two' } }
-//     )
-//     expect(capturedUrl).toContain('/items?a=1&b=two')
-//   })
+  it('쿼리 파라미터를 URL에 붙여 전송한다', async () => {
+    const fakeEndpoint = { method: 'GET', path: '/items' } as EndpointType
+    let capturedUrl = ''
 
-//   it('JSON body를 stringify하여 전송한다', async () => {
-//     let capturedInit!: RequestInit
+    ;(globalThis.fetch as any).mockImplementationOnce((url: RequestInfo) => {
+      capturedUrl = String(url)
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        headers: { get: () => 'application/json' },
+        json: async () => ({ status: 200, message: 'ok', data: null }),
+        text: async () => '',
+      })
+    })
 
-//     ;(globalThis.fetch as any).mockImplementationOnce((input: unknown, init: RequestInit) => {
-//       capturedInit = init
-//       return Promise.resolve({
-//         ok: true,
-//         status: 201,
-//         headers: { get: () => 'application/json' },
-//         json: async () => ({ status: 201, message: 'created', data: { id: 42 } }),
-//         text: async () => '',
-//       })
-//     })
+    await fetchRequest<ErrorResponse>(fakeEndpoint, { query: { a: 1, b: 'two' } })
+    expect(capturedUrl).toContain('/items?a=1&b=two')
+  })
 
-//     const payload = { foo: 'bar' }
-//     const res = await fetcher.request<ApiResponse<{ id: number }>>(
-//       () => ({ method: 'POST', path: '/create' }),
-//       { body: payload }
-//     )
+  it('POST JSON body를 stringify하여 전송한다', async () => {
+    const fakeEndpoint = { method: 'POST', path: '/create' } as EndpointType
+    let capturedInit!: RequestInit
 
-//     expect(capturedInit.method).toBe('POST')
-//     expect(
-//       (capturedInit.headers as Record<string, string>)['Content-Type']
-//     ).toBe('application/json')
-//     expect(capturedInit.body).toBe(JSON.stringify(payload))
-//     expect(res.data).toEqual({ id: 42 })
-//   })
+    ;(globalThis.fetch as any).mockImplementationOnce((input: RequestInfo, init: RequestInit) => {
+      capturedInit = init
+      return Promise.resolve({
+        ok: true,
+        status: 201,
+        headers: { get: () => 'application/json' },
+        json: async () => ({ status: 201, message: 'created', data: { id: 42 } }),
+        text: async () => '',
+      })
+    })
 
-//   it('FormData body 전송 시 Content-Type 미설정', async () => {
-//     let capturedInit!: RequestInit
+    const payload = { foo: 'bar' }
+    const res = await fetchRequest<ApiResponse<{ id: number }>>(fakeEndpoint, { body: payload })
 
-//     ;(globalThis.fetch as any).mockImplementationOnce((input: unknown, init: RequestInit) => {
-//       capturedInit = init
-//       return Promise.resolve({
-//         ok: true,
-//         status: 200,
-//         headers: { get: () => 'application/json' },
-//         json: async () => ({}),
-//         text: async () => '',
-//       })
-//     })
+    expect(capturedInit.method).toBe('POST')
+    expect(
+      (capturedInit.headers as Record<string, string>)['Content-Type']
+    ).toBe('application/json')
+    expect(capturedInit.body).toBe(JSON.stringify(payload))
+    expect(res.data).toEqual({ id: 42 })
+  })
 
-//     const fd = new FormData()
-//     fd.append('file', new Blob([''], { type: 'text/plain' }), 'test.txt')
+  it('FormData 전송 시 Content-Type 헤더가 설정되지 않는다', async () => {
+    const fakeEndpoint = { method: 'POST', path: '/upload' } as EndpointType
+    let capturedInit!: RequestInit
 
-//     await fetcher.request<{}>(
-//       () => ({ method: 'POST', path: '/upload' }),
-//       { body: fd }
-//     )
+    ;(globalThis.fetch as any).mockImplementationOnce((input: RequestInfo, init: RequestInit) => {
+      capturedInit = init
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        headers: { get: () => 'application/json' },
+        json: async () => ({ status: 200, message: 'ok', data: {} }),
+        text: async () => '',
+      })
+    })
 
-//     expect(capturedInit.headers).not.toHaveProperty('Content-Type')
-//     expect(capturedInit.body).toBe(fd)
-//   })
+    const fd = new FormData()
+    fd.append('file', new Blob([''], { type: 'text/plain' }), 'test.txt')
+    await fetchRequest<object>(fakeEndpoint, { body: fd })
 
-//   it('JSON 에러 응답일 때 ErrorResponse를 throw한다', async () => {
-//     ;(globalThis.fetch as any).mockResolvedValueOnce({
-//       ok: false,
-//       status: 400,
-//       headers: { get: () => 'application/json' },
-//       json: async () => ({ message: 'bad request' }),
-//       text: async () => '',
-//     })
+    expect(capturedInit.headers).not.toHaveProperty('Content-Type')
+    expect(capturedInit.body).toBe(fd)
+  })
 
-//     await expect(
-//       fetcher.request<unknown>(() => ({ method: 'GET', path: '/err' }))
-//     ).rejects.toMatchObject({
-//       status: 400,
-//       message: 'bad request',
-//       data: null,
-//     })
-//   })
+  it('JSON 에러 응답일 때 ErrorResponse를 throw한다', async () => {
+    const fakeEndpoint = { method: 'GET', path: '/err-json' } as EndpointType
 
-//   it('text/plain 에러 시 Unknown error 메시지를 갖는다', async () => {
-//     ;(globalThis.fetch as any).mockResolvedValueOnce({
-//       ok: false,
-//       status: 500,
-//       headers: { get: () => 'text/plain' },
-//       json: async () => { throw new Error('no json') },
-//       text: async () => 'server down',
-//     })
+    ;(globalThis.fetch as any).mockResolvedValueOnce({
+      ok: false,
+      status: 400,
+      headers: { get: () => 'application/json' },
+      json: async () => ({ message: 'bad request' }),
+      text: async () => '',
+    })
 
-//     await expect(
-//       fetcher.request<unknown>(() => ({ method: 'DELETE', path: '/err' }))
-//     ).rejects.toMatchObject({
-//       status: 500,
-//       message: 'Unknown error',
-//       data: null,
-//     })
-//   })
-// })
+    await expect(fetchRequest<unknown>(fakeEndpoint))
+      .rejects.toMatchObject({
+        status: 400,
+        message: 'bad request',
+        data: null,
+      })
+  })
+
+  it('text/plain 에러 응답 시 Unknown error 메시지를 갖는다', async () => {
+    const fakeEndpoint = { method: 'DELETE', path: '/err-txt' } as EndpointType
+
+    ;(globalThis.fetch as any).mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      headers: { get: () => 'text/plain' },
+      json: async () => { throw new Error('no json') },
+      text: async () => 'server down',
+    })
+
+    await expect(fetchRequest<unknown>(fakeEndpoint))
+      .rejects.toMatchObject({
+        status: 500,
+        message: 'Unknown error',
+        data: null,
+      })
+  })
+})
