@@ -1,6 +1,7 @@
 // src/app/shared/constants/api.test.ts
-import { describe, it, expect } from 'vitest'
-import { API } from './api'
+import { describe, expect, it } from 'vitest'
+
+import { API } from './endpoint'
 
 describe('API 상수 검증', () => {
   it('이벤트 챌린지 목록 엔트리', () => {
