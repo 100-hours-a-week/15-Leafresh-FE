@@ -4,11 +4,12 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { Check, X } from 'lucide-react'
 import Image from 'next/image'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { useImageZoomStore } from '@shared/context/ImageZoomState'
+import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 
 const Wrapper = styled.div`
   width: 390px;
@@ -114,6 +115,9 @@ const ImageZoomModal = () => {
   const [isInitial, setIsInitial] = useState(true)
   const { isOpen, close, data, targetIndex, setTargetIndex } = useImageZoomStore()
 
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  useKeyClose('Escape', wrapperRef as React.RefObject<HTMLElement>, close)
+
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     skipSnaps: false, // 꼭 snap 되도록
@@ -142,7 +146,7 @@ const ImageZoomModal = () => {
   const { result } = data[targetIndex]
 
   return (
-    <Wrapper>
+    <Wrapper ref={wrapperRef}>
       <Header>
         <span>
           {targetIndex + 1}/{IMAGE_COUNT}
