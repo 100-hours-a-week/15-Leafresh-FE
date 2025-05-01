@@ -150,7 +150,7 @@ const S3_ENDPOINTS = {
   PRESIGNED_URL: { method: HttpMethod.POST, path: '/s3/images/presigned-url' },
 
   // 이미지 실제 업로드 (PUT)
-  UPLOAD: { method: 'PUT' as const, path: '/s3/images' },
+  UPLOAD: { method: HttpMethod.PUT, path: '/s3/images' },
 }
 
 /** 게시글 */
@@ -194,7 +194,7 @@ const POST_ENDPOINTS = {
 
     // 댓글 수정
     UPDATE: (postId: number, commentId: number) => ({
-      method: 'PUT' as const,
+      method: HttpMethod.PUT,
       path: `/api/posts/${postId}/comments/${commentId}`,
     }),
     // 댓글 삭제
