@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { Check, X } from 'lucide-react'
 import Image from 'next/image'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
@@ -58,10 +58,20 @@ const Viewport = styled.div`
   flex: 1;
 `
 
+// const Container = styled.div`
+//   display: flex;
+
+//   height: 100%;
+//   /* transition: transform 0.3s ease; // 부드러운 움직임 */
+// `
+
 const Container = styled.div`
   display: flex;
-
   height: 100%;
+
+  &.animate {
+    transition: transform 0.3s ease;
+  }
 `
 
 const Slide = styled.div`
@@ -101,16 +111,29 @@ const Description = styled.div`
 `
 
 const ImageZoomModal = () => {
+  const [isInitial, setIsInitial] = useState(true)
   const { isOpen, close, data, targetIndex, setTargetIndex } = useImageZoomStore()
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    skipSnaps: false, // 꼭 snap 되도록
+    dragFree: false, // 살짝 드래그는 원래 위치 유지
+  })
 
   useEffect(() => {
     if (!emblaApi) return
     emblaApi.scrollTo(targetIndex, true) // 최초 진입 시 현재 인덱스 이동
+
+    // 다음 tick보다 느리게 적용하기 위해 requestAnimationFrame 사용
+    requestAnimationFrame(() => {
+      setIsInitial(false)
+    })
+
     emblaApi.on('select', () => {
       setTargetIndex(emblaApi.selectedScrollSnap())
     })
+
+    return () => setIsInitial(true)
   }, [emblaApi, targetIndex, setTargetIndex])
 
   if (!isOpen || data.length === 0) return null
@@ -130,7 +153,7 @@ const ImageZoomModal = () => {
       <ResultBar result={result}>{result === 'SUCCESS' ? <Check size={20} /> : <X size={20} />}</ResultBar>
 
       <Viewport ref={emblaRef}>
-        <Container>
+        <Container className={!isInitial ? 'animate' : ''}>
           {data.map(({ imageSrc, description }, idx) => (
             <Slide key={idx}>
               <ImageArea>
