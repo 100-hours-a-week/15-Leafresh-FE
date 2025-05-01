@@ -1,4 +1,4 @@
-import { EndpointType } from '@shared/constants/endpoint'
+import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
 const BASE_URL = 'http://localhost:8080'
 

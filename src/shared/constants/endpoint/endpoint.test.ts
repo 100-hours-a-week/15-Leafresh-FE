@@ -1,7 +1,7 @@
 // src/shared/constants/endpoint.test.ts
 import { describe, it, expect } from 'vitest'
 import { ENDPOINTS } from './endpoint'
-import { HttpMethod } from './http'
+import { HttpMethod } from '../http'
 
 describe('ENDPOINTS 상수 검증', () => {
   it('이벤트 챌린지 목록 엔트리', () => {

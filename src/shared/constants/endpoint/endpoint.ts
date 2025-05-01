@@ -1,4 +1,4 @@
-import { HttpMethod } from './http'
+import { HttpMethod } from '../http'
 
 export type EndpointType = {
   method: HttpMethod
