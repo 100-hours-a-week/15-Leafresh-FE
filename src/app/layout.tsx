@@ -18,14 +18,16 @@ export const metadata: Metadata = {
   description: '친환경 챌린지 서비스 Leafresh',
 }
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode
-}>) {
+}>) => {
   return (
     <html lang='ko'>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
     </html>
   )
 }
+
+export default RootLayout
