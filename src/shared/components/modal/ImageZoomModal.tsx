@@ -1,8 +1,10 @@
 'use client'
 
+import useEmblaCarousel from 'embla-carousel-react'
 import { Check, X } from 'lucide-react'
 import Image from 'next/image'
 
+import { useEffect } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
@@ -11,92 +13,135 @@ import { useImageZoomStore } from '@shared/context/ImageZoomState'
 const Wrapper = styled.div`
   width: 390px;
   height: 100dvh;
-
   position: absolute;
   top: 0;
-
   display: flex;
   flex-direction: column;
-
   background-color: #dedede;
 `
 
 const Header = styled.div`
-  padding: 12px 12px;
+  padding: 12px;
   font-size: 14px;
   font-weight: 600;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  background-color: #444;
+  background-color: black;
   color: #fff;
+  position: relative;
+`
+
+const CloseIcon = styled(X)`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 `
 
 const ResultBar = styled.div<{ result: ChallengeVerificationResultType }>`
   background-color: ${({ result }) => (result === 'SUCCESS' ? '#2e7d32' : '#c62828')};
   color: #fff;
-  text-align: center;
-  padding: 2px 0px;
-`
-
-const ImageWrapper = styled.div`
-  // 정사각형
-  height: 390px;
-  width: 390px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
+  padding: 4px 0;
+`
+
+const Viewport = styled.div`
+  overflow: hidden;
+
+  position: relative;
+  padding-top: 20px;
+  background-color: black;
+  flex: 1;
+`
+
+const Container = styled.div`
+  display: flex;
+
+  height: 100%;
+`
+
+const Slide = styled.div`
+  flex: 0 0 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+`
+
+const ImageArea = styled.div`
+  width: 390px;
+  height: 390px;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 `
 
 const StyledImage = styled(Image)`
+  object-fit: contain;
+
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
 `
 
 const Description = styled.div`
   flex: 1;
-
   text-align: center;
   font-size: 12px;
-  background-color: #444;
+  background-color: black;
   color: #fff;
-
   padding: 12px;
 `
 
 const ImageZoomModal = () => {
-  /** 이미지 데이터 가져오기 */
-  const { isOpen, close, data, targetIndex } = useImageZoomStore()
+  const { isOpen, close, data, targetIndex, setTargetIndex } = useImageZoomStore()
 
-  if (!isOpen) return null
-  /** 표시할 데이터 */
-  const { result, imageSrc, description } = data[targetIndex]
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
+
+  useEffect(() => {
+    if (!emblaApi) return
+    emblaApi.scrollTo(targetIndex, true) // 최초 진입 시 현재 인덱스 이동
+    emblaApi.on('select', () => {
+      setTargetIndex(emblaApi.selectedScrollSnap())
+    })
+  }, [emblaApi, targetIndex, setTargetIndex])
+
+  if (!isOpen || data.length === 0) return null
 
   const IMAGE_COUNT = data.length
+  const { result } = data[targetIndex]
+
   return (
-    isOpen && (
-      <Wrapper>
-        <Header>
-          <span>
-            {targetIndex + 1}/{IMAGE_COUNT}
-          </span>
-          <X size={20} onClick={close} style={{ cursor: 'pointer', position: 'absolute', right: '10px' }} />
-        </Header>
+    <Wrapper>
+      <Header>
+        <span>
+          {targetIndex + 1}/{IMAGE_COUNT}
+        </span>
+        <CloseIcon size={20} onClick={close} />
+      </Header>
 
-        <ResultBar result={result}>{result === 'SUCCESS' ? <Check size={20} /> : <X size={20} />}</ResultBar>
+      <ResultBar result={result}>{result === 'SUCCESS' ? <Check size={20} /> : <X size={20} />}</ResultBar>
 
-        <ImageWrapper>
-          <StyledImage src={imageSrc} alt='zoom-image' width={390} height={390} />
-        </ImageWrapper>
-
-        <Description>{description}</Description>
-      </Wrapper>
-    )
+      <Viewport ref={emblaRef}>
+        <Container>
+          {data.map(({ imageSrc, description }, idx) => (
+            <Slide key={idx}>
+              <ImageArea>
+                <StyledImage src={imageSrc} alt='zoom-image' width={390} height={390} />
+              </ImageArea>
+              <Description>{description}</Description>
+            </Slide>
+          ))}
+        </Container>
+      </Viewport>
+    </Wrapper>
   )
 }
 
