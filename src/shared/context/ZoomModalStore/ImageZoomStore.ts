@@ -2,29 +2,22 @@ import { create } from 'zustand'
 
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 
-interface ZoomStoreState<DataType> {
-  isOpen: boolean
-  data: DataType[]
-  targetIndex: number
-  open: (data: DataType[], targetIndex: number) => void
-  close: () => void
-  setTargetIndex: (targetIndex: number) => void
-}
+import { ZoomModalStore } from './type'
 
-export type ImageZoomData = {
+export type ImageZoomModalData = {
   result: ChallengeVerificationResultType
   imageSrc: string
   description: string
 }
 
-type ImageZoomStoreState = ZoomStoreState<ImageZoomData>
+type ImageZoomModalStore = ZoomModalStore<ImageZoomModalData>
 
-export const useImageZoomStore = create<ImageZoomStoreState>(set => ({
+export const useImageZoomStore = create<ImageZoomModalStore>(set => ({
   isOpen: false,
   data: [],
   targetIndex: 0,
 
-  open: (data: ImageZoomData[], targetIndex: number) => {
+  open: (data: ImageZoomModalData[], targetIndex: number) => {
     set({ isOpen: true, data, targetIndex })
   },
 

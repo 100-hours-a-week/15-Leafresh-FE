@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
-import { useImageZoomStore } from '@shared/context/ImageZoomState'
+import { useImageZoomStore } from '@shared/context/ZoomModalStore/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 
 const Wrapper = styled.div`
@@ -58,13 +58,6 @@ const Viewport = styled.div`
   background-color: black;
   flex: 1;
 `
-
-// const Container = styled.div`
-//   display: flex;
-
-//   height: 100%;
-//   /* transition: transform 0.3s ease; // 부드러운 움직임 */
-// `
 
 const Container = styled.div`
   display: flex;

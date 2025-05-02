@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import { ImageZoomData, useImageZoomStore } from '@shared/context/ImageZoomState'
+import { ImageZoomModalData, useImageZoomStore } from '@shared/context/ZoomModalStore/ImageZoomStore'
 
 interface ZoomableImageProps {
   src: string
@@ -8,7 +8,7 @@ interface ZoomableImageProps {
   width: number
   height: number
 
-  verificationData: ImageZoomData[]
+  verificationData: ImageZoomModalData[]
   targetIndex: number
 }
 const ZoomableImage = ({ src, alt, width, height, verificationData, targetIndex }: ZoomableImageProps) => {
