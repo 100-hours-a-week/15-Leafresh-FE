@@ -1,32 +1,41 @@
 'use client'
+import { useRef } from 'react'
 import styled from '@emotion/styled'
 
 import { useConfirmModalStore } from '@shared/context/Modal/ConfirmModalStore'
+import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
+import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
+import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { theme } from '@shared/styles/theme'
 
 const ConfirmModal = () => {
   const { isOpen, title, description, onConfirm, onCancel, closeConfirmModal } = useConfirmModalStore()
+  const modalRef = useRef<HTMLDivElement>(null)
 
-  if (!isOpen) return null
-
-  const confirmHandler = () => {
+  const handleConfirm = () => {
     onConfirm()
     closeConfirmModal()
   }
 
-  const cancelHandler = () => {
+  const handleCancel = () => {
     onCancel?.()
     closeConfirmModal()
   }
 
+  // Custom Hooks
+  useOutsideClick(modalRef as React.RefObject<HTMLElement>, handleCancel)
+  useKeyClose('Escape', modalRef as React.RefObject<HTMLElement>, handleCancel)
+  useScrollLock()
+
+  if (!isOpen) return null
   return (
     <Overlay>
-      <ModalContainer>
+      <ModalContainer ref={modalRef}>
         <Title>{title}</Title>
         <Description>{description}</Description>
         <ButtonGroup>
-          <CancelButton onClick={cancelHandler}>취소</CancelButton>
-          <ConfirmButton onClick={confirmHandler}>확인</ConfirmButton>
+          <CancelButton onClick={handleCancel}>취소</CancelButton>
+          <ConfirmButton onClick={handleConfirm}>확인</ConfirmButton>
         </ButtonGroup>
       </ModalContainer>
     </Overlay>
