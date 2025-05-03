@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import { useConfirmModalStore } from '@shared/context/Modal/ConfirmModalStore'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 interface ChallengePageProps {
   className?: string
@@ -25,6 +26,8 @@ const ChallengePage = ({ className }: ChallengePageProps): ReactNode => {
       {/* 이건 반드시 하나만 렌더링되게 해야 함 */}
       <Overlay>
         <button onClick={deleteHandler}>삭제</button>
+        <LucideIcon name='X' size={100} />
+        {/* <X size={100} color={theme.colors.lfBlack.base} /> */}
       </Overlay>
     </div>
   )
