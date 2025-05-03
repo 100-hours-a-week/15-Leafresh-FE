@@ -1,0 +1,125 @@
+'use client'
+import styled from '@emotion/styled'
+
+import { useConfirmModalStore } from '@shared/context/Modal/ConfirmModalStore'
+import { theme } from '@shared/styles/theme'
+
+const ConfirmModal = () => {
+  const { isOpen, title, description, onConfirm, onCancel, closeConfirmModal } = useConfirmModalStore()
+
+  if (!isOpen) return null
+
+  const confirmHandler = () => {
+    onConfirm()
+    closeConfirmModal()
+  }
+
+  const cancelHandler = () => {
+    onCancel?.()
+    closeConfirmModal()
+  }
+
+  return (
+    <Overlay>
+      <ModalContainer>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
+        <ButtonGroup>
+          <CancelButton onClick={cancelHandler}>취소</CancelButton>
+          <ConfirmButton onClick={confirmHandler}>확인</ConfirmButton>
+        </ButtonGroup>
+      </ModalContainer>
+    </Overlay>
+  )
+}
+
+export default ConfirmModal
+
+// === 스타일 ===
+const Overlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: ${theme.colors.lfBackdrop.base};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const ModalContainer = styled.div`
+  min-width: 320px;
+  max-width: 90%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  background-color: ${theme.colors.lfWhite.base};
+  color: ${theme.colors.lfBlack.base};
+
+  padding: 16px 24px;
+  border-radius: ${theme.radius.lg};
+  box-shadow: ${theme.shadow.lf};
+
+  text-align: center;
+`
+
+const Title = styled.h2`
+  font-size: ${theme.fontSize.base};
+  font-weight: ${theme.fontWeight.bold};
+  text-align: left;
+
+  margin-bottom: 12px;
+  white-space: pre-line;
+`
+
+const Description = styled.p`
+  font-size: ${theme.fontSize.xs};
+  font-weight: ${theme.fontWeight.regular};
+  text-align: left;
+
+  color: ${theme.colors.lfDarkGray.base};
+  margin-bottom: 32px;
+  white-space: pre-line;
+`
+
+const ButtonGroup = styled.div`
+  width: 100%;
+
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.medium};
+
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+`
+
+const ConfirmButton = styled.button`
+  flex: 1;
+  padding: 12px 24px;
+
+  color: ${theme.colors.lfWhite.base};
+  background-color: ${theme.colors.lfGreenMain.base};
+  border: none;
+  border-radius: ${theme.radius.sm};
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${theme.colors.lfGreenMain.hover};
+  }
+`
+
+const CancelButton = styled.button`
+  flex: 1;
+  padding: 12px 24px;
+
+  color: ${theme.colors.lfGray.base};
+  background-color: ${theme.colors.lfWhite.base};
+  border: 1.5px solid ${theme.colors.lfGray.base};
+  border-radius: ${theme.radius.sm};
+
+  cursor: pointer;
+`

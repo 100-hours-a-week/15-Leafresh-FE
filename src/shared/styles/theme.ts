@@ -77,12 +77,17 @@ const borderRadiusThemes = {
   full: '9999px',
 }
 
+const breakPointThemes = {
+  mobile: '390px',
+}
+
 export const theme = {
   colors: colorThemes,
   fontSize: fontSizeThemes,
   fontWeight: fontWeightThemes,
   shadow: shadowThemes,
   radius: borderRadiusThemes,
+  breakPoints: breakPointThemes,
 }
 
 export type ThemeType = typeof theme
