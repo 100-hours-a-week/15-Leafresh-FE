@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
+import ConfirmModal from '@shared/components/Modal/ConfirmModal'
+
 import './globals.css'
 
 const geistSans = Geist({
@@ -25,7 +27,10 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang='ko'>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+        <ConfirmModal />
+      </body>
     </html>
   )
 }
