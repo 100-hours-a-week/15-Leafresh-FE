@@ -17,6 +17,7 @@ export function useOutsideClick<T extends HTMLElement, F extends (...args: any[]
         if (process.env.NODE_ENV === 'development') {
           console.warn('useOutsideClick: ref must be included')
         }
+        return
       }
 
       if (!ref.current.contains(event.target as Node)) {
