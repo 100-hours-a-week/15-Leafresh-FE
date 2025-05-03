@@ -89,5 +89,3 @@ export const theme = {
   radius: borderRadiusThemes,
   breakPoints: breakPointThemes,
 }
-
-export type ThemeType = typeof theme
