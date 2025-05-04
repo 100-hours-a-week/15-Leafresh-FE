@@ -1,6 +1,6 @@
 const colorThemes = {
   lfBlack: {
-    base: '#222222',
+    base: '#000000',
   },
   lfWhite: {
     base: '#FFFFFF',
@@ -63,7 +63,7 @@ const fontWeightThemes = {
 }
 
 const shadowThemes = {
-  lf: '1px 2px 3px 0px #00000040',
+  lfPrime: '1px 2px 3px 0px #00000040',
   lfInput: '0px 2px 4px 0px #3C404340',
 }
 
