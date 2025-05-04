@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 import ConfirmModal from '@shared/components/Modal/ConfirmModal'
-import { EmotionCacheProvider } from '@shared/styles/emotion/emotion-cache'
+import { Providers } from '@shared/config/providers/Providers'
 import GlobalScrollbarStyle from '@shared/styles/scrollbar/GlobalScrollbarStyle'
 
 import './globals.css'
@@ -31,10 +31,10 @@ const RootLayout = ({
     <html lang='ko'>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <GlobalScrollbarStyle />
-        <EmotionCacheProvider>
+        <Providers>
           {children}
           <ConfirmModal />
-        </EmotionCacheProvider>
+        </Providers>
       </body>
     </html>
   )
