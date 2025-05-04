@@ -98,6 +98,7 @@ const Description = styled.p<{ variant: InfoModalVariant }>`
   margin: ${({ variant }) => (variant === 'long' ? '15px 0' : '15px 0 0')};
   font-size: ${theme.fontSize.xs};
   color: ${theme.colors.lfDarkGray.base};
+  font-weight: ${theme.fontWeight.regular};
 `
 //확인 버튼은 다른 padding값을 받기 때문에 Wrapper를 나누어 관리, 또한한 항상 가장 하단에 위치
 const ButtonWrapper = styled.div<{ variant: InfoModalVariant }>`
