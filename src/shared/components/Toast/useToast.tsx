@@ -42,7 +42,7 @@ const Container = styled.div<{ success: boolean }>`
   align-items: center;
   text-align: center;
   letter-spacing: 0.02em;
-  
+
   z-index: 100;
   left: 50%;
   transform: translateX(-50%);
@@ -65,10 +65,12 @@ const Container = styled.div<{ success: boolean }>`
     success
       ? theme.colors.lfBlack.base
       : theme.colors.lfRed.base};
+
   font-size: ${({success}) => success
     ? theme.fontSize.sm
     : theme.fontSize.xs
   };
+  font-weight: ${theme.fontWeight.medium};
 `
 const Wrapper = styled.div`
     display: flex;
