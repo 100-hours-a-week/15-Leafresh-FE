@@ -1,4 +1,4 @@
-import { theme } from './theme'
+import { theme } from '.'
 import { ThemeColorType } from './type'
 
 export const getThemeColor = (key?: ThemeColorType) => {

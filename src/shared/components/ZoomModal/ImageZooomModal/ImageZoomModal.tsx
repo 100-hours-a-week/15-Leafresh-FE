@@ -10,7 +10,70 @@ import styled from '@emotion/styled'
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { useImageZoomStore } from '@shared/context/ZoomModalStore/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { theme } from '@shared/styles/theme/theme'
+import { theme } from '@shared/styles/emotion/theme'
+
+const ImageZoomModal = () => {
+  const [isInitial, setIsInitial] = useState(true)
+  const { isOpen, close, data, targetIndex, setTargetIndex } = useImageZoomStore()
+
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  useKeyClose('Escape', wrapperRef as React.RefObject<HTMLElement>, close)
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    skipSnaps: false, // 꼭 snap 되도록
+    dragFree: false, // 살짝 드래그는 원래 위치 유지
+  })
+
+  useEffect(() => {
+    if (!emblaApi) return
+    emblaApi.scrollTo(targetIndex, true) // 최초 진입 시 현재 인덱스 이동
+
+    // 다음 tick보다 느리게 적용하기 위해 requestAnimationFrame 사용
+    requestAnimationFrame(() => {
+      setIsInitial(false)
+    })
+
+    emblaApi.on('select', () => {
+      setTargetIndex(emblaApi.selectedScrollSnap())
+    })
+
+    return () => setIsInitial(true)
+  }, [emblaApi, targetIndex, setTargetIndex])
+
+  if (!isOpen || data.length === 0) return null
+
+  const IMAGE_COUNT = data.length
+  const { result } = data[targetIndex]
+
+  return (
+    <Wrapper ref={wrapperRef}>
+      <Header>
+        <span>
+          {targetIndex + 1}/{IMAGE_COUNT}
+        </span>
+        <CloseIcon size={20} onClick={close} />
+      </Header>
+
+      <ResultBar result={result}>{result === 'SUCCESS' ? <Check size={20} /> : <X size={20} />}</ResultBar>
+
+      <Viewport ref={emblaRef}>
+        <Container className={!isInitial ? 'animate' : ''}>
+          {data.map(({ imageSrc, description }, idx) => (
+            <Slide key={idx}>
+              <ImageArea>
+                <StyledImage src={imageSrc} alt='zoom-image' width={390} height={390} />
+              </ImageArea>
+              <Description>{description}</Description>
+            </Slide>
+          ))}
+        </Container>
+      </Viewport>
+    </Wrapper>
+  )
+}
+
+export default ImageZoomModal
 
 const Wrapper = styled.div`
   width: ${theme.breakPoints.mobile};
@@ -104,66 +167,3 @@ const Description = styled.div`
   color: #fff;
   padding: 12px;
 `
-
-const ImageZoomModal = () => {
-  const [isInitial, setIsInitial] = useState(true)
-  const { isOpen, close, data, targetIndex, setTargetIndex } = useImageZoomStore()
-
-  const wrapperRef = useRef<HTMLDivElement>(null)
-  useKeyClose('Escape', wrapperRef as React.RefObject<HTMLElement>, close)
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
-    skipSnaps: false, // 꼭 snap 되도록
-    dragFree: false, // 살짝 드래그는 원래 위치 유지
-  })
-
-  useEffect(() => {
-    if (!emblaApi) return
-    emblaApi.scrollTo(targetIndex, true) // 최초 진입 시 현재 인덱스 이동
-
-    // 다음 tick보다 느리게 적용하기 위해 requestAnimationFrame 사용
-    requestAnimationFrame(() => {
-      setIsInitial(false)
-    })
-
-    emblaApi.on('select', () => {
-      setTargetIndex(emblaApi.selectedScrollSnap())
-    })
-
-    return () => setIsInitial(true)
-  }, [emblaApi, targetIndex, setTargetIndex])
-
-  if (!isOpen || data.length === 0) return null
-
-  const IMAGE_COUNT = data.length
-  const { result } = data[targetIndex]
-
-  return (
-    <Wrapper ref={wrapperRef}>
-      <Header>
-        <span>
-          {targetIndex + 1}/{IMAGE_COUNT}
-        </span>
-        <CloseIcon size={20} onClick={close} />
-      </Header>
-
-      <ResultBar result={result}>{result === 'SUCCESS' ? <Check size={20} /> : <X size={20} />}</ResultBar>
-
-      <Viewport ref={emblaRef}>
-        <Container className={!isInitial ? 'animate' : ''}>
-          {data.map(({ imageSrc, description }, idx) => (
-            <Slide key={idx}>
-              <ImageArea>
-                <StyledImage src={imageSrc} alt='zoom-image' width={390} height={390} />
-              </ImageArea>
-              <Description>{description}</Description>
-            </Slide>
-          ))}
-        </Container>
-      </Viewport>
-    </Wrapper>
-  )
-}
-
-export default ImageZoomModal

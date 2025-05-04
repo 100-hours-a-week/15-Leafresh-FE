@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/theme/theme'
+import { theme } from '@shared/styles/emotion/theme'
 
 export interface DropdownProps<OptionType> {
   label: string

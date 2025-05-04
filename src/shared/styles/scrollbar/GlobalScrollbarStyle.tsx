@@ -2,7 +2,7 @@
 
 import { css, Global } from '@emotion/react'
 
-import { theme } from '@shared/styles/emotion/theme/theme'
+import { theme } from '@shared/styles/emotion/theme'
 
 const GlobalScrollbarStyle = () => (
   <Global
