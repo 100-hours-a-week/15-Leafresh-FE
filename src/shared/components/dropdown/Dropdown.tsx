@@ -75,7 +75,7 @@ const Label = styled.label<{ isFocused: boolean }>`
 `
 
 const SelectBox = styled.div<{ isFocused: boolean }>`
-  padding: 8px 12px;
+  padding: 6px 8px;
   border: none;
   border-bottom: 2px solid ${theme.colors.lfLightGray.base};
   background: transparent;
@@ -107,9 +107,6 @@ const SelectedText = styled.span`
 `
 
 const IconWrapper = styled.div<{ isFocused: boolean }>`
-  /* position: absolute;
-  right: 0; */
-  /* top: 14px; */
   transform: rotate(${({ isFocused }) => (isFocused ? 180 : 0)}deg);
   transition: transform 0.3s ease;
 `
@@ -122,7 +119,7 @@ const OptionBox = styled.ul<{ maxHeight: number }>`
   max-height: ${({ maxHeight }) => maxHeight}px;
   overflow-y: auto;
   margin-top: 8px;
-  padding: 8px;
+  padding: 8px 4px;
   border-radius: ${theme.radius.base};
   box-shadow: ${theme.shadow.lfInput};
   background-color: ${theme.colors.lfWhite.base};
@@ -131,7 +128,7 @@ const OptionBox = styled.ul<{ maxHeight: number }>`
 `
 
 const Option = styled.li<{ isHovered: boolean }>`
-  padding: 12px 8px;
+  padding: 10px 4px;
   text-align: center;
   font-size: ${theme.fontSize.xss};
   font-weight: ${theme.fontWeight.regular};
