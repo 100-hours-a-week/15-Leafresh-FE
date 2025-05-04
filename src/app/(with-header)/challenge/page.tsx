@@ -1,55 +1,48 @@
 'use client'
-import { ReactNode, useState } from 'react'
+
+import { format } from 'date-fns'
+
+import { useState } from 'react'
 import styled from '@emotion/styled'
 
-import Dropdown, { DropdownProps } from '@shared/components/dropdown/Dropdown'
-import { StyledGeneric } from '@shared/styles/emotion/utils'
+import Calendar from '@shared/components/calender'
+import { theme } from '@shared/styles/emotion/theme'
 
-interface ChallengePageProps {
-  className?: string
-}
+const CalendarTestPage = () => {
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
 
-const ChallengePage = ({ className }: ChallengePageProps): ReactNode => {
-  const [selected, setSelected] = useState<string>('')
-
-  const options = ['선택지1', '선택지2', '선택지3', '선택지4', '선택지5', '선택지6']
-
-  const handleChange = (value: string) => {
-    setSelected(value)
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date)
   }
 
   return (
-    <div className={className}>
-      <Overlay>
-        <StyledDropdown
-          label='라벨'
-          options={options}
-          selected={selected}
-          onChange={handleChange}
-          getOptionLabel={option => option}
-          getOptionKey={option => option}
-          maxVisibleCount={4}
-        />
-      </Overlay>
-    </div>
+    <PageWrapper>
+      <Title>선택된 날짜: {format(selectedDate, 'yyyy-MM-dd')}</Title>
+      <StyledCalendar selectedDate={selectedDate} onDateSelect={handleDateSelect} />
+    </PageWrapper>
   )
 }
 
-export default ChallengePage
+export default CalendarTestPage
 
-// === 스타일 ===
-const Overlay = styled.div`
-  height: 300px;
+// === Styles ===
+
+const PageWrapper = styled.div`
+  padding: 32px;
+  background-color: ${theme.colors.lfInputBackground.base};
+  min-height: 100vh;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 `
 
-const StyledDropdown = StyledGeneric<DropdownProps<string>>(
-  Dropdown,
-  `
-  width: 150px;
-`,
-)
+const Title = styled.h1`
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.bold};
+  margin-bottom: 24px;
+`
+
+const StyledCalendar = styled(Calendar)`
+  width: 360px;
+`
