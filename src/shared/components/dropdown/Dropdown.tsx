@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
+import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
+import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/emotion/theme'
@@ -32,6 +34,8 @@ const Dropdown = <OptionType,>({
   className,
 }: DropdownProps<OptionType>) => {
   const { value: isOpen, toggle, setValue: setIsOpen } = useToggle(false)
+  const dropdownRef = useRef<HTMLUListElement>(null)
+
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   const handleSelect = (value: OptionType) => {
@@ -39,19 +43,22 @@ const Dropdown = <OptionType,>({
     setIsOpen(false)
   }
 
+  useOutsideClick(dropdownRef as React.RefObject<HTMLElement>, toggle)
+  useKeyClose('Escape', dropdownRef as React.RefObject<HTMLElement>, toggle)
+
   return (
     <Wrapper className={className}>
       <Label isFocused={isOpen || !!selected}>{label}</Label>
-      <SelectBox onClick={toggle} isFocused={isOpen || !!selected}>
+      <SelectBox onClick={toggle} isFocused={isOpen}>
         <SelectedText>{selected ? getOptionLabel(selected) : ''}</SelectedText>
         <IconWrapper isFocused={isOpen}>
-          <LucideIcon name='ChevronDown' size={20} />
+          <LucideIcon name='ChevronDown' size={16} />
         </IconWrapper>
       </SelectBox>
       {isOpen && (
-        <OptionBox maxHeight={maxVisibleCount * 40}>
+        <DropdownBox ref={dropdownRef} maxHeight={maxVisibleCount * 40}>
           {options.map((option, index) => (
-            <Option
+            <Item
               key={getOptionKey(option)}
               onClick={() => handleSelect(option)}
               onMouseEnter={() => setHoveredIndex(index)}
@@ -59,9 +66,9 @@ const Dropdown = <OptionType,>({
               isHovered={hoveredIndex === index}
             >
               {getOptionLabel(option)}
-            </Option>
+            </Item>
           ))}
-        </OptionBox>
+        </DropdownBox>
       )}
     </Wrapper>
   )
@@ -125,7 +132,7 @@ const IconWrapper = styled.div<{ isFocused: boolean }>`
   transition: transform 0.3s ease;
 `
 
-const OptionBox = styled.ul<{ maxHeight: number }>`
+const DropdownBox = styled.ul<{ maxHeight: number }>`
   position: absolute;
   top: 100%;
   left: 0;
@@ -141,7 +148,7 @@ const OptionBox = styled.ul<{ maxHeight: number }>`
   list-style: none;
 `
 
-const Option = styled.li<{ isHovered: boolean }>`
+const Item = styled.li<{ isHovered: boolean }>`
   padding: 10px 4px;
   text-align: center;
   font-size: ${theme.fontSize.xss};
