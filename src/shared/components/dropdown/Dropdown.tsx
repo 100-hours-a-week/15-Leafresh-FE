@@ -90,7 +90,7 @@ const Label = styled.label<{ isFocused: boolean }>`
   /* transform: translateY(-50%); */
 
   font-size: ${({ isFocused }) => (isFocused ? theme.fontSize.xss : theme.fontSize.xs)};
-  color: ${({ isFocused }) => (isFocused ? theme.colors.lfGreenBorder.base : theme.colors.lfDarkGray.base)};
+  color: ${theme.colors.lfBlack.base};
   transition: all 0.2s ease;
   pointer-events: none;
 `
