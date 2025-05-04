@@ -20,25 +20,25 @@ interface DatePickerProps {
 }
 
 const DatePicker = ({ icon, label, startDate, endDate, setStartDate, setEndDate }: DatePickerProps) => {
-  const [openCalendar, setOpenCalendar] = useState<'start' | 'end' | null>(null)
+  const [status, setStatus] = useState<'start' | 'end' | null>(null)
 
-  const toggleStart = () => setOpenCalendar(prev => (prev === 'start' ? null : 'start'))
-  const toggleEnd = () => setOpenCalendar(prev => (prev === 'end' ? null : 'end'))
+  const toggleStart = () => setStatus(prev => (prev === 'start' ? null : 'start'))
+  const toggleEnd = () => setStatus(prev => (prev === 'end' ? null : 'end'))
 
   const handleDateSelect = (date: Date) => {
-    if (openCalendar === 'start') {
+    if (status === 'start') {
       if (endDate && date > endDate) {
         setStartDate(date)
         setEndDate(undefined)
       } else {
         setStartDate(date)
       }
-      setOpenCalendar('end')
-    } else if (openCalendar === 'end') {
+      setStatus('end')
+    } else if (status === 'end') {
       if (!startDate || date < startDate) {
         setStartDate(date)
         setEndDate(undefined)
-        setOpenCalendar('end')
+        setStatus('end')
       } else {
         setEndDate(date)
       }
@@ -53,7 +53,7 @@ const DatePicker = ({ icon, label, startDate, endDate, setStartDate, setEndDate 
       </LabelWrapper>
 
       <InputGroup>
-        <InputArea isFocused={openCalendar === 'start'} onClick={toggleStart}>
+        <InputArea isFocused={status === 'start'} onClick={toggleStart}>
           <DateText isValid={!!startDate}>
             {startDate ? `${format(startDate, 'MM.dd')} (${dayToString(startDate.getDay())})` : '시작날짜'}
           </DateText>
@@ -61,20 +61,20 @@ const DatePicker = ({ icon, label, startDate, endDate, setStartDate, setEndDate 
 
         <Tilde>~</Tilde>
 
-        <InputArea isFocused={openCalendar === 'end'} onClick={toggleEnd}>
+        <InputArea isFocused={status === 'end'} onClick={toggleEnd}>
           <DateText isValid={!!endDate}>
             {endDate ? `${format(endDate, 'MM.dd')} (${dayToString(endDate.getDay())})` : '종료날짜'}
           </DateText>
         </InputArea>
       </InputGroup>
 
-      {openCalendar && (
+      {status && (
         <CalendarWrapper>
           <Calendar
             startDate={startDate}
             endDate={endDate}
             onDateSelect={handleDateSelect}
-            toggle={() => setOpenCalendar(null)}
+            toggle={() => setStatus(null)}
           />
         </CalendarWrapper>
       )}
