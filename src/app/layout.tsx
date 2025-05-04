@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 import ConfirmModal from '@shared/components/Modal/ConfirmModal'
+import InfoModal from '@shared/components/Modal/InfoModal'
 
 import './globals.css'
 
@@ -30,6 +31,7 @@ const RootLayout = ({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
         <ConfirmModal />
+        <InfoModal/>
       </body>
     </html>
   )
