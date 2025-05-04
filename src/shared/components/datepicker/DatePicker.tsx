@@ -1,0 +1,153 @@
+'use client'
+
+import { format } from 'date-fns'
+
+import React, { useState } from 'react'
+import styled from '@emotion/styled'
+
+import { dayToString } from '@shared/lib/date/utils'
+import { theme } from '@shared/styles/emotion/theme'
+
+import Calendar from '../calender'
+
+interface DatePickerProps {
+  icon: React.JSX.Element
+  label: string
+  startDate?: Date
+  endDate?: Date
+  setStartDate: (date: Date | undefined) => void
+  setEndDate: (date: Date | undefined) => void
+}
+
+const DatePicker = ({ icon, label, startDate, endDate, setStartDate, setEndDate }: DatePickerProps) => {
+  const [openCalendar, setOpenCalendar] = useState<'start' | 'end' | null>(null)
+
+  const toggleStart = () => setOpenCalendar(prev => (prev === 'start' ? null : 'start'))
+  const toggleEnd = () => setOpenCalendar(prev => (prev === 'end' ? null : 'end'))
+
+  const handleDateSelect = (date: Date) => {
+    if (openCalendar === 'start') {
+      if (endDate && date > endDate) {
+        setStartDate(date)
+        setEndDate(undefined)
+      } else {
+        setStartDate(date)
+      }
+      setOpenCalendar('end')
+    } else if (openCalendar === 'end') {
+      if (!startDate || date < startDate) {
+        setStartDate(date)
+        setEndDate(undefined)
+        setOpenCalendar('end')
+      } else {
+        setEndDate(date)
+      }
+    }
+  }
+
+  return (
+    <Wrapper>
+      <LabelWrapper>
+        {icon}
+        <Label>{label}</Label>
+      </LabelWrapper>
+
+      <InputGroup>
+        <InputArea isFocused={openCalendar === 'start'} onClick={toggleStart}>
+          <DateText isValid={!!startDate}>
+            {startDate ? `${format(startDate, 'MM.dd')} (${dayToString(startDate.getDay())})` : '시작날짜'}
+          </DateText>
+        </InputArea>
+
+        <Tilde>~</Tilde>
+
+        <InputArea isFocused={openCalendar === 'end'} onClick={toggleEnd}>
+          <DateText isValid={!!endDate}>
+            {endDate ? `${format(endDate, 'MM.dd')} (${dayToString(endDate.getDay())})` : '종료날짜'}
+          </DateText>
+        </InputArea>
+      </InputGroup>
+
+      {openCalendar && (
+        <CalendarWrapper>
+          <Calendar
+            startDate={startDate}
+            endDate={endDate}
+            onDateSelect={handleDateSelect}
+            toggle={() => setOpenCalendar(null)}
+          />
+        </CalendarWrapper>
+      )}
+    </Wrapper>
+  )
+}
+
+export default DatePicker
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+const LabelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
+
+const Label = styled.label`
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.semiBold};
+  color: ${theme.colors.lfBlack.base};
+`
+
+const InputGroup = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+`
+
+const InputArea = styled.div<{ isFocused: boolean }>`
+  position: relative; // 👈 before를 위한 위치 기준
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 10px 0;
+  border-bottom: 2px solid ${theme.colors.lfLightGray.base};
+  font-weight: ${theme.fontWeight.semiBold};
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(${({ isFocused }) => (isFocused ? 1 : 0)});
+    transform-origin: center;
+    width: 100%;
+    height: 2px;
+    background-color: ${theme.colors.lfBlack.base};
+    transition: transform 0.3s ease;
+  }
+`
+
+const Tilde = styled.span`
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.semiBold};
+  color: ${theme.colors.lfBlack.base};
+`
+
+const DateText = styled.div<{ isValid: boolean }>`
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.semiBold};
+  color: ${({ isValid }) => (isValid ? theme.colors.lfBlack.base : theme.colors.lfDarkGray.base)};
+`
+
+const CalendarWrapper = styled.div`
+  margin-top: 12px;
+`

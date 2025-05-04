@@ -1,25 +1,31 @@
 'use client'
 
-import { format } from 'date-fns'
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import Calendar from '@shared/components/calender'
-import { theme } from '@shared/styles/emotion/theme'
+import DatePicker from '@shared/components/datepicker/DatePicker'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 const CalendarTestPage = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+  const [startDate, setStartDate] = useState<Date>()
+  const [endDate, setEndDate] = useState<Date>()
 
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date)
-  }
+  useEffect(() => {
+    console.log('startDate: ', startDate)
+    console.log('endDate: ', endDate)
+  }, [startDate, endDate])
 
   return (
-    <PageWrapper>
-      <Title>선택된 날짜: {format(selectedDate, 'yyyy-MM-dd')}</Title>
-      <StyledCalendar selectedDate={selectedDate} onDateSelect={handleDateSelect} />
-    </PageWrapper>
+    <Wrapper>
+      <StyledDatePicker
+        icon={<LucideIcon name='Calendar' size={24} strokeWidth={2.5} />}
+        label='챌린지 기간 *'
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+      />
+    </Wrapper>
   )
 }
 
@@ -27,22 +33,12 @@ export default CalendarTestPage
 
 // === Styles ===
 
-const PageWrapper = styled.div`
-  padding: 32px;
-  background-color: ${theme.colors.lfInputBackground.base};
-  min-height: 100vh;
-
+const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
+  position: relative;
 `
 
-const Title = styled.h1`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-  margin-bottom: 24px;
-`
-
-const StyledCalendar = styled(Calendar)`
-  width: 360px;
+const StyledDatePicker = styled(DatePicker)`
+  width: 100%;
 `
