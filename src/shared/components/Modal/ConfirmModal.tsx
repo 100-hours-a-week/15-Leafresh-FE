@@ -70,7 +70,7 @@ const ModalContainer = styled.div`
 
   padding: 16px 24px;
   border-radius: ${theme.radius.lg};
-  box-shadow: ${theme.shadow.lf};
+  box-shadow: ${theme.shadow.lfPrime};
 
   text-align: center;
 `
