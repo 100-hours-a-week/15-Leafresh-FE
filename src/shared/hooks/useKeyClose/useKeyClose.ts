@@ -22,9 +22,9 @@ const normalizeKey = (key: SupportedKeyType): string => {
 }
 /**
  * 특정 키 입력 시 콜백을 실행하는 커스텀 훅
+ * @param key 입력할 키 (기본값: 'Escape')
  * @param ref 감지할 요소의 ref
  * @param callback 키 입력 시 실행할 함수
- * @param key 입력할 키 (기본값: 'Escape')
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useKeyClose<T extends HTMLElement, F extends (...args: any[]) => any>(
@@ -40,8 +40,6 @@ export function useKeyClose<T extends HTMLElement, F extends (...args: any[]) =>
         }
         return
       }
-
-      if (!ref.current.contains(event.target as Node)) return
 
       if (event.key === normalizeKey(key)) {
         callback()

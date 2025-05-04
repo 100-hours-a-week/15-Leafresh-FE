@@ -1,8 +1,9 @@
 // src/shared/lib/fetcher.test.ts
-import { describe, it, expect, beforeEach, vi, MockedFunction } from 'vitest'
-import { fetchRequest, ApiResponse, ErrorResponse } from './fetcher'
-import { HttpMethod, HttpStatusCode } from '../../../constants/http'
+import { beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest'
+
 import type { EndpointType } from '../../../constants/endpoint/endpoint'
+import { HttpMethod, HttpStatusCode } from '../../../constants/http'
+import { ApiResponse, ErrorResponse, fetchRequest } from './fetcher'
 
 describe('fetchRequest 유틸', () => {
   let fetchMock: MockedFunction<typeof fetch>
@@ -19,14 +20,15 @@ describe('fetchRequest 유틸', () => {
       data: [1, 2, 3],
     }
 
-    fetchMock.mockImplementationOnce(async () =>
-      ({
-        ok: true,
-        status: HttpStatusCode.SUCCESS,
-        headers: { get: () => 'application/json' },
-        json: async () => mockData,
-        text: async () => '',
-      } as unknown as Response)
+    fetchMock.mockImplementationOnce(
+      async () =>
+        ({
+          ok: true,
+          status: HttpStatusCode.SUCCESS,
+          headers: { get: () => 'application/json' },
+          json: async () => mockData,
+          text: async () => '',
+        }) as unknown as Response,
     )
 
     const res = await fetchRequest<ApiResponse<number[]>>(endpoint)
@@ -36,14 +38,17 @@ describe('fetchRequest 유틸', () => {
   it('GET text/plain 응답은 텍스트 결과를 반환한다', async () => {
     const endpoint: EndpointType = { method: HttpMethod.GET, path: '/txt' }
 
-    fetchMock.mockImplementationOnce(async () =>
-      ({
-        ok: true,
-        status: HttpStatusCode.SUCCESS,
-        headers: { get: () => 'text/plain' },
-        json: async () => { throw new Error('Should not call JSON') },
-        text: async () => 'plain text',
-      } as unknown as Response)
+    fetchMock.mockImplementationOnce(
+      async () =>
+        ({
+          ok: true,
+          status: HttpStatusCode.SUCCESS,
+          headers: { get: () => 'text/plain' },
+          json: async () => {
+            throw new Error('Should not call JSON')
+          },
+          text: async () => 'plain text',
+        }) as unknown as Response,
     )
 
     const res = await fetchRequest<string>(endpoint)
@@ -54,15 +59,15 @@ describe('fetchRequest 유틸', () => {
     const endpoint: EndpointType = { method: HttpMethod.GET, path: '/items' }
     let capturedUrl = ''
 
-    fetchMock.mockImplementationOnce(async (input, init) => {
+    fetchMock.mockImplementationOnce(async input => {
       capturedUrl = String(input)
-      return ({
+      return {
         ok: true,
         status: HttpStatusCode.SUCCESS,
         headers: { get: () => 'application/json' },
         json: async () => ({ status: HttpStatusCode.SUCCESS, message: 'ok', data: null }),
         text: async () => '',
-      } as unknown as Response)
+      } as unknown as Response
     })
 
     await fetchRequest<ErrorResponse>(endpoint, { query: { a: 1, b: 'two' } })
@@ -75,13 +80,13 @@ describe('fetchRequest 유틸', () => {
 
     fetchMock.mockImplementationOnce(async (_input, init) => {
       capturedInit = init!
-      return ({
+      return {
         ok: true,
         status: HttpStatusCode.Created,
         headers: { get: () => 'application/json' },
         json: async () => ({ status: HttpStatusCode.Created, message: 'created', data: { id: 42 } }),
         text: async () => '',
-      } as unknown as Response)
+      } as unknown as Response
     })
 
     const payload = { foo: 'bar' }
@@ -99,13 +104,13 @@ describe('fetchRequest 유틸', () => {
 
     fetchMock.mockImplementationOnce(async (_input, init) => {
       capturedInit = init!
-      return ({
+      return {
         ok: true,
         status: HttpStatusCode.SUCCESS,
         headers: { get: () => 'application/json' },
         json: async () => ({ status: HttpStatusCode.SUCCESS, message: 'ok', data: {} }),
         text: async () => '',
-      } as unknown as Response)
+      } as unknown as Response
     })
 
     const fd = new FormData()
@@ -119,14 +124,15 @@ describe('fetchRequest 유틸', () => {
   it('JSON 에러 응답 시 ErrorResponse 형식으로 throw된다', async () => {
     const endpoint: EndpointType = { method: HttpMethod.GET, path: '/err-json' }
 
-    fetchMock.mockImplementationOnce(async () =>
-      ({
-        ok: false,
-        status: HttpStatusCode.BadRequest,
-        headers: { get: () => 'application/json' },
-        json: async () => ({ message: 'bad request' }),
-        text: async () => '',
-      } as unknown as Response)
+    fetchMock.mockImplementationOnce(
+      async () =>
+        ({
+          ok: false,
+          status: HttpStatusCode.BadRequest,
+          headers: { get: () => 'application/json' },
+          json: async () => ({ message: 'bad request' }),
+          text: async () => '',
+        }) as unknown as Response,
     )
 
     await expect(fetchRequest<unknown>(endpoint)).rejects.toMatchObject({
@@ -139,14 +145,17 @@ describe('fetchRequest 유틸', () => {
   it('text/plain 에러 응답 시 Unknown error 메시지를 갖는다', async () => {
     const endpoint: EndpointType = { method: HttpMethod.DELETE, path: '/err-txt' }
 
-    fetchMock.mockImplementationOnce(async () =>
-      ({
-        ok: false,
-        status: HttpStatusCode.InternalServerError,
-        headers: { get: () => 'text/plain' },
-        json: async () => { throw new Error('not json') },
-        text: async () => 'server down',
-      } as unknown as Response)
+    fetchMock.mockImplementationOnce(
+      async () =>
+        ({
+          ok: false,
+          status: HttpStatusCode.InternalServerError,
+          headers: { get: () => 'text/plain' },
+          json: async () => {
+            throw new Error('not json')
+          },
+          text: async () => 'server down',
+        }) as unknown as Response,
     )
 
     await expect(fetchRequest<unknown>(endpoint)).rejects.toMatchObject({
