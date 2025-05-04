@@ -5,22 +5,36 @@ import styled from '@emotion/styled'
 
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/styles/theme/theme'
 
-interface DropdownProps {
+export interface DropdownProps<OptionType> {
   label: string
-  options: string[]
-  selected?: string
-  onChange: (value: string) => void
-  maxVisibleCount?: number // 디폴트는 4
+  getOptionLabel: (option: OptionType) => string
+
+  options: OptionType[]
+  getOptionKey: (option: OptionType) => string | number
+  selected?: OptionType
+
+  onChange: (value: OptionType) => void
+
+  maxVisibleCount?: number
   className?: string
 }
 
-const Dropdown = ({ label, options, selected, onChange, maxVisibleCount = 4, className }: DropdownProps) => {
+const Dropdown = <OptionType,>({
+  label,
+  options,
+  selected,
+  onChange,
+  getOptionLabel,
+  getOptionKey,
+  maxVisibleCount = 4,
+  className,
+}: DropdownProps<OptionType>) => {
   const { value: isOpen, toggle, setValue: setIsOpen } = useToggle(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
-  const handleSelect = (value: string) => {
+  const handleSelect = (value: OptionType) => {
     onChange(value)
     setIsOpen(false)
   }
@@ -28,8 +42,8 @@ const Dropdown = ({ label, options, selected, onChange, maxVisibleCount = 4, cla
   return (
     <Wrapper className={className}>
       <Label isFocused={isOpen || !!selected}>{label}</Label>
-      <SelectBox onClick={toggle} isFocused={isOpen}>
-        <SelectedText>{selected || ''}</SelectedText>
+      <SelectBox onClick={toggle} isFocused={isOpen || !!selected}>
+        <SelectedText>{selected ? getOptionLabel(selected) : ''}</SelectedText>
         <IconWrapper isFocused={isOpen}>
           <LucideIcon name='ChevronDown' size={20} />
         </IconWrapper>
@@ -38,13 +52,13 @@ const Dropdown = ({ label, options, selected, onChange, maxVisibleCount = 4, cla
         <OptionBox maxHeight={maxVisibleCount * 40}>
           {options.map((option, index) => (
             <Option
-              key={option}
+              key={getOptionKey(option)}
               onClick={() => handleSelect(option)}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               isHovered={hoveredIndex === index}
             >
-              {option}
+              {getOptionLabel(option)}
             </Option>
           ))}
         </OptionBox>
