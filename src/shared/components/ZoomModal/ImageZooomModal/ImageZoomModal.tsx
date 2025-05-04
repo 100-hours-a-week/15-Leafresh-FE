@@ -10,7 +10,7 @@ import styled from '@emotion/styled'
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { useImageZoomStore } from '@shared/context/ZoomModalStore/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/styles/theme/theme'
 
 const Wrapper = styled.div`
   width: ${theme.breakPoints.mobile};
