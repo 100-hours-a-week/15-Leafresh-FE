@@ -1,8 +1,8 @@
 'use client'
 
-import { css,Global } from '@emotion/react'
+import { css, Global } from '@emotion/react'
 
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/styles/theme/theme'
 
 const GlobalScrollbarStyle = () => (
   <Global
