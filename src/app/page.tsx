@@ -65,7 +65,6 @@ const ExampleZoomImageGroup = () => {
         ))}
       </Container>
 
-      {/* 이건 반드시 하나만 렌더링되게 해야 함 */}
       <ImageZoomModal />
     </>
   )
