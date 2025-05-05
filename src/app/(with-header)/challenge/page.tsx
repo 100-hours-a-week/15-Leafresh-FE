@@ -1,55 +1,44 @@
 'use client'
-import { ReactNode, useState } from 'react'
+
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import Dropdown, { DropdownProps } from '@shared/components/dropdown/Dropdown'
-import { StyledGeneric } from '@shared/styles/emotion/utils'
+import DatePicker from '@shared/components/datepicker/DatePicker'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
 
-interface ChallengePageProps {
-  className?: string
-}
+const CalendarTestPage = () => {
+  const [startDate, setStartDate] = useState<Date>()
+  const [endDate, setEndDate] = useState<Date>()
 
-const ChallengePage = ({ className }: ChallengePageProps): ReactNode => {
-  const [selected, setSelected] = useState<string>('')
-
-  const options = ['선택지1', '선택지2', '선택지3', '선택지4', '선택지5', '선택지6']
-
-  const handleChange = (value: string) => {
-    setSelected(value)
-  }
+  useEffect(() => {
+    console.log('startDate: ', startDate)
+    console.log('endDate: ', endDate)
+  }, [startDate, endDate])
 
   return (
-    <div className={className}>
-      <Overlay>
-        <StyledDropdown
-          label='라벨'
-          options={options}
-          selected={selected}
-          onChange={handleChange}
-          getOptionLabel={option => option}
-          getOptionKey={option => option}
-          maxVisibleCount={4}
-        />
-      </Overlay>
-    </div>
+    <Wrapper>
+      <StyledDatePicker
+        icon={<LucideIcon name='Calendar' size={24} strokeWidth={2.5} />}
+        label='챌린지 기간 *'
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+      />
+    </Wrapper>
   )
 }
 
-export default ChallengePage
+export default CalendarTestPage
 
-// === 스타일 ===
-const Overlay = styled.div`
-  height: 300px;
+// === Styles ===
 
+const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  position: relative;
 `
 
-const StyledDropdown = StyledGeneric<DropdownProps<string>>(
-  Dropdown,
-  `
-  width: 150px;
-`,
-)
+const StyledDatePicker = styled(DatePicker)`
+  width: 100%;
+`
