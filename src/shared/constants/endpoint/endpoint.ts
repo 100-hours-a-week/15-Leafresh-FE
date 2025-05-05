@@ -28,6 +28,12 @@ const CHALLENGE_ENDPOINTS = {
         path: `/api/challenges/personal/${challengeId}/verifications`,
       }),
 
+      // 인증 결과 조회 (롱폴링)
+      VERIFICATION_RESULT: (challengeId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/personal/${challengeId}/verification/result`,
+      }),
+
       // 규칙
       RULES: (challengeId: number) => ({
         method: HttpMethod.GET,
@@ -67,30 +73,30 @@ const CHALLENGE_ENDPOINTS = {
         path: `/api/challenges/group/${challengeId}/participations`,
       }),
 
-      // 인증 제출
-      VERIFY: (challengeId: number) => ({
-        method: HttpMethod.POST,
-        path: `/api/challenges/group/${challengeId}/verifications`,
-      }),
-
-      // 인증 목록
+      // 특정 단체 챌린지 인증 내역 목록 조회
       VERIFICATIONS: (challengeId: number) => ({
         method: HttpMethod.GET,
         path: `/api/challenges/group/${challengeId}/verifications`,
       }),
 
-      // 규칙
+      // 인증 제출 (생성)
+      VERIFY: (challengeId: number) => ({
+        method: HttpMethod.POST,
+        path: `/api/challenges/group/${challengeId}/verifications`,
+      }),
+
+      // 인증 결과 조회 (롱폴링)
+      VERIFICATION_RESULT: (challengeId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verification/result`,
+      }),
+
+      // 규약
       RULES: (challengeId: number) => ({
         method: HttpMethod.GET,
         path: `/api/challenges/group/${challengeId}/rules`,
       }),
     },
-
-    // 인증 결과 확인
-    VERIFICATION_RESULT: (challengeId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/verifications/${challengeId}/result`,
-    }),
   },
 }
 
