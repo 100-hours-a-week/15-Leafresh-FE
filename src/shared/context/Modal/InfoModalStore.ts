@@ -8,7 +8,6 @@ interface InfoModalState {
   description?: string
   variant: InfoModalVariant
   onClose?: () => void
-  onCancel?: () => void //figma 상의 취소 버튼 존재. 추후 수정
   openInfoModal: (payload: {
     title: string
     description?: string
@@ -40,7 +39,6 @@ export const useInfoModalStore = create<InfoModalState>(set => ({
       description,
       variant,
       onClose,
-      onCancel,
     }),
 
   closeInfoModal: () =>
@@ -50,6 +48,5 @@ export const useInfoModalStore = create<InfoModalState>(set => ({
       description: undefined,
       variant: 'default',
       onClose: undefined,
-      onCancel: undefined,
     }),
 }))
