@@ -150,7 +150,8 @@ const MEMBER_ENDPOINTS = {
     },
   },
 }
-
+/**
+ * DEPRECATED
 const S3_ENDPOINTS = {
   // 이미지 업로드용 Presigned URL 요청
   PRESIGNED_URL: { method: HttpMethod.POST, path: '/s3/images/presigned-url' },
@@ -158,6 +159,7 @@ const S3_ENDPOINTS = {
   // 이미지 실제 업로드 (PUT)
   UPLOAD: { method: HttpMethod.PUT, path: '/s3/images' },
 }
+ */
 
 /** 게시글 */
 const POST_ENDPOINTS = {
@@ -322,7 +324,6 @@ const ADMIN_ENDPOINTS = {
 export const ENDPOINTS = {
   CHALLENGE: CHALLENGE_ENDPOINTS,
   MEMBERS: MEMBER_ENDPOINTS,
-  S3: S3_ENDPOINTS,
   POSTS: POST_ENDPOINTS,
   STORE: STORE_ENDPOINTS,
   CHATBOT: CHATBOT_ENDPOINTS,
