@@ -73,6 +73,12 @@ const CHALLENGE_ENDPOINTS = {
         path: `/api/challenges/group/${challengeId}/participations`,
       }),
 
+      // 참여한 단체 챌린지 카운트 조회 (인증 페이지)
+      COUNT: {
+        method: HttpMethod.GET,
+        path: `/api/members/challenges/group/participations/count`,
+      },
+
       // 특정 단체 챌린지 인증 내역 목록 조회
       VERIFICATIONS: (challengeId: number) => ({
         method: HttpMethod.GET,

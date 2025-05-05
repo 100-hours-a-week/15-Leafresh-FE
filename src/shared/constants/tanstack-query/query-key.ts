@@ -68,6 +68,7 @@ const MEMBER_QUERY_KEYS = {
     GROUP: {
       CREATIONS: '[member, challenges, group, creations]', // 생성한 챌린지
       PARTICIPATIONS: '[member, challenges, group, participations]', // 내가 참여한 챌린지
+      COUNT: '[member, challenges, group, participations, count]', // 참여한 단체 챌린지 카운트 조회
 
       // 챌린지 인증 내역
       VERIFICATIONS: (challengeId: number) => ({
