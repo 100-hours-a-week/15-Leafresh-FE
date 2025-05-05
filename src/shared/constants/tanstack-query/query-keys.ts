@@ -39,7 +39,7 @@ const CHALLENGE_QUERY_KEYS = {
 
 const MEMBER_QUERY_KEYS = {
   AUTH: {
-    INDEX: (provider: OAuthType) => `[member, oauth, ${provider}]`, // 소셜 로그인 요청
+    LOGIN: (provider: OAuthType) => `[member, oauth, ${provider}]`, // 소셜 로그인 요청
     CALLBACK: (provider: OAuthType) => `[member, oauth, ${provider}, callback]`, // OAuth 콜백
   },
 

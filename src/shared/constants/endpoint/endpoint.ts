@@ -1,3 +1,5 @@
+import { LowercaseOAuthType } from '@entities/member/type'
+
 import { HttpMethod } from '../http'
 
 export type EndpointType = {
@@ -108,22 +110,22 @@ const CHALLENGE_ENDPOINTS = {
 
 const MEMBER_ENDPOINTS = {
   AUTH: {
-    INDEX: (provider: string) => ({ method: HttpMethod.GET, path: `/oauth/${provider}` }), // OAuth 로그인 시작
-    CALLBACK: (provider: string) => ({ method: HttpMethod.GET, path: `/oauth/${provider}/callback` }), // OAuth 콜백
-    REMOVE_REFRESH_TOKEN: (provider: number | string) => ({
+    LOGIN: (provider: LowercaseOAuthType) => ({ method: HttpMethod.GET, path: `/oauth/${provider}` }), // OAuth 로그인 시작
+    CALLBACK: (provider: LowercaseOAuthType) => ({ method: HttpMethod.GET, path: `/oauth/${provider}/callback` }), // OAuth 콜백
+    LOGOUT: (provider: LowercaseOAuthType) => ({
       method: HttpMethod.DELETE,
       path: `/oauth/${provider}/token`,
-    }), // 리프레시 토큰 제거
+    }),
     RE_ISSUE: { method: HttpMethod.POST, path: '/auth/token/reissue' }, // 토큰 재발급
   },
 
   DUPLICATE_NICKNAME: { method: HttpMethod.GET, path: '/api/members/nickname' }, // 닉네임 중복 검사
 
   // CRUD
-  SIGNUP: { method: HttpMethod.POST, path: '/api/members/signup' }, // 회원가입
+  SIGNUP: { method: HttpMethod.POST, path: '/api/members' }, // 회원가입
   DETAILS: { method: HttpMethod.GET, path: '/api/members' }, // 내 정보 조회
   MODIFY: { method: HttpMethod.PATCH, path: '/api/members' }, // 회원정보 수정
-  DELETE: { method: HttpMethod.DELETE, path: '/api/members' }, // 회원 탈퇴
+  UNREGISTER: { method: HttpMethod.DELETE, path: '/api/members' }, // 회원 탈퇴
 
   // 회원 정보
   PROFILE_CARD: { method: HttpMethod.GET, path: '/api/members/profilecard' }, // 프로필 카드 조회
@@ -167,77 +169,77 @@ const S3_ENDPOINTS = {
 }
  */
 
-/** 게시글 */
-const POST_ENDPOINTS = {
-  // 목록 조회
-  LIST: { method: HttpMethod.GET, path: '/api/posts' },
+/** 게시글 (v2 개발)*/
+// const POST_ENDPOINTS = {
+//   // 목록 조회
+//   LIST: { method: HttpMethod.GET, path: '/api/posts' },
 
-  // 상세 조회
-  DETAILS: (postId: number) => ({
-    method: HttpMethod.GET,
-    path: `/api/posts/${postId}`,
-  }),
+//   // 상세 조회
+//   DETAILS: (postId: number) => ({
+//     method: HttpMethod.GET,
+//     path: `/api/posts/${postId}`,
+//   }),
 
-  // 작성
-  CREATE: { method: HttpMethod.POST, path: '/api/posts' },
+//   // 작성
+//   CREATE: { method: HttpMethod.POST, path: '/api/posts' },
 
-  // 수정
-  UPDATE: (postId: number) => ({
-    method: HttpMethod.PATCH,
-    path: `/api/posts/${postId}`,
-  }),
+//   // 수정
+//   UPDATE: (postId: number) => ({
+//     method: HttpMethod.PATCH,
+//     path: `/api/posts/${postId}`,
+//   }),
 
-  // 삭제
-  DELETE: (postId: number) => ({
-    method: HttpMethod.DELETE,
-    path: `/api/posts/${postId}`,
-  }),
+//   // 삭제
+//   DELETE: (postId: number) => ({
+//     method: HttpMethod.DELETE,
+//     path: `/api/posts/${postId}`,
+//   }),
 
-  COMMENTS: {
-    // 댓글 목록 조회
-    LIST: (postId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/posts/${postId}/comments`,
-    }),
+//   COMMENTS: {
+//     // 댓글 목록 조회
+//     LIST: (postId: number) => ({
+//       method: HttpMethod.GET,
+//       path: `/api/posts/${postId}/comments`,
+//     }),
 
-    // 댓글 작성
-    CREATE: (postId: number) => ({
-      method: HttpMethod.POST,
-      path: `/api/posts/${postId}/comments`,
-    }),
+//     // 댓글 작성
+//     CREATE: (postId: number) => ({
+//       method: HttpMethod.POST,
+//       path: `/api/posts/${postId}/comments`,
+//     }),
 
-    // 댓글 수정
-    UPDATE: (postId: number, commentId: number) => ({
-      method: HttpMethod.PUT,
-      path: `/api/posts/${postId}/comments/${commentId}`,
-    }),
-    // 댓글 삭제
-    DELETE: (postId: number, commentId: number) => ({
-      method: HttpMethod.DELETE,
-      path: `/api/posts/${postId}/comments/${commentId}`,
-    }),
+//     // 댓글 수정
+//     UPDATE: (postId: number, commentId: number) => ({
+//       method: HttpMethod.PUT,
+//       path: `/api/posts/${postId}/comments/${commentId}`,
+//     }),
+//     // 댓글 삭제
+//     DELETE: (postId: number, commentId: number) => ({
+//       method: HttpMethod.DELETE,
+//       path: `/api/posts/${postId}/comments/${commentId}`,
+//     }),
 
-    // 대댓글 작성
-    REPLY: (postId: number, commentId: number) => ({
-      method: HttpMethod.POST,
-      path: `/api/posts/${postId}/comments/${commentId}/replies`,
-    }),
-  },
+//     // 대댓글 작성
+//     REPLY: (postId: number, commentId: number) => ({
+//       method: HttpMethod.POST,
+//       path: `/api/posts/${postId}/comments/${commentId}/replies`,
+//     }),
+//   },
 
-  /** 좋아요 */
-  LIKES: {
-    // 생성
-    CREATE: (postId: number) => ({
-      method: HttpMethod.POST,
-      path: `/api/posts/${postId}/likes`,
-    }),
-    // 개수
-    COUNT: (postId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/posts/${postId}/likes/count`,
-    }),
-  },
-}
+//   /** 좋아요 */
+//   LIKES: {
+//     // 생성
+//     CREATE: (postId: number) => ({
+//       method: HttpMethod.POST,
+//       path: `/api/posts/${postId}/likes`,
+//     }),
+//     // 개수
+//     COUNT: (postId: number) => ({
+//       method: HttpMethod.GET,
+//       path: `/api/posts/${postId}/likes/count`,
+//     }),
+//   },
+// }
 
 const STORE_ENDPOINTS = {
   TIME_DEAL: {
@@ -267,71 +269,72 @@ const CHATBOT_ENDPOINTS = {
   CHATTING: { method: HttpMethod.POST, path: '/api/chatbot/recommendation/free-text' },
 }
 
-const ADMIN_ENDPOINTS = {
-  CHALLENGE: {
-    EVENT: {
-      // 이벤트 챌린지 생성
-      CREATE: { method: HttpMethod.POST, path: '/api/admin/challenges/event' },
-    },
-    PERSONAL: {
-      // 템플릿
-      TEMPLATE: {
-        GET: { method: HttpMethod.GET, path: '/api/admin/challenges/personal' }, // 조회
-        CREATE: { method: HttpMethod.POST, path: '/api/admin/challenges/personal' }, // 생성
-        // 개인 챌린지 템플릿 수정
-        UPDATE: (templateId: number) => ({
-          method: HttpMethod.PATCH,
-          path: `/api/admin/challenges/personal/${templateId}`,
-        }),
-        // 개인 챌린지 템플릿 삭제
-        DELETE: (templateId: number) => ({
-          method: HttpMethod.DELETE,
-          path: `/api/admin/challenges/personal/${templateId}`,
-        }),
-      },
-      PRODUCT: {
-        // 일반 상품
-        STORE: {
-          // 등록
-          CREATE: { method: HttpMethod.POST, path: '/api/admin/products' },
+/** 관리자 (v3 개발)*/
+// const ADMIN_ENDPOINTS = {
+//   CHALLENGE: {
+//     EVENT: {
+//       // 이벤트 챌린지 생성
+//       CREATE: { method: HttpMethod.POST, path: '/api/admin/challenges/event' },
+//     },
+//     PERSONAL: {
+//       // 템플릿
+//       TEMPLATE: {
+//         GET: { method: HttpMethod.GET, path: '/api/admin/challenges/personal' }, // 조회
+//         CREATE: { method: HttpMethod.POST, path: '/api/admin/challenges/personal' }, // 생성
+//         // 개인 챌린지 템플릿 수정
+//         UPDATE: (templateId: number) => ({
+//           method: HttpMethod.PATCH,
+//           path: `/api/admin/challenges/personal/${templateId}`,
+//         }),
+//         // 개인 챌린지 템플릿 삭제
+//         DELETE: (templateId: number) => ({
+//           method: HttpMethod.DELETE,
+//           path: `/api/admin/challenges/personal/${templateId}`,
+//         }),
+//       },
+//       PRODUCT: {
+//         // 일반 상품
+//         STORE: {
+//           // 등록
+//           CREATE: { method: HttpMethod.POST, path: '/api/admin/products' },
 
-          // 수정
-          UPDATE: (productId: number) => ({
-            method: HttpMethod.PATCH,
-            path: `/api/admin/products/${productId}`,
-          }),
+//           // 수정
+//           UPDATE: (productId: number) => ({
+//             method: HttpMethod.PATCH,
+//             path: `/api/admin/products/${productId}`,
+//           }),
 
-          // 삭제
-          DELETE: (productId: number) => ({
-            method: HttpMethod.DELETE,
-            path: `/api/admin/products/${productId}`,
-          }),
-        },
-        // 타임딜
-        TIME_DEAL: {
-          // 등록ㄴ
-          CREATE: { method: HttpMethod.POST, path: '/api/admin/timedeals' },
-          // 수정
-          UPDATE: (dealId: number) => ({
-            method: HttpMethod.PATCH,
-            path: `/api/admin/timedeals/${dealId}`,
-          }),
-          // 삭제
-          DELETE: (dealId: number) => ({
-            method: HttpMethod.DELETE,
-            path: `/api/admin/timedeals/${dealId}`,
-          }),
-        },
-      },
-    },
-  },
-}
+//           // 삭제
+//           DELETE: (productId: number) => ({
+//             method: HttpMethod.DELETE,
+//             path: `/api/admin/products/${productId}`,
+//           }),
+//         },
+//         // 타임딜
+//         TIME_DEAL: {
+//           // 등록ㄴ
+//           CREATE: { method: HttpMethod.POST, path: '/api/admin/timedeals' },
+//           // 수정
+//           UPDATE: (dealId: number) => ({
+//             method: HttpMethod.PATCH,
+//             path: `/api/admin/timedeals/${dealId}`,
+//           }),
+//           // 삭제
+//           DELETE: (dealId: number) => ({
+//             method: HttpMethod.DELETE,
+//             path: `/api/admin/timedeals/${dealId}`,
+//           }),
+//         },
+//       },
+//     },
+//   },
+// }
 
 export const ENDPOINTS = {
   CHALLENGE: CHALLENGE_ENDPOINTS,
   MEMBERS: MEMBER_ENDPOINTS,
-  POSTS: POST_ENDPOINTS,
+  // POSTS: POST_ENDPOINTS,
   STORE: STORE_ENDPOINTS,
   CHATBOT: CHATBOT_ENDPOINTS,
-  ADMIN: ADMIN_ENDPOINTS,
+  // ADMIN: ADMIN_ENDPOINTS,
 } as const
