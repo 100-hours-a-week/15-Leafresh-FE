@@ -1,31 +1,44 @@
 'use client'
-import { ReactNode } from 'react'
+
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import ImageInput from '@shared/components/ImageInput'
+import DatePicker from '@shared/components/datepicker/DatePicker'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
 
-interface ChallengePageProps {
-  className?: string
-}
+const CalendarTestPage = () => {
+  const [startDate, setStartDate] = useState<Date>()
+  const [endDate, setEndDate] = useState<Date>()
 
-const ChallengePage = ({ className }: ChallengePageProps): ReactNode => {
+  useEffect(() => {
+    console.log('startDate: ', startDate)
+    console.log('endDate: ', endDate)
+  }, [startDate, endDate])
+
   return (
-    <div className={className}>
-      {/* 이건 반드시 하나만 렌더링되게 해야 함 */}
-      <Overlay>
-        <ImageInput />
-      </Overlay>
-    </div>
+    <Wrapper>
+      <StyledDatePicker
+        icon={<LucideIcon name='Calendar' size={24} strokeWidth={2.5} />}
+        label='챌린지 기간 *'
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+      />
+    </Wrapper>
   )
 }
 
-export default ChallengePage
+export default CalendarTestPage
 
-// === 스타일 ===
-const Overlay = styled.div`
-  height: 500px;
+// === Styles ===
 
+const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  position: relative;
+`
+
+const StyledDatePicker = styled(DatePicker)`
+  width: 100%;
 `

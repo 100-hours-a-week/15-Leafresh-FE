@@ -68,6 +68,7 @@ const shadowThemes = {
 }
 
 const borderRadiusThemes = {
+  xss: '2px',
   xs: '4px',
   sm: '6px',
   base: '8px',
