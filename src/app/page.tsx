@@ -1,6 +1,8 @@
 'use client'
-
+import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
+
+import { theme } from '@shared/styles/emotion/theme'
 
 type Post = {
   id: number
@@ -26,11 +28,15 @@ export default function PostList() {
   return (
     <ul>
       {data?.slice(0, 10).map(post => (
-        <li key={post.id}>
-          <strong>{post.title}</strong>
-          <p>{post.body}</p>
-        </li>
+        <Item key={post.id}>
+          <strong>{'세상에 이런 폰트가 나오다니 천재인듯'}</strong>
+          <p>{'나는 프리텐타드 폰트라고 적용해본건데 잘 된건가요?'}</p>
+        </Item>
       ))}
     </ul>
   )
 }
+
+const Item = styled.li`
+  font-family: ${theme.fontFamily.pretendard};
+`
