@@ -54,6 +54,8 @@ const DatePicker = ({
       }
     }
   }
+  const isStartActive = status === 'start' || !!startDate
+  const isEndActive = status === 'end' || !!endDate
 
   return (
     <Wrapper className={className}>
@@ -66,7 +68,7 @@ const DatePicker = ({
       </LabelWrapper>
 
       <InputGroup>
-        <InputArea isFocused={status === 'start'} onClick={toggleStart}>
+        <InputArea isFocused={isStartActive} onClick={toggleStart}>
           <DateText isValid={!!startDate}>
             {startDate ? `${format(startDate, 'MM.dd')} (${dayToString(startDate.getDay())})` : '시작날짜'}
           </DateText>
@@ -74,7 +76,7 @@ const DatePicker = ({
 
         <Tilde>~</Tilde>
 
-        <InputArea isFocused={status === 'end'} onClick={toggleEnd}>
+        <InputArea isFocused={isEndActive} onClick={toggleEnd}>
           <DateText isValid={!!endDate}>
             {endDate ? `${format(endDate, 'MM.dd')} (${dayToString(endDate.getDay())})` : '종료날짜'}
           </DateText>
@@ -169,5 +171,6 @@ const DateText = styled.div<{ isValid: boolean }>`
 
 const CalendarWrapper = styled.div`
   position: absolute;
+  z-index: 10;
   top: calc(100% + 12px);
 `

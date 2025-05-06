@@ -17,6 +17,14 @@ export const CHALLENGE_VERIFICATION_STATUS = [
   ...CHALLENGE_VERIFICATION_RESULT,
 ] as const
 
+/** 최대 인원 */
+// 최대, 최소, 가능한 간격
+export const PARTICIPANT_RANGE = {
+  MIN: 10,
+  MAX: 100,
+  RANGE: 10,
+}
+
 /** 요일 */
 export const DAY_PAIRS: ConstantPair[] = [
   { kor: '일', eng: 'SUNDAY' },

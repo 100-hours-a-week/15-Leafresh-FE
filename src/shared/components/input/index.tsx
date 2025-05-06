@@ -41,7 +41,7 @@ const Input = ({ label, className, value, onFocus, onBlur, required, ...rest }: 
         aria-required={required}
       />
       {/* input 요소는 input::before가 없어서 따로 만들어주어야 함 */}
-      <Underline isFocused={isFocused} />
+      <Underline isFocused={isFocused || !!value} />
     </Wrapper>
   )
 }

@@ -56,7 +56,7 @@ const Dropdown = <OptionType,>({
       </Label>
       <SelectBox
         onClick={toggle}
-        isFocused={isOpen}
+        isFocused={isOpen || !!selected}
         role='combobox'
         aria-expanded={isOpen}
         aria-required={required}
@@ -167,9 +167,9 @@ const DropdownBox = styled.ul<{ maxHeight: number }>`
 `
 
 const Item = styled.li<{ isHovered: boolean }>`
-  padding: 10px 4px;
+  padding: 12px 4px;
   text-align: center;
-  font-size: ${theme.fontSize.xss};
+  font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.regular};
   color: ${theme.colors.lfBlack.base};
   background-color: ${({ isHovered }) => (isHovered ? theme.colors.lfLightGray.base : 'transparent')};
