@@ -49,7 +49,6 @@ const Input = ({ label, className, value, onFocus, onBlur, required, ...rest }: 
 export default Input
 
 // === Styles ===
-
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
