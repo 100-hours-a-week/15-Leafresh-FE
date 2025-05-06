@@ -21,6 +21,7 @@ export interface DropdownProps<OptionType> {
 
   maxVisibleCount?: number
   className?: string
+  required?: boolean
 }
 
 const Dropdown = <OptionType,>({
@@ -32,6 +33,7 @@ const Dropdown = <OptionType,>({
   getOptionKey,
   maxVisibleCount = 4,
   className,
+  required,
 }: DropdownProps<OptionType>) => {
   const { value: isOpen, toggle, setValue: setIsOpen } = useToggle(false)
   const dropdownRef = useRef<HTMLUListElement>(null)
@@ -48,8 +50,18 @@ const Dropdown = <OptionType,>({
 
   return (
     <Wrapper className={className}>
-      <Label isFocused={isOpen || !!selected}>{label}</Label>
-      <SelectBox onClick={toggle} isFocused={isOpen}>
+      <Label isFocused={isOpen || !!selected}>
+        {label}
+        {required && <RequiredMark>*</RequiredMark>}
+      </Label>
+      <SelectBox
+        onClick={toggle}
+        isFocused={isOpen}
+        role='combobox'
+        aria-expanded={isOpen}
+        aria-required={required}
+        tabIndex={0}
+      >
         <SelectedText>{selected ? getOptionLabel(selected) : ''}</SelectedText>
         <IconWrapper isFocused={isOpen}>
           <LucideIcon name='ChevronDown' size={16} />
@@ -87,12 +99,16 @@ const Label = styled.label<{ isFocused: boolean }>`
   position: absolute;
   top: ${({ isFocused }) => (isFocused ? '-12px' : '50%')};
   transform: translateY(${({ isFocused }) => (isFocused ? '0' : '-50%')});
-  /* transform: translateY(-50%); */
 
   font-size: ${({ isFocused }) => (isFocused ? theme.fontSize.xss : theme.fontSize.xs)};
   color: ${theme.colors.lfBlack.base};
   transition: all 0.2s ease;
   pointer-events: none;
+`
+
+const RequiredMark = styled.span`
+  color: ${theme.colors.lfRed.base};
+  margin-left: 4px;
 `
 
 const SelectBox = styled.div<{ isFocused: boolean }>`
@@ -123,7 +139,7 @@ const SelectBox = styled.div<{ isFocused: boolean }>`
 
 const SelectedText = styled.span`
   font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
 `
 
