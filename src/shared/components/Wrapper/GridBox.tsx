@@ -1,13 +1,10 @@
 import { ReactNode } from 'react'
 import { Grid, GridProps } from '@chakra-ui/react'
 
-export interface GridBoxProps extends Omit<
-  GridProps,
-  'display' | 'templateColumns'
-> {
+export interface GridBoxProps extends Omit<GridProps, 'display' | 'templateColumns'> {
   /** 자식 요소들(ReactNode 배열) */
   children: ReactNode[]
-  /** 열 개수 (none 이면 auto-fit/minmax 사용)이기 때문에 */
+  /** 열 개수 (none 이면 auto-fit/minmax 사용) */
   columns?: number
   /** 고정 너비 기반 동적 컬럼 (auto-fit/minmax) */
   childWidth?: string
@@ -50,7 +47,7 @@ const GridBox = ({
 
   return (
     <Grid
-      display="inline-grid"
+      display='inline-grid'
       templateColumns={templateColumns}
       templateRows={templateRows}
       rowGap={rowGap}
