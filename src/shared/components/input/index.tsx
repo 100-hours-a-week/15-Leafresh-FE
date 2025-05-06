@@ -58,7 +58,10 @@ const Label = styled.label<{ isFocused: boolean }>`
   position: absolute;
   top: ${({ isFocused }) => (isFocused ? '-12px' : '50%')};
   transform: translateY(${({ isFocused }) => (isFocused ? '0' : '-50%')});
-  font-size: ${({ isFocused }) => (isFocused ? theme.fontSize.xss : theme.fontSize.xs)};
+
+  font-size: ${({ isFocused }) => (isFocused ? theme.fontSize.xs : theme.fontSize.sm)};
+  font-weight: ${theme.fontWeight.medium};
+
   color: ${theme.colors.lfBlack.base};
   transition: all 0.2s ease;
   pointer-events: none;

@@ -17,9 +17,20 @@ interface DatePickerProps {
   endDate?: Date
   setStartDate: (date: Date | undefined) => void
   setEndDate: (date: Date | undefined) => void
+  required?: boolean
+  className?: string
 }
 
-const DatePicker = ({ icon, label, startDate, endDate, setStartDate, setEndDate }: DatePickerProps) => {
+const DatePicker = ({
+  icon,
+  label,
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+  required,
+  className,
+}: DatePickerProps) => {
   const [status, setStatus] = useState<'start' | 'end' | null>(null)
 
   const toggleStart = () => setStatus(prev => (prev === 'start' ? null : 'start'))
@@ -37,7 +48,6 @@ const DatePicker = ({ icon, label, startDate, endDate, setStartDate, setEndDate 
     } else if (status === 'end') {
       if (!startDate || date < startDate) {
         setStartDate(date)
-        setEndDate(undefined)
         setStatus('end')
       } else {
         setEndDate(date)
@@ -46,10 +56,13 @@ const DatePicker = ({ icon, label, startDate, endDate, setStartDate, setEndDate 
   }
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <LabelWrapper>
         {icon}
-        <Label>{label}</Label>
+        <Label>
+          {label}
+          {required && <RequiredMark>*</RequiredMark>}
+        </Label>
       </LabelWrapper>
 
       <InputGroup>
@@ -66,18 +79,18 @@ const DatePicker = ({ icon, label, startDate, endDate, setStartDate, setEndDate 
             {endDate ? `${format(endDate, 'MM.dd')} (${dayToString(endDate.getDay())})` : '종료날짜'}
           </DateText>
         </InputArea>
-      </InputGroup>
 
-      {status && (
-        <CalendarWrapper>
-          <Calendar
-            startDate={startDate}
-            endDate={endDate}
-            onDateSelect={handleDateSelect}
-            toggle={() => setStatus(null)}
-          />
-        </CalendarWrapper>
-      )}
+        {status && (
+          <CalendarWrapper>
+            <Calendar
+              startDate={startDate}
+              endDate={endDate}
+              onDateSelect={handleDateSelect}
+              toggle={() => setStatus(null)}
+            />
+          </CalendarWrapper>
+        )}
+      </InputGroup>
     </Wrapper>
   )
 }
@@ -99,11 +112,17 @@ const LabelWrapper = styled.div`
 
 const Label = styled.label`
   font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
 `
 
+const RequiredMark = styled.span`
+  color: ${theme.colors.lfGreenBorder.base};
+  margin-left: 4px;
+`
+
 const InputGroup = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -143,11 +162,12 @@ const Tilde = styled.span`
 `
 
 const DateText = styled.div<{ isValid: boolean }>`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${theme.fontSize.xs};
+  font-weight: ${theme.fontWeight.medium};
   color: ${({ isValid }) => (isValid ? theme.colors.lfBlack.base : theme.colors.lfDarkGray.base)};
 `
 
 const CalendarWrapper = styled.div`
-  margin-top: 12px;
+  position: absolute;
+  top: calc(100% + 12px);
 `

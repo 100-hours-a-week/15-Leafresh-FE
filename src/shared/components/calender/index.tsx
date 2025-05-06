@@ -279,7 +279,7 @@ const Calendar = ({
 export default Calendar
 
 const Wrapper = styled.div`
-  width: 80%;
+  width: 100%;
   max-width: 280px;
   min-width: 260px;
   padding: 16px;

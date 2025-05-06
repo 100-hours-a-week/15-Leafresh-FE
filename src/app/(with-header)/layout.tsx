@@ -6,7 +6,7 @@ import Header from '@shared/components/header'
 import { theme } from '@shared/styles/theme'
 
 const HEADER_HEIGHT = 60
-const WIDTH_PADDING = 20
+const WIDTH_PADDING = 35
 
 const WithHeaderLayout = ({
   children,
@@ -28,5 +28,5 @@ const Main = styled.main`
   min-height: calc(100vh - ${HEADER_HEIGHT}px);
   width: 100%;
   background-color: ${theme.colors.lfWhite.base};
-  padding: 0 ${WIDTH_PADDING}px;
+  padding: 23px ${WIDTH_PADDING}px;
 `

@@ -21,10 +21,7 @@ const LoginPage = () => {
         <Text>로그인 / 회원가입</Text>
         <Line />
       </DividerWrapper>
-      {/* <KakaoButton > */}
       <KakaoImage src={KakaoLoginButton} alt='kakao' onClick={loginHandler} />
-
-      {/* </KakaoButton> */}
     </Container>
   )
 }

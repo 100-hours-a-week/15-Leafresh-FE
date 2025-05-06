@@ -100,14 +100,16 @@ const Label = styled.label<{ isFocused: boolean }>`
   top: ${({ isFocused }) => (isFocused ? '-12px' : '50%')};
   transform: translateY(${({ isFocused }) => (isFocused ? '0' : '-50%')});
 
-  font-size: ${({ isFocused }) => (isFocused ? theme.fontSize.xss : theme.fontSize.xs)};
+  font-size: ${({ isFocused }) => (isFocused ? theme.fontSize.xs : theme.fontSize.sm)};
+  font-weight: ${theme.fontWeight.medium};
+
   color: ${theme.colors.lfBlack.base};
   transition: all 0.2s ease;
   pointer-events: none;
 `
 
 const RequiredMark = styled.span`
-  color: ${theme.colors.lfRed.base};
+  color: ${theme.colors.lfGreenBorder.base};
   margin-left: 4px;
 `
 
