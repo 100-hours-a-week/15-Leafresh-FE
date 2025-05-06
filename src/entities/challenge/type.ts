@@ -1,4 +1,13 @@
-import { CHALLENGE_CATEGORIES, CHALLENGE_VERIFICATION_RESULT, CHALLENGE_VERIFICATION_STATUS, DAYS } from './constant'
+import {
+  CHALLENGE_CATEGORIES,
+  CHALLENGE_PARTICIPATION_STATUS,
+  CHALLENGE_VERIFICATION_RESULT,
+  CHALLENGE_VERIFICATION_STATUS,
+  DAYS,
+} from './constant'
+
+/** 인증 시도 여부 */
+export type ChallengeParticipationType = (typeof CHALLENGE_PARTICIPATION_STATUS)[number]
 
 /** 인증 성공 여부 */
 export type ChallengeVerificationResultType = (typeof CHALLENGE_VERIFICATION_RESULT)[number]
