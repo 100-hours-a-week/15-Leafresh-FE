@@ -49,7 +49,7 @@ const GlobalStyle = () => {
         }
 
         ::-webkit-scrollbar {
-          width: 8px;
+          width: 12px;
           height: 8px;
         }
 

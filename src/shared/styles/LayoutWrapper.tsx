@@ -11,11 +11,12 @@ const LayoutWrapper = ({ children }: { children: ReactNode }) => {
 
 export default LayoutWrapper
 
-const Container = styled.main`
+const Container = styled.div`
   min-width: 320px;
   max-width: 500px;
   width: 100%;
   height: 100%;
+  min-height: 100vh;
   background-color: ${theme.colors.lfWhite.base};
   display: flex;
   flex-direction: column;
