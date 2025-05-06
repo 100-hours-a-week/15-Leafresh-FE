@@ -7,9 +7,13 @@ export interface BackButtonProps {
 }
 
 const BackButton = ({ onClick }: BackButtonProps) => {
+
   const handleClick = () => {
     onClick?.()
-    window.history.back()
+    if (typeof window !== 'undefined') {
+      // 클라이언트에서만 뒤로가기 수행
+      window.history.back()
+    }
   }
 
   return (
