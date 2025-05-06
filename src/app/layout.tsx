@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 import ConfirmModal from '@shared/components/Modal/ConfirmModal'
+import Toast from '@shared/components/Toast/Toast'
 import { Providers } from '@shared/config/providers/Providers'
 import GlobalScrollbarStyle from '@shared/styles/scrollbar/GlobalScrollbarStyle'
 
@@ -34,6 +35,7 @@ const RootLayout = ({
         <Providers>
           {children}
           <ConfirmModal />
+           <Toast/>
         </Providers>
       </body>
     </html>
