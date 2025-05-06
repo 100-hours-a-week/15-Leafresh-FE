@@ -10,6 +10,7 @@ export const CHALLENGE_VERIFICATION_STATUS = [
 
 /** 요일 */
 export const DAYS = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'] as const
+export const KOR_DAYS = ['일', '월', '화', '수', '목', '금', '토'] as const
 
 /** 카테고리 */
 export const CHALLENGE_CATEGORIES = [

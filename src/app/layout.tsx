@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google'
 
 import ConfirmModal from '@shared/components/Modal/ConfirmModal'
 import InfoModal from '@shared/components/Modal/InfoModal'
+import { Providers } from '@shared/config/providers/Providers'
+import GlobalScrollbarStyle from '@shared/styles/scrollbar/GlobalScrollbarStyle'
 
 import './globals.css'
 
@@ -29,9 +31,12 @@ const RootLayout = ({
   return (
     <html lang='ko'>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-        <ConfirmModal />
-        <InfoModal/>
+        <GlobalScrollbarStyle />
+        <Providers>
+          {children}
+          <ConfirmModal />
+          <InfoModal/>
+        </Providers>
       </body>
     </html>
   )
