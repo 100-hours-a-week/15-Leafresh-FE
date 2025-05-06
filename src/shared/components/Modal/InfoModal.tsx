@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import styled from '@emotion/styled'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/styles/emotion/theme'
 
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
