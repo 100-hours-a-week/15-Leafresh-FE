@@ -7,7 +7,7 @@ import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 export interface DropdownProps<OptionType> {
   label: string

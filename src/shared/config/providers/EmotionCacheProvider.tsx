@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { CacheProvider } from '@emotion/react'
 
-import { emotionCache } from '@shared/styles/emotion/emotion-cache'
+import { emotionCache } from '@shared/config/emotion/emotion-cache'
 
 /**
  * Emotion의 SSR 지원 Provider

@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import ConfirmModal from '@shared/components/modal/ConfirmModal'
 import { pretendard } from '@shared/config/font'
 import { Providers } from '@shared/config/providers/Providers'
-import GlobalScrollbarStyle from '@shared/styles/scrollbar/GlobalScrollbarStyle'
 
 import './globals.css'
 
@@ -20,7 +19,6 @@ const RootLayout = ({
   return (
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
-        <GlobalScrollbarStyle />
         <Providers>
           {children}
           <ConfirmModal />

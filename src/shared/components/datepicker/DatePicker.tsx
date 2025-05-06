@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 import { dayToString } from '@shared/lib/date/utils'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 import Calendar from '../calender'
 
