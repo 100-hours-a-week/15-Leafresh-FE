@@ -20,8 +20,13 @@ const CHALLENGE_ENDPOINTS = {
         method: HttpMethod.GET,
         path: `/api/challenges/personal/${challengeId}`,
       }),
-      // 목록
-      LIST: { method: HttpMethod.GET, path: '/api/challenges/personal' },
+
+      // 목록 (특정 카테고리)
+      LIST: (categoryId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/categories/${categoryId}`,
+      }),
+
       // 인증 제출
       VERIFY: (challengeId: number) => ({
         method: HttpMethod.POST,
@@ -45,10 +50,13 @@ const CHALLENGE_ENDPOINTS = {
         method: HttpMethod.GET,
         path: `/api/challenges/group/${challengeId}`,
       }),
+
       // 목록
       LIST: { method: HttpMethod.GET, path: '/api/challenges/group' },
+
       // 생성
       CREATE: { method: HttpMethod.POST, path: '/api/challenges/group' },
+
       // 수정
       UPDATE: (challengeId: number) => ({
         method: HttpMethod.PATCH,
