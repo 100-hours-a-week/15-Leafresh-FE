@@ -33,7 +33,7 @@ const colorThemes = {
     base: '#B0ABAB',
   },
   lfBackdrop: {
-    base: '#707070',
+    base: '#70707066',
   },
   lfDarkGray: {
     base: '#5D5F62',

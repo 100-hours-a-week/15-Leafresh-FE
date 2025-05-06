@@ -3,8 +3,7 @@ import type { Metadata } from 'next'
 import ConfirmModal from '@shared/components/modal/ConfirmModal'
 import { pretendard } from '@shared/config/font'
 import { Providers } from '@shared/config/providers/Providers'
-
-import './globals.css'
+import LayoutWrapper from '@shared/styles/LayoutWrapper'
 
 export const metadata: Metadata = {
   title: 'Leafresh',
@@ -20,7 +19,7 @@ const RootLayout = ({
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
         <Providers>
-          {children}
+          <LayoutWrapper>{children}</LayoutWrapper>
           <ConfirmModal />
         </Providers>
       </body>
