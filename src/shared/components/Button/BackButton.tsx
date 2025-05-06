@@ -18,7 +18,7 @@ const BackButton = ({ onClick }: BackButtonProps) => {
 
   return (
     <Button aria-label="back" onClick={handleClick}>
-      <LucideIcon name="CircleChevronLeft" size={29} color="lfBlack" />
+      <LucideIcon name="MoveLeft" size={29} color="lfBlack" />
     </Button>
   )
 }
@@ -33,5 +33,4 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   padding: 4px;
-  border-radius: ${theme.radius.full};
 `
