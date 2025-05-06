@@ -31,8 +31,4 @@ const Button = styled.button`
   justify-content: center;
   padding: 4px;
   border-radius: ${theme.radius.full};
-
-  &:active {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
 `
