@@ -8,6 +8,6 @@ export interface ToastStore {
   isOpen: boolean
   type: ToastType
   description: string | null
-  openToast: (type: ToastType, description: string) => void
-  closeToast: () => void
+  open: (type: ToastType, description: string) => void
+  close: () => void
 }
