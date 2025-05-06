@@ -21,7 +21,7 @@ const InfoModal = () => {
   } = useInfoModalStore()
 
   const modalRef = useRef<HTMLDivElement>(null)
-  const isRegualr = description && variant !== 'minimal'
+  const isRegular = description && variant !== 'minimal'
 
   const handleClose = () => {
     onClose?.()
@@ -39,7 +39,7 @@ const InfoModal = () => {
       <ModalContainer ref={modalRef}>
         <ContentWrapper>
             <Title>{title}</Title>
-            {isRegualr && <Description>{description}</Description>}
+            {isRegular && <Description>{description}</Description>}
         </ContentWrapper>
 
         <ButtonWrapper>

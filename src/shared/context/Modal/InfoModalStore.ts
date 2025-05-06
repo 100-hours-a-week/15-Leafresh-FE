@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type InfoModalVariant = 'default' | 'minimal' | 'long'
+export type InfoModalVariant = 'default' | 'minimal'
 
 interface InfoModalState {
   isOpen: boolean
@@ -31,7 +31,6 @@ export const useInfoModalStore = create<InfoModalState>(set => ({
     description,
     variant = 'default',
     onClose,
-    onCancel,
   }) =>
     set({
       isOpen: true,
