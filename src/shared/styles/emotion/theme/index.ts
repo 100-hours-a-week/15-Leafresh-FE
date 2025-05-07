@@ -62,6 +62,10 @@ const fontWeightThemes = {
   black: 900,
 }
 
+const fontFamilyThemes = {
+  pretendard: 'var(--font-pretendard), sans-serif',
+}
+
 const shadowThemes = {
   lfPrime: '1px 2px 3px 0px #00000040',
   lfInput: '0px 2px 4px 0px #3C404340',
@@ -86,6 +90,7 @@ export const theme = {
   colors: colorThemes,
   fontSize: fontSizeThemes,
   fontWeight: fontWeightThemes,
+  fontFamily: fontFamilyThemes,
   shadow: shadowThemes,
   radius: borderRadiusThemes,
   breakPoints: breakPointThemes,
