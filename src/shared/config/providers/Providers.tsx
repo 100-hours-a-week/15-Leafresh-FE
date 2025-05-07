@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react'
 
+import { ChakraUseProvider } from './ChakraProvider'
 import { EmotionCacheProvider } from './EmotionCacheProvider'
 import TanstackQueryProvider from './QueryClientProvider'
 
@@ -12,7 +13,9 @@ import TanstackQueryProvider from './QueryClientProvider'
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <TanstackQueryProvider>
-      <EmotionCacheProvider>{children}</EmotionCacheProvider>
+      <EmotionCacheProvider>
+        <ChakraUseProvider>{children}</ChakraUseProvider>
+      </EmotionCacheProvider>
     </TanstackQueryProvider>
   )
 }
