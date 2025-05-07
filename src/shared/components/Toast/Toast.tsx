@@ -1,4 +1,7 @@
 'use client'
+import { AnimatePresence, motion } from 'motion/react'
+
+import { useEffect } from 'react'
 import styled from '@emotion/styled'
 
 import { useToastStore } from '@shared/context/Toast/ToastStore'
@@ -8,49 +11,67 @@ import { theme } from '@shared/styles/theme'
 
 const Toast = () => {
   const { isOpen, type, description, close: closeToast } = useToastStore()
-  if (!isOpen || !description) return null
+
+  useEffect(() => {
+    if (!isOpen || !description) return
+    const timer = setTimeout(() => {
+      closeToast()
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [isOpen, description, closeToast])
 
   const iconName = type === ToastType.Success ? 'CheckCheck' : 'CircleAlert'
   const color = type === ToastType.Success ? 'lfBlack' : 'lfRed'
 
   return (
-    <Container toastType={type}>
-      <Wrapper>
-        <LucideIcon name={iconName} size={20} color={color} />
-      </Wrapper>
-      <Message>{description}</Message>
-      <CloseIcon onClick={() => closeToast()}>
-        <LucideIcon name='X' size={16} color='lfBlack' />
-      </CloseIcon>
-    </Container>
+    <AnimatePresence>
+      {isOpen && description && (
+        <MotionContainer
+          key='toast'
+          toastType={type}
+          initial={{ opacity: 0, x: '-50%', y: 30 }}
+          animate={{ opacity: 1, x: '-50%', y: 0 }}
+          exit={{ opacity: 0, x: '-50%', y: 20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Wrapper>
+            <LucideIcon name={iconName} size={20} color={color} />
+          </Wrapper>
+          <Message>{description}</Message>
+          <CloseIcon onClick={closeToast}>
+            <LucideIcon name='X' size={16} color='lfBlack' />
+          </CloseIcon>
+        </MotionContainer>
+      )}
+    </AnimatePresence>
   )
 }
 
 export default Toast
 
-/*-----스타일-------*/
-const Container = styled.div<{ toastType: ToastType }>`
+const MotionContainer = styled(motion.div)<{ toastType: ToastType }>`
   position: fixed;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  letter-spacing: 0.02em;
-
-  z-index: 100;
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
 
   min-width: ${({ toastType }) => (toastType === ToastType.Success ? '209px' : '256px')};
-  height: 30px;
-  padding: 25px 20px;
+  /* height: 30px; */
+  padding: 15px 10px;
 
   background-color: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
+  box-shadow: ${theme.shadow.lfInput};
   color: ${({ toastType }) => (toastType === ToastType.Success ? theme.colors.lfBlack.base : theme.colors.lfRed.base)};
-
   font-size: ${({ toastType }) => (toastType === ToastType.Success ? theme.fontSize.sm : theme.fontSize.xs)};
   font-weight: ${theme.fontWeight.medium};
 `
+
 const Wrapper = styled.div`
   display: flex;
   align-self: center;
@@ -58,6 +79,7 @@ const Wrapper = styled.div`
 
 const Message = styled.span`
   flex: 1;
+  text-align: center;
   white-space: pre-line;
 `
 
