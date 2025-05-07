@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge/constant'
+import ChallengeVerifyExamples from '@features/challenge/components/challenge-verify-examples/ChallengeVerifyExamples'
 import DatePicker from '@shared/components/datepicker/DatePicker'
 import Dropdown, { DropdownProps } from '@shared/components/dropdown'
 import ErrorText from '@shared/components/errortext'
@@ -134,9 +135,18 @@ const GroupChallengeCreatePage = () => {
           />
           <ErrorText message={errors.maxParticipant?.message} />
         </FieldWrapper>
+
+        <FieldWrapper>
+          <ChallengeVerifyExamples
+            title='인증샷 예시'
+            description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
+            maxCount={3}
+            required
+          />
+        </FieldWrapper>
       </FieldGroup>
 
-      <SubmitButton type='submit'>제출</SubmitButton>
+      <SubmitButton type='submit'>다음 단계</SubmitButton>
     </Form>
   )
 }

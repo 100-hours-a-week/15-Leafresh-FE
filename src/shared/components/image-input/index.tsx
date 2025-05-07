@@ -15,19 +15,19 @@ interface ImageInputProps {
   label: string
   fontSize?: ThemeFontSizeType
   imageUrl?: string
-  onChange?: (file: File | null) => void
+  onChange?: (imageUrl: string | null) => void
   backgroundColor?: ThemeColorType
   className?: string
 }
 
 const ImageInput = ({
-  imageUrl,
-  onChange,
-  className,
   icon,
   label,
   fontSize = 'xs',
+  imageUrl,
+  onChange,
   backgroundColor = 'lfGray',
+  className,
 }: ImageInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
@@ -36,15 +36,18 @@ const ImageInput = ({
     inputRef.current?.click()
   }
 
+  /** 이미지 추가 */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    const url = URL.createObjectURL(file)
-    setPreviewImageUrl(url)
-    onChange?.(file)
+    // TODO: S3 업로드 후 URL 반환
+    const imageUrl = URL.createObjectURL(file)
+    setPreviewImageUrl(imageUrl)
+    onChange?.(imageUrl)
   }
 
+  /** 이미지 삭제 */
   const handleRemoveImage = () => {
     setPreviewImageUrl(null)
     inputRef.current!.value = ''
@@ -108,13 +111,14 @@ const PreviewImageView = ({ imageUrl, onRemove }: PreviewImageViewProps) => {
 const Wrapper = styled.div`
   width: 120px;
   position: relative;
+  border-radius: ${theme.radius.md};
+  overflow: hidden;
 `
 
 const ImageBox = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
   position: relative;
-  border-radius: ${theme.radius.sm};
   overflow: hidden;
   box-shadow: ${theme.shadow.lfPrime};
 `
@@ -133,7 +137,6 @@ const EmptyBox = styled.div<{ backgroundColor: ThemeColorType }>`
   width: 100%;
   aspect-ratio: 1 / 1;
   background-color: ${({ backgroundColor }) => getThemeColor(backgroundColor)};
-  border-radius: ${theme.radius.md};
   display: flex;
   flex-direction: column;
   align-items: center;
