@@ -1,7 +1,7 @@
 import { ChallengeCategoryType, ChallengeCategoryTypeKor, ConstantPair, DayType, DayTypeKor } from './type'
 
 /** 챌린지 참여 여부 */
-export const CHALLENGE_PARTICIPATION_STATUS = ['NOT_STARTED', 'ONGOING', 'COMPLETED']
+export const CHALLENGE_PARTICIPATION_STATUS = ['NOT_STARTED', 'ONGOING', 'COMPLETED'] as const
 
 /** 인증 성공 여부 */
 export const CHALLENGE_VERIFICATION_RESULT = [

@@ -27,7 +27,7 @@ const colorThemes = {
     base: '#D9D9D9',
   },
   lfInputBackground: {
-    base: '#FAFAFA',
+    base: '#EBEBEB',
   },
   lfGray: {
     base: '#B0ABAB',
