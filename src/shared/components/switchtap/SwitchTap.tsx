@@ -11,11 +11,12 @@ export interface SwitchTapProps {
   currentIndex: number
   //탭이 변경될 때 호출
   onChange: (newIndex: number) => void
+  className?: string
 }
 
-const SwitchTap = ({ tabs, currentIndex, onChange }: SwitchTapProps) => {
+const SwitchTap = ({ tabs, currentIndex, onChange, className }: SwitchTapProps) => {
   return (
-    <Container role='tablist' tabsCount={tabs.length} currentIndex={currentIndex}>
+    <Container role='tablist' tabsCount={tabs.length} currentIndex={currentIndex} className={className}>
       {tabs.map((label, idx) => (
         <TabButton
           key={idx}
