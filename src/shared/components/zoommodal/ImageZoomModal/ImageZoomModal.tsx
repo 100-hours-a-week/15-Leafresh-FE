@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
-import { useImageZoomStore } from '@shared/context/ZoomModalStore/ImageZoomStore'
+import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { theme } from '@shared/styles/theme'
 
