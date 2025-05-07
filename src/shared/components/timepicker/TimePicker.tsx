@@ -17,24 +17,7 @@ export interface TimePickerProps {
 
 const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }: TimePickerProps) => {
   const { value: startOpen, toggle: toggleStart, setValue: setStartOpen } = useToggle(false)
-
   const { value: endOpen, toggle: toggleEnd, setValue: setEndOpen } = useToggle(false)
-
-  // const handleStartOpen = useCallback(
-  //   (open: boolean) => {
-  //     setStartOpen(open)
-  //     if (open) setEndOpen(false)
-  //   },
-  //   [setStartOpen, setEndOpen],
-  // )
-
-  // const handleEndOpen = useCallback(
-  //   (open: boolean) => {
-  //     setEndOpen(open)
-  //     if (open) setStartOpen(false)
-  //   },
-  //   [setEndOpen, setStartOpen],
-  // )
 
   return (
     <Wrapper>
