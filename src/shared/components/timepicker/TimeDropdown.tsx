@@ -37,7 +37,7 @@ export default function TimeDropdown({
     onOpenChange(false)
     onCancel?.()
 
-    //취소했을 때 반영되지 않게
+    //취소했을 때 반영되지 않게끔
     const [resetH, resetM] = value.split(':').map((s) => parseInt(s, 10))
     setHour(!isNaN(resetH) ? resetH : 0)
     setMinute(!isNaN(resetM) ? resetM : 0)
