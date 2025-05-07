@@ -11,8 +11,8 @@ export interface TimePickerProps {
   label?: string
   startValue: string
   endValue: string
-  onChangeStart: (v: string) => void
-  onChangeEnd: (v: string) => void
+  onChangeStart: (v: string) => void  //기본 시작시간 값
+  onChangeEnd: (v: string) => void  //기본 종료시간 값
 }
 
 const TimePicker = ({
