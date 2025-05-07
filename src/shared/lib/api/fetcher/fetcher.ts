@@ -1,6 +1,6 @@
 import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://34.47.72.161:8080'
 
 export interface ApiResponse<T> {
   status: number
