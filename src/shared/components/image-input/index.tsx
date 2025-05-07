@@ -6,15 +6,29 @@ import { useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
+import { ThemeColorType, ThemeFontSizeType } from '@shared/styles/theme/type'
+import { getThemeColor, getThemeFontSize } from '@shared/styles/theme/utils'
 
 interface ImageInputProps {
+  icon: React.ReactNode
+  label: string
+  fontSize?: ThemeFontSizeType
   imageUrl?: string
-  onChange?: (file: File | null) => void
+  onChange?: (imageUrl: string | null) => void
+  backgroundColor?: ThemeColorType
   className?: string
 }
 
-const ImageInput = ({ imageUrl, onChange, className }: ImageInputProps) => {
+const ImageInput = ({
+  icon,
+  label,
+  fontSize = 'xs',
+  imageUrl,
+  onChange,
+  backgroundColor = 'lfGray',
+  className,
+}: ImageInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
 
@@ -22,17 +36,18 @@ const ImageInput = ({ imageUrl, onChange, className }: ImageInputProps) => {
     inputRef.current?.click()
   }
 
+  /** 이미지 추가 */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    /** TODO : 이미지 업로드 API 연동 */
-    // const url = fetch ("POST", 이미지 업로드)
-    const url = URL.createObjectURL(file)
-    setPreviewImageUrl(url)
-    onChange?.(file)
+    // TODO: S3 업로드 후 URL 반환
+    const imageUrl = URL.createObjectURL(file)
+    setPreviewImageUrl(imageUrl)
+    onChange?.(imageUrl)
   }
 
+  /** 이미지 삭제 */
   const handleRemoveImage = () => {
     setPreviewImageUrl(null)
     inputRef.current!.value = ''
@@ -41,10 +56,16 @@ const ImageInput = ({ imageUrl, onChange, className }: ImageInputProps) => {
 
   return (
     <Wrapper className={className}>
-      {previewImageUrl ? (
-        <PreviewImageView imageUrl={previewImageUrl} onRemove={handleRemoveImage} />
+      {!previewImageUrl ? (
+        <EmptyImageView
+          onClick={openFilePicker}
+          icon={icon}
+          label={label}
+          fontSize={fontSize}
+          backgroundColor={backgroundColor}
+        />
       ) : (
-        <EmptyImageView onClick={openFilePicker} />
+        <PreviewImageView imageUrl={previewImageUrl} onRemove={handleRemoveImage} />
       )}
       <HiddenInput type='file' accept='image/*' ref={inputRef} onChange={handleFileChange} />
     </Wrapper>
@@ -52,6 +73,23 @@ const ImageInput = ({ imageUrl, onChange, className }: ImageInputProps) => {
 }
 
 export default ImageInput
+
+interface EmptyImageViewProps {
+  onClick: () => void
+  icon: React.ReactNode
+  label: string
+  fontSize: ThemeFontSizeType
+  backgroundColor: ThemeColorType
+}
+
+const EmptyImageView = ({ onClick, icon, label, fontSize, backgroundColor }: EmptyImageViewProps) => {
+  return (
+    <EmptyBox onClick={onClick} backgroundColor={backgroundColor}>
+      {icon ?? <LucideIcon name='Plus' size={24} color='lfBlack' />}
+      <Text fontSize={fontSize}>{label}</Text>
+    </EmptyBox>
+  )
+}
 
 interface PreviewImageViewProps {
   imageUrl: string
@@ -69,30 +107,18 @@ const PreviewImageView = ({ imageUrl, onRemove }: PreviewImageViewProps) => {
   )
 }
 
-interface EmptyImageViewProps {
-  onClick: () => void
-}
-
-const EmptyImageView = ({ onClick }: EmptyImageViewProps) => {
-  return (
-    <EmptyBox onClick={onClick}>
-      <LucideIcon name='Plus' size={24} color='lfBlack' />
-      <Text>사진 추가하기</Text>
-    </EmptyBox>
-  )
-}
-
 // === Styles ===
 const Wrapper = styled.div`
   width: 120px;
   position: relative;
+  border-radius: ${theme.radius.md};
+  overflow: hidden;
 `
 
 const ImageBox = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
   position: relative;
-  border-radius: ${theme.radius.sm};
   overflow: hidden;
   box-shadow: ${theme.shadow.lfPrime};
 `
@@ -107,23 +133,25 @@ const RemoveButton = styled.button`
   cursor: pointer;
 `
 
-const EmptyBox = styled.div`
+const EmptyBox = styled.div<{ backgroundColor: ThemeColorType }>`
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: ${theme.colors.lfGray.base};
-  border-radius: ${theme.radius.md};
+  background-color: ${({ backgroundColor }) => getThemeColor(backgroundColor)};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 8px;
   cursor: pointer;
 `
 
-const Text = styled.p`
-  font-size: ${theme.fontSize.xs};
+const Text = styled.p<{ fontSize: ThemeFontSizeType }>`
+  text-align: center;
+  font-size: ${({ fontSize }) => getThemeFontSize(fontSize)};
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
+  white-space: pre-line;
+  line-height: 1.2;
 `
 
 const HiddenInput = styled.input`

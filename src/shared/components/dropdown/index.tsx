@@ -7,7 +7,7 @@ import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 export interface DropdownProps<OptionType> {
   label: string
@@ -21,6 +21,7 @@ export interface DropdownProps<OptionType> {
 
   maxVisibleCount?: number
   className?: string
+  required?: boolean
 }
 
 const Dropdown = <OptionType,>({
@@ -32,6 +33,7 @@ const Dropdown = <OptionType,>({
   getOptionKey,
   maxVisibleCount = 4,
   className,
+  required,
 }: DropdownProps<OptionType>) => {
   const { value: isOpen, toggle, setValue: setIsOpen } = useToggle(false)
   const dropdownRef = useRef<HTMLUListElement>(null)
@@ -48,8 +50,18 @@ const Dropdown = <OptionType,>({
 
   return (
     <Wrapper className={className}>
-      <Label isFocused={isOpen || !!selected}>{label}</Label>
-      <SelectBox onClick={toggle} isFocused={isOpen}>
+      <Label isFocused={isOpen || !!selected}>
+        {label}
+        {required && <RequiredMark>*</RequiredMark>}
+      </Label>
+      <SelectBox
+        onClick={toggle}
+        isFocused={isOpen || !!selected}
+        role='combobox'
+        aria-expanded={isOpen}
+        aria-required={required}
+        tabIndex={0}
+      >
         <SelectedText>{selected ? getOptionLabel(selected) : ''}</SelectedText>
         <IconWrapper isFocused={isOpen}>
           <LucideIcon name='ChevronDown' size={16} />
@@ -87,12 +99,18 @@ const Label = styled.label<{ isFocused: boolean }>`
   position: absolute;
   top: ${({ isFocused }) => (isFocused ? '-12px' : '50%')};
   transform: translateY(${({ isFocused }) => (isFocused ? '0' : '-50%')});
-  /* transform: translateY(-50%); */
 
-  font-size: ${({ isFocused }) => (isFocused ? theme.fontSize.xss : theme.fontSize.xs)};
+  font-size: ${({ isFocused }) => (isFocused ? theme.fontSize.xs : theme.fontSize.sm)};
+  font-weight: ${theme.fontWeight.medium};
+
   color: ${theme.colors.lfBlack.base};
   transition: all 0.2s ease;
   pointer-events: none;
+`
+
+const RequiredMark = styled.span`
+  color: ${theme.colors.lfGreenBorder.base};
+  margin-left: 4px;
 `
 
 const SelectBox = styled.div<{ isFocused: boolean }>`
@@ -123,7 +141,7 @@ const SelectBox = styled.div<{ isFocused: boolean }>`
 
 const SelectedText = styled.span`
   font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
 `
 
@@ -149,9 +167,9 @@ const DropdownBox = styled.ul<{ maxHeight: number }>`
 `
 
 const Item = styled.li<{ isHovered: boolean }>`
-  padding: 10px 4px;
+  padding: 12px 4px;
   text-align: center;
-  font-size: ${theme.fontSize.xss};
+  font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.regular};
   color: ${theme.colors.lfBlack.base};
   background-color: ${({ isHovered }) => (isHovered ? theme.colors.lfLightGray.base : 'transparent')};

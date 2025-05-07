@@ -1,14 +1,15 @@
 'use client'
 import { useCallback, useEffect, useRef } from 'react'
 
-export function useScrollLock() {
+export function useScrollLock(enabled: boolean) {
   const scrollYRef = useRef<number>(0)
   const isLocked = useRef<boolean>(false)
 
   const lockScroll = useCallback(() => {
-    if (isLocked.current) return
+    if (isLocked.current || !enabled) return
+
     scrollYRef.current = window.scrollY
-    const scrollBarWidth: number = window.innerWidth - document.documentElement.clientWidth
+    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth
 
     document.body.style.position = 'fixed'
     document.body.style.top = `-${scrollYRef.current}px`
@@ -16,7 +17,7 @@ export function useScrollLock() {
     document.body.style.width = `calc(100% - ${scrollBarWidth}px)`
 
     isLocked.current = true
-  }, [])
+  }, [enabled])
 
   const unLockScroll = useCallback(() => {
     if (!isLocked.current) return
@@ -31,7 +32,9 @@ export function useScrollLock() {
   }, [])
 
   useEffect(() => {
-    lockScroll()
-    return () => unLockScroll()
-  }, [])
+    if (enabled) lockScroll()
+    return () => {
+      if (enabled) unLockScroll()
+    }
+  }, [enabled, lockScroll, unLockScroll])
 }

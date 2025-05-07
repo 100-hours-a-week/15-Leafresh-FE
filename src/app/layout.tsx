@@ -5,9 +5,7 @@ import InfoModal from '@shared/components/modal/InfoModal'
 import Toast from '@shared/components/Toast/Toast'
 import { pretendard } from '@shared/config/font'
 import { Providers } from '@shared/config/providers/Providers'
-import GlobalScrollbarStyle from '@shared/styles/scrollbar/GlobalScrollbarStyle'
-
-import './globals.css'
+import LayoutWrapper from '@shared/styles/LayoutWrapper'
 
 export const metadata: Metadata = {
   title: 'Leafresh',
@@ -22,9 +20,8 @@ const RootLayout = ({
   return (
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
-        <GlobalScrollbarStyle />
         <Providers>
-          {children}
+          <LayoutWrapper>{children}</LayoutWrapper>
           <ConfirmModal />
           <InfoModal />
           <Toast />

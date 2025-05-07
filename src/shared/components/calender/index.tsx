@@ -235,7 +235,7 @@ import styled from '@emotion/styled'
 
 import { DayType } from '@entities/challenge/type'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 import CalendarDates from './calender-dates'
 import CalendarHeader from './calender-header'
@@ -279,7 +279,7 @@ const Calendar = ({
 export default Calendar
 
 const Wrapper = styled.div`
-  width: 80%;
+  width: 100%;
   max-width: 280px;
   min-width: 260px;
   padding: 16px;
