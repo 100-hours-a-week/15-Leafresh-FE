@@ -50,6 +50,10 @@ const eslintConfig = [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'prefer-const': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { args: 'after-used', argsIgnorePattern: '^_', caughtErrors: 'none' },
+      ],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-interface': 'off', // 빈 인터페이스 허용
       '@typescript-eslint/no-empty-object-type': 'off', // 빈 객체 타입 허용
