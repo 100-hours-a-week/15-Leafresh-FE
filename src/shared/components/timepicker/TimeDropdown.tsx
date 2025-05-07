@@ -14,15 +14,8 @@ export interface TimeDropdownProps {
   onCancel?: () => void
 }
 
-export default function TimeDropdown({
-  value,
-  open,
-  onConfirm,
-  onCancel,
-  onOpenChange
-}: TimeDropdownProps) {
-
-  const [initH, initM] = value.split(':').map((s) => parseInt(s, 10))
+export default function TimeDropdown({ value, open, onConfirm, onCancel, onOpenChange }: TimeDropdownProps) {
+  const [initH, initM] = value.split(':').map(s => parseInt(s, 10))
   const [hour, setHour] = useState(isNaN(initH) ? 0 : initH)
   const [minute, setMinute] = useState(isNaN(initM) ? 0 : initM)
 
@@ -37,56 +30,60 @@ export default function TimeDropdown({
     onOpenChange(false)
     onCancel?.()
 
-    //취소했을 때 반영되지 않게끔
-    const [resetH, resetM] = value.split(':').map((s) => parseInt(s, 10))
+    //취소했을 때 반영되지 않게끔 변경
+    const [resetH, resetM] = value.split(':').map(s => parseInt(s, 10))
     setHour(!isNaN(resetH) ? resetH : 0)
     setMinute(!isNaN(resetM) ? resetM : 0)
   }
 
   const timeRef = useRef<HTMLDivElement>(null)
 
-  useOutsideClick( timeRef as React.RefObject<HTMLElement>, handleClose )
+  useOutsideClick(timeRef as React.RefObject<HTMLElement>, handleClose)
 
   return (
     <Wrapper ref={timeRef}>
-      <Trigger onClick={() => { onOpenChange(!open) }}>
+      <Trigger
+        onClick={() => {
+          onOpenChange(!open)
+        }}
+      >
         {String(hour).padStart(2, '0')} : {String(minute).padStart(2, '0')}
       </Trigger>
-        <Dropdown open={open}>
-          <Columns>
-            <Column>
-              {Array.from({ length: 24 }, (_, i) => i).map((h) => (
-                <Option
-                  key={h}
-                  selected={h === hour}
-                  onClick={() => setHour(h)}
-                >
-                  {String(h).padStart(2, '0')}
-                </Option>
-              ))}
-            </Column>
-            <Column>
-              {Array.from({ length: 60 }, (_, i) => i).map((m) => (
-                <Option
-                  key={m}
-                  selected={m === minute}
-                  onClick={() => setMinute(m)}
-                >
-                  {String(m).padStart(2, '0')}
-                </Option>
-              ))}
-            </Column>
-          </Columns>
-          <ActionWrapper>
-            <ActButton onClick={() => { handleClose() }}>
-              Cancel
-            </ActButton>
-            <ActButton primary onClick={() => {handleConfirm()}}>
-              OK
-            </ActButton>
-          </ActionWrapper>
-        </Dropdown>
-  
+      <Dropdown open={open}>
+        <Columns>
+          <Column>
+            {Array.from({ length: 24 }, (_, i) => i).map(h => (
+              <Option key={h} selected={h === hour} onClick={() => setHour(h)}>
+                {String(h).padStart(2, '0')}
+              </Option>
+            ))}
+          </Column>
+          <Column>
+            {Array.from({ length: 60 }, (_, i) => i).map(m => (
+              <Option key={m} selected={m === minute} onClick={() => setMinute(m)}>
+                {String(m).padStart(2, '0')}
+              </Option>
+            ))}
+          </Column>
+        </Columns>
+        <ActionWrapper>
+          <ActButton
+            onClick={() => {
+              handleClose()
+            }}
+          >
+            Cancel
+          </ActButton>
+          <ActButton
+            primary
+            onClick={() => {
+              handleConfirm()
+            }}
+          >
+            OK
+          </ActButton>
+        </ActionWrapper>
+      </Dropdown>
     </Wrapper>
   )
 }
@@ -109,11 +106,15 @@ const Trigger = styled.button`
   text-align: start;
   cursor: pointer;
 
-  &:hover { background: rgba(0,0,0,0.05); }
-  &:active{ background: rgba(0,0,0,0.1); }
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  &:active {
+    background: rgba(0, 0, 0, 0.1);
+  }
 `
 
-const Dropdown = styled.div<{open: boolean}>`
+const Dropdown = styled.div<{ open: boolean }>`
   position: absolute;
   top: calc(100% + 15px);
   width: 100%;
@@ -121,7 +122,7 @@ const Dropdown = styled.div<{open: boolean}>`
   color: ${theme.colors.lfDarkGray};
   border-radius: ${theme.radius.sm};
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -145,16 +146,18 @@ const Column = styled.ul`
   overflow-y: auto;
   border-right: 1px solid ${theme.colors.lfBlue};
 
-  &::-webkit-scrollbar { width: 3px }
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
 `
 const Option = styled.li<{ selected: boolean }>`
   padding: 5px 22px;
   cursor: pointer;
   background: ${({ selected }) => (selected ? `${theme.colors.lfGreenMain.hover}` : `${theme.colors.lfWhite.base}`)};
   color: ${({ selected }) => (selected ? `${theme.colors.lfWhite.base}` : `${theme.colors.lfGray.base}`)};
-  &:hover { 
+  &:hover {
     background: ${theme.colors.lfGreenInactive.base};
-    color: ${theme.colors.lfDarkGray.base}
+    color: ${theme.colors.lfDarkGray.base};
   }
 `
 const ActionWrapper = styled.div`
@@ -165,13 +168,16 @@ const ActionWrapper = styled.div`
 const ActButton = styled.button<{ primary?: boolean }>`
   flex: 1;
   padding: 8px 0;
-  background: ${({ primary }) => primary ? `${theme.colors.lfGreenMain.base}` : 'transparent'};
-  color: ${({ primary }) => primary ? `${theme.colors.lfWhite.base}` : `${theme.colors.lfBlack.base}`};
+  background: ${({ primary }) => (primary ? `${theme.colors.lfGreenMain.base}` : 'transparent')};
+  color: ${({ primary }) => (primary ? `${theme.colors.lfWhite.base}` : `${theme.colors.lfBlack.base}`)};
   border: none;
 
   font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.bold};
 
   cursor: pointer;
-  &:hover{ background: ${({ primary }) => primary ? `${theme.colors.lfGreenMain.hover}` : `${theme.colors.lfLightGray.base}`}; }
+  &:hover {
+    background: ${({ primary }) =>
+      primary ? `${theme.colors.lfGreenMain.hover}` : `${theme.colors.lfLightGray.base}`};
+  }
 `

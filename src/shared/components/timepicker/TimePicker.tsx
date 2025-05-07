@@ -1,49 +1,40 @@
 'use client'
 
 import { useCallback } from 'react'
-import styled from '@emotion/styled'
-import { theme } from '@shared/styles/emotion/theme'
-
 import TimeDropdown from './TimeDropdown'
+
+import { theme } from '@shared/styles/emotion/theme'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
+import styled from '@emotion/styled'
 
 export interface TimePickerProps {
   label?: string
   startValue: string
   endValue: string
-  onChangeStart: (v: string) => void  //기본 시작시간 값
-  onChangeEnd: (v: string) => void  //기본 종료시간 값
+  onChangeStart: (v: string) => void //기본 시작시간 값
+  onChangeEnd: (v: string) => void //기본 종료시간 값
 }
 
-const TimePicker = ({
-  label,
-  startValue,
-  endValue,
-  onChangeStart,
-  onChangeEnd,
-}: TimePickerProps) => {
+const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }: TimePickerProps) => {
+  const { value: startOpen, toggle: toggleStart, setValue: setStartOpen } = useToggle(false)
 
-  const {
-    value: startOpen,
-    toggle: toggleStart,
-    setValue: setStartOpen,
-  } = useToggle(false)
+  const { value: endOpen, toggle: toggleEnd, setValue: setEndOpen } = useToggle(false)
 
-  const {
-    value: endOpen,
-    toggle: toggleEnd,
-    setValue: setEndOpen,
-  } = useToggle(false)
+  // const handleStartOpen = useCallback(
+  //   (open: boolean) => {
+  //     setStartOpen(open)
+  //     if (open) setEndOpen(false)
+  //   },
+  //   [setStartOpen, setEndOpen],
+  // )
 
-  const handleStartOpen = useCallback((open: boolean) => {
-    setStartOpen(open)
-    if (open) setEndOpen(false)
-  }, [setStartOpen, setEndOpen])
-
-  const handleEndOpen = useCallback((open: boolean) => {
-    setEndOpen(open)
-    if (open) setStartOpen(false)
-  }, [setEndOpen, setStartOpen])
+  // const handleEndOpen = useCallback(
+  //   (open: boolean) => {
+  //     setEndOpen(open)
+  //     if (open) setStartOpen(false)
+  //   },
+  //   [setEndOpen, setStartOpen],
+  // )
 
   return (
     <Wrapper>
@@ -56,7 +47,10 @@ const TimePicker = ({
             open={startOpen}
             onConfirm={onChangeStart}
             onCancel={() => setStartOpen(false)}
-            onOpenChange={handleStartOpen}
+            onOpenChange={() => {
+              toggleStart()
+              setEndOpen(false)
+            }}
           />
         </Panel>
         <Divider />
@@ -67,7 +61,10 @@ const TimePicker = ({
             open={endOpen}
             onConfirm={onChangeEnd}
             onCancel={() => setEndOpen(false)}
-            onOpenChange={handleEndOpen}
+            onOpenChange={() => {
+              toggleEnd()
+              setStartOpen(false)
+            }}
           />
         </Panel>
       </RangeWrapper>
@@ -87,7 +84,7 @@ const Title = styled.h2`
   margin-bottom: 12px;
   color: ${theme.colors.lfBlack.base};
 `
-const RangeWrapper = styled.div<{open: boolean}>`
+const RangeWrapper = styled.div<{ open: boolean }>`
   position: relative;
   display: flex;
   background: #fafafa;
@@ -98,7 +95,7 @@ const RangeWrapper = styled.div<{open: boolean}>`
   &::after {
     content: '';
     position: absolute;
-    bottom: 0; 
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 2px;
