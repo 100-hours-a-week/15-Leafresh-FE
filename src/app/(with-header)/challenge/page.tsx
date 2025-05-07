@@ -1,44 +1,33 @@
+// src/app/page.tsx
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
+import TimePicker from '@shared/components/timepicker/TimePicker'
 
-import DatePicker from '@shared/components/datepicker/DatePicker'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-
-const CalendarTestPage = () => {
-  const [startDate, setStartDate] = useState<Date>()
-  const [endDate, setEndDate] = useState<Date>()
-
-  useEffect(() => {
-    console.log('startDate: ', startDate)
-    console.log('endDate: ', endDate)
-  }, [startDate, endDate])
+export default function Page() {
+  const [start, setStart] = useState('00:00')
+  const [end, setEnd] = useState('23:59')
 
   return (
-    <Wrapper>
-      <StyledDatePicker
-        icon={<LucideIcon name='Calendar' size={24} strokeWidth={2.5} />}
-        label='챌린지 기간 *'
-        startDate={startDate}
-        endDate={endDate}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
+    <Container>
+      <TimePicker
+        label="인증 가능 시간 *"
+        startValue={start}
+        endValue={end}
+        onChangeStart={setStart}
+        onChangeEnd={setEnd}
       />
-    </Wrapper>
+      <>{start} ~ {end}</>
+    </Container>
   )
 }
 
-export default CalendarTestPage
-
-// === Styles ===
-
-const Wrapper = styled.div`
-  display: flex;
-  width: 100%;
-  position: relative;
+const Container = styled.div`
+  padding: 24px;
+  color:black;
 `
-
-const StyledDatePicker = styled(DatePicker)`
-  width: 100%;
+const Output = styled.div`
+  margin-top: 16px;
+  font-size: 14px;
 `
