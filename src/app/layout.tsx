@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import CameraModal from '@shared/components/modal/CameraModal'
 import ConfirmModal from '@shared/components/modal/ConfirmModal'
 import InfoModal from '@shared/components/modal/InfoModal'
 import Toast from '@shared/components/Toast/Toast'
@@ -23,6 +24,7 @@ const RootLayout = ({
         <Providers>
           <LayoutWrapper>{children}</LayoutWrapper>
           <ConfirmModal />
+          <CameraModal />
           <InfoModal />
           <Toast />
         </Providers>

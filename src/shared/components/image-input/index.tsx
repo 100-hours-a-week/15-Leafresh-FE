@@ -2,9 +2,11 @@
 
 import Image from 'next/image'
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 
+import { ChallengeVerificationResultType } from '@entities/challenge/type'
+import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import { ThemeColorType, ThemeFontSizeType } from '@shared/styles/theme/type'
@@ -14,9 +16,15 @@ interface ImageInputProps {
   icon: React.ReactNode
   label: string
   fontSize?: ThemeFontSizeType
-  imageUrl?: string
-  onChange?: (imageUrl: string | null) => void
   backgroundColor?: ThemeColorType
+  imageUrl?: string
+
+  cameraTitle: string
+  hasDescription?: boolean // 해당 이미지에 대한 설명을 받을지 여부
+  type?: ChallengeVerificationResultType
+
+  onChange?: (imageUrl: string | null) => void
+
   className?: string
 }
 
@@ -24,33 +32,34 @@ const ImageInput = ({
   icon,
   label,
   fontSize = 'xs',
-  imageUrl,
-  onChange,
   backgroundColor = 'lfGray',
+  imageUrl, // 외부 관리 상태
   className,
+
+  cameraTitle,
+  hasDescription = false,
+  type = 'SUCCESS',
+
+  onChange,
 }: ImageInputProps) => {
-  const inputRef = useRef<HTMLInputElement>(null)
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
+  const { open: openCameraModal } = useCameraModalStore()
 
-  const openFilePicker = () => {
-    inputRef.current?.click()
+  const handleCapture = () => {
+    openCameraModal(
+      cameraTitle, // 카메라 모달 제목
+      // 입력을 받으면 어떻게 처리할지
+      (url: string) => {
+        setPreviewImageUrl(url)
+        onChange?.(url)
+      },
+      hasDescription, // 이미지에 대한 설명을 받을지 여부
+      type, // 성공 이미지 혹은 실패 이미지
+    )
   }
 
-  /** 이미지 추가 */
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    // TODO: S3 업로드 후 URL 반환
-    const imageUrl = URL.createObjectURL(file)
-    setPreviewImageUrl(imageUrl)
-    onChange?.(imageUrl)
-  }
-
-  /** 이미지 삭제 */
   const handleRemoveImage = () => {
     setPreviewImageUrl(null)
-    inputRef.current!.value = ''
     onChange?.(null)
   }
 
@@ -58,7 +67,7 @@ const ImageInput = ({
     <Wrapper className={className}>
       {!previewImageUrl ? (
         <EmptyImageView
-          onClick={openFilePicker}
+          onClick={handleCapture}
           icon={icon}
           label={label}
           fontSize={fontSize}
@@ -67,7 +76,6 @@ const ImageInput = ({
       ) : (
         <PreviewImageView imageUrl={previewImageUrl} onRemove={handleRemoveImage} />
       )}
-      <HiddenInput type='file' accept='image/*' ref={inputRef} onChange={handleFileChange} />
     </Wrapper>
   )
 }
@@ -152,8 +160,4 @@ const Text = styled.p<{ fontSize: ThemeFontSizeType }>`
   color: ${theme.colors.lfBlack.base};
   white-space: pre-line;
   line-height: 1.2;
-`
-
-const HiddenInput = styled.input`
-  display: none;
 `

@@ -84,8 +84,6 @@ const ChallengeVerifyExamples = ({
       if (a.type === b.type) return 0
       return a.type === 'SUCCESS' ? -1 : 1
     })
-    console.log(newImages)
-
     setImages(newImages)
   }
 
