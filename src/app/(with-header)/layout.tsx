@@ -26,6 +26,7 @@ export default WithHeaderLayout
 
 const Main = styled.main`
   min-height: calc(100vh - ${HEADER_HEIGHT}px);
+
   width: 100%;
   background-color: ${theme.colors.lfWhite.base};
   padding: 23px ${WIDTH_PADDING}px;

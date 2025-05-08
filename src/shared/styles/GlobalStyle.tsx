@@ -35,7 +35,7 @@ const GlobalStyle = () => {
           width: 100%;
           /* min-width: 320px;
           max-width: 500px; */
-          height: 100dvh;
+          min-height: 100dvh;
 
           background-color: ${theme.colors.lfGray.base};
 
