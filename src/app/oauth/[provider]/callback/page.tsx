@@ -6,6 +6,7 @@ import { use, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { LowercaseOAuthType } from '@entities/member/type'
 import { LoginCallback } from '@features/member/api/oauth-callback'
 import Loading from '@shared/components/loading'
@@ -19,6 +20,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
   const searchParams = useSearchParams()
   const { provider } = use(params)
   const openToast = useToast()
+  const { setUserInfo } = useOAuthUserStore()
 
   const code = searchParams.get('code')
 
@@ -29,11 +31,19 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
   })
 
   useEffect(() => {
-    if (data) {
+    if (!data) return
+
+    const { isMember, email, imageUrl, nickname } = data.data
+
+    setUserInfo({ isMember, email, imageUrl, nickname })
+
+    if (!isMember) {
+      router.replace(URL.MEMBER.SIGNUP.value)
+    } else {
       openToast(ToastType.Success, '로그인 성공')
       router.replace(URL.MAIN.INDEX.value)
     }
-  }, [data, openToast])
+  }, [data, router, openToast, setUserInfo])
 
   if (isLoading) {
     return (
@@ -49,7 +59,8 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
     return <p>로그인 실패</p>
   }
 
-  return <div>로그인 성공</div>
+  // 데이터 로드 후 라우팅될 것이므로 빈 상태 반환
+  return null
 }
 
 export default CallbackPage

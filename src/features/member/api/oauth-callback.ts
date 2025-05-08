@@ -9,9 +9,13 @@ type LoginCallbackResponseType = ApiResponse<{
   imageUrl: string
 }>
 
+type LoginCallbackQuery = {
+  code: string
+}
+
 export const LoginCallback = (
   provider: LowercaseOAuthType,
-  query: Record<string, string>,
+  query: LoginCallbackQuery,
 ): Promise<LoginCallbackResponseType> => {
   return fetchRequest<LoginCallbackResponseType>(ENDPOINTS.MEMBERS.AUTH.CALLBACK(provider), {
     query,
