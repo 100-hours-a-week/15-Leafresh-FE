@@ -3,6 +3,7 @@
 
 import { useState } from 'react'
 import styled from '@emotion/styled'
+
 import SwitchTap from '@shared/components/switchtap/SwitchTap'
 
 export default function Page() {
@@ -10,7 +11,7 @@ export default function Page() {
 
   return (
     <Wrapper>
-      <SwitchTap tabs={['카메라', '인증 방법']} currentIndex={tab} onChange={setTab} />
+      <SwitchTap tabs={['카메라', '카메라2', '인증 방법']} currentIndex={tab} onChange={setTab} />
 
       <ContentArea>
         {tab === 0 ? (

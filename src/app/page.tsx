@@ -14,8 +14,8 @@
 
 import styled from '@emotion/styled'
 
-import ImageZoomModal from '@shared/components/ZoomModal/ImageZooomModal/ImageZoomModal'
-import ZoomableImage from '@shared/components/ZoomModal/ImageZooomModal/ZoomableImage'
+import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
+import ZoomableImage from '@shared/components/zoommodal/ImageZoomModal/ZoomableImage'
 import { ImageZoomModalData } from '@shared/context/ZoomModalStore/ImageZoomStore'
 
 const Container = styled.div`
