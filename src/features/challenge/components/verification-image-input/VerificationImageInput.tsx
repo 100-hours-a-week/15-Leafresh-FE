@@ -9,16 +9,6 @@ import { theme } from '@shared/styles/theme'
 import { ThemeColorType } from '@shared/styles/theme/type'
 import { getThemeColor } from '@shared/styles/theme/utils'
 
-interface VerificationImageInputProps {
-  label: string
-  description: string
-  status: ChallengeVerificationStatusType
-  imageUrl?: string
-  onChange?: (imageUrl: string | null) => void
-  onZoomClick?: () => void
-  className?: string
-}
-
 const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.ReactNode; color: ThemeColorType }> = {
   SUCCESS: {
     icon: <LucideIcon name='Check' size={20} color='lfWhite' />, // icon은 white로
@@ -42,12 +32,29 @@ const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.Rea
   },
 }
 
+interface VerificationImageInputProps {
+  label: string
+  status: ChallengeVerificationStatusType
+  imageUrl: string | null
+  description: string | null
+
+  cameraTitle: string
+
+  onImageChange: (imageUrl: string | null) => void
+  onDescriptionChange: (description: string | null) => void
+
+  onZoomClick?: () => void
+  className?: string
+}
+
 const VerificationImageInput = ({
   label,
   description,
   status,
   imageUrl,
-  onChange,
+  cameraTitle,
+  onImageChange,
+  onDescriptionChange,
   onZoomClick,
   className,
 }: VerificationImageInputProps) => {
@@ -56,11 +63,15 @@ const VerificationImageInput = ({
   return (
     <Container className={className}>
       <StyledImageInput
-        imageUrl={imageUrl}
-        onChange={onChange}
         icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
         label={label}
         backgroundColor='lfInputBackground'
+        imageUrl={imageUrl}
+        cameraTitle={cameraTitle}
+        hasDescription
+        type={status}
+        onImageChange={onImageChange}
+        onDescriptionChange={onDescriptionChange}
       />
 
       {/* 하단 상태 표시 영역 */}
@@ -110,12 +121,13 @@ const Description = styled.p`
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
   text-align: center;
+  margin-top: 6px;
 `
 
 const ZoomButton = styled.button`
   position: absolute;
-  bottom: 42px;
-  right: 4px;
+  bottom: 60px;
+  right: 2px;
   background: transparent;
   border: none;
   padding: 4px;

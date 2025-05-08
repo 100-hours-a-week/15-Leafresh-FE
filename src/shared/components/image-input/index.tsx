@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
-import { ChallengeVerificationResultType } from '@entities/challenge/type'
+import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
@@ -17,13 +17,14 @@ interface ImageInputProps {
   label: string
   fontSize?: ThemeFontSizeType
   backgroundColor?: ThemeColorType
-  imageUrl?: string
+  imageUrl: string | null
 
   cameraTitle: string
   hasDescription?: boolean // 해당 이미지에 대한 설명을 받을지 여부
-  type?: ChallengeVerificationResultType
+  type?: ChallengeVerificationStatusType
 
-  onChange?: (imageUrl: string | null) => void
+  onImageChange: (imageUrl: string | null) => void
+  onDescriptionChange?: (description: string | null) => void
 
   className?: string
 }
@@ -34,24 +35,31 @@ const ImageInput = ({
   fontSize = 'xs',
   backgroundColor = 'lfGray',
   imageUrl, // 외부 관리 상태
+  onImageChange,
   className,
 
   cameraTitle,
   hasDescription = false,
   type = 'SUCCESS',
-
-  onChange,
+  onDescriptionChange,
 }: ImageInputProps) => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
   const { open: openCameraModal } = useCameraModalStore()
 
   const handleCapture = () => {
     openCameraModal(
-      cameraTitle, // 카메라 모달 제목
-      // 입력을 받으면 어떻게 처리할지
-      (url: string) => {
-        setPreviewImageUrl(url)
-        onChange?.(url)
+      // #1. 카메라 모달 제목
+      cameraTitle,
+
+      // #2. 이미지 업로드 처리
+      (imageUrl: string) => {
+        setPreviewImageUrl(imageUrl)
+        onImageChange(imageUrl)
+      },
+
+      // #3. 설명 업로드 처리
+      (description: string) => {
+        onDescriptionChange?.(description)
       },
       hasDescription, // 이미지에 대한 설명을 받을지 여부
       type, // 성공 이미지 혹은 실패 이미지
@@ -60,7 +68,7 @@ const ImageInput = ({
 
   const handleRemoveImage = () => {
     setPreviewImageUrl(null)
-    onChange?.(null)
+    onImageChange?.(null)
   }
 
   return (

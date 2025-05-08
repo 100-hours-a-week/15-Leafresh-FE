@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { ChallengeVerificationResultType } from '@entities/challenge/type'
+import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
 const CameraModal = () => {
-  const { isOpen, title, type, hasDescription, onConfirm, close } = useCameraModalStore()
+  // const openToast = useToast()
+  const { isOpen, title, type, hasDescription, onImageChange, onDescriptionChange, close } = useCameraModalStore()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -42,12 +43,20 @@ const CameraModal = () => {
   }
 
   const handleConfirm = () => {
-    if (!previewUrl) return
+    if (!previewUrl) {
+      // TODO : 토스트 에러 처리
+      // openToast({})
+      return
+    }
+    if (hasDescription && !description) {
+      // TODO : 토스트 에러 처리
+      // openToast({})
+      return
+    }
 
+    onImageChange(previewUrl)
     if (hasDescription) {
-      onConfirm(previewUrl, description)
-    } else {
-      onConfirm(previewUrl)
+      onDescriptionChange(description)
     }
 
     close()
@@ -181,7 +190,7 @@ const TextAreaWrapper = styled.div`
   flex-direction: column;
 `
 
-const TextAreaLabel = styled.p<{ type: ChallengeVerificationResultType | undefined }>`
+const TextAreaLabel = styled.p<{ type: ChallengeVerificationStatusType | undefined }>`
   color: ${({ type }) => (type === 'SUCCESS' ? theme.colors.lfBlue.base : theme.colors.lfRed.base)};
   font-family: ${theme.fontWeight.semiBold};
   font-size: ${theme.fontSize.base};
