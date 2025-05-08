@@ -17,8 +17,8 @@ const ErrorText = ({ message, className }: ErrorTextProps) => {
 export default ErrorText
 
 const Text = styled.p`
-  margin-top: 4px;
-  font-size: ${theme.fontSize.xss};
+  margin-top: 6px;
+  font-size: ${theme.fontSize.xs};
   color: ${theme.colors.lfRed.base};
   font-weight: ${theme.fontWeight.medium};
 `
