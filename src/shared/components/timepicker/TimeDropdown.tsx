@@ -1,23 +1,24 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { theme } from '@shared/styles/emotion/theme'
 
-import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
-
 export interface TimeDropdownProps {
   value: string
-  open: boolean
+  isopen: boolean
   onConfirm: (newValue: string) => void
-  onOpenChange: (open: boolean) => void
+  onOpenChange: (isopen: boolean) => void
   onCancel?: () => void
 }
 
-export default function TimeDropdown({ value, open, onConfirm, onCancel, onOpenChange }: TimeDropdownProps) {
+export default function TimeDropdown({ value, isopen, onConfirm, onCancel, onOpenChange }: TimeDropdownProps) {
   const [initH, initM] = value.split(':').map(s => parseInt(s, 10))
   const [hour, setHour] = useState(isNaN(initH) ? 0 : initH)
   const [minute, setMinute] = useState(isNaN(initM) ? 0 : initM)
+
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const handleConfirm = () => {
     const hh = String(hour).padStart(2, '0')
@@ -36,20 +37,43 @@ export default function TimeDropdown({ value, open, onConfirm, onCancel, onOpenC
     setMinute(!isNaN(resetM) ? resetM : 0)
   }
 
-  const timeRef = useRef<HTMLDivElement>(null)
+  // 외부 클릭 감지 핸들러
+  useEffect(() => {
+    if (!isopen) return
 
-  useOutsideClick(timeRef as React.RefObject<HTMLElement>, handleClose)
+    const handleClickOutside = (event: MouseEvent) => {
+      // 드롭다운이 열려있을 때만 처리
+      if (!wrapperRef.current || !dropdownRef.current) return
+      const isClickInWrapper = wrapperRef.current.contains(event.target as Node)
+      const isClickInDropdown = dropdownRef.current.contains(event.target as Node)
+
+      // 클릭이 wrapper의 트리거 버튼에서 발생했는지 확인
+      const triggerElement = wrapperRef.current.querySelector('button')
+      const isClickOnTrigger = triggerElement && triggerElement.contains(event.target as Node)
+
+      // 외부 클릭인 경우에만 닫기
+      if (!isClickInWrapper || (isClickInWrapper && !isClickInDropdown && !isClickOnTrigger)) {
+        handleClose()
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      //이벤트리스너 제거
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isopen])
 
   return (
-    <Wrapper ref={timeRef}>
+    <Wrapper ref={wrapperRef}>
       <Trigger
         onClick={() => {
-          onOpenChange(!open)
+          onOpenChange(!isopen)
         }}
       >
         {String(hour).padStart(2, '0')} : {String(minute).padStart(2, '0')}
       </Trigger>
-      <Dropdown open={open}>
+      <Dropdown isopen={isopen} ref={dropdownRef}>
         <Columns>
           <Column>
             {Array.from({ length: 24 }, (_, i) => i).map(h => (
@@ -58,7 +82,7 @@ export default function TimeDropdown({ value, open, onConfirm, onCancel, onOpenC
               </Option>
             ))}
           </Column>
-          <Column>
+          <Column style={{ marginLeft: '2px' }}>
             {Array.from({ length: 60 }, (_, i) => i).map(m => (
               <Option key={m} selected={m === minute} onClick={() => setMinute(m)}>
                 {String(m).padStart(2, '0')}
@@ -67,19 +91,8 @@ export default function TimeDropdown({ value, open, onConfirm, onCancel, onOpenC
           </Column>
         </Columns>
         <ActionWrapper>
-          <ActButton
-            onClick={() => {
-              handleClose()
-            }}
-          >
-            Cancel
-          </ActButton>
-          <ActButton
-            primary
-            onClick={() => {
-              handleConfirm()
-            }}
-          >
+          <ActButton onClick={handleClose}>Cancel</ActButton>
+          <ActButton primary onClick={handleConfirm}>
             OK
           </ActButton>
         </ActionWrapper>
@@ -114,7 +127,7 @@ const Trigger = styled.button`
   }
 `
 
-const Dropdown = styled.div<{ open: boolean }>`
+const Dropdown = styled.div<{ isopen: boolean }>`
   position: absolute;
   top: calc(100% + 15px);
   width: 100%;
@@ -127,15 +140,15 @@ const Dropdown = styled.div<{ open: boolean }>`
   display: flex;
   flex-direction: column;
 
-  opacity: ${({ open }) => (open ? 1 : 0)};
-  transform: ${({ open }) => (open ? 'translateY(0)' : 'translateY(-10px)')};
-  visibility: ${({ open }) => (open ? 'visible' : 'hidden')};
-  pointer-events: ${({ open }) => (open ? 'auto' : 'none')};
+  opacity: ${({ isopen }) => (isopen ? 1 : 0)};
+  transform: ${({ isopen }) => (isopen ? 'translateY(0)' : 'translateY(-10px)')};
+  visibility: ${({ isopen }) => (isopen ? 'visible' : 'hidden')};
+  pointer-events: ${({ isopen }) => (isopen ? 'auto' : 'none')};
 
   transition:
     opacity 0.3s ease,
     transform 0.3s ease,
-    visibility 0s linear ${({ open }) => (open ? '0s' : '0.2s')};
+    visibility 0s linear ${({ isopen }) => (isopen ? '0s' : '0.2s')};
 `
 
 const Columns = styled.div`
@@ -151,7 +164,7 @@ const Column = styled.ul`
   }
 `
 const Option = styled.li<{ selected: boolean }>`
-  padding: 5px 22px;
+  padding: 5px 21px;
   cursor: pointer;
   background: ${({ selected }) => (selected ? `${theme.colors.lfGreenMain.hover}` : `${theme.colors.lfWhite.base}`)};
   color: ${({ selected }) => (selected ? `${theme.colors.lfWhite.base}` : `${theme.colors.lfGray.base}`)};

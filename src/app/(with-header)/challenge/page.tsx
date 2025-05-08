@@ -12,20 +12,22 @@ export default function Page() {
   return (
     <Container>
       <TimePicker
-        label="인증 가능 시간 *"
+        label='인증 가능 시간 *'
         startValue={start}
         endValue={end}
         onChangeStart={setStart}
         onChangeEnd={setEnd}
       />
-      <>{start} ~ {end}</>
+      <>
+        {start} ~ {end}
+      </>
     </Container>
   )
 }
 
 const Container = styled.div`
   padding: 24px;
-  color:black;
+  color: black;
 `
 const Output = styled.div`
   margin-top: 16px;

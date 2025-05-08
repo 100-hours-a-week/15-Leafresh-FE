@@ -27,7 +27,7 @@ const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }:
           <PanelLabel>시작시간</PanelLabel>
           <TimeDropdown
             value={startValue}
-            open={startOpen}
+            isopen={startOpen}
             onConfirm={onChangeStart}
             onCancel={() => setStartOpen(false)}
             onOpenChange={() => {
@@ -41,7 +41,7 @@ const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }:
           <PanelLabel>종료시간</PanelLabel>
           <TimeDropdown
             value={endValue}
-            open={endOpen}
+            isopen={endOpen}
             onConfirm={onChangeEnd}
             onCancel={() => setEndOpen(false)}
             onOpenChange={() => {
