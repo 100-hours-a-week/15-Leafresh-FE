@@ -17,14 +17,14 @@ export interface SwitchTapProps {
 const SwitchTap = ({ tabs, currentIndex, onChange, className }: SwitchTapProps) => {
   return (
     <Container role='tablist' tabsCount={tabs.length} currentIndex={currentIndex} className={className}>
-      {tabs.map((label, idx) => (
+      {tabs.map((label, i) => (
         <TabButton
-          key={idx}
+          key={`${label}-${i}`}
           role='tab'
-          aria-selected={idx === currentIndex}
-          tabIndex={idx === currentIndex ? 0 : -1}
-          isActive={idx === currentIndex}
-          onClick={() => onChange(idx)}
+          aria-selected={i === currentIndex}
+          tabIndex={i === currentIndex ? 0 : -1}
+          isActive={i === currentIndex}
+          onClick={() => onChange(i)}
         >
           {label}
         </TabButton>
