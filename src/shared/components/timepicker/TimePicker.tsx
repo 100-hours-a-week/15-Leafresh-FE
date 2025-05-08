@@ -22,12 +22,12 @@ const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }:
   return (
     <Wrapper>
       {label && <Title>{label}</Title>}
-      <RangeWrapper open={startOpen || endOpen}>
+      <RangeWrapper isOpen={startOpen || endOpen}>
         <Panel>
           <PanelLabel>시작시간</PanelLabel>
           <TimeDropdown
             value={startValue}
-            isopen={startOpen}
+            isOpen={startOpen}
             onConfirm={onChangeStart}
             onCancel={() => setStartOpen(false)}
             onOpenChange={() => {
@@ -41,7 +41,7 @@ const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }:
           <PanelLabel>종료시간</PanelLabel>
           <TimeDropdown
             value={endValue}
-            isopen={endOpen}
+            isOpen={endOpen}
             onConfirm={onChangeEnd}
             onCancel={() => setEndOpen(false)}
             onOpenChange={() => {
@@ -67,7 +67,7 @@ const Title = styled.h2`
   margin-bottom: 12px;
   color: ${theme.colors.lfBlack.base};
 `
-const RangeWrapper = styled.div<{ open: boolean }>`
+const RangeWrapper = styled.div<{ isOpen: boolean }>`
   position: relative;
   display: flex;
   background: #fafafa;
@@ -85,7 +85,7 @@ const RangeWrapper = styled.div<{ open: boolean }>`
     background-color: ${theme.colors.lfBlack.base};
 
     transform-origin: center;
-    transform: scaleX(${props => (props.open ? 1 : 0)});
+    transform: scaleX(${props => (props.isOpen ? 1 : 0)});
     transition: transform 0.2s ease;
   }
 `

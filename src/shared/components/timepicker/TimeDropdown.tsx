@@ -6,13 +6,13 @@ import { theme } from '@shared/styles/emotion/theme'
 
 export interface TimeDropdownProps {
   value: string
-  isopen: boolean
+  isOpen: boolean
   onConfirm: (newValue: string) => void
-  onOpenChange: (isopen: boolean) => void
+  onOpenChange: (isOpen: boolean) => void
   onCancel?: () => void
 }
 
-export default function TimeDropdown({ value, isopen, onConfirm, onCancel, onOpenChange }: TimeDropdownProps) {
+export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpenChange }: TimeDropdownProps) {
   const [initH, initM] = value.split(':').map(s => parseInt(s, 10))
   const [hour, setHour] = useState(isNaN(initH) ? 0 : initH)
   const [minute, setMinute] = useState(isNaN(initM) ? 0 : initM)
@@ -39,7 +39,7 @@ export default function TimeDropdown({ value, isopen, onConfirm, onCancel, onOpe
 
   // 외부 클릭 감지 핸들러
   useEffect(() => {
-    if (!isopen) return
+    if (!isOpen) return
 
     const handleClickOutside = (event: MouseEvent) => {
       // 드롭다운이 열려있을 때만 처리
@@ -62,18 +62,18 @@ export default function TimeDropdown({ value, isopen, onConfirm, onCancel, onOpe
       //이벤트리스너 제거
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isopen])
+  }, [isOpen])
 
   return (
     <Wrapper ref={wrapperRef}>
       <Trigger
         onClick={() => {
-          onOpenChange(!isopen)
+          onOpenChange(!isOpen)
         }}
       >
         {String(hour).padStart(2, '0')} : {String(minute).padStart(2, '0')}
       </Trigger>
-      <Dropdown isopen={isopen} ref={dropdownRef}>
+      <Dropdown isOpen={isOpen} ref={dropdownRef}>
         <Columns>
           <Column>
             {Array.from({ length: 24 }, (_, i) => i).map(h => (
@@ -127,7 +127,7 @@ const Trigger = styled.button`
   }
 `
 
-const Dropdown = styled.div<{ isopen: boolean }>`
+const Dropdown = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: calc(100% + 15px);
   width: 100%;
@@ -140,15 +140,15 @@ const Dropdown = styled.div<{ isopen: boolean }>`
   display: flex;
   flex-direction: column;
 
-  opacity: ${({ isopen }) => (isopen ? 1 : 0)};
-  transform: ${({ isopen }) => (isopen ? 'translateY(0)' : 'translateY(-10px)')};
-  visibility: ${({ isopen }) => (isopen ? 'visible' : 'hidden')};
-  pointer-events: ${({ isopen }) => (isopen ? 'auto' : 'none')};
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(-10px)')};
+  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
+  pointer-events: ${({ isOpen }) => (isOpen ? 'auto' : 'none')};
 
   transition:
     opacity 0.3s ease,
     transform 0.3s ease,
-    visibility 0s linear ${({ isopen }) => (isopen ? '0s' : '0.2s')};
+    visibility 0s linear ${({ isOpen }) => (isOpen ? '0s' : '0.2s')};
 `
 
 const Columns = styled.div`
