@@ -1,10 +1,13 @@
 import { create } from 'zustand'
 
+import { LowercaseOAuthType } from '../type'
+
 export interface OAuthUserInfo {
   isMember: boolean
   email: string
   nickname: string
   imageUrl: string
+  provider: LowercaseOAuthType
 }
 
 interface OAuthUserState {

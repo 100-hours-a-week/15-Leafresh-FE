@@ -35,7 +35,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
 
     const { isMember, email, imageUrl, nickname } = data.data
 
-    setUserInfo({ isMember, email, imageUrl, nickname })
+    setUserInfo({ isMember, email, imageUrl, nickname, provider })
 
     if (!isMember) {
       router.replace(URL.MEMBER.SIGNUP.value)

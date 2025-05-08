@@ -7,10 +7,12 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { OAuthType } from '@entities/member/type'
 import { NicknameDuplicate } from '@features/member/api/nickname-duplicate'
+import { SignUp, SignUpBody } from '@features/member/api/signup'
 import ErrorText from '@shared/components/errortext'
 import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
@@ -44,14 +46,33 @@ const SignupPage = () => {
 
   const nickname = watch('nickname')
 
-  const { refetch: CheckNicknameDuplicate, isLoading } = useQuery({
+  const { refetch: CheckNicknameDuplicate, isLoading: isCheckingNickname } = useQuery({
     queryKey: QUERY_KEYS.MEMBER.DUPLICATE_NICKNAME,
     queryFn: () => NicknameDuplicate({ input: nickname }),
     enabled: false,
   })
 
+  const { mutate: SignUpMutate } = useMutation({
+    mutationFn: SignUp,
+    onSuccess: response => {
+      if (response.data.isDuplicated) {
+        setError('nickname', {
+          type: 'manual',
+          message: '이미 존재하는 유저입니다.',
+        })
+      } else {
+        openToast(ToastType.Success, '회원가입이 완료되었습니다.')
+        router.replace(URL.MAIN.INDEX.value)
+      }
+    },
+    onError: () => {
+      openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
+    },
+  })
+
   useEffect(() => {
     if (userInfo?.isMember) {
+      // if (!userInfo || userInfo?.isMember) {
       router.replace(URL.MAIN.INDEX.value)
     }
   }, [userInfo])
@@ -86,8 +107,8 @@ const SignupPage = () => {
     }
   }
 
-  const onSubmit = (data: SignupFormType) => {
-    if (!isDuplicateChecked) {
+  const onSubmit = async (data: SignupFormType) => {
+    if (!isDuplicateChecked || nickname !== lastCheckedNickname) {
       setError('nickname', {
         type: 'manual',
         message: '닉네임 중복 검사를 해주세요.',
@@ -95,8 +116,24 @@ const SignupPage = () => {
       return
     }
 
-    console.log('회원가입 데이터:', data)
-    // TODO: 회원가입 API 요청
+    if (!userInfo) {
+      openToast(ToastType.Error, '로그인 정보가 없습니다.')
+      return
+    }
+
+    const providerId = Number(userInfo.nickname.replace(/^사용자/, ''))
+
+    const body: SignUpBody = {
+      email: userInfo.email,
+      provider: {
+        name: userInfo.provider.toUpperCase() as OAuthType,
+        id: providerId,
+      },
+      nickname: data.nickname,
+      imageUrl: userInfo.imageUrl,
+    }
+
+    SignUpMutate(body)
   }
 
   return (
@@ -122,8 +159,12 @@ const SignupPage = () => {
 export default SignupPage
 
 const Form = styled.form`
+  height: 100%;
+
   display: flex;
   flex-direction: column;
+  justify-content: center;
+
   padding: 24px;
 `
 

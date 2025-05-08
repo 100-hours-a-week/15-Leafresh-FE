@@ -21,7 +21,7 @@ const Toast = () => {
   }, [isOpen, description, closeToast])
 
   const iconName = type === ToastType.Success ? 'CheckCheck' : 'CircleAlert'
-  const color = type === ToastType.Success ? 'lfBlack' : 'lfRed'
+  const color = type === ToastType.Success ? 'lfBlue' : 'lfRed'
 
   return (
     <AnimatePresence>
