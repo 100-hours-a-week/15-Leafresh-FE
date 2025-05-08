@@ -18,6 +18,10 @@ const MEMBER_URL = {
     name: '로그인',
     value: '/member/login',
   },
+  SIGNUP: {
+    name: '회원가입',
+    value: '/member/signup',
+  },
   PROFILE: {
     MYPAGE: {
       name: '마이페이지',
