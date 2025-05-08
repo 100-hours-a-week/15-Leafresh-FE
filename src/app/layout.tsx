@@ -4,6 +4,7 @@ import CameraModal from '@shared/components/modal/CameraModal'
 import ConfirmModal from '@shared/components/modal/ConfirmModal'
 import InfoModal from '@shared/components/modal/InfoModal'
 import Toast from '@shared/components/Toast/Toast'
+import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
 import { pretendard } from '@shared/config/font'
 import { Providers } from '@shared/config/providers/Providers'
 import LayoutWrapper from '@shared/styles/LayoutWrapper'
@@ -27,6 +28,7 @@ const RootLayout = ({
           <CameraModal />
           <InfoModal />
           <Toast />
+          <ImageZoomModal />
         </Providers>
       </body>
     </html>

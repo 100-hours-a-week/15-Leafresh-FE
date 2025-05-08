@@ -131,7 +131,7 @@ const Header = styled.div`
 const CameraWrapper = styled.div`
   gap: 16px;
   width: 100%;
-  aspect-ratio: 1/1;
+  /* aspect-ratio: 1/1; */
   background-color: ${theme.colors.lfInputBackground.base};
 `
 

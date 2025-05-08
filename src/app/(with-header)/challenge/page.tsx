@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 
 import DatePicker from '@shared/components/datepicker/DatePicker'
@@ -9,11 +9,6 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 const CalendarTestPage = () => {
   const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
-
-  useEffect(() => {
-    console.log('startDate: ', startDate)
-    console.log('endDate: ', endDate)
-  }, [startDate, endDate])
 
   return (
     <Wrapper>

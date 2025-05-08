@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import VerificationImageInput from '@features/challenge/components/verification-image-input/VerificationImageInput'
 import ImageInput from '@shared/components/image-input'
@@ -17,10 +17,6 @@ const MainPage = () => {
   const handleDescription = (description: string | null) => {
     setDescription(description)
   }
-
-  useEffect(() => {
-    console.log(imageUrl)
-  }, [imageUrl])
 
   return (
     <>

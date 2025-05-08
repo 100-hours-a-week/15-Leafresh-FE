@@ -2,8 +2,9 @@
 
 import styled from '@emotion/styled'
 
-import { ChallengeVerificationStatusType } from '@entities/challenge/type'
+import { ChallengeVerificationResultType, ChallengeVerificationStatusType } from '@entities/challenge/type'
 import ImageInput from '@shared/components/image-input'
+import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import { ThemeColorType } from '@shared/styles/theme/type'
@@ -43,7 +44,6 @@ interface VerificationImageInputProps {
   onImageChange: (imageUrl: string | null) => void
   onDescriptionChange: (description: string | null) => void
 
-  onZoomClick?: () => void
   className?: string
 }
 
@@ -55,10 +55,25 @@ const VerificationImageInput = ({
   cameraTitle,
   onImageChange,
   onDescriptionChange,
-  onZoomClick,
   className,
 }: VerificationImageInputProps) => {
   const { icon, color } = STATUS_ICON_MAP[status]
+  const { open } = useImageZoomStore()
+
+  const handleZoomClick = () => {
+    if (!imageUrl || !description) return
+
+    open(
+      [
+        {
+          result: status as ChallengeVerificationResultType,
+          imageSrc: imageUrl,
+          description: description,
+        },
+      ],
+      0,
+    )
+  }
 
   return (
     <Container className={className}>
@@ -79,7 +94,7 @@ const VerificationImageInput = ({
 
       {/* 우하단 확대 버튼 */}
       {imageUrl && (
-        <ZoomButton onClick={onZoomClick}>
+        <ZoomButton onClick={handleZoomClick}>
           <LucideIcon name='Scan' size={20} />
         </ZoomButton>
       )}
@@ -126,7 +141,7 @@ const Description = styled.p`
 
 const ZoomButton = styled.button`
   position: absolute;
-  bottom: 60px;
+  bottom: 48px;
   right: 2px;
   background: transparent;
   border: none;
