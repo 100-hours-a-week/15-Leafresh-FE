@@ -1,5 +1,6 @@
 import { DAYS_KOR } from '@entities/challenge/constant'
 import { DayType } from '@entities/challenge/type'
+import { DateFormatString } from '@shared/types/date'
 
 /**
  * 요일 인덱스(일: 0, 월: 1, … 토: 6)를 통해 한글 요일로 반환
@@ -28,4 +29,15 @@ export const convertDayToLabel = (day: DayType) => {
     case 'SATURDAY':
       return DAYS_KOR[6]
   }
+}
+
+/**
+ * Date 객체를 "YYYY-mm-dd" 형태로 변환하는 함수
+ */
+export const formatDateToDateFormatString = (date: Date): DateFormatString => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}` as DateFormatString
 }
