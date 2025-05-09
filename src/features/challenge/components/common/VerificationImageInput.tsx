@@ -12,7 +12,7 @@ import { getThemeColor } from '@shared/styles/theme/utils'
 
 const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.ReactNode; color: ThemeColorType }> = {
   SUCCESS: {
-    icon: <LucideIcon name='Check' size={20} color='lfWhite' />, // icon은 white로
+    icon: <LucideIcon name='Check' size={20} color='lfWhite' />,
     color: 'lfGreenMain',
   },
   FAILURE: {
@@ -38,12 +38,8 @@ interface VerificationImageInputProps {
   status: ChallengeVerificationStatusType
   imageUrl: string | null
   description: string | null
-
   cameraTitle: string
-
-  onImageChange: (imageUrl: string | null) => void
-  onDescriptionChange: (description: string | null) => void
-
+  onChange: (data: { imageUrl: string | null; description?: string | null }) => void
   className?: string
 }
 
@@ -53,8 +49,7 @@ const VerificationImageInput = ({
   status,
   imageUrl,
   cameraTitle,
-  onImageChange,
-  onDescriptionChange,
+  onChange,
   className,
 }: VerificationImageInputProps) => {
   const { icon, color } = STATUS_ICON_MAP[status]
@@ -85,21 +80,17 @@ const VerificationImageInput = ({
         cameraTitle={cameraTitle}
         hasDescription
         type={status}
-        onImageChange={onImageChange}
-        onDescriptionChange={onDescriptionChange}
+        onChange={onChange}
       />
 
-      {/* 하단 상태 표시 영역 */}
       <Footer backgroundColor={color}>{icon}</Footer>
 
-      {/* 우하단 확대 버튼 */}
       {imageUrl && (
         <ZoomButton onClick={handleZoomClick}>
-          <LucideIcon name='Scan' size={20} />
+          <LucideIcon name='Scan' size={20} color='lfWhite' />
         </ZoomButton>
       )}
 
-      {/* 설명 텍스트 */}
       {imageUrl && <Description>{description}</Description>}
     </Container>
   )
@@ -136,14 +127,16 @@ const Description = styled.p`
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
   text-align: center;
-  margin-top: 6px;
+  margin-top: 8px;
+  line-height: 130%;
 `
 
 const ZoomButton = styled.button`
   position: absolute;
-  bottom: 48px;
+  top: 90px;
   right: 2px;
   background: transparent;
+
   border: none;
   padding: 4px;
   cursor: pointer;

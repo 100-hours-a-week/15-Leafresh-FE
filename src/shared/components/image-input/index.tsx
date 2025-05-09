@@ -23,8 +23,7 @@ interface ImageInputProps {
   hasDescription?: boolean // 해당 이미지에 대한 설명을 받을지 여부
   type?: ChallengeVerificationStatusType
 
-  onImageChange: (imageUrl: string | null) => void
-  onDescriptionChange?: (description: string | null) => void
+  onChange: (data: { imageUrl: string | null; description?: string }) => void
 
   className?: string
 }
@@ -35,13 +34,12 @@ const ImageInput = ({
   fontSize = 'xs',
   backgroundColor = 'lfGray',
   imageUrl, // 외부 관리 상태
-  onImageChange,
   className,
 
   cameraTitle,
   hasDescription = false,
   type = 'SUCCESS',
-  onDescriptionChange,
+  onChange,
 }: ImageInputProps) => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
   const { open: openCameraModal } = useCameraModalStore()
@@ -51,16 +49,12 @@ const ImageInput = ({
       // #1. 카메라 모달 제목
       cameraTitle,
 
-      // #2. 이미지 업로드 처리
-      (imageUrl: string) => {
+      // #2. 이미지 + (설명) 업로드 처리
+      ({ imageUrl, description }) => {
         setPreviewImageUrl(imageUrl)
-        onImageChange(imageUrl)
+        onChange({ imageUrl, description })
       },
 
-      // #3. 설명 업로드 처리
-      (description: string) => {
-        onDescriptionChange?.(description)
-      },
       hasDescription, // 이미지에 대한 설명을 받을지 여부
       type, // 성공 이미지 혹은 실패 이미지
     )
@@ -68,7 +62,7 @@ const ImageInput = ({
 
   const handleRemoveImage = () => {
     setPreviewImageUrl(null)
-    onImageChange?.(null)
+    onChange({ imageUrl: null })
   }
 
   return (

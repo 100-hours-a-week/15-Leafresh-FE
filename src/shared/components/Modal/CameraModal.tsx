@@ -9,8 +9,7 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
 const CameraModal = () => {
-  // const openToast = useToast()
-  const { isOpen, title, type, hasDescription, onImageChange, onDescriptionChange, close } = useCameraModalStore()
+  const { isOpen, title, type, hasDescription, onComplete, close } = useCameraModalStore()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -43,22 +42,10 @@ const CameraModal = () => {
   }
 
   const handleConfirm = () => {
-    if (!previewUrl) {
-      // TODO : 토스트 에러 처리
-      // openToast({})
-      return
-    }
-    if (hasDescription && !description) {
-      // TODO : 토스트 에러 처리
-      // openToast({})
-      return
-    }
+    if (!previewUrl) return
+    if (hasDescription && !description) return
 
-    onImageChange(previewUrl)
-    if (hasDescription) {
-      onDescriptionChange(description)
-    }
-
+    onComplete({ imageUrl: previewUrl, description: hasDescription ? description : undefined })
     close()
     setPreviewUrl(null)
     setDescription('')
@@ -93,7 +80,6 @@ const CameraModal = () => {
 
       <ContentWrapper>{content}</ContentWrapper>
 
-      {/* TODO : SwitchTab을 전환 */}
       <SwitchWrapper>
         <ConfirmButton onClick={handleConfirm}>등록하기</ConfirmButton>
       </SwitchWrapper>
