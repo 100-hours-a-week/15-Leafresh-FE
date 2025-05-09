@@ -16,7 +16,7 @@ const WithHeaderLayout = ({
   return (
     <>
       <Header height={HEADER_HEIGHT} padding={WIDTH_PADDING} />
-      <Main>{children}</Main>
+      <Main marginTop={HEADER_HEIGHT}>{children}</Main>
       <Footer padding={WIDTH_PADDING} />
     </>
   )
@@ -24,9 +24,10 @@ const WithHeaderLayout = ({
 
 export default WithHeaderLayout
 
-const Main = styled.main`
-  min-height: calc(100vh - ${HEADER_HEIGHT}px);
+const Main = styled.main<{ marginTop: number }>`
+  min-height: 100dvh;
 
+  margin-top: ${({ marginTop }) => `${marginTop}px`};
   width: 100%;
   background-color: ${theme.colors.lfWhite.base};
   padding: 23px ${WIDTH_PADDING}px;
