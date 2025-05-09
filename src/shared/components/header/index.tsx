@@ -23,7 +23,7 @@ interface HeaderProps {
 
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
-  const { value: isOpen, toggle } = useToggle()
+  const { value: isOpen, toggle, setValue } = useToggle()
   const drawerRef = useRef<HTMLDivElement>(null)
 
   // TODO : 로그인 상태 판단 / 정보 가져오기
@@ -35,7 +35,7 @@ const Header = ({ height, padding }: HeaderProps) => {
   useScrollLock(isOpen)
 
   const handleRoute = (url: string) => {
-    toggle()
+    setValue(false)
     router.push(url)
   }
 
