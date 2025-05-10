@@ -2,6 +2,7 @@
 
 import styled from '@emotion/styled'
 
+import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/constant'
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { theme } from '@shared/styles/theme'
 
@@ -57,6 +58,16 @@ const ChallengeVerifyExamples = ({
       }
     }
 
+    /** 이미지 입력창 1개만 두기 */
+    for (const result_type of CHALLENGE_VERIFICATION_RESULT) {
+      const emptyItems = newExamples.filter(e => e.url === null && e.type === result_type)
+      if (emptyItems.length > 1) {
+        const firstIndex = newExamples.findIndex(e => e === emptyItems[0])
+        newExamples = newExamples.filter((e, idx) => e.url !== null || e.type !== result_type || idx === firstIndex)
+      }
+    }
+
+    /** 성공 이미지 > 실패 이미지 > 성공 입력창 > 실패 입력창 */
     newExamples.sort((a, b) => {
       const aUploaded = a.url !== null
       const bUploaded = b.url !== null
