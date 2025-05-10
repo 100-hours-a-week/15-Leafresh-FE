@@ -25,7 +25,7 @@ const CHALLENGE_ENDPOINTS = {
     // 목록 (특정 카테고리)
     LIST: {
       method: HttpMethod.GET,
-      path: `/api/challenges/group`,
+      path: `/api/challenges/personal`,
     },
 
     // 인증 제출
