@@ -204,12 +204,18 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
                 <LeafLabel>{ch.leafReward}</LeafLabel>
               </LeafWrapper>
               <DailyImageArea>
-                <Image src={ch.imageUrl} alt={ch.description} width={48} height={48} />
+                <Image
+                  src={ch.imageUrl}
+                  alt={ch.description}
+                  width={48}
+                  height={48}
+                  style={{ objectFit: 'cover', borderRadius: theme.radius.base }}
+                />
               </DailyImageArea>
 
               {/* <CardImage src={ch.imageUrl} alt={ch.title} width={100} height={100} /> */}
             </CardTop>
-            <JoinButton>참여하기</JoinButton>
+            <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>참여하기</JoinButton>
             <DailyCardDesciptions>
               <CardTitle>{ch.title}</CardTitle>
               <CardDescription>{ch.description}</CardDescription>
@@ -225,7 +231,7 @@ export default ChallengeMainPage
 
 // === Styles ===
 const Container = styled.div`
-  padding-top: 240px;
+  padding-top: 250px;
   padding-bottom: 80px;
 
   display: flex;
@@ -401,15 +407,20 @@ const LeafWrapper = styled.p`
 const LeafImage = styled(Image)``
 
 const LeafLabel = styled.span`
-  font-size: ${theme.fontSize.xs};
+  font-size: ${theme.fontSize.sm};
 `
 const DailyImageArea = styled.div`
   width: 100%;
   aspect-ratio: 16/9;
 
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${DailyCard}:hover & {
+    transform: scale(1.2);
+  }
 `
 
 const JoinButton = styled.button`
@@ -421,11 +432,18 @@ const JoinButton = styled.button`
   border-radius: ${theme.radius.base};
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.semiBold};
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${theme.colors.lfGreenMain.hover};
+  }
 `
 const DailyCardDesciptions = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  transition: all 0.3s ease; // optional: hover 부드럽게
 `
 const CardTitle = styled.h3`
   font-size: ${theme.fontSize.lg};
@@ -437,10 +455,3 @@ const CardDescription = styled.p`
   color: ${theme.colors.lfDarkGray.base};
   white-space: pre-wrap;
 `
-
-// const CardImage = styled(Image)`
-//   border-radius: ${theme.radius.base};
-//   object-fit: cover;
-// `
-
-const TempCategoryImageArea = styled.div``
