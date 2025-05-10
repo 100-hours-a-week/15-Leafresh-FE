@@ -115,7 +115,7 @@ interface ChallengeMainPageProps {
 const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => {
   const router = useRouter()
   const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', startIndex: 1 }, [
-    Autoplay({ delay: 3000, stopOnInteraction: true, stopOnFocusIn: true }),
+    Autoplay({ delay: 3000, stopOnInteraction: true }),
   ])
 
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
@@ -317,17 +317,26 @@ const MoreEventChallengeButton = styled.button`
 const CategoryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px 0;
-  margin-top: 24px;
 `
 
 const CategoryItem = styled.div`
+  aspect-ratio: 1/1;
+  border-radius: ${theme.radius.lg};
+
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 6px;
+
+  gap: 8px;
   font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfDarkGray.base};
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f5eee4;
+  }
 `
 
 const CategoryLabel = styled.span`
@@ -355,12 +364,14 @@ const EventCard = styled.div`
   aspect-ratio: 16/9;
 
   flex: 0 0 auto;
-  background: ${theme.colors.lfLightGray.base};
+  background: ${theme.colors.lfInputBackground.base};
   border-radius: ${theme.radius.base};
   display: flex;
   flex-direction: row;
   padding: 16px;
   gap: 12px;
+
+  cursor: pointer;
 `
 const ImageArea = styled.div`
   flex-basis: 40%;
@@ -378,10 +389,12 @@ const CardArea = styled.div`
 `
 
 const DailyCard = styled.div`
-  background: ${theme.colors.lfLightGray.base};
+  background: ${theme.colors.lfInputBackground.base};
   border-radius: ${theme.radius.base};
   padding: 16px;
   margin-top: 16px;
+
+  cursor: pointer;
 `
 
 const CardTop = styled.div`
@@ -446,7 +459,7 @@ const DailyCardDesciptions = styled.div`
   transition: all 0.3s ease; // optional: hover 부드럽게
 `
 const CardTitle = styled.h3`
-  font-size: ${theme.fontSize.lg};
+  font-size: ${theme.fontSize.md};
   font-weight: ${theme.fontWeight.medium};
 `
 
