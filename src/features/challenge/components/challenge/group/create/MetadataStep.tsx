@@ -234,7 +234,7 @@ const Text = styled.div`
 const FieldGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 60px;
 
   position: relative;
 `
@@ -246,7 +246,6 @@ const FieldWrapper = styled.div`
   gap: 4px;
 `
 
-// Dropdowns
 const CategoryDropdown = StyledGeneric<DropdownProps<string>>(
   Dropdown,
   `
@@ -259,16 +258,6 @@ const ParticipantDropdown = StyledGeneric<DropdownProps<number>>(
   width: 100%;
 `,
 )
-
-// const SubmitButton = styled.button<{ $active: boolean }>`
-//   padding: 12px;
-//   border-radius: ${theme.radius.base};
-//   background-color: ${({ $active }) => ($active ? theme.colors.lfGreenMain.base : theme.colors.lfGreenInactive.base)};
-//   color: ${({ $active }) => ($active ? theme.colors.lfWhite.base : theme.colors.lfBlack.base)};
-//   font-weight: ${theme.fontWeight.semiBold};
-//   cursor: pointer;
-//   border: none;
-// `
 
 const SubmitButton = styled.button`
   padding: 12px;

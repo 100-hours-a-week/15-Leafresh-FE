@@ -129,6 +129,8 @@ const Description = styled.p`
   text-align: center;
   margin-top: 8px;
   line-height: 130%;
+  word-break: break-word;
+  white-space: pre-wrap;
 `
 
 const ZoomButton = styled.button`
