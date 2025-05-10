@@ -20,6 +20,7 @@ import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
+import LeafIcon from '@public/icon/leaf.png'
 
 export const dummyEventChallenges: EventChallenge[] = [
   {
@@ -53,14 +54,14 @@ export const dummyPersonalChallenges: PersonalChallengeType[] = [
     id: 1,
     title: '챌린지 제목',
     description: '챌린지 설명',
-    imageUrl: '123',
+    imageUrl: '/icon/category_zero_waste.png',
     leafReward: 400,
   },
   {
     id: 2,
     title: '챌린지 제목',
     description: '챌린지 설명',
-    imageUrl: '123',
+    imageUrl: '/icon/category_zero_waste.png',
     leafReward: 400,
   },
 ]
@@ -198,13 +199,21 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
         {personalChallenges.map(ch => (
           <DailyCard key={ch.id}>
             <CardTop>
-              <RewardIcon>🌱 {ch.leafReward}</RewardIcon>
-              <div>이미지 영역</div>
+              <LeafWrapper>
+                <LeafImage src={LeafIcon} alt='나뭇잎 아이콘' />
+                <LeafLabel>{ch.leafReward}</LeafLabel>
+              </LeafWrapper>
+              <DailyImageArea>
+                <Image src={ch.imageUrl} alt={ch.description} width={48} height={48} />
+              </DailyImageArea>
+
               {/* <CardImage src={ch.imageUrl} alt={ch.title} width={100} height={100} /> */}
             </CardTop>
             <JoinButton>참여하기</JoinButton>
-            <CardTitle>{ch.title}</CardTitle>
-            <CardDescription>{ch.description}</CardDescription>
+            <DailyCardDesciptions>
+              <CardTitle>{ch.title}</CardTitle>
+              <CardDescription>{ch.description}</CardDescription>
+            </DailyCardDesciptions>
           </DailyCard>
         ))}
       </Section>
@@ -370,33 +379,61 @@ const DailyCard = styled.div`
 `
 
 const CardTop = styled.div`
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
 `
 
-const RewardIcon = styled.div`
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfGreenMain.base};
+const LeafWrapper = styled.p`
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: ${theme.fontWeight.semiBold};
+`
+
+const LeafImage = styled(Image)``
+
+const LeafLabel = styled.span`
+  font-size: ${theme.fontSize.xs};
+`
+const DailyImageArea = styled.div`
+  width: 100%;
+  aspect-ratio: 16/9;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const JoinButton = styled.button`
   width: 100%;
   margin: 12px 0;
-  padding: 8px 0;
+  padding: 16px 0;
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
+  font-weight: ${theme.fontWeight.semiBold};
+`
+const DailyCardDesciptions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `
 const CardTitle = styled.h3`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.medium};
 `
 
 const CardDescription = styled.p`
-  font-size: ${theme.fontSize.base};
+  font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfDarkGray.base};
   white-space: pre-wrap;
 `
