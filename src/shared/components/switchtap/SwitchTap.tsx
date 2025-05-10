@@ -2,6 +2,7 @@
 
 import React from 'react'
 import styled from '@emotion/styled'
+
 import { theme } from '@shared/styles/emotion/theme'
 
 export interface SwitchTapProps {

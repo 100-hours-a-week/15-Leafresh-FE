@@ -27,13 +27,13 @@ const colorThemes = {
     base: '#D9D9D9',
   },
   lfInputBackground: {
-    base: '#FAFAFA',
+    base: '#EBEBEB',
   },
   lfGray: {
     base: '#B0ABAB',
   },
   lfBackdrop: {
-    base: '#707070',
+    base: '#70707066',
   },
   lfDarkGray: {
     base: '#5D5F62',

@@ -8,9 +8,9 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
-import { useImageZoomStore } from '@shared/context/ZoomModalStore/ImageZoomStore'
+import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { theme } from '@shared/styles/emotion/theme'
+import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 
 const ImageZoomModal = () => {
   const [isInitial, setIsInitial] = useState(true)
@@ -18,6 +18,7 @@ const ImageZoomModal = () => {
 
   const wrapperRef = useRef<HTMLDivElement>(null)
   useKeyClose('Escape', wrapperRef as React.RefObject<HTMLElement>, close)
+  useScrollLock(isOpen)
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
@@ -76,7 +77,7 @@ const ImageZoomModal = () => {
 export default ImageZoomModal
 
 const Wrapper = styled.div`
-  width: ${theme.breakPoints.mobile};
+  width: 100%;
   height: 100dvh;
   position: absolute;
   top: 0;
@@ -115,9 +116,12 @@ const ResultBar = styled.div<{ result: ChallengeVerificationResultType }>`
 `
 
 const Viewport = styled.div`
+  width: 100%;
   overflow: hidden;
 
   position: relative;
+  display: flex;
+  justify-content: center;
   padding-top: 20px;
   background-color: black;
   flex: 1;

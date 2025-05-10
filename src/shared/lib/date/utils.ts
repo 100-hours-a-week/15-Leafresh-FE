@@ -1,11 +1,12 @@
-import { KOR_DAYS } from '@entities/challenge/constant'
+import { DAYS_KOR } from '@entities/challenge/constant'
 import { DayType } from '@entities/challenge/type'
+import { DateFormatString } from '@shared/types/date'
 
 /**
  * 요일 인덱스(일: 0, 월: 1, … 토: 6)를 통해 한글 요일로 반환
  */
 export const dayToString = (dayIndex: number): string => {
-  return KOR_DAYS[dayIndex]
+  return DAYS_KOR[dayIndex]
 }
 
 /**
@@ -14,18 +15,29 @@ export const dayToString = (dayIndex: number): string => {
 export const convertDayToLabel = (day: DayType) => {
   switch (day) {
     case 'SUNDAY':
-      return KOR_DAYS[0]
+      return DAYS_KOR[0]
     case 'MONDAY':
-      return KOR_DAYS[1]
+      return DAYS_KOR[1]
     case 'TUESDAY':
-      return KOR_DAYS[2]
+      return DAYS_KOR[2]
     case 'WEDNESDAY':
-      return KOR_DAYS[3]
+      return DAYS_KOR[3]
     case 'THURSDAY':
-      return KOR_DAYS[4]
+      return DAYS_KOR[4]
     case 'FRIDAY':
-      return KOR_DAYS[5]
+      return DAYS_KOR[5]
     case 'SATURDAY':
-      return KOR_DAYS[6]
+      return DAYS_KOR[6]
   }
+}
+
+/**
+ * Date 객체를 "YYYY-mm-dd" 형태로 변환하는 함수
+ */
+export const formatDateToDateFormatString = (date: Date): DateFormatString => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}` as DateFormatString
 }

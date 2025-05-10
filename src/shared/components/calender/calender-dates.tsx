@@ -17,7 +17,7 @@ import {
 
 import styled from '@emotion/styled'
 
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 interface CalendarDatesProps {
   currentMonth: Date

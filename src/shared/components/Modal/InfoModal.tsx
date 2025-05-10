@@ -2,23 +2,15 @@
 
 import { useRef } from 'react'
 import styled from '@emotion/styled'
-import { theme } from '@shared/styles/emotion/theme'
 
-import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
+import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
+import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
-
-import { useInfoModalStore, InfoModalVariant } from '@shared/context/Modal/InfoModalStore'
+import { theme } from '@shared/styles/theme'
 
 const InfoModal = () => {
-  const {
-    isOpen,
-    title,
-    description,
-    variant,
-    onClose,
-    closeInfoModal,
-  } = useInfoModalStore()
+  const { isOpen, title, description, variant, onClose, closeInfoModal } = useInfoModalStore()
 
   const modalRef = useRef<HTMLDivElement>(null)
   const isRegular = description && variant !== 'minimal'
@@ -30,7 +22,7 @@ const InfoModal = () => {
 
   useOutsideClick(modalRef as React.RefObject<HTMLElement>, handleClose)
   useKeyClose('Escape', modalRef as React.RefObject<HTMLElement>, handleClose)
-  useScrollLock()
+  useScrollLock(isOpen)
 
   if (!isOpen) return null
 
@@ -38,14 +30,12 @@ const InfoModal = () => {
     <Overlay>
       <ModalContainer ref={modalRef}>
         <ContentWrapper>
-            <Title>{title}</Title>
-            {isRegular && <Description>{description}</Description>}
+          <Title>{title}</Title>
+          {isRegular && <Description>{description}</Description>}
         </ContentWrapper>
 
         <ButtonWrapper>
-          <ConfirmButton onClick={handleClose}>
-            확인
-          </ConfirmButton>
+          <ConfirmButton onClick={handleClose}>확인</ConfirmButton>
         </ButtonWrapper>
       </ModalContainer>
     </Overlay>
@@ -77,8 +67,8 @@ const ModalContainer = styled.div`
 `
 
 const ContentWrapper = styled.div`
-    padding: 15px 17px 0;
-    flex-grow: 1;
+  padding: 15px 17px 0;
+  flex-grow: 1;
 `
 
 const Title = styled.h2`
@@ -110,12 +100,4 @@ const ConfirmButton = styled.button`
   font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
   padding: 9.5px 14.5px;
-`
-
-const CancelButton = styled.button`
-  background: none;
-  border: none;
-  color: ${theme.colors.lfGray.base};
-  font-size: ${theme.fontSize.sm};
-  cursor: pointer;
 `

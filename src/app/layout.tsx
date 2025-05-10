@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 
+import CameraModal from '@shared/components/modal/CameraModal'
 import ConfirmModal from '@shared/components/modal/ConfirmModal'
 import InfoModal from '@shared/components/modal/InfoModal'
 import Toast from '@shared/components/Toast/Toast'
+import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
 import { pretendard } from '@shared/config/font'
 import { Providers } from '@shared/config/providers/Providers'
-import GlobalScrollbarStyle from '@shared/styles/scrollbar/GlobalScrollbarStyle'
-
-import './globals.css'
+import LayoutWrapper from '@shared/styles/LayoutWrapper'
 
 export const metadata: Metadata = {
   title: 'Leafresh',
@@ -22,12 +22,13 @@ const RootLayout = ({
   return (
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
-        <GlobalScrollbarStyle />
         <Providers>
-          {children}
+          <LayoutWrapper>{children}</LayoutWrapper>
           <ConfirmModal />
+          <CameraModal />
           <InfoModal />
           <Toast />
+          <ImageZoomModal />
         </Providers>
       </body>
     </html>
