@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { useToastStore } from '@shared/context/Toast/ToastStore'
 import { ToastType } from '@shared/context/Toast/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/styles/emotion/theme'
 
 const Toast = () => {
   const { isOpen, type, description, close: closeToast } = useToastStore()
