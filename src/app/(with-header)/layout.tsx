@@ -27,6 +27,7 @@ export default WithHeaderLayout
 const Main = styled.main<{ marginTop: number }>`
   min-height: calc(100dvh - ${({ marginTop }) => `${marginTop}px`});
 
+  position: relative;
   margin-top: ${({ marginTop }) => `${marginTop}px`};
   width: 100%;
   background-color: ${theme.colors.lfWhite.base};

@@ -35,8 +35,6 @@ const Header = ({ height, padding }: HeaderProps) => {
   useScrollLock(isOpen)
 
   const handleRoute = (url: string) => {
-    console.log('routing to : ', url)
-
     router.push(url)
     setValue(false)
   }
@@ -78,7 +76,7 @@ const Header = ({ height, padding }: HeaderProps) => {
                     친환경 챌린지 시작하기
                   </StartButton>
                   <MenuItemWrapper>
-                    <MenuItem onClick={() => handleRoute(URL.MAIN.INDEX.value)}>챌린지 목록</MenuItem>
+                    <MenuItem onClick={() => handleRoute(URL.CHALLENGE.INDEX.value)}>챌린지 목록</MenuItem>
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.PARTICIPATE.INDEX.value)}>인증하기</MenuItem>
                     <MenuItem onClick={() => handleRoute(URL.STORE.INDEX.value)}>나뭇잎 상점</MenuItem>
                     <MenuItem>로그아웃</MenuItem>
