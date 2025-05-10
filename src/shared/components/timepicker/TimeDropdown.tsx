@@ -73,7 +73,7 @@ export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpe
       >
         {String(hour).padStart(2, '0')} : {String(minute).padStart(2, '0')}
       </Trigger>
-      <Dropdown isOpen={isOpen} ref={dropdownRef}>
+      <Dropdown isOpen={isOpen} ref={dropdownRef} onClick={e => e.stopPropagation()}>
         <Columns>
           <Column>
             {Array.from({ length: 24 }, (_, i) => i).map(h => (
@@ -118,13 +118,6 @@ const Trigger = styled.button`
   color: ${theme.colors.lfBlack.base};
   text-align: start;
   cursor: pointer;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.05);
-  }
-  &:active {
-    background: rgba(0, 0, 0, 0.1);
-  }
 `
 
 const Dropdown = styled.div<{ isOpen: boolean }>`

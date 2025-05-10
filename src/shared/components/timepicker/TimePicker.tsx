@@ -1,6 +1,4 @@
 'use client'
-
-import { useCallback } from 'react'
 import TimeDropdown from './TimeDropdown'
 
 import { theme } from '@shared/styles/emotion/theme'
@@ -23,7 +21,12 @@ const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }:
     <Wrapper>
       {label && <Title>{label}</Title>}
       <RangeWrapper isOpen={startOpen || endOpen}>
-        <Panel>
+        <Panel
+          onClick={() => {
+            setStartOpen(true)
+            setEndOpen(false)
+          }}
+        >
           <PanelLabel>시작시간</PanelLabel>
           <TimeDropdown
             value={startValue}
@@ -37,7 +40,12 @@ const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }:
           />
         </Panel>
         <Divider />
-        <Panel>
+        <Panel
+          onClick={() => {
+            setStartOpen(false)
+            setEndOpen(true)
+          }}
+        >
           <PanelLabel>종료시간</PanelLabel>
           <TimeDropdown
             value={endValue}
@@ -92,6 +100,7 @@ const RangeWrapper = styled.div<{ isOpen: boolean }>`
 const Panel = styled.div`
   flex: 1;
   padding: 12px 16px;
+  cursor: pointer;
 `
 const PanelLabel = styled.div`
   font-size: ${theme.fontSize.sm};
