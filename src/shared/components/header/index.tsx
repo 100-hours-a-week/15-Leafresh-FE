@@ -60,6 +60,7 @@ const Header = ({ height, padding }: HeaderProps) => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3 }}
+              padding={padding}
             >
               <DrawerHeader>
                 <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
@@ -111,12 +112,13 @@ const HeaderContainer = styled.header<{ height: number }>`
   width: 100%;
   height: ${({ height }) => `${height}px`};
 
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: ${theme.colors.lfWhite.base};
   border-bottom: 1px solid ${theme.colors.lfLightGray.base};
-  position: fixed;
+
   z-index: 9999;
 `
 
@@ -150,11 +152,12 @@ const Backdrop = styled.div`
   z-index: 999;
 `
 
-const SlideDrawer = styled(motion.div)`
-  position: absolute;
+const SlideDrawer = styled(motion.div)<{ padding: number }>`
+  position: fixed;
   top: 0;
   right: 0;
-  height: 100vh;
+
+  height: 100dvh;
   width: 70%;
   max-width: 300px;
 
@@ -167,7 +170,6 @@ const SlideDrawer = styled(motion.div)`
   align-items: center;
   z-index: 1000;
 `
-
 const DrawerHeader = styled.div`
   display: flex;
   align-items: center;
