@@ -3,50 +3,33 @@
 
 import { useState } from 'react'
 import styled from '@emotion/styled'
-
-import SwitchTap from '@shared/components/switchtap/SwitchTap'
+import TimePicker from '@shared/components/timepicker/TimePicker'
 
 export default function Page() {
-  const [tab, setTab] = useState(0)
+  const [start, setStart] = useState('00:00')
+  const [end, setEnd] = useState('23:59')
 
   return (
-    <Wrapper>
-      <SwitchTap tabs={['카메라', '카메라2', '인증 방법']} currentIndex={tab} onChange={setTab} />
-
-      <ContentArea>
-        {tab === 0 ? (
-          <Placeholder>📷 카메라 화면을 여기에 렌더링</Placeholder>
-        ) : (
-          <Placeholder>🔐 인증 방법 설명을 여기에 렌더링</Placeholder>
-        )}
-      </ContentArea>
-    </Wrapper>
+    <Container>
+      <TimePicker
+        label='인증 가능 시간 *'
+        startValue={start}
+        endValue={end}
+        onChangeStart={setStart}
+        onChangeEnd={setEnd}
+      />
+      <>
+        {start} ~ {end}
+      </>
+    </Container>
   )
 }
 
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 가운데 정렬 */
+const Container = styled.div`
   padding: 24px;
-  gap: 24px; /* 컴포넌트 간 여백 */
+  color: black;
 `
-
-const ContentArea = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 480px; /* 반응형 최대 너비 */
-  min-height: 240px; /* 기본 높이 */
-  padding: 16px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  background: #fafafa;
-`
-
-const Placeholder = styled.div`
-  font-size: 1rem;
-  color: #666;
+const Output = styled.div`
+  margin-top: 16px;
+  font-size: 14px;
 `
