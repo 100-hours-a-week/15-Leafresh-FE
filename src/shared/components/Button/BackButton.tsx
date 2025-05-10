@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
+
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/emotion/theme'
 
 export interface BackButtonProps {
   onClick?: () => void
