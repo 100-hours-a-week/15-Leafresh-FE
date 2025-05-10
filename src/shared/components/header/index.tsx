@@ -35,8 +35,10 @@ const Header = ({ height, padding }: HeaderProps) => {
   useScrollLock(isOpen)
 
   const handleRoute = (url: string) => {
-    setValue(false)
+    console.log('routing to : ', url)
+
     router.push(url)
+    setValue(false)
   }
 
   return (
