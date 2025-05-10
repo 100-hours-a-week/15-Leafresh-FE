@@ -114,7 +114,7 @@ interface ChallengeMainPageProps {
 
 const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => {
   const router = useRouter()
-  const [emblaRef] = useEmblaCarousel({ loop: true, align: 'center' }, [
+  const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', startIndex: 1 }, [
     Autoplay({ delay: 3000, stopOnInteraction: true, stopOnFocusIn: true }),
   ])
 
@@ -337,11 +337,11 @@ const CarouselWrapper = styled.div`
 
 const CarouselInner = styled.div`
   height: 100%;
-  padding: 0 20px;
 
   position: relative;
   display: flex;
-  gap: 12px;
+  gap: 8px; // ✅ 카드 사이 간격
+  padding: 0 40px; // ✅ 좌우 여백 추가로 정중앙 맞추기
   will-change: transform;
 `
 const EventCard = styled.div`
