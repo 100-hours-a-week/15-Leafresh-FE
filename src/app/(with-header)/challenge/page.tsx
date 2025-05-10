@@ -1,44 +1,52 @@
+// src/app/page.tsx
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 
-import DatePicker from '@shared/components/datepicker/DatePicker'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import SwitchTap from '@shared/components/switchtap/SwitchTap'
 
-const CalendarTestPage = () => {
-  const [startDate, setStartDate] = useState<Date>()
-  const [endDate, setEndDate] = useState<Date>()
-
-  useEffect(() => {
-    console.log('startDate: ', startDate)
-    console.log('endDate: ', endDate)
-  }, [startDate, endDate])
+export default function Page() {
+  const [tab, setTab] = useState(0)
 
   return (
     <Wrapper>
-      <StyledDatePicker
-        icon={<LucideIcon name='Calendar' size={24} strokeWidth={2.5} />}
-        label='챌린지 기간 *'
-        startDate={startDate}
-        endDate={endDate}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-      />
+      <SwitchTap tabs={['카메라', '카메라2', '인증 방법']} currentIndex={tab} onChange={setTab} />
+
+      <ContentArea>
+        {tab === 0 ? (
+          <Placeholder>📷 카메라 화면을 여기에 렌더링</Placeholder>
+        ) : (
+          <Placeholder>🔐 인증 방법 설명을 여기에 렌더링</Placeholder>
+        )}
+      </ContentArea>
     </Wrapper>
   )
 }
 
-export default CalendarTestPage
-
-// === Styles ===
-
 const Wrapper = styled.div`
-  display: flex;
   width: 100%;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 가운데 정렬 */
+  padding: 24px;
+  gap: 24px; /* 컴포넌트 간 여백 */
 `
 
-const StyledDatePicker = styled(DatePicker)`
+const ContentArea = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  max-width: 480px; /* 반응형 최대 너비 */
+  min-height: 240px; /* 기본 높이 */
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+`
+
+const Placeholder = styled.div`
+  font-size: 1rem;
+  color: #666;
 `
