@@ -1,8 +1,8 @@
 'use client'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
-
 import { theme } from '@shared/styles/emotion/theme'
+
 
 type Post = {
   id: number
