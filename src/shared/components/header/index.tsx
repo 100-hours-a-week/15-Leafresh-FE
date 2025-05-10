@@ -27,7 +27,7 @@ const Header = ({ height, padding }: HeaderProps) => {
   const drawerRef = useRef<HTMLDivElement>(null)
 
   // TODO : 로그인 상태 판단 / 정보 가져오기
-  const isLoggedIn: boolean = false
+  const isLoggedIn: boolean = true
   const nickname: string = '카더가든'
 
   useOutsideClick(drawerRef as React.RefObject<HTMLElement>, toggle)
@@ -151,7 +151,7 @@ const Backdrop = styled.div`
 `
 
 const SlideDrawer = styled(motion.div)`
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   height: 100vh;
