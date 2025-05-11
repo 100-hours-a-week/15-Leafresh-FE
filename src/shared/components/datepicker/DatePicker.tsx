@@ -120,8 +120,6 @@ const LabelWrapper = styled.div`
 `
 
 const Label = styled.label`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
 `
 
@@ -171,7 +169,7 @@ const Tilde = styled.span`
 `
 
 const DateText = styled.div<{ isValid: boolean }>`
-  font-size: ${theme.fontSize.xs};
+  font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
   color: ${({ isValid }) => (isValid ? theme.colors.lfBlack.base : theme.colors.lfDarkGray.base)};
 `

@@ -22,7 +22,7 @@ import { getDayOfWeek } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
 
-export const dummyEventChallenges: EventChallenge[] = [
+const dummyEventChallenges: EventChallenge[] = [
   {
     id: 1,
     title: '[1.환경의날]',
@@ -49,7 +49,7 @@ export const dummyEventChallenges: EventChallenge[] = [
   },
 ]
 
-export const dummyPersonalChallenges: PersonalChallengeType[] = [
+const dummyPersonalChallenges: PersonalChallengeType[] = [
   {
     id: 1,
     title: '챌린지 제목',
@@ -66,7 +66,7 @@ export const dummyPersonalChallenges: PersonalChallengeType[] = [
   },
 ]
 
-export const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
+const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
   {
     category: 'ZERO_WASTE',
     label: '제로웨이스트',
