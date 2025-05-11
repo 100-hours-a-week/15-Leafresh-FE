@@ -9,6 +9,7 @@ import styled from '@emotion/styled'
 import { FullFormValues } from '@app/(with-header)/challenge/group/create/page'
 import ErrorText from '@shared/components/errortext'
 import ImageInput from '@shared/components/image-input'
+import Loading from '@shared/components/loading'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
@@ -28,6 +29,7 @@ interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
   onBack: () => void
   onSubmit: () => void
+  isCreating: boolean
 }
 
 type WarningType = {
@@ -58,7 +60,7 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   },
 ]
 
-const DetailStep = ({ form, onBack, onSubmit }: DetailsStepProps) => {
+const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) => {
   const {
     register,
     setValue,
@@ -132,7 +134,7 @@ const DetailStep = ({ form, onBack, onSubmit }: DetailsStepProps) => {
       </FieldGroup>
 
       <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
-        생성하기
+        {!isCreating ? '생성하기' : <Loading />}
       </SubmitButton>
     </Container>
   )
@@ -225,8 +227,7 @@ const Warning = styled.div<{ isWarning: boolean }>`
   color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
 `
 const SubmitButton = styled.button<{ $active: boolean }>`
-  flex: 1;
-  padding: 12px;
+  height: 50px;
   border-radius: ${theme.radius.base};
   background-color: ${({ $active }) => ($active ? theme.colors.lfGreenMain.base : theme.colors.lfGreenInactive.base)};
   color: ${theme.colors.lfWhite.base};

@@ -327,7 +327,6 @@ const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
 `
 
 const SubmitButton = styled.button`
-  flex: 1;
   padding: 12px;
   border-radius: ${theme.radius.base};
   background-color: ${theme.colors.lfGreenMain.base};

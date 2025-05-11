@@ -260,7 +260,7 @@ const ParticipantDropdown = StyledGeneric<DropdownProps<number>>(
 )
 
 const SubmitButton = styled.button`
-  padding: 12px;
+  height: 50px;
   border-radius: ${theme.radius.base};
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
