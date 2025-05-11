@@ -36,7 +36,6 @@ const Page = async () => {
 
     return (
       <HydrationBoundary state={dehydratedState}>
-        <></>
         <ChallengeMainPage />
       </HydrationBoundary>
     )

@@ -30,12 +30,12 @@ interface DetailsStepProps {
   onSubmit: () => void
 }
 
-type NoteType = {
+type WarningType = {
   isWarning: boolean
   value: string
 }
 
-const NOTES: NoteType[] = [
+const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   {
     isWarning: false,
     value: '참여 인원이 존재하면, 수정 및 삭제는 불가합니다.',
@@ -121,10 +121,10 @@ const DetailStep = ({ form, onBack, onSubmit }: DetailsStepProps) => {
         <FieldWrapper>
           <Label>유의사항</Label>
           <WarningList>
-            {NOTES.map(notes => (
-              <Warning key={notes.value} isWarning={notes.isWarning}>
+            {CHALLENGE_DETAILS_WARNINGS.map(warnings => (
+              <Warning key={warnings.value} isWarning={warnings.isWarning}>
                 <LucideIcon name='Check' />
-                <li>{notes.value}</li>
+                <li>{warnings.value}</li>
               </Warning>
             ))}
           </WarningList>
