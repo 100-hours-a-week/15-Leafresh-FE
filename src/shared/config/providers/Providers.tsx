@@ -1,6 +1,10 @@
 'use client'
 
 import { ReactNode } from 'react'
+import { ThemeProvider } from '@emotion/react'
+
+import GlobalStyle from '@shared/styles/GlobalStyle'
+import { theme } from '@shared/styles/theme'
 
 import { ChakraUseProvider } from './ChakraProvider'
 import { EmotionCacheProvider } from './EmotionCacheProvider'
@@ -12,10 +16,13 @@ import TanstackQueryProvider from './QueryClientProvider'
  */
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <TanstackQueryProvider>
-      <EmotionCacheProvider>
-        <ChakraUseProvider>{children}</ChakraUseProvider>
-      </EmotionCacheProvider>
-    </TanstackQueryProvider>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <TanstackQueryProvider>
+        <EmotionCacheProvider>
+          <ChakraUseProvider>{children}</ChakraUseProvider>
+        </EmotionCacheProvider>
+      </TanstackQueryProvider>
+    </ThemeProvider>
   )
 }

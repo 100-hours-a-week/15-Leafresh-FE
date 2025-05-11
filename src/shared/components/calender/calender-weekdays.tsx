@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { DAYS } from '@entities/challenge/constant'
 import { DayType } from '@entities/challenge/type'
 import { convertDayToLabel } from '@shared/lib/date/utils'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 interface CalendarWeekdaysProps {
   startDayOfWeek: DayType

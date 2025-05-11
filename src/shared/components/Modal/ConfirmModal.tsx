@@ -2,11 +2,11 @@
 import { useRef } from 'react'
 import styled from '@emotion/styled'
 
-import { useConfirmModalStore } from '@shared/context/Modal/ConfirmModalStore'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 const ConfirmModal = () => {
   const { isOpen, title, description, onConfirm, onCancel, closeConfirmModal } = useConfirmModalStore()
@@ -25,7 +25,7 @@ const ConfirmModal = () => {
   // Custom Hooks
   useOutsideClick(modalRef as React.RefObject<HTMLElement>, handleCancel)
   useKeyClose('Escape', modalRef as React.RefObject<HTMLElement>, handleCancel)
-  useScrollLock()
+  useScrollLock(isOpen)
 
   if (!isOpen) return null
   return (
@@ -46,10 +46,13 @@ export default ConfirmModal
 
 // === 스타일 ===
 const Overlay = styled.div`
+  width: 100%;
+
   position: fixed;
   inset: 0;
   z-index: 100;
   background-color: ${theme.colors.lfBackdrop.base};
+  /* opacity: 0.3; */
 
   display: flex;
   justify-content: center;
@@ -57,8 +60,8 @@ const Overlay = styled.div`
 `
 
 const ModalContainer = styled.div`
-  min-width: 320px;
-  max-width: 90%;
+  width: 100%;
+  max-width: 280px;
 
   display: flex;
   flex-direction: column;

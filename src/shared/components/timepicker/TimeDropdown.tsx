@@ -1,7 +1,8 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useEffect,useRef, useState } from 'react'
 import styled from '@emotion/styled'
+
 import { theme } from '@shared/styles/emotion/theme'
 
 export interface TimeDropdownProps {

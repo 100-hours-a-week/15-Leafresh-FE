@@ -8,111 +8,106 @@ export type EndpointType = {
 }
 
 const CHALLENGE_ENDPOINTS = {
-  CHALLENGE: {
-    /** 이벤트 챌린지 */
-    EVENT: {
-      // 목록
-      LIST: { method: HttpMethod.GET, path: '/api/challenges/events' },
+  /** 이벤트 챌린지 */
+  EVENT: {
+    // 목록
+    LIST: { method: HttpMethod.GET, path: '/api/challenges/events' },
+  },
+
+  /** 개인 챌린지 */
+  PERSONAL: {
+    // 상세 (단일 조회)
+    DETAILS: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/personal/${challengeId}`,
+    }),
+
+    // 목록 (특정 카테고리)
+    LIST: {
+      method: HttpMethod.GET,
+      path: `/api/challenges/group`,
     },
 
-    /** 개인 챌린지 */
-    PERSONAL: {
-      // 상세 (단일 조회)
-      DETAILS: (challengeId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/personal/${challengeId}`,
-      }),
+    // 인증 제출
+    VERIFY: (challengeId: number) => ({
+      method: HttpMethod.POST,
+      path: `/api/challenges/personal/${challengeId}/verifications`,
+    }),
 
-      // 목록 (특정 카테고리)
-      LIST: (categoryId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/group/categories/${categoryId}`,
-      }),
+    // 인증 결과 조회 (롱폴링)
+    VERIFICATION_RESULT: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/personal/${challengeId}/verification/result`,
+    }),
 
-      // 인증 제출
-      VERIFY: (challengeId: number) => ({
-        method: HttpMethod.POST,
-        path: `/api/challenges/personal/${challengeId}/verifications`,
-      }),
+    // 규칙
+    RULES: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/personal/${challengeId}/rules`,
+    }),
+  },
 
-      // 인증 결과 조회 (롱폴링)
-      VERIFICATION_RESULT: (challengeId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/personal/${challengeId}/verification/result`,
-      }),
+  /** 단체 챌린지 */
+  GROUP: {
+    // 카테고리 목록
+    CATEGORIES: { method: HttpMethod.GET, path: '/api/challenges/group/categories' },
 
-      // 규칙
-      RULES: (challengeId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/personal/${challengeId}/rules`,
-      }),
+    // 상세
+    DETAILS: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/group/${challengeId}`,
+    }),
+    // 목록
+    LIST: { method: HttpMethod.GET, path: '/api/challenges/group' },
+    // 생성
+    CREATE: { method: HttpMethod.POST, path: '/api/challenges/group' },
+    // 수정
+    UPDATE: (challengeId: number) => ({
+      method: HttpMethod.PATCH,
+      path: `/api/challenges/group/${challengeId}`,
+    }),
+
+    // 삭제
+    DELETE: (challengeId: number) => ({
+      method: HttpMethod.DELETE,
+      path: `/api/challenges/group/${challengeId}`,
+    }),
+
+    // 참여하기
+    PARTICIPATE: (challengeId: number) => ({
+      method: HttpMethod.POST,
+      path: `/api/challenges/group/${challengeId}/participations`,
+    }),
+
+    // 참여한 단체 챌린지 카운트 조회 (인증 페이지)
+    COUNT: {
+      method: HttpMethod.GET,
+      path: `/api/members/challenges/group/participations/count`,
     },
 
-    /** 단체 챌린지 */
-    GROUP: {
-      // 카테고리 목록
-      CATEGORIES: { method: HttpMethod.GET, path: '/api/challenges/group/categories' },
+    // 특정 단체 챌린지 인증 내역 목록 조회
+    VERIFICATIONS: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/group/${challengeId}/verifications`,
+    }),
 
-      // 상세
-      DETAILS: (challengeId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/group/${challengeId}`,
-      }),
+    // 인증 제출 (생성)
+    VERIFY: (challengeId: number) => ({
+      method: HttpMethod.POST,
+      path: `/api/challenges/group/${challengeId}/verifications`,
+    }),
 
-      // 목록
-      LIST: { method: HttpMethod.GET, path: '/api/challenges/group' },
+    // 인증 결과 조회 (롱폴링)
+    VERIFICATION_RESULT: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/group/${challengeId}/verification/result`,
+    }),
 
-      // 생성
-      CREATE: { method: HttpMethod.POST, path: '/api/challenges/group' },
-
-      // 수정
-      UPDATE: (challengeId: number) => ({
-        method: HttpMethod.PATCH,
-        path: `/api/challenges/group/${challengeId}`,
-      }),
-
-      // 삭제
-      DELETE: (challengeId: number) => ({
-        method: HttpMethod.DELETE,
-        path: `/api/challenges/group/${challengeId}`,
-      }),
-
-      // 참여하기
-      PARTICIPATE: (challengeId: number) => ({
-        method: HttpMethod.POST,
-        path: `/api/challenges/group/${challengeId}/participations`,
-      }),
-
-      // 참여한 단체 챌린지 카운트 조회 (인증 페이지)
-      COUNT: {
-        method: HttpMethod.GET,
-        path: `/api/members/challenges/group/participations/count`,
-      },
-
-      // 특정 단체 챌린지 인증 내역 목록 조회
-      VERIFICATIONS: (challengeId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/group/${challengeId}/verifications`,
-      }),
-
-      // 인증 제출 (생성)
-      VERIFY: (challengeId: number) => ({
-        method: HttpMethod.POST,
-        path: `/api/challenges/group/${challengeId}/verifications`,
-      }),
-
-      // 인증 결과 조회 (롱폴링)
-      VERIFICATION_RESULT: (challengeId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/group/${challengeId}/verification/result`,
-      }),
-
-      // 규약
-      RULES: (challengeId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/group/${challengeId}/rules`,
-      }),
-    },
+    // 규약
+    RULES: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/group/${challengeId}/rules`,
+    }),
   },
 }
 

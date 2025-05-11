@@ -1,19 +1,11 @@
-// src/app/page.tsx
-'use client'
+import { ReactNode } from 'react'
 
-import { useState, useEffect } from 'react'
-import styled from '@emotion/styled'
-import Chatbot from '@shared/components/chatbot/Chatbot'
-
-const CalendarTestPage = () => {
-  return (
-    <Wrapper>
-      <Chatbot />
-    </Wrapper>
-  )
+interface ChallengePageProps {
+  className?: string
 }
 
-export default CalendarTestPage
-const Wrapper = styled.div`
-  width: 100%;
-`
+const ChallengePage = ({ className }: ChallengePageProps): ReactNode => {
+  return <div className={className}>ChallengePage</div>
+}
+
+export default ChallengePage
