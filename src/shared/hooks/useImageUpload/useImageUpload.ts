@@ -38,7 +38,6 @@ export function useImageUpload() {
       if (!res.ok) throw new Error(`GCS 업로드 실패: ${res.status}`)
 
       // 3) 최종 공개 URL 조립
-      const bucket = process.env.NEXT_PUBLIC_GCS_BUCKET_NAME!
       // GCS 기본 공개 URL 패턴: https://storage.googleapis.com/[BUCKET]/[OBJECT_NAME]
       return signed.data.fileUrl
     } catch (err: any) {
