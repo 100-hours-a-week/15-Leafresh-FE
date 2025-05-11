@@ -1,4 +1,4 @@
-import { DAYS_KOR } from '@entities/challenge/constant'
+import { DAYS, DAYS_KOR } from '@entities/challenge/constant'
 import { DayType } from '@entities/challenge/type'
 import { DateFormatString } from '@shared/types/date'
 
@@ -40,4 +40,11 @@ export const formatDateToDateFormatString = (date: Date): DateFormatString => {
   const day = String(date.getDate()).padStart(2, '0')
 
   return `${year}-${month}-${day}` as DateFormatString
+}
+
+/**
+ * 금일을 "MONDAY" | "TUESDAY" | ... | "SUNDAY" 형식으로 변환
+ */
+export const getDayOfWeek = (date: Date): DayType => {
+  return DAYS[date.getDay()]
 }

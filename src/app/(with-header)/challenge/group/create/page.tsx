@@ -93,8 +93,6 @@ const GroupChallengeCreatePage = () => {
         <MetaDataStep
           form={form}
           onNext={() => {
-            console.log('exected on next')
-
             setStep(2)
           }}
         />

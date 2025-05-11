@@ -1,3 +1,5 @@
+import { ChallengeCategoryType } from '@entities/challenge/type'
+
 export interface URL {
   name: string // 구분값 (라우트 버튼 내 값으로도 사용 가능)
   value: string
@@ -64,7 +66,7 @@ const CHALLENGE_URL = {
   GROUP: {
     LIST: {
       name: '단체 챌린지 목록',
-      value: '/challenge/group/list',
+      value: (category: ChallengeCategoryType) => `/challenge/group/list?category=${category}`,
     },
     CREATE: {
       name: '단체 챌린지 생성',
