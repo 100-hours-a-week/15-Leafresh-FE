@@ -5,10 +5,15 @@ import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { ToastType } from '@shared/context/Toast/type'
+import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
 const CameraModal = () => {
+  const { uploadFile } = useImageUpload()
+  const openToast = useToast()
   const { isOpen, title, type, hasDescription, onComplete, close } = useCameraModalStore()
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -37,8 +42,18 @@ const CameraModal = () => {
     canvasRef.current.width = videoRef.current.videoWidth
     canvasRef.current.height = videoRef.current.videoHeight
     ctx.drawImage(videoRef.current, 0, 0)
-    const url = canvasRef.current.toDataURL('image/jpeg')
-    setPreviewUrl(url)
+
+    /** S3 이미지 업로드 */
+    canvasRef.current.toBlob(async blob => {
+      if (!blob) return
+      try {
+        const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' })
+        const uploadedUrl = await uploadFile(file)
+        setPreviewUrl(uploadedUrl)
+      } catch (err) {
+        openToast(ToastType.Error, '이미지 업로드 실패')
+      }
+    }, 'image/jpeg')
   }
 
   const handleConfirm = () => {
