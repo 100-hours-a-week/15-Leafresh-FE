@@ -21,6 +21,7 @@ interface ChallengeVerifyExamplesProps {
   examples: VerificationImageData[]
   onChange: (updated: VerificationImageData[]) => void
   className?: string
+  readOnly?: boolean
   required?: boolean
 }
 
@@ -30,6 +31,7 @@ const ChallengeVerifyExamples = ({
   maxCount,
   examples,
   onChange,
+  readOnly = false,
   required,
   className,
 }: ChallengeVerifyExamplesProps) => {
@@ -38,6 +40,8 @@ const ChallengeVerifyExamples = ({
     data: Partial<Omit<VerificationImageData, 'type'>>,
     type: ChallengeVerificationResultType,
   ) => {
+    if (readOnly) return
+
     let newExamples = [...examples]
     const currentCount = newExamples.filter(e => e.url !== null).length
 
@@ -86,7 +90,7 @@ const ChallengeVerifyExamples = ({
           {required && <RequiredMark>*</RequiredMark>}
         </Label>
       </Header>
-      <Description>{description}</Description>
+      {description && <Description>{description}</Description>}
 
       <ScrollArea>
         {examples.map((example, idx) => (
@@ -97,6 +101,7 @@ const ChallengeVerifyExamples = ({
             description={example.description}
             cameraTitle={example.type === 'SUCCESS' ? '성공 예시 이미지' : '실패 예시 이미지'}
             status={example.type}
+            readOnly={readOnly}
             onChange={({ imageUrl, description }) =>
               updateExamples(idx, { url: imageUrl, description: description ?? '' }, example.type)
             }
@@ -123,7 +128,6 @@ const Header = styled.div`
 
 const Label = styled.h3`
   font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.bold};
   color: ${theme.colors.lfBlack.base};
 `
 

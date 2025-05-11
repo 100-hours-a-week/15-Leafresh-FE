@@ -40,6 +40,7 @@ interface VerificationImageInputProps {
   description: string | null
   cameraTitle: string
   onChange: (data: { imageUrl: string | null; description?: string | null }) => void
+  readOnly?: boolean
   className?: string
 }
 
@@ -50,6 +51,7 @@ const VerificationImageInput = ({
   imageUrl,
   cameraTitle,
   onChange,
+  readOnly = false,
   className,
 }: VerificationImageInputProps) => {
   const { icon, color } = STATUS_ICON_MAP[status]
@@ -80,7 +82,8 @@ const VerificationImageInput = ({
         cameraTitle={cameraTitle}
         hasDescription
         type={status}
-        onChange={onChange}
+        onChange={readOnly ? () => {} : onChange}
+        readOnly={readOnly}
       />
 
       <Footer backgroundColor={color}>{icon}</Footer>
