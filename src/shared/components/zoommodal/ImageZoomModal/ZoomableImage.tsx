@@ -11,6 +11,7 @@ interface ZoomableImageProps {
   verificationData: ImageZoomModalData[]
   targetIndex: number
 }
+
 const ZoomableImage = ({ src, alt, width, height, verificationData, targetIndex }: ZoomableImageProps) => {
   const { open } = useImageZoomStore()
 
