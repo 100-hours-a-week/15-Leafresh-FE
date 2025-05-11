@@ -1,31 +1,26 @@
-// src/features/challenge/group/participate/hook/useInfiniteGroupParticipations.ts
 import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import {
   fetchGroupParticipations,
   type ChallengeStatus,
   type FetchGroupParticipationsParams,
-} from '../api/group-participant'
-import { ChallengeResponse } from '../api/group-participant'
+} from '../api/participate/group-participant'
+import type { ChallengeResponse } from '../api/participate/group-participant'
 
 export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
   useInfiniteQuery<
-    // 1) queryFn이 반환하는 데이터 한 페이지 타입
-    ChallengeResponse,
-    // 2) 에러 타입
-    Error,
-    // 3) useInfiniteQuery가 data 속성으로 갖게 될 타입
-    InfiniteData<ChallengeResponse>,
-    // 4) queryKey 타입
+    ChallengeResponse, // queryFn 반환 타입
+    Error, // 에러 타입
+    InfiniteData<ChallengeResponse>, // data 타입
     readonly [...typeof QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS, ChallengeStatus]
   >({
     queryKey: [...QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS, status] as const,
 
-    // 첫 호출 땐 pageParam = {}, 이후엔 getNextPageParam 반환값이 들어옵니다.
-    queryFn: async ({ pageParam = {} }) =>
-      fetchGroupParticipations({
-        ...(pageParam as FetchGroupParticipationsParams),
-      }),
+    queryFn: async ({ pageParam = {} }) => {
+      // pageParam 타입은 Partial<FetchGroupParticipationsParams>
+      const { cursorId, cursorTimestamp } = pageParam as FetchGroupParticipationsParams
+      return fetchGroupParticipations({ status, cursorId, cursorTimestamp })
+    },
 
     getNextPageParam: lastPage => {
       const { hasNext, cursorInfo } = lastPage.data
@@ -37,8 +32,6 @@ export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
         : undefined
     },
 
-    // 첫 호출 시 pageParam 기본값
-    initialPageParam: {},
-
+    initialPageParam: {}, // 첫 호출에서는 cursorId / cursorTimestamp 모두 undefined
     staleTime: 5 * 60 * 1000, // 5분
   })

@@ -33,7 +33,7 @@ const GroupChallengeParticipantCard = ({
   const progressPercentage = (successCount / maxCount) * 100
 
   return (
-    <CardContainer className={className}>
+    <CardContainer className={className} onClick={onClick}>
       <LeftSection>
         <ChallengeImage src={imageUrl} alt={title} width={130} height={130} />
       </LeftSection>
@@ -93,7 +93,7 @@ const LeftSection = styled.div`
   padding: 5px;
 `
 
-const ChallengeImage = styled(Image)`
+const ChallengeImage = styled.img`
   object-fit: contain;
   border-radius: 8px;
   display: flex;
