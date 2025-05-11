@@ -10,7 +10,7 @@ type SignUpResponseType = ApiResponse<{
   isDuplicated: boolean
 }>
 
-type SignUpBody = {
+export type SignUpBody = {
   email: string
   provider: {
     name: OAuthType
