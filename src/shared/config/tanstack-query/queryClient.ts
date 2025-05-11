@@ -9,4 +9,8 @@ const options = {
   },
 }
 
-export const queryClient = new QueryClient(options)
+const queryClient = new QueryClient(options)
+
+export const getQueryClient = () => {
+  return queryClient
+}
