@@ -3,7 +3,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 // 선택 타입 정의
 export type SelectionType = 'location' | 'workType' | 'challenge' | 'retry'

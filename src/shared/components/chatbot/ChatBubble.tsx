@@ -79,7 +79,7 @@
 import React, { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 export interface ChatBubbleProps {
   role: 'bot' | 'user'
@@ -142,6 +142,7 @@ const Bubble = styled.div<{ role: 'bot' | 'user' }>`
   max-width: 235px;
   min-width: 60px;
   padding: 16px 12px;
+  line-height: 0.8rem;
   background: ${({ role }) => (role === 'bot' ? '#AFF9BB' : `${theme.colors.lfWhite.base}`)};
   color: ${({ role }) => (role === 'bot' ? '#333333' : `${theme.colors.lfBlack.base}`)};
   justify-content: center;

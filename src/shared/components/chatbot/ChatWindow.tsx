@@ -151,7 +151,7 @@ const Window = styled.div<{ open: boolean; animationComplete: boolean }>`
   border-radius: 12px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  z-index: 999;
+  z-index: 100000;
 
   /* 애니메이션 적용 */
   transform: translate(-50%, ${({ open }) => (open ? '-50%' : '100%')});
