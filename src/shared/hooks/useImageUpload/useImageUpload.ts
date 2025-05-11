@@ -25,11 +25,7 @@ export function useImageUpload() {
           contentType: file.type,
         },
       })
-      console.log(signed)
-      console.log(file.name)
       // 2) GCS에 PUT 요청으로 업로드
-      console.log(signed.data.uploadUrl)
-      console.log(signed.data.fileUrl)
       const res = await fetch(signed.data.uploadUrl, {
         method: HttpMethod.PUT,
         headers: { 'Content-Type': file.type },
