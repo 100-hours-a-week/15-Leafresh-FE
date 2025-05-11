@@ -18,6 +18,7 @@ interface DatePickerProps {
   setStartDate: (date: Date | undefined) => void
   setEndDate: (date: Date | undefined) => void
   required?: boolean
+  readOnly?: boolean
   className?: string
 }
 
@@ -29,12 +30,18 @@ const DatePicker = ({
   setStartDate,
   setEndDate,
   required,
+  readOnly = false,
   className,
 }: DatePickerProps) => {
   const [status, setStatus] = useState<'start' | 'end' | null>(null)
 
-  const toggleStart = () => setStatus(prev => (prev === 'start' ? null : 'start'))
-  const toggleEnd = () => setStatus(prev => (prev === 'end' ? null : 'end'))
+  const toggleStart = () => {
+    if (!readOnly) setStatus(prev => (prev === 'start' ? null : 'start'))
+  }
+
+  const toggleEnd = () => {
+    if (!readOnly) setStatus(prev => (prev === 'end' ? null : 'end'))
+  }
 
   const handleDateSelect = (date: Date) => {
     if (status === 'start') {
@@ -68,7 +75,7 @@ const DatePicker = ({
       </LabelWrapper>
 
       <InputGroup>
-        <InputArea isFocused={isStartActive} onClick={toggleStart}>
+        <InputArea isFocused={isStartActive} onClick={toggleStart} readOnly={readOnly}>
           <DateText isValid={!!startDate}>
             {startDate ? `${format(startDate, 'MM.dd')} (${dayToString(startDate.getDay())})` : '시작날짜'}
           </DateText>
@@ -76,13 +83,13 @@ const DatePicker = ({
 
         <Tilde>~</Tilde>
 
-        <InputArea isFocused={isEndActive} onClick={toggleEnd}>
+        <InputArea isFocused={isEndActive} onClick={toggleEnd} readOnly={readOnly}>
           <DateText isValid={!!endDate}>
             {endDate ? `${format(endDate, 'MM.dd')} (${dayToString(endDate.getDay())})` : '종료날짜'}
           </DateText>
         </InputArea>
 
-        {status && (
+        {!readOnly && status && (
           <CalendarWrapper>
             <Calendar
               startDate={startDate}
@@ -132,8 +139,8 @@ const InputGroup = styled.div`
   gap: 20px;
 `
 
-const InputArea = styled.div<{ isFocused: boolean }>`
-  position: relative; // 👈 before를 위한 위치 기준
+const InputArea = styled.div<{ isFocused: boolean; readOnly?: boolean }>`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -141,14 +148,14 @@ const InputArea = styled.div<{ isFocused: boolean }>`
   padding: 10px 0;
   border-bottom: 2px solid ${theme.colors.lfLightGray.base};
   font-weight: ${theme.fontWeight.semiBold};
-  cursor: pointer;
+  cursor: ${({ readOnly }) => (readOnly ? 'default' : 'pointer')};
 
   &::before {
     content: '';
     position: absolute;
     bottom: -2px;
     left: 50%;
-    transform: translateX(-50%) scaleX(${({ isFocused }) => (isFocused ? 1 : 0)});
+    transform: translateX(-50%) scaleX(${({ isFocused, readOnly }) => (readOnly ? 0 : isFocused ? 1 : 0)});
     transform-origin: center;
     width: 100%;
     height: 2px;
