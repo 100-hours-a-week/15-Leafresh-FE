@@ -77,9 +77,9 @@ const ImageZoomModal = () => {
 export default ImageZoomModal
 
 const Wrapper = styled.div`
+  position: fixed;
   width: 100%;
   height: 100dvh;
-  position: absolute;
   top: 0;
   display: flex;
   flex-direction: column;
