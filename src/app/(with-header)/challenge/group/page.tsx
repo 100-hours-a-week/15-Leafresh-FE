@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import GroupChallengeParticipantCard from '@features/challenge/group/participate/components/GroupChallengeParticipantCard'
+import GroupChallengeParticipantCard from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCard'
 import styled from '@emotion/styled'
 
 interface ChallengeResponse {
