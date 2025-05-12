@@ -19,9 +19,9 @@ const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
 
 const CameraModal = () => {
-  const { uploadFile } = useImageUpload()
   const openToast = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
+  const { uploadFile, loading: uploading, error: uploadError } = useImageUpload()
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -29,6 +29,7 @@ const CameraModal = () => {
   const [tab, setTab] = useState<number>(0)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [description, setDescription] = useState<string>('')
+
   const [showGuide, setShowGuide] = useState<boolean>(false)
 
   const TABS = !challengeData ? CAMERA_TABS : CHALLENGE_TABS
@@ -90,14 +91,41 @@ const CameraModal = () => {
     }, 'image/jpeg')
   }
 
-  const handleConfirm = () => {
+  // const handleConfirm = () => {
+  //   if (!previewUrl) return
+  //   if (hasDescription && !description) return
+
+  //   onComplete({ imageUrl: previewUrl, description: hasDescription ? description : undefined })
+  //   close()
+  //   setPreviewUrl(null)
+  //   setDescription('')
+  // }
+
+  const handleConfirm = async () => {
     if (!previewUrl) return
     if (hasDescription && !description) return
 
-    onComplete({ imageUrl: previewUrl, description: hasDescription ? description : undefined })
-    close()
-    setPreviewUrl(null)
-    setDescription('')
+    try {
+      // 1) Base64 → Blob → File
+      const blob = await (await fetch(previewUrl)).blob()
+      const file = new File([blob], 'capture.jpg', { type: blob.type })
+
+      // 2) GCS 업로드 & fileUrl 획득
+      const fileUrl = await uploadFile(file)
+
+      // 3) onComplete으로 최종 URL과 설명 전달
+      onComplete({
+        imageUrl: fileUrl,
+        description: hasDescription ? description : undefined,
+      })
+    } catch (err) {
+      console.error('이미지 업로드 실패', uploadError)
+    } finally {
+      // 모달 닫기 및 초기화
+      close()
+      setPreviewUrl(null)
+      setDescription('')
+    }
   }
 
   const handleTabChange = (clickedTab: number) => {
