@@ -13,6 +13,7 @@ import { ParticipateGroupChallenge } from '@features/challenge/api/participate-g
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
+import BackButton from '@shared/components/Button/BackButton'
 import DatePicker from '@shared/components/datepicker/DatePicker'
 import Loading from '@shared/components/loading'
 import { URL } from '@shared/constants/route/route'
@@ -30,6 +31,7 @@ import ChallengeVerifyCarousel from './ChallengeVerifyCarousel'
 export const dummyGroupChallengeDetail: GroupChallengeDetail = {
   id: 1,
   isEvent: true,
+  category: 'ZERO_WASTE',
   title: '클린 그릭',
   description:
     '챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...',
@@ -132,6 +134,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
   const challengeData = dummyGroupChallengeDetail
   const {
     thumbnailUrl,
+    category,
     title,
     description,
     currentParticipantCount,
@@ -203,6 +206,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
   return (
     <Wrapper className={className}>
       <DescriptionSection>
+        <StyledBackButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
         <Thumbnail src={thumbnailUrl} alt='썸네일' width={500} height={200} />
         <Participant>
           <LucideIcon name='UserRound' size={15} fill='lfBlack' /> {currentParticipantCount}명 참여중
@@ -247,7 +251,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
           />
           <TimeArea>
             <TimeText>
-              매일, {totalDays}일간 {verificationStartTime} ~ {verificationEndTime} 공유하기
+              매일, {totalDays}일간 {verificationStartTime} ~ {verificationEndTime} 인증하기
             </TimeText>
           </TimeArea>
         </Section>
@@ -443,4 +447,8 @@ const Warning = styled.div<{ isWarning: boolean }>`
 
   font-weight: ${theme.fontWeight.medium};
   color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
+`
+
+const StyledBackButton = styled(BackButton)`
+  position: absolute;
 `

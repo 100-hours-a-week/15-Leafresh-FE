@@ -1,6 +1,10 @@
 // @features/challenge/api/getGroupChallengeDetails.ts
 
-import { ChallengeVerificationResultType, ChallengeVerificationStatusType } from '@entities/challenge/type'
+import {
+  ChallengeCategoryType,
+  ChallengeVerificationResultType,
+  ChallengeVerificationStatusType,
+} from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'
@@ -8,6 +12,7 @@ import { DateFormatString, TimeFormatString } from '@shared/types/date'
 export type GroupChallengeDetail = {
   id: number
   isEvent: boolean // 이벤트 챌린지 여부
+  category: ChallengeCategoryType
   title: string
   description: string
   startDate: DateFormatString

@@ -16,6 +16,7 @@ import { VerifyGroupChallenge, VerifyPersonalChallengeBody } from '@features/cha
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
+import BackButton from '@shared/components/Button/BackButton'
 import Loading from '@shared/components/loading'
 import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
@@ -200,6 +201,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   return (
     <Wrapper className={className}>
       <DescriptionSection>
+        <StyledBackButton onClick={() => router.push(URL.CHALLENGE.INDEX.value)} />
         <Thumbnail src={thumbnailUrl} alt='썸네일' width={500} height={200} />
 
         <Descriptions>
@@ -230,7 +232,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
 
           <TimeArea>
             <TimeText>
-              오늘, {verificationStartTime} ~ {verificationEndTime} 공유하기
+              오늘, {verificationStartTime} ~ {verificationEndTime} 인증하기
             </TimeText>
           </TimeArea>
         </Section>
@@ -389,4 +391,8 @@ const Warning = styled.div<{ isWarning: boolean }>`
 
   font-weight: ${theme.fontWeight.medium};
   color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
+`
+
+const StyledBackButton = styled(BackButton)`
+  position: absolute;
 `
