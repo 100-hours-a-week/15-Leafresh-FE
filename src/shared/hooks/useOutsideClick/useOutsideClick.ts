@@ -14,9 +14,6 @@ export function useOutsideClick<T extends HTMLElement, F extends (...args: any[]
     const handleClickOutside = (event: MouseEvent) => {
       // 개발 중에는 알려주고, 런타임에서는 무시
       if (!ref.current) {
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('useOutsideClick: ref must be included')
-        }
         return
       }
 

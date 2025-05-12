@@ -1,10 +1,13 @@
 'use client'
 
 import useEmblaCarousel from 'embla-carousel-react'
-import styled from '@emotion/styled'
+
 import { useCallback, useEffect, useState } from 'react'
-import VerificationImageCard, { VerificationStatus } from './VerificationCard'
+import styled from '@emotion/styled'
+
 import GridBox from '@shared/components/Wrapper/GridBox'
+
+import VerificationImageCard, { VerificationStatus } from './VerificationCard'
 
 interface Verification {
   day: number

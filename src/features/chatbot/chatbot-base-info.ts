@@ -1,5 +1,5 @@
 import { HttpMethod } from '@shared/constants/http'
-import { fetchRequest, ApiResponse } from '@shared/lib/api/fetcher/fetcher'
+import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 // 카테고리 기반 챌린지 추천 요청 엔드포인트
 export const CATEGORY_RECOMMENDATION_ENDPOINT = {

@@ -60,13 +60,14 @@ const LoginPage = () => {
 export default LoginPage
 
 const Container = styled.div`
-  height: 100%;
+  height: calc(100dvh - 60px);
 
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   padding: 64px 24px;
   background-color: ${theme.colors.lfWhite.base};
 `
@@ -97,5 +98,5 @@ const Text = styled.div`
 
 const KakaoImage = styled(Image)`
   width: 100%;
-  height: 60px;
+  height: 50px;
 `

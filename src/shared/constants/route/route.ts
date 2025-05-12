@@ -70,7 +70,7 @@ const CHALLENGE_URL = {
     },
     CREATE: {
       name: '단체 챌린지 생성',
-      value: 'challenge/group/create',
+      value: '/challenge/group/create',
     },
     MODIFY: {
       name: '단체 챌린지 수정',

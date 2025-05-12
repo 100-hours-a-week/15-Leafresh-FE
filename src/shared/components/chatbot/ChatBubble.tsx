@@ -76,9 +76,11 @@
 
 'use client'
 
-import React, { ReactNode } from 'react'
-import styled from '@emotion/styled'
 import Image from 'next/image'
+
+import { ReactNode } from 'react'
+import styled from '@emotion/styled'
+
 import { theme } from '@shared/styles/theme'
 
 export interface ChatBubbleProps {

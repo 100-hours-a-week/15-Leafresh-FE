@@ -57,7 +57,18 @@ const GroupChallengeCreatePage = () => {
     const data = form.getValues()
 
     // TODO : 시작시간 - 종료시간 데이터 넣기
-    const { title, description, category, maxParticipant, thumbnailUrl, startDate, endDate, examples } = data
+    const {
+      title,
+      description,
+      category,
+      maxParticipant,
+      thumbnailUrl,
+      startDate,
+      endDate,
+      examples,
+      startTime,
+      endTime,
+    } = data
 
     /**
      * {
@@ -83,8 +94,8 @@ const GroupChallengeCreatePage = () => {
       thumbnailImageUrl: thumbnailUrl,
       startDate: formatDateToDateFormatString(startDate),
       endDate: formatDateToDateFormatString(endDate),
-      verificationStartTime: '10:10' as TimeFormatString,
-      verificationEndTime: '22:30' as TimeFormatString,
+      verificationStartTime: startTime as TimeFormatString,
+      verificationEndTime: endTime as TimeFormatString,
       exampleImages: exampleImages as ExampleImageType[],
     })
   }

@@ -1,5 +1,5 @@
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 /**
  * 요청 파라미터 타입

@@ -7,11 +7,18 @@ import { useRouter } from 'next/navigation'
 
 import { useRef } from 'react'
 import styled from '@emotion/styled'
+import { useMutation } from '@tanstack/react-query'
 
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { Logout } from '@features/member/api/logout'
+import { Unregister } from '@features/member/api/unregister'
 import { URL } from '@shared/constants/route/route'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { ToastType } from '@shared/context/Toast/type'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import { theme } from '@shared/styles/theme'
 import LogoImage from '@public/image/logo.svg'
@@ -23,22 +30,76 @@ interface HeaderProps {
 
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
+  const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const { openConfirmModal, isOpen: isConfirmModalOpen } = useConfirmModalStore()
+  const openToast = useToast()
+
   const { value: isOpen, toggle, setValue } = useToggle()
   const drawerRef = useRef<HTMLDivElement>(null)
 
-  // TODO : 로그인 상태 판단 / 정보 가져오기
-  const isLoggedIn: boolean = true
-  const nickname: string = '카더가든'
+  const isLoggedIn: boolean = !!userInfo
 
-  useOutsideClick(drawerRef as React.RefObject<HTMLElement>, toggle)
+  useOutsideClick(drawerRef as React.RefObject<HTMLElement>, () => {
+    if (!isConfirmModalOpen) toggle()
+  })
   useKeyClose('Escape', drawerRef as React.RefObject<HTMLElement>, toggle)
   useScrollLock(isOpen)
 
+  /** 로그아웃 */
+  const { mutate: LogoutMutate, isPending: isLoggingOut } = useMutation({
+    mutationFn: Logout,
+    onSuccess: response => {
+      toggle()
+      clearUserInfo()
+      openToast(ToastType.Success, '로그아웃 성공')
+      router.push(URL.MAIN.INDEX.value)
+    },
+    onError: () => {
+      openToast(ToastType.Error, '로그아웃 실패.\n다시 시도해주세요')
+    },
+  })
+
+  /** 회원탈퇴 */
+  const { mutate: UnregisterMutate, isPending: isUnregistering } = useMutation({
+    mutationFn: Unregister,
+    onSuccess: response => {
+      toggle()
+      clearUserInfo()
+      openToast(ToastType.Success, '회원탈퇴 성공')
+      router.push(URL.MAIN.INDEX.value)
+    },
+    onError: () => {
+      openToast(ToastType.Error, '회원탈퇴 실패.\n다시 시도해주세요')
+    },
+  })
+
+  /** 라우팅 로직 */
   const handleRoute = (url: string) => {
     router.push(url)
     setValue(false)
   }
 
+  /** 로그아웃 로직 */
+  const handleLogout = () => {
+    if (!userInfo) {
+      // TODO: 유효한 로그인 정보 확인해서 분기 처리
+      return
+    }
+    LogoutMutate(userInfo.provider)
+  }
+
+  /** 회원탈퇴 로직 */
+  const handleUnregister = () => {
+    if (!userInfo) {
+      // TODO: 유효한 로그인 정보 확인해서 분기 처리
+      return
+    }
+    openConfirmModal({
+      title: '회원탈퇴 하시겠습니까?',
+      description: '탈퇴 시 데이터를 복구할 수 없습니다.',
+      onConfirm: () => UnregisterMutate(),
+    })
+  }
   return (
     <HeaderContainer height={height}>
       <CustomWidthWrapper padding={padding}>
@@ -69,8 +130,8 @@ const Header = ({ height, padding }: HeaderProps) => {
               {isLoggedIn ? (
                 <>
                   <UserInfo>
-                    <ProfileCircle />
-                    <Nickname>{nickname}</Nickname>
+                    <ProfileImage src={userInfo?.imageUrl as string} alt='유저 이미지' width={32} height={32} />
+                    <Nickname>{userInfo?.nickname}</Nickname>
                     <Emoji>🌱</Emoji>
                   </UserInfo>
                   <StartButton onClick={() => handleRoute(URL.CHALLENGE.GROUP.CREATE.value)}>
@@ -79,9 +140,9 @@ const Header = ({ height, padding }: HeaderProps) => {
                   <MenuItemWrapper>
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.INDEX.value)}>챌린지 목록</MenuItem>
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.PARTICIPATE.INDEX.value)}>인증하기</MenuItem>
-                    <MenuItem onClick={() => handleRoute(URL.STORE.INDEX.value)}>나뭇잎 상점</MenuItem>
-                    <MenuItem>로그아웃</MenuItem>
-                    <DangerItem>회원탈퇴</DangerItem>
+                    {/* <MenuItem onClick={() => handleRoute(URL.STORE.INDEX.value)}>나뭇잎 상점</MenuItem> */}
+                    <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+                    <DangerItem onClick={handleUnregister}>회원탈퇴</DangerItem>
                   </MenuItemWrapper>
                 </>
               ) : (
@@ -91,7 +152,6 @@ const Header = ({ height, padding }: HeaderProps) => {
                   </AuthRouteButton>
                   <MenuItemWrapper>
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.INDEX.value)}>챌린지 목록</MenuItem>
-                    <MenuItem onClick={() => handleRoute(URL.CHALLENGE.PARTICIPATE.INDEX.value)}>인증하기</MenuItem>
                     <MenuItem onClick={() => handleRoute(URL.STORE.INDEX.value)}>나뭇잎 상점</MenuItem>
                   </MenuItemWrapper>
                 </>
@@ -183,11 +243,8 @@ const UserInfo = styled.div`
   margin: 16px 0 8px;
 `
 
-const ProfileCircle = styled.div`
-  width: 32px;
-  height: 32px;
+const ProfileImage = styled(Image)`
   border-radius: 50%;
-  background-color: ${theme.colors.lfLightGray.base};
 `
 
 const Nickname = styled.div`

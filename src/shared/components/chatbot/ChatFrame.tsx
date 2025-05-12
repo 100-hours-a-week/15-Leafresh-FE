@@ -1,15 +1,15 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import ChatBubble from './ChatBubble'
-
-import ChatSelection from './ChatSelection'
-import SlideArea from '@shared/components/slidearea/SlideArea'
 
 // 챗봇 API import
 import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
+import SlideArea from '@shared/components/slidearea/SlideArea'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+
+import ChatBubble from './ChatBubble'
+import ChatSelection from './ChatSelection'
 
 export type FrameStep = 1 | 2 | 3
 
@@ -34,6 +34,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
       type: 'message' | 'selection' | 'horizontal-cards'
       role?: 'bot' | 'user'
       text?: string
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       selectionProps?: any
       subDescription?: string
       buttonText?: string
@@ -217,11 +218,17 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
         '카테고리 재선택',
         () => handleRetry(),
       )
-    } catch (error: any) {
+    } catch (error: unknown) {
       setLoading(false)
 
-      // 에러 메시지 표시
-      const errorMsg = error.message || '추천 과정에서 오류가 발생했습니다. 다시 시도해주세요.'
+      let errorMsg: string
+
+      if (typeof error === 'object' && error !== null && 'message' in error) {
+        errorMsg = String((error as { message?: string }).message)
+      } else {
+        errorMsg = '추천 과정에서 오류가 발생했습니다. 다시 시도해주세요.'
+      }
+
       addChatItem('message', 'bot', `죄송합니다. ${errorMsg}`, undefined, undefined, '다시 시도', () => handleRetry())
     }
 
@@ -261,6 +268,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
     type: 'message' | 'selection' | 'horizontal-cards',
     role?: 'bot' | 'user',
     text?: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectionProps?: any,
     subDescription?: string, // Add this for secondary text
     buttonText?: string, // Add this for button text
@@ -309,20 +317,25 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
         '카테고리 재선택',
         () => handleRetry(),
       )
-    } catch (error: any) {
+    } catch (error: unknown) {
       setLoading(false)
 
-      // API 에러 처리
       let errorMessage: string
 
-      if (error.status === 422) {
-        errorMessage = '메시지는 최소 5글자 이상 입력해주세요.'
-      } else if (error.status === 400) {
-        errorMessage = '메시지를 입력해주세요.'
-      } else if (error.status === 502) {
-        errorMessage = 'AI 서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.'
-      } else if (error.status === 500) {
-        errorMessage = '서버에 오류로 인해 추천이 실패했습니다.\n다시 시도해주세요!'
+      if (typeof error === 'object' && error !== null && 'status' in error) {
+        const status = (error as { status: number }).status
+
+        if (status === 422) {
+          errorMessage = '메시지는 최소 5글자 이상 입력해주세요.'
+        } else if (status === 400) {
+          errorMessage = '메시지를 입력해주세요.'
+        } else if (status === 502) {
+          errorMessage = 'AI 서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.'
+        } else if (status === 500) {
+          errorMessage = '서버에 오류로 인해 추천이 실패했습니다.\n다시 시도해주세요!'
+        } else {
+          errorMessage = '오류가 발생했습니다. 다시 시도해주세요.'
+        }
       } else {
         errorMessage = '오류가 발생했습니다. 다시 시도해주세요.'
       }

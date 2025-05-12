@@ -8,7 +8,7 @@ import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 
 interface GroupChallengeDetailsPageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 const GroupChallengeDetailsPage = async ({ params }: GroupChallengeDetailsPageProps) => {

@@ -1,15 +1,18 @@
 'use client'
-import React, { useEffect, useState, useRef } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+
+import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { theme } from '@shared/styles/theme'
-import GridBox from '@shared/components/Wrapper/GridBox'
-import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
+
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import Chatbot from '@shared/components/chatbot/Chatbot'
+import GridBox from '@shared/components/Wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { theme } from '@shared/styles/theme'
 
 const categories: ChallengeCategoryType[] = [
   '제로웨이스트',
@@ -40,10 +43,8 @@ const ChallengeListPage = () => {
   const [input, setInput] = useState<string>('')
 
   // URL에서 category, search 파라미터 읽기
-  const categoryParam = searchParams.get('category') || ''
-  const category = categories.includes(categoryParam as ChallengeCategoryType)
-    ? (categoryParam as ChallengeCategoryType)
-    : ''
+  const category = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(searchParams.get('category') || '')
+
   const initialSearch = searchParams.get('search') || ''
 
   // 로컬 input 초기화
@@ -62,7 +63,7 @@ const ChallengeListPage = () => {
 
   // 무한 스크롤 훅 호출 (URL 변경 시 재요청)
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteGroupChallenges(
-    category,
+    category as string,
     initialSearch,
   )
 

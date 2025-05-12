@@ -50,6 +50,7 @@ const eslintConfig = [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'prefer-const': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-implicit-any-catch': 'off', // 이걸 켜면 unknown 강제
       '@typescript-eslint/no-unused-vars': [
         'warn',
         { args: 'after-used', argsIgnorePattern: '^_', caughtErrors: 'none' },

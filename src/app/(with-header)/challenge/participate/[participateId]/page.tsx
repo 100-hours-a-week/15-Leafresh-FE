@@ -1,5 +1,6 @@
 import GroupVerificationPage from '../../../../../features/challenge/components/challenge/participate/GroupVerificationPage'
 
-export default function Page({ params }: { params: { participateId: string } }) {
-  return <GroupVerificationPage participateId={params.participateId} />
+export default async function Page({ params }: { params: Promise<{ participateId: string }> }) {
+  const { participateId } = await params
+  return <GroupVerificationPage participateId={participateId} />
 }
