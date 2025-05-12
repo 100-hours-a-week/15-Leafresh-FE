@@ -5,6 +5,7 @@ import Image from 'next/image'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
+import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import { getGroupChallengeDetails, GroupChallengeDetail } from '@features/challenge/api/get-group-challenge-details'
 import ChallengeVerifyExamples, {
   VerificationImageData,
@@ -74,7 +75,7 @@ export const dummyGroupChallengeDetail: GroupChallengeDetail = {
   ],
   maxParticipantCount: 50,
   currentParticipantCount: 24,
-  status: 'NOT_SUBMITTED',
+  status: 'DONE',
 }
 
 type WarningType = {
@@ -118,6 +119,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     verificationStartTime,
     verificationEndTime,
     leafReward,
+    status,
   } = challengeData
 
   const verificationExampleImages: VerificationImageData[] = exampleImages.map(img => ({
@@ -125,6 +127,13 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     description: img.description,
     type: img.type,
   }))
+
+  const isButtonDisabled: boolean = status !== 'NOT_SUBMITTED'
+  const getSubmitButtonLabel = (status: ChallengeVerificationStatusType): string => {
+    if (status === 'PENDING_APPROVAL') return '인증여부 판단 중'
+    if (status === 'SUCCESS' || status === 'FAILURE' || status === 'DONE') return '참여 완료'
+    return '참여하기'
+  }
 
   return (
     <Wrapper className={className}>
@@ -210,7 +219,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
         </Section>
       </SectionWrapper>
 
-      <SubmitButton>참여하기</SubmitButton>
+      <SubmitButton disabled={isButtonDisabled}>{getSubmitButtonLabel(status)}</SubmitButton>
     </Wrapper>
   )
 }
@@ -326,14 +335,19 @@ const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
   font-weight: ${theme.fontWeight.semiBold};
 `
 
-const SubmitButton = styled.button`
-  padding: 12px;
+const SubmitButton = styled.button<{ disabled?: boolean }>`
+  height: 50px;
   border-radius: ${theme.radius.base};
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
+  background-color: ${({ disabled }) => (disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.base)};
+  color: ${({ disabled }) => (disabled ? theme.colors.lfBlack.base : theme.colors.lfWhite.base)};
   font-weight: ${theme.fontWeight.semiBold};
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   border: none;
+
+  &:hover {
+    background-color: ${({ disabled }) =>
+      disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.hover};
+  }
 `
 
 const WarningList = styled.ul`
