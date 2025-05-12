@@ -119,7 +119,7 @@ const HeaderContainer = styled.header<{ height: number }>`
   background-color: ${theme.colors.lfWhite.base};
   border-bottom: 1px solid ${theme.colors.lfLightGray.base};
 
-  z-index: 9999;
+  z-index: 100;
 `
 
 const CustomWidthWrapper = styled.div<{ padding: number }>`

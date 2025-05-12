@@ -16,6 +16,7 @@ export interface LucideIconProps extends Omit<React.SVGProps<SVGSVGElement>, 're
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick?: (...args: any[]) => void
   ref?: React.Ref<HTMLDivElement>
+  className?: string
 }
 
 const LucideIcon = ({
@@ -26,12 +27,13 @@ const LucideIcon = ({
   strokeWidth = 2,
   onClick,
   ref,
+  className,
   ...props
 }: LucideIconProps) => {
   const Icon = icons[name]
 
   return (
-    <Wrapper ref={ref} onClick={onClick}>
+    <Wrapper ref={ref} onClick={onClick} className={className}>
       <StyledIcon
         as={Icon}
         color={color ? getThemeColor(color) : undefined}
