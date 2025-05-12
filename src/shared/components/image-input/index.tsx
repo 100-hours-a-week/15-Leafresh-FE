@@ -24,6 +24,7 @@ interface ImageInputProps {
   type?: ChallengeVerificationStatusType
 
   onChange: (data: { imageUrl: string | null; description?: string }) => void
+  readOnly?: boolean
 
   className?: string
 }
@@ -39,12 +40,15 @@ const ImageInput = ({
   cameraTitle,
   hasDescription = false,
   type = 'SUCCESS',
+
+  readOnly = false,
   onChange,
 }: ImageInputProps) => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
   const { open: openCameraModal } = useCameraModalStore()
 
   const handleCapture = () => {
+    if (readOnly) return
     openCameraModal(
       // #1. 카메라 모달 제목
       cameraTitle,
@@ -55,12 +59,16 @@ const ImageInput = ({
         onChange({ imageUrl, description })
       },
 
-      hasDescription, // 이미지에 대한 설명을 받을지 여부
-      type, // 성공 이미지 혹은 실패 이미지
+      // #3. 이미지에 대한 설명을 받을지 여부
+      hasDescription,
+
+      // #4. 성공 이미지 혹은 실패 이미지
+      type,
     )
   }
 
   const handleRemoveImage = () => {
+    if (readOnly) return
     setPreviewImageUrl(null)
     onChange({ imageUrl: null })
   }
@@ -74,9 +82,10 @@ const ImageInput = ({
           label={label}
           fontSize={fontSize}
           backgroundColor={backgroundColor}
+          readOnly={readOnly}
         />
       ) : (
-        <PreviewImageView imageUrl={previewImageUrl} onRemove={handleRemoveImage} />
+        <PreviewImageView imageUrl={previewImageUrl} onRemove={handleRemoveImage} readOnly={readOnly} />
       )}
     </Wrapper>
   )
@@ -90,11 +99,12 @@ interface EmptyImageViewProps {
   label: string
   fontSize: ThemeFontSizeType
   backgroundColor: ThemeColorType
+  readOnly: boolean
 }
 
-const EmptyImageView = ({ onClick, icon, label, fontSize, backgroundColor }: EmptyImageViewProps) => {
+const EmptyImageView = ({ onClick, icon, label, fontSize, backgroundColor, readOnly }: EmptyImageViewProps) => {
   return (
-    <EmptyBox onClick={onClick} backgroundColor={backgroundColor}>
+    <EmptyBox onClick={onClick} backgroundColor={backgroundColor} readOnly={readOnly}>
       {icon ?? <LucideIcon name='Plus' size={24} color='lfBlack' />}
       <Text fontSize={fontSize}>{label}</Text>
     </EmptyBox>
@@ -104,15 +114,18 @@ const EmptyImageView = ({ onClick, icon, label, fontSize, backgroundColor }: Emp
 interface PreviewImageViewProps {
   imageUrl: string
   onRemove: () => void
+  readOnly: boolean
 }
 
-const PreviewImageView = ({ imageUrl, onRemove }: PreviewImageViewProps) => {
+const PreviewImageView = ({ imageUrl, onRemove, readOnly }: PreviewImageViewProps) => {
   return (
     <ImageBox>
       <Image alt='preview' src={imageUrl} fill style={{ objectFit: 'cover' }} sizes='120px' />
-      <RemoveButton type='button' onClick={onRemove}>
-        <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
-      </RemoveButton>
+      {!readOnly && (
+        <RemoveButton type='button' onClick={onRemove}>
+          <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
+        </RemoveButton>
+      )}
     </ImageBox>
   )
 }
@@ -143,7 +156,7 @@ const RemoveButton = styled.button`
   cursor: pointer;
 `
 
-const EmptyBox = styled.div<{ backgroundColor: ThemeColorType }>`
+const EmptyBox = styled.div<{ backgroundColor: ThemeColorType; readOnly: boolean }>`
   width: 100%;
   aspect-ratio: 1 / 1;
   background-color: ${({ backgroundColor }) => getThemeColor(backgroundColor)};

@@ -1,11 +1,13 @@
-// import { createContext } from 'react'
 'use client'
-import styled from '@emotion/styled'
 import Image from 'next/image'
-import { theme } from '@shared/styles/theme'
-import ChallengeImageSlider from './ChallengeImageSlider'
 import { useRouter } from 'next/navigation'
+
+import styled from '@emotion/styled'
+
 import { URL } from '@shared/constants/route/route'
+import { theme } from '@shared/styles/theme'
+
+import ChallengeImageSlider from './ChallengeImageSlider'
 
 const HomePage = () => {
   const router = useRouter()
@@ -47,7 +49,7 @@ const HomePage = () => {
 export default HomePage
 
 const TreeSection = styled.section`
-  margin-top: 95px;
+  margin-top: 50px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -55,7 +57,7 @@ const TreeSection = styled.section`
 `
 
 const Title = styled.h1`
-  font-size: ${theme.fontSize.lg};
+  font-size: ${theme.fontSize.xl};
   color: ${theme.colors.lfGreenMain.base};
   font-weight: ${theme.fontWeight.semiBold};
 `
@@ -96,8 +98,9 @@ const ChallengeButton = styled.button`
   cursor: pointer;
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.lg};
-  border-radius: ${theme.radius.xl};
+  font-size: ${theme.fontSize.base};
+  font-weight: ${theme.fontWeight.medium};
+  border-radius: ${theme.radius.md};
   box-shadow: ${theme.shadow.lfPrime};
 
   :hover {

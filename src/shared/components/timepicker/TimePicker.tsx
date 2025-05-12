@@ -2,7 +2,7 @@
 import styled from '@emotion/styled'
 
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
-import { theme } from '@shared/styles/emotion/theme'
+import { theme } from '@shared/styles/theme'
 
 import TimeDropdown from './TimeDropdown'
 
@@ -12,14 +12,16 @@ export interface TimePickerProps {
   endValue: string
   onChangeStart: (v: string) => void //기본 시작시간 값
   onChangeEnd: (v: string) => void //기본 종료시간 값
+  className?: string
+  labelClassName?: string
 }
 
-const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd }: TimePickerProps) => {
+const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd, className }: TimePickerProps) => {
   const { value: startOpen, toggle: toggleStart, setValue: setStartOpen } = useToggle(false)
   const { value: endOpen, toggle: toggleEnd, setValue: setEndOpen } = useToggle(false)
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {label && <Title>{label}</Title>}
       <RangeWrapper isOpen={startOpen || endOpen}>
         <Panel
@@ -71,8 +73,8 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 const Title = styled.h2`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${theme.fontSize.md};
+  font-weight: ${theme.fontWeight.medium};
   margin-bottom: 12px;
   color: ${theme.colors.lfBlack.base};
 `
@@ -81,7 +83,7 @@ const RangeWrapper = styled.div<{ isOpen: boolean }>`
   display: flex;
   background: #fafafa;
   border-radius: ${theme.radius.xs};
-  width: 321px;
+  width: 100%;
   height: 72px;
 
   &::after {

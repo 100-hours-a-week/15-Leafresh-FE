@@ -4,10 +4,10 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 export interface BackButtonProps {
   onClick?: () => void
+  className?: string
 }
 
-const BackButton = ({ onClick }: BackButtonProps) => {
-
+const BackButton = ({ onClick, className }: BackButtonProps) => {
   const handleClick = () => {
     onClick?.()
     if (typeof window !== 'undefined') {
@@ -17,8 +17,8 @@ const BackButton = ({ onClick }: BackButtonProps) => {
   }
 
   return (
-    <Button aria-label="back" onClick={handleClick}>
-      <LucideIcon name="MoveLeft" size={29} color="lfBlack" />
+    <Button aria-label='back' onClick={handleClick} className={className}>
+      <LucideIcon name='MoveLeft' size={29} color='lfBlack' />
     </Button>
   )
 }

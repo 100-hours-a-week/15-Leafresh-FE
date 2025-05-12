@@ -15,6 +15,7 @@ import DatePicker from '@shared/components/datepicker/DatePicker'
 import Dropdown, { DropdownProps } from '@shared/components/dropdown'
 import ErrorText from '@shared/components/errortext'
 import Input from '@shared/components/input'
+import TimePicker from '@shared/components/timepicker/TimePicker'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { StyledGeneric } from '@shared/styles/emotion/utils'
 import { theme } from '@shared/styles/theme'
@@ -28,6 +29,8 @@ export const metaSchema = z.object({
   category: z.string().min(1, '카테고리를 선택해주세요'),
   startDate: z.date({ required_error: '시작일을 선택해주세요' }),
   endDate: z.date({ required_error: '종료일을 선택해주세요' }),
+  startTime: z.string().min(1, '시작 시간을 선택해주세요'),
+  endTime: z.string().min(1, '종료 시간을 선택해주세요'),
   maxParticipant: z.number({ required_error: '최대 인원을 선택해주세요' }).min(1, '최대 인원을 선택해주세요'),
   examples: z
     .array(
@@ -58,6 +61,8 @@ export const defaultMetaFormValues: MetaFormValues = {
   category: '',
   startDate: new Date(),
   endDate: new Date(),
+  startTime: '00:00',
+  endTime: '23:59',
   maxParticipant: 0,
   examples: [
     { url: null, description: '', type: 'SUCCESS' },
@@ -146,7 +151,7 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
         </FieldWrapper>
 
         <FieldWrapper>
-          <DatePicker
+          <StyledDatePicker
             label='챌린지 기간'
             icon={<LucideIcon name='Calendar' size={16} />}
             startDate={formValue.startDate}
@@ -170,6 +175,24 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
         </FieldWrapper>
 
         <FieldWrapper>
+          <StyledTimePicker
+            label='인증 가능 시간 *'
+            startValue={formValue.startTime}
+            endValue={formValue.endTime}
+            onChangeStart={value => {
+              setValue('startTime', value)
+              trigger('startTime')
+            }}
+            onChangeEnd={value => {
+              setValue('endTime', value)
+              trigger('endTime')
+            }}
+          />
+          <ErrorText message={isSubmitted ? errors.startTime?.message : ''} />
+          <ErrorText message={isSubmitted ? errors.endTime?.message : ''} />
+        </FieldWrapper>
+
+        <FieldWrapper>
           <Controller
             name='maxParticipant'
             control={control}
@@ -189,7 +212,7 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
         </FieldWrapper>
 
         <FieldWrapper>
-          <ChallengeVerifyExamples
+          <StyledChallengeVerifyExamples
             title='인증샷 예시'
             description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
@@ -256,15 +279,32 @@ const ParticipantDropdown = StyledGeneric<DropdownProps<number>>(
   Dropdown,
   `
   width: 100%;
+  
 `,
 )
 
 const SubmitButton = styled.button`
-  padding: 12px;
+  height: 50px;
   border-radius: ${theme.radius.base};
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
   font-weight: ${theme.fontWeight.semiBold};
   cursor: pointer;
   border: none;
+`
+
+const StyledDatePicker = styled(DatePicker)`
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.semiBold};
+`
+
+const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.medium};
+`
+
+const StyledTimePicker = styled(TimePicker)`
+  width: 100%;
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.medium};
 `

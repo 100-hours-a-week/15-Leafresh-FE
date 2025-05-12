@@ -1,7 +1,7 @@
 'use client'
 
 import useEmblaCarousel from 'embla-carousel-react'
-import { Check, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import Image from 'next/image'
 
 import { useEffect, useRef, useState } from 'react'
@@ -11,6 +11,8 @@ import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { theme } from '@shared/styles/theme'
 
 const ImageZoomModal = () => {
   const [isInitial, setIsInitial] = useState(true)
@@ -56,7 +58,9 @@ const ImageZoomModal = () => {
         <CloseIcon size={20} onClick={close} />
       </Header>
 
-      <ResultBar result={result}>{result === 'SUCCESS' ? <Check size={20} /> : <X size={20} />}</ResultBar>
+      <ResultBar result={result}>
+        <LucideIcon name={result === 'SUCCESS' ? 'Check' : 'X'} size={20} />
+      </ResultBar>
 
       <Viewport ref={emblaRef}>
         <Container className={!isInitial ? 'animate' : ''}>
@@ -77,10 +81,11 @@ const ImageZoomModal = () => {
 export default ImageZoomModal
 
 const Wrapper = styled.div`
+  position: fixed;
   width: 100%;
   height: 100dvh;
-  position: absolute;
   top: 0;
+  z-index: 300;
   display: flex;
   flex-direction: column;
   background-color: #dedede;
@@ -141,6 +146,7 @@ const Slide = styled.div`
   min-width: 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `
 
 const ImageArea = styled.div`
@@ -166,8 +172,8 @@ const StyledImage = styled(Image)`
 const Description = styled.div`
   flex: 1;
   text-align: center;
-  font-size: 12px;
+  font-size: ${theme.fontSize.base};
   background-color: black;
   color: #fff;
-  padding: 12px;
+  padding: 30px 20px;
 `
