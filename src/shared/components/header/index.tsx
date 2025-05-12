@@ -7,12 +7,16 @@ import { useRouter } from 'next/navigation'
 
 import { useRef } from 'react'
 import styled from '@emotion/styled'
+import { useMutation } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { Logout } from '@features/member/api/logout'
 import { URL } from '@shared/constants/route/route'
+import { ToastType } from '@shared/context/Toast/type'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import { theme } from '@shared/styles/theme'
 import LogoImage from '@public/image/logo.svg'
@@ -24,23 +28,46 @@ interface HeaderProps {
 
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
-  const { userInfo } = useOAuthUserStore()
+  const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const openToast = useToast()
 
   const { value: isOpen, toggle, setValue } = useToggle()
   const drawerRef = useRef<HTMLDivElement>(null)
 
   const isLoggedIn: boolean = !!userInfo
-  console.log(userInfo)
 
   useOutsideClick(drawerRef as React.RefObject<HTMLElement>, toggle)
   useKeyClose('Escape', drawerRef as React.RefObject<HTMLElement>, toggle)
   useScrollLock(isOpen)
 
+  /** 로그아웃 */
+  const { mutate: LogoutMutate, isPending: isLoggingOut } = useMutation({
+    mutationFn: Logout,
+    onSuccess: response => {
+      toggle()
+      clearUserInfo()
+      openToast(ToastType.Success, '로그아웃 성공')
+      router.push(URL.MAIN.INDEX.value)
+    },
+    onError: () => {
+      openToast(ToastType.Error, '로그아웃 실패.\n다시 시도해주세요')
+    },
+  })
+
+  /** 라우팅 로직 */
   const handleRoute = (url: string) => {
     router.push(url)
     setValue(false)
   }
 
+  /** 로그아웃 로직 */
+  const handleLogout = () => {
+    if (!userInfo) {
+      // TODO: 로그인 정보를 확인해서 분기 처리
+      return
+    }
+    LogoutMutate(userInfo.provider)
+  }
   return (
     <HeaderContainer height={height}>
       <CustomWidthWrapper padding={padding}>
@@ -81,8 +108,8 @@ const Header = ({ height, padding }: HeaderProps) => {
                   <MenuItemWrapper>
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.INDEX.value)}>챌린지 목록</MenuItem>
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.PARTICIPATE.INDEX.value)}>인증하기</MenuItem>
-                    <MenuItem onClick={() => handleRoute(URL.STORE.INDEX.value)}>나뭇잎 상점</MenuItem>
-                    <MenuItem>로그아웃</MenuItem>
+                    {/* <MenuItem onClick={() => handleRoute(URL.STORE.INDEX.value)}>나뭇잎 상점</MenuItem> */}
+                    <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
                     <DangerItem>회원탈퇴</DangerItem>
                   </MenuItemWrapper>
                 </>
