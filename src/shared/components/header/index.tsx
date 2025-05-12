@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useRef } from 'react'
 import styled from '@emotion/styled'
 
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { URL } from '@shared/constants/route/route'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
@@ -23,12 +24,13 @@ interface HeaderProps {
 
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
+  const { userInfo } = useOAuthUserStore()
+
   const { value: isOpen, toggle, setValue } = useToggle()
   const drawerRef = useRef<HTMLDivElement>(null)
 
-  // TODO : 로그인 상태 판단 / 정보 가져오기
-  const isLoggedIn: boolean = true
-  const nickname: string = '카더가든'
+  const isLoggedIn: boolean = !!userInfo
+  console.log(userInfo)
 
   useOutsideClick(drawerRef as React.RefObject<HTMLElement>, toggle)
   useKeyClose('Escape', drawerRef as React.RefObject<HTMLElement>, toggle)
@@ -69,8 +71,8 @@ const Header = ({ height, padding }: HeaderProps) => {
               {isLoggedIn ? (
                 <>
                   <UserInfo>
-                    <ProfileCircle />
-                    <Nickname>{nickname}</Nickname>
+                    <ProfileImage src={userInfo?.imageUrl as string} alt='유저 이미지' width={32} height={32} />
+                    <Nickname>{userInfo?.nickname}</Nickname>
                     <Emoji>🌱</Emoji>
                   </UserInfo>
                   <StartButton onClick={() => handleRoute(URL.CHALLENGE.GROUP.CREATE.value)}>
@@ -91,7 +93,6 @@ const Header = ({ height, padding }: HeaderProps) => {
                   </AuthRouteButton>
                   <MenuItemWrapper>
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.INDEX.value)}>챌린지 목록</MenuItem>
-                    <MenuItem onClick={() => handleRoute(URL.CHALLENGE.PARTICIPATE.INDEX.value)}>인증하기</MenuItem>
                     <MenuItem onClick={() => handleRoute(URL.STORE.INDEX.value)}>나뭇잎 상점</MenuItem>
                   </MenuItemWrapper>
                 </>
@@ -183,11 +184,8 @@ const UserInfo = styled.div`
   margin: 16px 0 8px;
 `
 
-const ProfileCircle = styled.div`
-  width: 32px;
-  height: 32px;
+const ProfileImage = styled(Image)`
   border-radius: 50%;
-  background-color: ${theme.colors.lfLightGray.base};
 `
 
 const Nickname = styled.div`

@@ -61,7 +61,7 @@ const MotionContainer = styled(motion.div)<{ toastType: ToastType }>`
   gap: 4px;
 
   min-width: ${({ toastType }) => (toastType === ToastType.Success ? '209px' : '256px')};
-  height: 70px;
+  height: 60px;
   width: 250px;
   padding: 0px 20px;
 
