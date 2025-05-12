@@ -11,6 +11,7 @@ import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import { theme } from '@shared/styles/theme'
 
 const ImageZoomModal = () => {
   const [isInitial, setIsInitial] = useState(true)
@@ -141,6 +142,7 @@ const Slide = styled.div`
   min-width: 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `
 
 const ImageArea = styled.div`
@@ -166,8 +168,8 @@ const StyledImage = styled(Image)`
 const Description = styled.div`
   flex: 1;
   text-align: center;
-  font-size: 12px;
+  font-size: ${theme.fontSize.base};
   background-color: black;
   color: #fff;
-  padding: 12px;
+  padding: 30px 20px;
 `

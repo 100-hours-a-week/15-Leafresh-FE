@@ -57,7 +57,8 @@ export const dummyGroupChallengeDetail: GroupChallengeDetail = {
       id: 3,
       imageUrl: '/icon/category_zero_waste.png',
       type: 'FAILURE',
-      description: '실패 인증샷 설명',
+      description:
+        '실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명',
       sequenceNumber: 3,
     },
     {
@@ -193,6 +194,10 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     ParticipateMutate(challengeId)
   }
 
+  /** 단체 챌린지 참여 이력 페이지로 이동 */
+  const handleRouteToVerificationsPage = () => {
+    router.push(URL.CHALLENGE.GROUP.PARTICIPATE_LIST.value(challengeId))
+  }
   return (
     <Wrapper className={className}>
       <DescriptionSection>
@@ -259,7 +264,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
         <Section>
           <SectionTitle>
             <div>참여자 인증 사진</div>
-            <MoreButton onClick={() => {}}>더 보기</MoreButton>
+            <MoreButton onClick={handleRouteToVerificationsPage}>더 보기</MoreButton>
           </SectionTitle>
           <ChallengeVerifyCarousel images={verificationImages} />
         </Section>
