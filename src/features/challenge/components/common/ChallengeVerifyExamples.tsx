@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 
 import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/constant'
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
+import { ImageZoomModalData, useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { theme } from '@shared/styles/theme'
 
 import VerificationImageInput from './VerificationImageInput'
@@ -20,8 +21,10 @@ interface ChallengeVerifyExamplesProps {
   maxCount: number
   examples: VerificationImageData[]
   onChange: (updated: VerificationImageData[]) => void
-  className?: string
+  readOnly?: boolean
   required?: boolean
+  className?: string
+  verificationInputClassName?: string
 }
 
 const ChallengeVerifyExamples = ({
@@ -30,14 +33,20 @@ const ChallengeVerifyExamples = ({
   maxCount,
   examples,
   onChange,
+  readOnly = false,
   required,
   className,
+  verificationInputClassName,
 }: ChallengeVerifyExamplesProps) => {
+  const { open } = useImageZoomStore()
+
   const updateExamples = (
     index: number,
     data: Partial<Omit<VerificationImageData, 'type'>>,
     type: ChallengeVerificationResultType,
   ) => {
+    if (readOnly) return
+
     let newExamples = [...examples]
     const currentCount = newExamples.filter(e => e.url !== null).length
 
@@ -78,6 +87,23 @@ const ChallengeVerifyExamples = ({
     onChange(newExamples)
   }
 
+  /** 이미지 확대클릭 */
+  const handleZoomClick = (example: VerificationImageData, idx: number) => {
+    const { url, description, type } = example
+    if (!url || !description) return
+
+    const data: ImageZoomModalData[] = examples.map(
+      example =>
+        ({
+          result: example.type,
+          imageSrc: example.url,
+          description: example.description,
+        }) as ImageZoomModalData,
+    )
+    /** 모달 열기 */
+    open(data, idx)
+  }
+
   return (
     <Wrapper className={className}>
       <Header>
@@ -86,7 +112,7 @@ const ChallengeVerifyExamples = ({
           {required && <RequiredMark>*</RequiredMark>}
         </Label>
       </Header>
-      <Description>{description}</Description>
+      {description && <Description>{description}</Description>}
 
       <ScrollArea>
         {examples.map((example, idx) => (
@@ -97,9 +123,12 @@ const ChallengeVerifyExamples = ({
             description={example.description}
             cameraTitle={example.type === 'SUCCESS' ? '성공 예시 이미지' : '실패 예시 이미지'}
             status={example.type}
+            readOnly={readOnly}
             onChange={({ imageUrl, description }) =>
               updateExamples(idx, { url: imageUrl, description: description ?? '' }, example.type)
             }
+            onZoom={() => handleZoomClick(example, idx)}
+            className={verificationInputClassName}
           />
         ))}
       </ScrollArea>
@@ -112,7 +141,7 @@ export default ChallengeVerifyExamples
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 `
 
 const Header = styled.div`
@@ -123,7 +152,6 @@ const Header = styled.div`
 
 const Label = styled.h3`
   font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.bold};
   color: ${theme.colors.lfBlack.base};
 `
 
@@ -137,6 +165,9 @@ const Description = styled.p`
 `
 
 const ScrollArea = styled.div`
+  width: 100%;
+
+  position: relative;
   display: flex;
   gap: 12px;
   overflow-x: auto;

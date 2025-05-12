@@ -9,6 +9,7 @@ import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import { CreateChallenge, ExampleImageType } from '@features/challenge/api/create-group-challenge'
 import DetailStep, {
@@ -40,7 +41,7 @@ const GroupChallengeCreatePage = () => {
   })
 
   /** 단체 챌린지 생성 */
-  const { mutate: CreateGroupChallengeMutate } = useMutation({
+  const { mutate: CreateGroupChallengeMutate, isPending: isCreating } = useMutation({
     mutationFn: CreateChallenge,
     onSuccess: response => {
       const challengeId: number = response.data.id
@@ -54,15 +55,16 @@ const GroupChallengeCreatePage = () => {
 
   const handleFinalSubmit = () => {
     const data = form.getValues()
+
     // TODO : 시작시간 - 종료시간 데이터 넣기
     const { title, description, category, maxParticipant, thumbnailUrl, startDate, endDate, examples } = data
 
     /**
      * {
-    type: "SUCCESS" | "FAILURE";
-    url: string | null;
-    description: string;
-}
+      type: "SUCCESS" | "FAILURE";
+      url: string | null;
+      description: string;
+      }
      */
 
     const filteredExamples = examples.filter(example => example.url !== null)
@@ -76,11 +78,11 @@ const GroupChallengeCreatePage = () => {
     CreateGroupChallengeMutate({
       title,
       description,
-      category: category as ChallengeCategoryType,
+      category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
       maxParticipantCount: maxParticipant,
       thumbnailImageUrl: thumbnailUrl,
       startDate: formatDateToDateFormatString(startDate),
-      endDate: formatDateToDateFormatString(startDate),
+      endDate: formatDateToDateFormatString(endDate),
       verificationStartTime: '10:10' as TimeFormatString,
       verificationEndTime: '22:30' as TimeFormatString,
       exampleImages: exampleImages as ExampleImageType[],
@@ -97,7 +99,7 @@ const GroupChallengeCreatePage = () => {
           }}
         />
       ) : (
-        <DetailStep form={form} onBack={() => setStep(1)} onSubmit={handleFinalSubmit} />
+        <DetailStep form={form} onBack={() => setStep(1)} onSubmit={handleFinalSubmit} isCreating={isCreating} />
       )}
     </PageWrapper>
   )

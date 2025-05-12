@@ -2,9 +2,8 @@
 
 import styled from '@emotion/styled'
 
-import { ChallengeVerificationResultType, ChallengeVerificationStatusType } from '@entities/challenge/type'
+import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import ImageInput from '@shared/components/image-input'
-import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import { ThemeColorType } from '@shared/styles/theme/type'
@@ -40,6 +39,8 @@ interface VerificationImageInputProps {
   description: string | null
   cameraTitle: string
   onChange: (data: { imageUrl: string | null; description?: string | null }) => void
+  onZoom: () => void
+  readOnly?: boolean
   className?: string
 }
 
@@ -50,47 +51,34 @@ const VerificationImageInput = ({
   imageUrl,
   cameraTitle,
   onChange,
+  onZoom,
+  readOnly = false,
   className,
 }: VerificationImageInputProps) => {
   const { icon, color } = STATUS_ICON_MAP[status]
-  const { open } = useImageZoomStore()
-
-  const handleZoomClick = () => {
-    if (!imageUrl || !description) return
-
-    open(
-      [
-        {
-          result: status as ChallengeVerificationResultType,
-          imageSrc: imageUrl,
-          description: description,
-        },
-      ],
-      0,
-    )
-  }
 
   return (
     <Container className={className}>
-      <StyledImageInput
-        icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
-        label={label}
-        backgroundColor='lfInputBackground'
-        imageUrl={imageUrl}
-        cameraTitle={cameraTitle}
-        hasDescription
-        type={status}
-        onChange={onChange}
-      />
+      <ImageArea>
+        <StyledImageInput
+          icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
+          label={label}
+          backgroundColor='lfInputBackground'
+          imageUrl={imageUrl}
+          cameraTitle={cameraTitle}
+          hasDescription
+          type={status}
+          onChange={readOnly ? () => {} : onChange}
+          readOnly={readOnly}
+        />
+        {imageUrl && (
+          <ZoomButton onClick={onZoom}>
+            <LucideIcon name='Scan' size={24} color='lfBlack' />
+          </ZoomButton>
+        )}
+      </ImageArea>
 
       <Footer backgroundColor={color}>{icon}</Footer>
-
-      {imageUrl && (
-        <ZoomButton onClick={handleZoomClick}>
-          <LucideIcon name='Scan' size={20} color='lfWhite' />
-        </ZoomButton>
-      )}
-
       {imageUrl && <Description>{description}</Description>}
     </Container>
   )
@@ -105,8 +93,16 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 120px;
+  flex-shrink: 0;
 `
+
+const ImageArea = styled.div`
+  position: relative;
+  width: 100%;
+`
+
 const StyledImageInput = styled(ImageInput)`
+  width: 100%;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 `
@@ -132,13 +128,11 @@ const Description = styled.p`
   word-break: break-word;
   white-space: pre-wrap;
 `
-
 const ZoomButton = styled.button`
   position: absolute;
-  top: 90px;
-  right: 2px;
+  bottom: 4px;
+  right: 4px;
   background: transparent;
-
   border: none;
   padding: 4px;
   cursor: pointer;
