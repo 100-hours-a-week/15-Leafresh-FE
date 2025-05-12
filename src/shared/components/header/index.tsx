@@ -11,7 +11,9 @@ import { useMutation } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { Logout } from '@features/member/api/logout'
+import { Unregister } from '@features/member/api/unregister'
 import { URL } from '@shared/constants/route/route'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
@@ -29,6 +31,7 @@ interface HeaderProps {
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
   const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const { openConfirmModal, isOpen: isConfirmModalOpen } = useConfirmModalStore()
   const openToast = useToast()
 
   const { value: isOpen, toggle, setValue } = useToggle()
@@ -36,7 +39,9 @@ const Header = ({ height, padding }: HeaderProps) => {
 
   const isLoggedIn: boolean = !!userInfo
 
-  useOutsideClick(drawerRef as React.RefObject<HTMLElement>, toggle)
+  useOutsideClick(drawerRef as React.RefObject<HTMLElement>, () => {
+    if (!isConfirmModalOpen) toggle()
+  })
   useKeyClose('Escape', drawerRef as React.RefObject<HTMLElement>, toggle)
   useScrollLock(isOpen)
 
@@ -54,6 +59,20 @@ const Header = ({ height, padding }: HeaderProps) => {
     },
   })
 
+  /** 회원탈퇴 */
+  const { mutate: UnregisterMutate, isPending: isUnregistering } = useMutation({
+    mutationFn: Unregister,
+    onSuccess: response => {
+      toggle()
+      clearUserInfo()
+      openToast(ToastType.Success, '회원탈퇴 성공')
+      router.push(URL.MAIN.INDEX.value)
+    },
+    onError: () => {
+      openToast(ToastType.Error, '회원탈퇴 실패.\n다시 시도해주세요')
+    },
+  })
+
   /** 라우팅 로직 */
   const handleRoute = (url: string) => {
     router.push(url)
@@ -63,10 +82,23 @@ const Header = ({ height, padding }: HeaderProps) => {
   /** 로그아웃 로직 */
   const handleLogout = () => {
     if (!userInfo) {
-      // TODO: 로그인 정보를 확인해서 분기 처리
+      // TODO: 유효한 로그인 정보 확인해서 분기 처리
       return
     }
     LogoutMutate(userInfo.provider)
+  }
+
+  /** 회원탈퇴 로직 */
+  const handleUnregister = () => {
+    if (!userInfo) {
+      // TODO: 유효한 로그인 정보 확인해서 분기 처리
+      return
+    }
+    openConfirmModal({
+      title: '회원탈퇴 하시겠습니까?',
+      description: '탈퇴 시 데이터를 복구할 수 없습니다.',
+      onConfirm: () => UnregisterMutate(),
+    })
   }
   return (
     <HeaderContainer height={height}>
@@ -110,7 +142,7 @@ const Header = ({ height, padding }: HeaderProps) => {
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.PARTICIPATE.INDEX.value)}>인증하기</MenuItem>
                     {/* <MenuItem onClick={() => handleRoute(URL.STORE.INDEX.value)}>나뭇잎 상점</MenuItem> */}
                     <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
-                    <DangerItem>회원탈퇴</DangerItem>
+                    <DangerItem onClick={handleUnregister}>회원탈퇴</DangerItem>
                   </MenuItemWrapper>
                 </>
               ) : (
