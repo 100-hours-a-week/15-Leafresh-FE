@@ -5,34 +5,35 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import ChatWindow from './ChatWindow'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
+import { theme } from '@shared/styles/theme'
 
-export default function Chatbot() {
+const Chatbot = () => {
   const { value: open, toggle: toggleOpen, setValue: setOpen } = useToggle(false)
 
   return (
     <>
-      {/* 플로팅 버튼 (설계서 1번 항목) */}
       {!open && (
         <Launcher onClick={toggleOpen}>
           <Image src='/image/chatbot.png' alt='Leafresh 챗봇' width={48} height={48} />
+
+          <Name>챗봇 새순</Name>
         </Launcher>
       )}
 
-      {/* ChatWindow */}
       <ChatWindow open={open} onClose={() => setOpen(false)} />
     </>
   )
 }
+export default Chatbot
 
 const Launcher = styled.button`
   position: fixed;
+  flex-direction: column;
   bottom: 24px;
   right: 24px;
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  background: white;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); */
   border: none;
   cursor: pointer;
   display: flex;
@@ -40,7 +41,8 @@ const Launcher = styled.button`
   justify-content: center;
   z-index: 1000;
   transition: transform 0.3s ease;
-
+  @media screen {
+  }
   /* 호버 효과 */
   &:hover {
     transform: scale(1.1);
@@ -50,4 +52,7 @@ const Launcher = styled.button`
   &:active {
     transform: scale(0.95);
   }
+`
+const Name = styled.p`
+  font-size: ${theme.fontSize.xs};
 `

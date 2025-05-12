@@ -17,8 +17,7 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
     workType?: string
     challenge?: string
   }>({})
-
-  // 애니메이션 상태
+  const [resetCount, setResetCount] = useState(0)
   const [animationComplete, setAnimationComplete] = useState(false)
 
   // 현재 단계 상태
@@ -113,6 +112,7 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
   const handleReset = () => {
     setSelections({})
     setCurrentStep(1)
+    setResetCount(prev => prev + 1)
 
     try {
       sessionStorage.removeItem('chatSelections')
@@ -133,7 +133,13 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
     <Window open={open} animationComplete={animationComplete}>
       <Header close={handleReset} />
       <Body>
-        <ChatFrame step={currentStep} onSelect={handleSelect} onRetry={handleRetry} onSend={handleSend} />
+        <ChatFrame
+          key={resetCount}
+          step={currentStep}
+          onSelect={handleSelect}
+          onRetry={handleRetry}
+          onSend={handleSend}
+        />
       </Body>
     </Window>
   )

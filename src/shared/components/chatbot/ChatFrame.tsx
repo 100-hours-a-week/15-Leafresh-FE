@@ -6,10 +6,10 @@ import ChatBubble from './ChatBubble'
 
 import ChatSelection from './ChatSelection'
 import SlideArea from '@shared/components/slidearea/SlideArea'
-import { UndoIcon } from 'lucide-react'
 
 // 챗봇 API import
 import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 export type FrameStep = 1 | 2 | 3
 
@@ -118,7 +118,6 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
 
       // 선택 내용을 하나의 메시지로 추가
       addChatItem('message', 'user', `${locationLabel}, ${workTypeLabel}`)
-
       // 다음 단계 안내 메시지
       setTimeout(() => {
         addChatItem('message', 'bot', '참여하고 싶은 챌린지 유형을 선택해주세요!')
@@ -127,15 +126,15 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
         addChatItem('selection', undefined, undefined, {
           title: '챌린지 선택',
           subtitle: '참여하고 싶은 챌린지를 선택해주세요.',
-          imageUrl: '/image/chatbotwork.png',
+          imageUrl: '/image/chatbotcategory.png',
           options: [
             { label: '제로웨이스트', value: '제로웨이스트' },
             { label: '플로깅', value: '플로깅' },
             { label: '비건', value: '비건' },
             { label: '에너지 절약', value: '에너지 절약' },
-            { label: '중고거래', value: '중고거래' },
+            { label: '업사이클', value: '업사이클' },
             { label: '탄소발자국', value: '탄소발자국' },
-            { label: '환경 서적/영화', value: '환경 서적/영화' },
+            { label: '문화 공유', value: '문화 공유' },
             { label: '디지털 탄소', value: '디지털 탄소' },
           ],
           selectionType: 'challenge',
@@ -238,15 +237,15 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
     addChatItem('selection', undefined, undefined, {
       title: '챌린지 선택',
       subtitle: '참여하고 싶은 챌린지를 선택해주세요.',
-      imageUrl: '/image/chatbotwork.png',
+      imageUrl: '/image/chatbotcategory.png',
       options: [
         { label: '제로웨이스트', value: '제로웨이스트' },
         { label: '플로깅', value: '플로깅' },
         { label: '비건', value: '비건' },
         { label: '에너지 절약', value: '에너지 절약' },
-        { label: '중고거래', value: '중고거래' },
+        { label: '업사이클', value: '업사이클' },
         { label: '탄소발자국', value: '탄소발자국' },
-        { label: '환경 서적/영화', value: '환경 서적/영화' },
+        { label: '문화 공유', value: '문화 공유' },
         { label: '디지털 탄소', value: '디지털 탄소' },
       ],
       selectionType: 'challenge',
@@ -362,9 +361,9 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
       plogging: '플로깅',
       vegan: '비건',
       energy: '에너지 절약',
-      secondhand: '중고거래',
+      secondhand: '업사이클',
       carbon: '탄소발자국',
-      media: '환경 서적/영화',
+      media: '문화 공유',
       digital: '디지털 탄소',
     }
 
@@ -476,7 +475,9 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
                 handleSendMessage(inputText)
               }
             }}
-          ></SendButton>
+          >
+            <LucideIcon name='ArrowUpRight' size={22} />
+          </SendButton>
         </InputContainer>
       )}
     </Container>
