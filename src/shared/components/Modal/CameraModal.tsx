@@ -65,6 +65,7 @@ const CameraModal = () => {
     setPreviewUrl(null)
     setDescription('')
   }
+  const confirmText: string = type === 'SUCCESS' || type === 'FAILURE' ? '등록하기' : '인증하기'
 
   let content
   if (!previewUrl || (previewUrl && !hasDescription)) {
@@ -75,9 +76,21 @@ const CameraModal = () => {
       </ShootButtonWrapper>
     )
   } else if (hasDescription) {
+    let label
+    switch (type) {
+      case 'SUCCESS':
+        label = '성공 인증 이미지'
+        break
+      case 'FAILURE':
+        label = '실패 인증 이미지'
+        break
+      default:
+        label = '인증 이미지 설명'
+        break
+    }
     content = (
       <TextAreaWrapper>
-        <TextAreaLabel type={type}>{type === 'SUCCESS' ? '성공 인증 이미지' : '실패 인증 이미지'}</TextAreaLabel>
+        <TextAreaLabel type={type}>{label}</TextAreaLabel>
         <TextAreaDescription>인증 참여 이미지를 사람들에게 설명해주세요.</TextAreaDescription>
         <TextArea value={description} onChange={e => setDescription(e.target.value)} placeholder='예) Placeholder' />
       </TextAreaWrapper>
@@ -96,7 +109,7 @@ const CameraModal = () => {
       <ContentWrapper>{content}</ContentWrapper>
 
       <SwitchWrapper>
-        <ConfirmButton onClick={handleConfirm}>등록하기</ConfirmButton>
+        <ConfirmButton onClick={handleConfirm}>{confirmText}</ConfirmButton>
       </SwitchWrapper>
     </Wrapper>
   )
@@ -192,8 +205,13 @@ const TextAreaWrapper = styled.div`
 `
 
 const TextAreaLabel = styled.p<{ type: ChallengeVerificationStatusType | undefined }>`
-  color: ${({ type }) => (type === 'SUCCESS' ? theme.colors.lfBlue.base : theme.colors.lfRed.base)};
-  font-family: ${theme.fontWeight.semiBold};
+  color: ${({ type }) =>
+    type === 'SUCCESS'
+      ? theme.colors.lfBlue.base
+      : type === 'FAILURE'
+        ? theme.colors.lfRed.base
+        : theme.colors.lfBlack.base};
+  font-weight: ${theme.fontWeight.semiBold};
   font-size: ${theme.fontSize.base};
 `
 const TextAreaDescription = styled.p`

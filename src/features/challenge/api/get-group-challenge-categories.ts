@@ -1,5 +1,3 @@
-// @features/challenge/api/getGroupChallengeCategoryList.ts
-
 import { ChallengeCategoryType, ChallengeCategoryTypeKor } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'

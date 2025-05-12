@@ -1,21 +1,28 @@
 'use client'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import {
   getPersonalChallengeDetails,
   PersonalChallengeDetail,
 } from '@features/challenge/api/get-personal-challenge-details'
+import { VerifyGroupChallenge, VerifyPersonalChallengeBody } from '@features/challenge/api/verify-personal-challenge'
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'
+import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { ToastType } from '@shared/context/Toast/type'
+import { useToast } from '@shared/hooks/useToast/useToast'
+import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
@@ -70,14 +77,20 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   { isWarning: true, value: '부적절한 인증 사진은 관리자에 의해 삭제될 수 있습니다.' },
 ]
 
+type SubmitDataType = {
+  imageUrl: string
+  description: string
+}
+
 interface ChallengePersonalDetailsProps {
   challengeId: number
   className?: string
 }
 
 const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalDetailsProps): ReactNode => {
-  // const router = useRouter()
-  // const openToast = useToast()
+  const router = useRouter()
+  const openToast = useToast()
+  const { open: openCameraModal } = useCameraModalStore()
 
   /** 개인 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
@@ -85,7 +98,17 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
     queryFn: () => getPersonalChallengeDetails(challengeId),
   })
 
-  /** 개인 챌린지 인증 제출 페이지로 이동 */
+  /** 개인 챌린지 인증 생성 (제출) */
+  const { mutate: VerifyMutate, isPending } = useMutation({
+    mutationFn: VerifyGroupChallenge,
+    onSuccess: () => {
+      openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+      router.replace(URL.CHALLENGE.INDEX.value) // 챌린지 목록 페이지로 이동
+    },
+    onError: (error: ErrorResponse) => {
+      openToast(ToastType.Error, error.message)
+    },
+  })
 
   if (isLoading || !data?.data) return <Loading />
 
@@ -120,8 +143,32 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   }
 
   /** 이미지 촬영 모달 열기 */
-  const openImageModal = () => {}
+  const openImageModal = () => {
+    openCameraModal(
+      // #1. 카메라 모달 제목
+      `${title} 챌린지`,
+
+      // #2. 이미지 + (설명) 업로드 처리
+      ({ imageUrl, description }) => handleSubmit(imageUrl, description),
+      true, // 이미지에 대한 설명을 받을지 여부
+      'DONE' /** TODO: SUCCESS / FAILURE가 아닌걸로 설정하기 위해 더미값 넣어둠, 구별 필요 */,
+    )
+  }
   /** 제출하기 */
+  const handleSubmit = (imageUrl: string, description: string | undefined) => {
+    if (!imageUrl || !description) {
+      return
+    }
+    const body: VerifyPersonalChallengeBody = {
+      imageUrl,
+      content: description,
+    }
+    VerifyMutate({
+      challengeId: challengeId,
+      body,
+    })
+  }
+
   // const handleSubmit = () => {
   //   /** 예외0 : disabled 무시하고 제출 */
   //   if (isButtonDisabled) {
