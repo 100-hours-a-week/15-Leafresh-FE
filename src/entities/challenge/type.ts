@@ -8,6 +8,9 @@ import {
 
 export type ConstantPair = { kor: string; eng: string }
 
+/** 챌린지 종류 */
+export type ChallengeType = 'GROUP' | 'PERSONAL'
+
 /** 인증 시도 여부 */
 export type ChallengeParticipationType = (typeof CHALLENGE_PARTICIPATION_STATUS)[number]
 
