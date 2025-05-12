@@ -8,12 +8,14 @@ interface GroupChallengeDetailsPageProps {
 }
 
 const GroupChallengeDetailsPage = async ({ params }: GroupChallengeDetailsPageProps) => {
-  const id = Number(params.id)
-  if (isNaN(id)) return notFound()
+  const { id } = await params
+
+  const idNumber = Number(id)
+  if (isNaN(idNumber)) return notFound()
 
   const queryClient = getQueryClient()
 
-  return <ChallengeGroupDetails challengeId={id} />
+  return <ChallengeGroupDetails challengeId={idNumber} />
 
   // try {
   //   await queryClient.prefetchQuery({

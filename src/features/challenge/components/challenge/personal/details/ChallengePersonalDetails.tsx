@@ -7,7 +7,7 @@ import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { ChallengeVerificationStatusType } from '@entities/challenge/type'
+import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import {
   getPersonalChallengeDetails,
   PersonalChallengeDetail,
@@ -156,53 +156,46 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   }
   /** 제출하기 */
   const handleSubmit = (imageUrl: string, description: string | undefined) => {
-    if (!imageUrl || !description) {
+    if (!imageUrl || !description) return
+
+    /** #예외1: 챌린지에 이미 참여한 경우 */
+    if (status !== 'NOT_SUBMITTED') {
+      openToast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
       return
     }
+
+    const now = new Date()
+
+    /** #예외2: 요일이 일치하지 않으면 참여 불가 */
+    const nowDay: DayType = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase() // e.g. 'MONDAY'
+    if (nowDay !== dayOfWeek) {
+      openToast(ToastType.Error, '챌린지 기간이 아닙니다')
+      return
+    }
+
+    /** #예외3: 참여 가능한 시간이 아닐 경우 */
+    const [startH, startM] = verificationStartTime.split(':').map(Number)
+    const [endH, endM] = verificationEndTime.split(':').map(Number)
+    const nowMinutes = now.getHours() * 60 + now.getMinutes()
+    const startMinutes = startH * 60 + startM
+    const endMinutes = endH * 60 + endM
+
+    if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
+      openToast(ToastType.Error, '참여 가능한 시간이 아닙니다')
+      return
+    }
+
+    /** 예외 없음 → 인증 제출 */
     const body: VerifyPersonalChallengeBody = {
       imageUrl,
       content: description,
     }
+
     VerifyMutate({
-      challengeId: challengeId,
+      challengeId,
       body,
     })
   }
-
-  // const handleSubmit = () => {
-  //   /** 예외0 : disabled 무시하고 제출 */
-  //   if (isButtonDisabled) {
-  //     openToast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
-  //     return
-  //   }
-  //   const now = new Date()
-
-  //   const startDateTime = new Date(`${startDate}T${verificationStartTime}`)
-  //   const endDateTime = new Date(`${endDate}T${verificationEndTime}`)
-
-  //   /** #예외1 : 챌린지 기간이 아님 */
-  //   if (now < startDateTime || now > endDateTime) {
-  //     openToast(ToastType.Error, '챌린지 기간이 아닙니다!')
-  //     return
-  //   }
-
-  //   const startTime = verificationStartTime.split(':').map(Number)
-  //   const endTime = verificationEndTime.split(':').map(Number)
-  //   const currentTime = [now.getHours(), now.getMinutes()]
-
-  //   const currentMinutes = currentTime[0] * 60 + currentTime[1]
-  //   const startMinutes = startTime[0] * 60 + startTime[1]
-  //   const endMinutes = endTime[0] * 60 + endTime[1]
-
-  //   /** #예외2 : 기간은 맞으나, 시간이 아님 */
-  //   if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
-  //     openToast(ToastType.Error, '참여 가능한 시간이 아닙니다')
-  //     return
-  //   }
-
-  //   /** 이미지 촬영 모달 열기 */
-  //   // ParticipateMutate(challengeId)
-  // }
 
   return (
     <Wrapper className={className}>
@@ -268,7 +261,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
       </SectionWrapper>
 
       <SubmitButton onClick={openImageModal} disabled={isButtonDisabled}>
-        {getSubmitButtonLabel(status)}
+        {!isPending ? getSubmitButtonLabel(status) : <Loading />}
       </SubmitButton>
     </Wrapper>
   )

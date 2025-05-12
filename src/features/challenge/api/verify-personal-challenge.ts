@@ -6,7 +6,7 @@ type VerifyGroupChallengeResponseType = ApiResponse<{
   submittedAt: ISOFormatString
 }>
 
-type VerifyPersonalChallengeBody = {
+export type VerifyPersonalChallengeBody = {
   imageUrl: string
   content: string
 }
