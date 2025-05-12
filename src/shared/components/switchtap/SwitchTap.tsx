@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
@@ -8,8 +7,10 @@ import { theme } from '@shared/styles/theme'
 export interface SwitchTapProps {
   //탭의 수(제목들)
   tabs: string[]
+
   //현재 활성화된 탭 인덱스
   currentIndex: number
+
   //탭이 변경될 때 호출
   onChange: (newIndex: number) => void
   className?: string

@@ -59,8 +59,11 @@ const ImageInput = ({
         onChange({ imageUrl, description })
       },
 
-      hasDescription, // 이미지에 대한 설명을 받을지 여부
-      type, // 성공 이미지 혹은 실패 이미지
+      // #3. 이미지에 대한 설명을 받을지 여부
+      hasDescription,
+
+      // #4. 성공 이미지 혹은 실패 이미지
+      type,
     )
   }
 

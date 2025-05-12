@@ -151,8 +151,18 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
 
       // #2. 이미지 + (설명) 업로드 처리
       ({ imageUrl, description }) => handleSubmit(imageUrl, description),
-      true, // 이미지에 대한 설명을 받을지 여부
+
+      // #3. 이미지에 대한 설명을 받을지 여부
+      true,
+
+      // #4. 어떤 인증인지 여부
       'DONE' /** TODO: SUCCESS / FAILURE가 아닌걸로 설정하기 위해 더미값 넣어둠, 구별 필요 */,
+
+      // #5. 챌린지 정보 명시
+      {
+        id: challengeId,
+        type: 'PERSONAL',
+      },
     )
   }
   /** 제출하기 */
