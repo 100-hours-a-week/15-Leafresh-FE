@@ -114,7 +114,7 @@ const Trigger = styled.button`
   appearance: none;
   background: transparent;
   border: none;
-  font-size: ${theme.fontSize.xs};
+  font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.regular};
   color: ${theme.colors.lfBlack.base};
   text-align: start;
@@ -125,7 +125,7 @@ const Dropdown = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: calc(100% + 15px);
   width: 100%;
-  background: ${theme.colors.lfBackdrop};
+  background-color: ${theme.colors.lfWhite.base};
   color: ${theme.colors.lfDarkGray};
   border-radius: ${theme.radius.sm};
   overflow: hidden;
@@ -147,8 +147,10 @@ const Dropdown = styled.div<{ isOpen: boolean }>`
 
 const Columns = styled.div`
   display: flex;
+  position: relative;
 `
 const Column = styled.ul`
+  width: 50%;
   max-height: 200px;
   overflow-y: auto;
   border-right: 1px solid ${theme.colors.lfBlue};
@@ -170,7 +172,6 @@ const Option = styled.li<{ selected: boolean }>`
 const ActionWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  border-top: 1px solid ${theme.colors.lfGreenBorder.base};
 `
 const ActButton = styled.button<{ primary?: boolean }>`
   flex: 1;
