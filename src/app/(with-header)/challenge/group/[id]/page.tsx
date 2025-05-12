@@ -1,11 +1,9 @@
-// @app/group/challenge/[id]/page.tsx
-
 import { notFound } from 'next/navigation'
 
-import { dehydrate,HydrationBoundary } from '@tanstack/react-query'
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
-import ChallengeGroupDetails from '@features/challenge/components/challenge/group/details/Details'
+import ChallengeGroupDetails from '@features/challenge/components/challenge/group/details/ChallengeGroupDetails'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 

@@ -73,8 +73,8 @@ const Header = ({ height, padding }: HeaderProps) => {
                     <Nickname>{nickname}</Nickname>
                     <Emoji>🌱</Emoji>
                   </UserInfo>
-                  <StartButton onClick={() => handleRoute(URL.CHALLENGE.INDEX.value)}>
-                    친환경 챌린지 시작하기
+                  <StartButton onClick={() => handleRoute(URL.CHALLENGE.GROUP.CREATE.value)}>
+                    친환경 챌린지 만들기
                   </StartButton>
                   <MenuItemWrapper>
                     <MenuItem onClick={() => handleRoute(URL.CHALLENGE.INDEX.value)}>챌린지 목록</MenuItem>
