@@ -1,5 +1,6 @@
 'use client'
 
+import { differenceInCalendarDays } from 'date-fns'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -91,7 +92,7 @@ type WarningType = {
 }
 
 const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
-  { isWarning: false, value: '개인 챌린지는 재참여가 불가능합니다.' },
+  { isWarning: false, value: '단체 챌린지는 재참여가 불가능합니다.' },
   { isWarning: false, value: '인증 참여가 아닌, 성공시 나뭇잎이 부여됩니다.' },
   { isWarning: false, value: '인증 여부는 AI가 판단합니다.' },
   { isWarning: false, value: '인증 사진은 모든 사용자에게 공개됩니다.' },
@@ -144,6 +145,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     status,
   } = challengeData
 
+  const totalDays = differenceInCalendarDays(endDate, startDate) + 1 /** 지속일 */
   const verificationExampleImages: VerificationImageData[] = exampleImages.map(img => ({
     url: img.imageUrl,
     description: img.description,
@@ -245,7 +247,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
           />
           <TimeArea>
             <TimeText>
-              {verificationStartTime} ~ {verificationEndTime} 공유하기
+              매일, {totalDays}일간 {verificationStartTime} ~ {verificationEndTime} 공유하기
             </TimeText>
           </TimeArea>
         </Section>
@@ -258,6 +260,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
             examples={verificationExampleImages}
             onChange={() => {}}
             readOnly
+            verificationInputClassName='verify-input'
           />
         </Section>
 
@@ -384,8 +387,8 @@ const TimeArea = styled.div`
   background-color: ${theme.colors.lfInputBackground.base};
   border-radius: ${theme.radius.sm};
 
+  margin-top: 18px;
   padding: 30px;
-  margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -398,6 +401,10 @@ const TimeText = styled.span`
 
 const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
   font-weight: ${theme.fontWeight.semiBold};
+
+  .verify-input {
+    width: 40%;
+  }
 `
 
 const SubmitButton = styled.button`

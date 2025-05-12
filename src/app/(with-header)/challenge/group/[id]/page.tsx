@@ -3,11 +3,11 @@ import { notFound } from 'next/navigation'
 import ChallengeGroupDetails from '@features/challenge/components/challenge/group/details/ChallengeGroupDetails'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-interface Props {
+interface GroupChallengeDetailsPageProps {
   params: { id: string }
 }
 
-const Page = async ({ params }: Props) => {
+const GroupChallengeDetailsPage = async ({ params }: GroupChallengeDetailsPageProps) => {
   const id = Number(params.id)
   if (isNaN(id)) return notFound()
 
@@ -34,4 +34,4 @@ const Page = async ({ params }: Props) => {
   // }
 }
 
-export default Page
+export default GroupChallengeDetailsPage

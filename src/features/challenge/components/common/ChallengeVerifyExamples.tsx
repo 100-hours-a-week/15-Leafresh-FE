@@ -21,9 +21,10 @@ interface ChallengeVerifyExamplesProps {
   maxCount: number
   examples: VerificationImageData[]
   onChange: (updated: VerificationImageData[]) => void
-  className?: string
   readOnly?: boolean
   required?: boolean
+  className?: string
+  verificationInputClassName?: string
 }
 
 const ChallengeVerifyExamples = ({
@@ -35,6 +36,7 @@ const ChallengeVerifyExamples = ({
   readOnly = false,
   required,
   className,
+  verificationInputClassName,
 }: ChallengeVerifyExamplesProps) => {
   const { open } = useImageZoomStore()
 
@@ -126,6 +128,7 @@ const ChallengeVerifyExamples = ({
               updateExamples(idx, { url: imageUrl, description: description ?? '' }, example.type)
             }
             onZoom={() => handleZoomClick(example, idx)}
+            className={verificationInputClassName}
           />
         ))}
       </ScrollArea>
@@ -138,7 +141,7 @@ export default ChallengeVerifyExamples
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 `
 
 const Header = styled.div`
@@ -162,6 +165,9 @@ const Description = styled.p`
 `
 
 const ScrollArea = styled.div`
+  width: 100%;
+
+  position: relative;
   display: flex;
   gap: 12px;
   overflow-x: auto;

@@ -10,10 +10,10 @@ export type GroupChallengeCategory = {
   imageUrl: string
 }
 
-type GetGroupChallengeCategoryListResponse = ApiResponse<{
+type GroupChallengeCategoryListResponse = ApiResponse<{
   categories: GroupChallengeCategory[]
 }>
 
-export const getGroupChallengeCategoryList = (): Promise<GetGroupChallengeCategoryListResponse> => {
-  return fetchRequest<GetGroupChallengeCategoryListResponse>(ENDPOINTS.CHALLENGE.GROUP.CATEGORIES)
+export const getGroupChallengeCategoryList = (): Promise<GroupChallengeCategoryListResponse> => {
+  return fetchRequest<GroupChallengeCategoryListResponse>(ENDPOINTS.CHALLENGE.GROUP.CATEGORIES)
 }
