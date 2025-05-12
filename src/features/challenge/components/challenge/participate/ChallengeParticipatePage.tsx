@@ -1,17 +1,16 @@
 'use client'
-import React, { useState, useRef, useEffect } from 'react'
-import styled from '@emotion/styled'
 import { useRouter } from 'next/navigation'
 
-import SwitchTap from '@shared/components/switchtap/SwitchTap'
-import Chatbot from '@shared/components/chatbot/Chatbot'
+import { useEffect, useRef, useState } from 'react'
+import styled from '@emotion/styled'
 
+import type { ChallengeStatus } from '@features/challenge/api/participate/group-participant'
 import ChallengeCard from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCard'
 import CardList from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCardList'
-
+import { useGroupParticipationsCount } from '@features/challenge/hook/useGroupParticipationsCount'
 import { useInfiniteGroupParticipations } from '@features/challenge/hook/useInfiniteGroupParticipations'
-import { useGroupParticipationsCount, CountObj } from '@features/challenge/hook/useGroupParticipationsCount'
-import type { ChallengeStatus } from '@features/challenge/api/participate/group-participant'
+import Chatbot from '@shared/components/chatbot/Chatbot'
+import SwitchTap from '@shared/components/switchtap/SwitchTap'
 import { URL } from '@shared/constants/route/route'
 
 const statusMap: Record<number, ChallengeStatus> = {
@@ -36,7 +35,7 @@ export default function ChallengeParticipatePage() {
 
   // API 정상 시 실제 챌린지, 오류 시 dummy 전체
   const realChallenges = data?.pages.flatMap(p => p.data.challenges) ?? []
-  const url = URL.CHALLENGE.PARTICIPATE.DETAILS
+  // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
     `참여 전 (${CountObj?.notStarted ?? 0})`,
     `참여 중 (${CountObj?.ongoing ?? 0})`,

@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react'
-import { HttpMethod } from '@shared/constants/http'
+import { useCallback, useState } from 'react'
+
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { HttpMethod } from '@shared/constants/http'
 import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 type signedUrlResponse = ApiResponse<{
@@ -36,9 +37,15 @@ export function useImageUpload() {
       // 3) 최종 공개 URL 조립
       // GCS 기본 공개 URL 패턴: https://storage.googleapis.com/[BUCKET]/[OBJECT_NAME]
       return signed.data.fileUrl
-    } catch (err: any) {
-      setError(err)
-      throw err
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err)
+        throw err
+      }
+
+      const fallbackError = new Error('알 수 없는 에러 발생')
+      setError(fallbackError)
+      throw fallbackError
     } finally {
       setLoading(false)
     }

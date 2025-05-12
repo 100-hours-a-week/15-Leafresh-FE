@@ -1,10 +1,11 @@
-import styled from '@emotion/styled'
-import React from 'react'
 import Image from 'next/image'
-import { theme } from '@shared/styles/theme'
-
 import { useRouter } from 'next/navigation'
+
+import React from 'react'
+import styled from '@emotion/styled'
+
 import { URL } from '@shared/constants/route/route'
+import { theme } from '@shared/styles/theme'
 
 interface GroupChallengeProps {
   challenge: {

@@ -1,7 +1,9 @@
 // src/features/challenge/group/participate/hook/useGroupParticipationsCount.ts
 import { useQuery } from '@tanstack/react-query'
-import { fetchGroupParticipationsCount } from '../api/participate/group-participant-count'
+
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+
+import { fetchGroupParticipationsCount } from '../api/participate/group-participant-count'
 
 export interface CountObj {
   notStarted: number

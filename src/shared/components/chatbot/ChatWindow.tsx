@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import Header from './ChatHeader'
+
 import ChatFrame, { FrameStep } from './ChatFrame'
+import Header from './ChatHeader'
 
 export interface ChatWindowProps {
   open: boolean
@@ -65,7 +66,7 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
   // 선택 처리 함수
   const handleSelect = (value: string, step: FrameStep) => {
     // 현재 단계에 따라 적절한 키에 값 저장
-    let updatedSelections = { ...selections }
+    const updatedSelections = { ...selections }
 
     if (step === 1) {
       // 첫 번째 단계에서는 위치와 직장 형태 선택

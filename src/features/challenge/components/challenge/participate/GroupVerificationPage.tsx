@@ -1,15 +1,13 @@
 'use client'
 
-import React from 'react'
-import styled from '@emotion/styled'
-import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
-import { usePostGroupVerification, useGroupVerificationResult } from '@features/challenge/hook/useGroupVerification'
-
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
-
 import { useRouter } from 'next/navigation'
 
+import styled from '@emotion/styled'
+
 import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
+import { useGroupVerificationResult, usePostGroupVerification } from '@features/challenge/hook/useGroupVerification'
+import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
+import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 
 export default function GroupVerificationPage({ participateId }: { participateId: string }) {
   const challengeId = Number(participateId)

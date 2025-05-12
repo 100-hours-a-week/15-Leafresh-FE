@@ -1,11 +1,13 @@
 'use client'
 
-import React from 'react'
-import styled from '@emotion/styled'
 import Image from 'next/image'
-import ChatWindow from './ChatWindow'
+
+import styled from '@emotion/styled'
+
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import { theme } from '@shared/styles/theme'
+
+import ChatWindow from './ChatWindow'
 
 const Chatbot = () => {
   const { value: open, toggle: toggleOpen, setValue: setOpen } = useToggle(false)

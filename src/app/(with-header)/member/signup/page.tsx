@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { z } from 'zod'
 
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -13,17 +12,12 @@ import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { OAuthType } from '@entities/member/type'
 import { NicknameDuplicate } from '@features/member/api/nickname-duplicate'
 import { SignUp, SignUpBody } from '@features/member/api/signup'
+import { SignupFormType, signupSchema } from '@features/member/signup/schema'
 import ErrorText from '@shared/components/errortext'
 import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
-
-export const signupSchema = z.object({
-  nickname: z.string().min(1, '닉네임을 입력해주세요.'),
-})
-
-export type SignupFormType = z.infer<typeof signupSchema>
 
 const SignupPage = () => {
   const router = useRouter()

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 // 이미지 타입 정의
@@ -182,11 +182,11 @@ const ChallengeImageSlider: React.FC<ChallengeImageSliderProps> = ({ images = []
       </SlideContainer>
 
       {/* 스크롤 상태 표시 (개발 모드에서만 보임) */}
-      {process.env.NODE_ENV === 'development' && (
+      {/* {process.env.NODE_ENV === 'development' && (
         <ScrollStatus isHijacked={isScrollHijacked}>
           {isScrollHijacked ? '좌우 스크롤 중' : '페이지 스크롤 중'}
         </ScrollStatus>
-      )}
+      )} */}
 
       {/* 스크롤 가이드 */}
       <ScrollGuide isVisible={isScrollHijacked}>

@@ -8,7 +8,7 @@ import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 
 interface PersonalChallengeDetailsProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 const PersonalChallengeDetails = async ({ params }: PersonalChallengeDetailsProps) => {

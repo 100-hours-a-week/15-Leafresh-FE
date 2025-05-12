@@ -1,15 +1,17 @@
 'use client'
-import React, { useEffect, useState, useRef } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+
+import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { theme } from '@shared/styles/theme'
-import GridBox from '@shared/components/Wrapper/GridBox'
-import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
+
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import Chatbot from '@shared/components/chatbot/Chatbot'
+import GridBox from '@shared/components/Wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { theme } from '@shared/styles/theme'
 
 const categories: ChallengeCategoryType[] = [
   '제로웨이스트',

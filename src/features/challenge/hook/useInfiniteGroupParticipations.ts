@@ -1,11 +1,13 @@
-import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query'
+import { type InfiniteData,useInfiniteQuery } from '@tanstack/react-query'
+
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+
+import type { ChallengeResponse } from '../api/participate/group-participant'
 import {
-  fetchGroupParticipations,
   type ChallengeStatus,
+  fetchGroupParticipations,
   type FetchGroupParticipationsParams,
 } from '../api/participate/group-participant'
-import type { ChallengeResponse } from '../api/participate/group-participant'
 
 export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
   useInfiniteQuery<

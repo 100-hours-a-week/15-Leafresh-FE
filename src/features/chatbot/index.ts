@@ -1,16 +1,15 @@
 // 챗봇 API 모듈 인덱스 파일
 import {
   CATEGORY_RECOMMENDATION_ENDPOINT,
-  requestCategoryBasedRecommendation,
   CategoryRecommendationRequestDTO,
   ChallengeDTO,
   RecommendationResponseDataDTO,
+  requestCategoryBasedRecommendation,
 } from './chatbot-base-info'
-
 import {
   FREETEXT_RECOMMENDATION_ENDPOINT,
-  requestFreetextBasedRecommendation,
   FreetextRecommendationRequestDTO,
+  requestFreetextBasedRecommendation,
 } from './chatbot-free-text'
 
 // 엔드포인트를 CHATBOT_ENDPOINTS 객체로 묶어서 내보내기 (원본 코드 형태 유지)
