@@ -150,7 +150,11 @@ const CameraModal = () => {
   return (
     <Wrapper>
       <Header>
-        {previewUrl && <BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />}
+        {previewUrl ? (
+          <BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
+        ) : (
+          <CloseButton name='X' onClick={close} size={30} />
+        )}
         {title}
       </Header>
       <CameraWrapper>
@@ -311,4 +315,11 @@ const ConfirmButton = styled.button`
   border: none;
   border-radius: ${theme.radius.base};
   cursor: pointer;
+`
+
+const CloseButton = styled(LucideIcon)`
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 `
