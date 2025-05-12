@@ -29,7 +29,7 @@ const Toast = () => {
         <MotionContainer
           key='toast'
           toastType={type}
-          initial={{ opacity: 0, x: '-50%', y: 30 }}
+          initial={{ opacity: 0, x: '-50%', y: 50 }}
           animate={{ opacity: 1, x: '-50%', y: 0 }}
           exit={{ opacity: 0, x: '-50%', y: 20 }}
           transition={{ duration: 0.3 }}
@@ -61,14 +61,15 @@ const MotionContainer = styled(motion.div)<{ toastType: ToastType }>`
   gap: 4px;
 
   min-width: ${({ toastType }) => (toastType === ToastType.Success ? '209px' : '256px')};
-  /* height: 30px; */
-  padding: 15px 10px;
+  height: 70px;
+  width: 250px;
+  padding: 0px 20px;
 
   background-color: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
   box-shadow: ${theme.shadow.lfInput};
   color: ${({ toastType }) => (toastType === ToastType.Success ? theme.colors.lfBlack.base : theme.colors.lfRed.base)};
-  font-size: ${({ toastType }) => (toastType === ToastType.Success ? theme.fontSize.sm : theme.fontSize.xs)};
+  font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
 `
 

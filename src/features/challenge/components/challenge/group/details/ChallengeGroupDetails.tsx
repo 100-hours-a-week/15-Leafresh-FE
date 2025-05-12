@@ -1,18 +1,24 @@
 'use client'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import { getGroupChallengeDetails, GroupChallengeDetail } from '@features/challenge/api/get-group-challenge-details'
+import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import DatePicker from '@shared/components/datepicker/DatePicker'
 import Loading from '@shared/components/loading'
+import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { ToastType } from '@shared/context/Toast/type'
+import { useToast } from '@shared/hooks/useToast/useToast'
+import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'
@@ -75,7 +81,7 @@ export const dummyGroupChallengeDetail: GroupChallengeDetail = {
   ],
   maxParticipantCount: 50,
   currentParticipantCount: 24,
-  status: 'DONE',
+  status: 'NOT_SUBMITTED',
 }
 
 type WarningType = {
@@ -97,9 +103,24 @@ interface ChallengeGroupDetailsProps {
 }
 
 const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
+  const router = useRouter()
+  const openToast = useToast()
+  /** 단체 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
     queryFn: () => getGroupChallengeDetails(challengeId),
+  })
+
+  /** 단체 챌린지 참여 이력 생성 */
+  const { mutate: ParticipateMutate, isPending } = useMutation({
+    mutationFn: ParticipateGroupChallenge,
+    onSuccess: () => {
+      openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+      router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
+    },
+    onError: (error: ErrorResponse) => {
+      openToast(ToastType.Error, error.message)
+    },
   })
 
   if (isLoading || !data?.data) return <Loading />
@@ -128,11 +149,48 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     type: img.type,
   }))
 
+  /** 제출 버튼 비활성화 여부 */
   const isButtonDisabled: boolean = status !== 'NOT_SUBMITTED'
   const getSubmitButtonLabel = (status: ChallengeVerificationStatusType): string => {
     if (status === 'PENDING_APPROVAL') return '인증여부 판단 중'
     if (status === 'SUCCESS' || status === 'FAILURE' || status === 'DONE') return '참여 완료'
     return '참여하기'
+  }
+
+  /** 제출하기 */
+  const handleSubmit = () => {
+    /** 예외0 : disabled 무시하고 제출 */
+    if (isButtonDisabled) {
+      openToast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
+      return
+    }
+    const now = new Date()
+
+    const startDateTime = new Date(`${startDate}T${verificationStartTime}`)
+    const endDateTime = new Date(`${endDate}T${verificationEndTime}`)
+
+    /** #예외1 : 챌린지 기간이 아님 */
+    if (now < startDateTime || now > endDateTime) {
+      openToast(ToastType.Error, '챌린지 기간이 아닙니다!')
+      return
+    }
+
+    const startTime = verificationStartTime.split(':').map(Number)
+    const endTime = verificationEndTime.split(':').map(Number)
+    const currentTime = [now.getHours(), now.getMinutes()]
+
+    const currentMinutes = currentTime[0] * 60 + currentTime[1]
+    const startMinutes = startTime[0] * 60 + startTime[1]
+    const endMinutes = endTime[0] * 60 + endTime[1]
+
+    /** #예외2 : 기간은 맞으나, 시간이 아님 */
+    if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
+      openToast(ToastType.Error, '참여 가능한 시간이 아닙니다')
+      return
+    }
+
+    /** 제출하기 */
+    ParticipateMutate(challengeId)
   }
 
   return (
@@ -174,8 +232,8 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
           <StyledDatePicker
             icon={<LucideIcon name='CalendarDays' size={24} />}
             label='인증 기간'
-            startDate={new Date('2025-05-12')}
-            endDate={new Date('2025-05-14')}
+            startDate={new Date(startDate)}
+            endDate={new Date(endDate)}
             setStartDate={() => {}}
             setEndDate={() => {}}
             readOnly
@@ -219,7 +277,9 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
         </Section>
       </SectionWrapper>
 
-      <SubmitButton disabled={isButtonDisabled}>{getSubmitButtonLabel(status)}</SubmitButton>
+      <SubmitButton onClick={handleSubmit} disabled={isButtonDisabled}>
+        {!isPending ? getSubmitButtonLabel(status) : <Loading />}
+      </SubmitButton>
     </Wrapper>
   )
 }
@@ -335,12 +395,17 @@ const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
   font-weight: ${theme.fontWeight.semiBold};
 `
 
-const SubmitButton = styled.button<{ disabled?: boolean }>`
+const SubmitButton = styled.button`
+  /* padding: 12px; */
   height: 50px;
   border-radius: ${theme.radius.base};
   background-color: ${({ disabled }) => (disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.base)};
   color: ${({ disabled }) => (disabled ? theme.colors.lfBlack.base : theme.colors.lfWhite.base)};
   font-weight: ${theme.fontWeight.semiBold};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   border: none;
 
@@ -356,7 +421,7 @@ const WarningList = styled.ul`
   font-size: ${theme.fontSize.base};
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 `
 
 const Warning = styled.div<{ isWarning: boolean }>`
