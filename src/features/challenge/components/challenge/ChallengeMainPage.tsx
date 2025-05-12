@@ -22,49 +22,9 @@ import { getDayOfWeek } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
 
-const dummyEventChallenges: EventChallenge[] = [
-  {
-    id: 1,
-    title: '[1.환경의날]',
-    description: '이벤트이벤트이벤트\n이벤트이벤트이벤트\n이벤트이벤트이벤트',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-  {
-    id: 2,
-    title: '[2.에너지 절약]',
-    description: '조명을 꺼요\n절약해요\n함께해요',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-  {
-    id: 3,
-    title: '[3.에너지 절약]',
-    description: '조명을 꺼요\n절약해요\n함께해요',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-  {
-    id: 4,
-    title: '[4.에너지 절약]',
-    description: '조명을 꺼요\n절약해요\n함께해요',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-]
-
-const dummyPersonalChallenges: PersonalChallengeType[] = [
-  {
-    id: 1,
-    title: '챌린지 제목',
-    description: '챌린지 설명',
-    imageUrl: '/icon/category_zero_waste.png',
-    leafReward: 400,
-  },
-  {
-    id: 2,
-    title: '챌린지 제목',
-    description: '챌린지 설명',
-    imageUrl: '/icon/category_zero_waste.png',
-    leafReward: 400,
-  },
-]
+interface ChallengeMainPageProps {
+  className?: string
+}
 
 const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
   {
@@ -108,10 +68,6 @@ const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
     imageUrl: '/icon/category_vegan.png',
   },
 ]
-interface ChallengeMainPageProps {
-  className?: string
-}
-
 const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => {
   const router = useRouter()
   const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', startIndex: 1 }, [
@@ -135,13 +91,10 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
     queryFn: () => getPersonalChallengeList({ dayOfWeek }),
   })
 
-  /** TODO: DB에 데이터가 채워지면 해당 상수로 교체 */
-  // const categories = categoriesData?.data ?? []
-  // const eventChallenges = eventData?.data ?? []
-  // const personalChallenges = personalData?.data ?? []
-  const groupChallengeCategories: GroupChallengeCategory[] = dummyGroupChallengeCategories
-  const eventChallenges: EventChallenge[] = dummyEventChallenges
-  const personalChallenges: PersonalChallengeType[] = dummyPersonalChallenges
+  // const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
+  const categories: GroupChallengeCategory[] = dummyGroupChallengeCategories
+  const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
+  const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
   return (
     <Container>
@@ -157,7 +110,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
       <Section>
         <SectionTitle>챌린지 카테고리</SectionTitle>
         <CategoryGrid>
-          {groupChallengeCategories.map(cat => (
+          {categories.map(cat => (
             <CategoryItem key={cat.category}>
               <Image src={cat.imageUrl} alt={cat.label} width={48} height={48} />
               <CategoryLabel>{cat.label}</CategoryLabel>
@@ -468,3 +421,47 @@ const CardDescription = styled.p`
   color: ${theme.colors.lfDarkGray.base};
   white-space: pre-wrap;
 `
+
+const dummyEventChallenges: EventChallenge[] = [
+  {
+    id: 1,
+    title: '[1.환경의날]',
+    description: '이벤트이벤트이벤트\n이벤트이벤트이벤트\n이벤트이벤트이벤트',
+    imageUrl: '/icon/category_zero_waste.png',
+  },
+  {
+    id: 2,
+    title: '[2.에너지 절약]',
+    description: '조명을 꺼요\n절약해요\n함께해요',
+    imageUrl: '/icon/category_zero_waste.png',
+  },
+  {
+    id: 3,
+    title: '[3.에너지 절약]',
+    description: '조명을 꺼요\n절약해요\n함께해요',
+    imageUrl: '/icon/category_zero_waste.png',
+  },
+  {
+    id: 4,
+    title: '[4.에너지 절약]',
+    description: '조명을 꺼요\n절약해요\n함께해요',
+    imageUrl: '/icon/category_zero_waste.png',
+  },
+]
+
+const dummyPersonalChallenges: PersonalChallengeType[] = [
+  {
+    id: 1,
+    title: '챌린지 제목',
+    description: '챌린지 설명',
+    imageUrl: '/icon/category_zero_waste.png',
+    leafReward: 400,
+  },
+  {
+    id: 2,
+    title: '챌린지 제목',
+    description: '챌린지 설명',
+    imageUrl: '/icon/category_zero_waste.png',
+    leafReward: 400,
+  },
+]
