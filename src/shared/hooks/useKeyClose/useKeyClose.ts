@@ -35,9 +35,6 @@ export function useKeyClose<T extends HTMLElement, F extends (...args: any[]) =>
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!ref.current) {
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('useClose: ref must be included')
-        }
         return
       }
 
