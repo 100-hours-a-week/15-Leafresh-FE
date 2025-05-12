@@ -1,7 +1,7 @@
 'use client'
 
 import useEmblaCarousel from 'embla-carousel-react'
-import { Check, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import Image from 'next/image'
 
 import { useEffect, useRef, useState } from 'react'
@@ -11,6 +11,7 @@ import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
 const ImageZoomModal = () => {
@@ -57,7 +58,9 @@ const ImageZoomModal = () => {
         <CloseIcon size={20} onClick={close} />
       </Header>
 
-      <ResultBar result={result}>{result === 'SUCCESS' ? <Check size={20} /> : <X size={20} />}</ResultBar>
+      <ResultBar result={result}>
+        <LucideIcon name={result === 'SUCCESS' ? 'Check' : 'X'} size={20} />
+      </ResultBar>
 
       <Viewport ref={emblaRef}>
         <Container className={!isInitial ? 'animate' : ''}>

@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 
 import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/constant'
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
+import { ImageZoomModalData, useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { theme } from '@shared/styles/theme'
 
 import VerificationImageInput from './VerificationImageInput'
@@ -35,6 +36,8 @@ const ChallengeVerifyExamples = ({
   required,
   className,
 }: ChallengeVerifyExamplesProps) => {
+  const { open } = useImageZoomStore()
+
   const updateExamples = (
     index: number,
     data: Partial<Omit<VerificationImageData, 'type'>>,
@@ -82,6 +85,23 @@ const ChallengeVerifyExamples = ({
     onChange(newExamples)
   }
 
+  /** 이미지 확대클릭 */
+  const handleZoomClick = (example: VerificationImageData, idx: number) => {
+    const { url, description, type } = example
+    if (!url || !description) return
+
+    const data: ImageZoomModalData[] = examples.map(
+      example =>
+        ({
+          result: example.type,
+          imageSrc: example.url,
+          description: example.description,
+        }) as ImageZoomModalData,
+    )
+    /** 모달 열기 */
+    open(data, idx)
+  }
+
   return (
     <Wrapper className={className}>
       <Header>
@@ -105,6 +125,7 @@ const ChallengeVerifyExamples = ({
             onChange={({ imageUrl, description }) =>
               updateExamples(idx, { url: imageUrl, description: description ?? '' }, example.type)
             }
+            onZoom={() => handleZoomClick(example, idx)}
           />
         ))}
       </ScrollArea>
