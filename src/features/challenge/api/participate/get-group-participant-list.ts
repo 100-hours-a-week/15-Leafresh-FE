@@ -8,7 +8,7 @@ export interface GroupChallengeParticipateListParams {
   cursorTimestamp?: ISOFormatString
 }
 
-type VerificationType = {
+export type VerificationType = {
   id: number
   nickname: string
   profileImageUrl: string
