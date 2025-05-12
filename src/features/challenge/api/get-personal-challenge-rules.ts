@@ -3,7 +3,7 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { TimeFormatString } from '@shared/types/date'
 
-type ExampleImageType = {
+export type PersonalChallengeExampleImageType = {
   id: number
   imageUrl: string
   description: string
@@ -17,7 +17,7 @@ export type PersonalChallengeRulesListResponse = ApiResponse<{
     startTime: TimeFormatString
     endTime: TimeFormatString
   }
-  exampleImages: ExampleImageType[]
+  exampleImages: PersonalChallengeExampleImageType[]
 }>
 
 export const getPersonalChallengeRulesList = (challengeId: number): Promise<PersonalChallengeRulesListResponse> => {

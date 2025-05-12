@@ -1,4 +1,7 @@
 'use client'
+
+import { AnimatePresence, motion } from 'motion/react'
+
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -19,10 +22,11 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
 interface VerificationGuideModalProps {
+  isOpen: boolean
   challengeData: ChallengeDataType
   onClose: () => void
 }
-const VerificationGuideModal = ({ challengeData, onClose }: VerificationGuideModalProps) => {
+const VerificationGuideModal = ({ isOpen, challengeData, onClose }: VerificationGuideModalProps) => {
   const { id: challengeId, type } = challengeData
 
   type ChallengeRulesListResponse = GroupChallengeRulesListResponse | PersonalChallengeRulesListResponse
@@ -38,7 +42,7 @@ const VerificationGuideModal = ({ challengeData, onClose }: VerificationGuideMod
       queryFn = () => getPersonalChallengeRulesList(challengeId)
       break
   }
-  const { data, isLoading, isError } = useQuery<ChallengeRulesListResponse>({
+  const { data, isLoading } = useQuery<ChallengeRulesListResponse>({
     queryKey: queryKey,
     queryFn: queryFn,
   })
@@ -62,12 +66,11 @@ const VerificationGuideModal = ({ challengeData, onClose }: VerificationGuideMod
     const timeText = `${certificationPeriod.startTime} ~ ${certificationPeriod.endTime}`
 
     const today = new Date()
-    const todayString = today.toLocaleDateString('ko-KR', {
-      weekday: 'long',
-      month: '2-digit',
-      day: '2-digit',
-    })
-    const todayLabel = `오늘 (${todayString.replace('.', '-').replace(' ', '').replace('월', '-').replace('일', '')})`
+    const year = today.getFullYear().toString().slice(2)
+    const month = (today.getMonth() + 1).toString().padStart(2, '0')
+    const date = today.getDate().toString().padStart(2, '0')
+    const weekday = today.toLocaleDateString('ko-KR', { weekday: 'long' })
+    const todayLabel = `오늘 (${weekday}, ${month}-${date})`
 
     contents = (
       <>
@@ -84,24 +87,25 @@ const VerificationGuideModal = ({ challengeData, onClose }: VerificationGuideMod
             })) ?? []
           }
           onChange={() => {}}
+          verificationInputClassName='verify-input'
         />
 
         <InfoSection>
           <InfoTitle>챌린지 인증 정보</InfoTitle>
           <InfoItem>
-            <LucideIcon name='Check' size={20} />
-            <span>인증 가능 날짜</span>
-            <strong>{periodText}</strong>
+            <div className='left'>
+              <LucideIcon name='Check' size={24} />
+              <span>인증 가능 날짜</span>
+            </div>
+            <strong>{type === 'GROUP' ? periodText : todayLabel}</strong>
           </InfoItem>
+
           <InfoItem>
-            <LucideIcon name='Check' size={20} />
-            <span>인증 가능 시간</span>
+            <div className='left'>
+              <LucideIcon name='Check' size={24} />
+              <span>인증 가능 시간</span>
+            </div>
             <strong>{timeText}</strong>
-          </InfoItem>
-          <InfoItem>
-            <LucideIcon name='Check' size={20} />
-            <span>인증 날짜</span>
-            <strong>{todayLabel}</strong>
           </InfoItem>
         </InfoSection>
       </>
@@ -109,20 +113,23 @@ const VerificationGuideModal = ({ challengeData, onClose }: VerificationGuideMod
   }
 
   return (
-    <GuideWrapper>
-      <GuideHeader>
-        인증 방법
-        <CloseButton onClick={onClose}>
-          <LucideIcon name='X' size={24} />
-        </CloseButton>
-      </GuideHeader>
-      <GuideContent>{contents}</GuideContent>
-    </GuideWrapper>
+    <AnimatePresence>
+      {isOpen && (
+        <MotionWrapper initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ duration: 0.4 }}>
+          <GuideHeader>
+            인증 방법
+            <CloseButton onClick={onClose}>
+              <LucideIcon name='X' size={24} />
+            </CloseButton>
+          </GuideHeader>
+          <GuideContent>{contents}</GuideContent>
+        </MotionWrapper>
+      )}
+    </AnimatePresence>
   )
 }
-export default VerificationGuideModal
 
-const GuideWrapper = styled.div`
+const MotionWrapper = styled(motion.div)`
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -131,16 +138,6 @@ const GuideWrapper = styled.div`
   border-top-right-radius: ${theme.radius.xl};
   background: ${theme.colors.lfWhite.base};
   box-shadow: ${theme.shadow.lfPrime};
-  animation: slideUp 0.3s ease-out;
-
-  @keyframes slideUp {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
 `
 
 const GuideHeader = styled.div`
@@ -148,18 +145,20 @@ const GuideHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 20px;
+  padding: 20px 30px 38px 30px;
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.bold};
 `
 
-const GuideContent = styled.div`
-  padding: 20px;
-`
+const GuideContent = styled.div``
 
 const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
-  font-weight: ${theme.fontWeight.medium};
-  font-size: ${theme.fontSize.md};
+  padding: 20px 30px 0px 30px;
+  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${theme.fontSize.xl};
+  .verify-input {
+    width: 40%;
+  }
 `
 
 const CloseButton = styled.button`
@@ -171,9 +170,10 @@ const CloseButton = styled.button`
 `
 
 const InfoSection = styled.div`
-  border-top: 1px solid ${theme.colors.lfLightGray.base};
+  width: 100%;
+  border-top: 4px solid ${theme.colors.lfLightGray.base};
   margin-top: 24px;
-  padding-top: 20px;
+  padding: 45px 30px 0 30px;
 `
 
 const InfoTitle = styled.h4`
@@ -183,18 +183,21 @@ const InfoTitle = styled.h4`
 `
 
 const InfoItem = styled.div`
-  display: flex;
+  padding-left: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 8px;
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
   margin-bottom: 12px;
-
-  span {
-    flex: 1;
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
-
   strong {
-    font-weight: ${theme.fontWeight.bold};
+    font-weight: ${theme.fontWeight.medium};
   }
 `
+
+export default VerificationGuideModal

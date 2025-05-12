@@ -27,5 +27,5 @@ export type PersonalChallengeDetail = {
 type PersonalChallengeDetailResponse = ApiResponse<PersonalChallengeDetail>
 
 export const getPersonalChallengeDetails = (id: number): Promise<PersonalChallengeDetailResponse> => {
-  return fetchRequest<PersonalChallengeDetailResponse>(ENDPOINTS.CHALLENGE.GROUP.DETAILS(id))
+  return fetchRequest<PersonalChallengeDetailResponse>(ENDPOINTS.CHALLENGE.PERSONAL.DETAILS(id))
 }

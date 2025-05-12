@@ -167,8 +167,8 @@ const CameraModal = () => {
           <ConfirmButton onClick={handleConfirm}>{confirmText}</ConfirmButton>
         )}
 
-        {showGuide && challengeData && (
-          <VerificationGuideModal challengeData={challengeData} onClose={() => setTab(0)} />
+        {challengeData && (
+          <VerificationGuideModal isOpen={showGuide} challengeData={challengeData} onClose={() => setTab(0)} />
         )}
       </SwitchWrapper>
     </Wrapper>

@@ -113,9 +113,8 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
 
   if (isLoading || !data?.data) return <Loading />
 
-  /** TODO: DB에 데이터가 채워지면 해당 상수로 교체 */
-  //  const challengeData = data.data
-  const challengeData = dummyPersonalChallengeDetail
+  const challengeData = data.data
+
   const {
     id,
     thumbnailUrl,
