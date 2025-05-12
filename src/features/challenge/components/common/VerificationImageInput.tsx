@@ -59,26 +59,26 @@ const VerificationImageInput = ({
 
   return (
     <Container className={className}>
-      <StyledImageInput
-        icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
-        label={label}
-        backgroundColor='lfInputBackground'
-        imageUrl={imageUrl}
-        cameraTitle={cameraTitle}
-        hasDescription
-        type={status}
-        onChange={readOnly ? () => {} : onChange}
-        readOnly={readOnly}
-      />
+      <ImageArea>
+        <StyledImageInput
+          icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
+          label={label}
+          backgroundColor='lfInputBackground'
+          imageUrl={imageUrl}
+          cameraTitle={cameraTitle}
+          hasDescription
+          type={status}
+          onChange={readOnly ? () => {} : onChange}
+          readOnly={readOnly}
+        />
+        {imageUrl && (
+          <ZoomButton onClick={onZoom}>
+            <LucideIcon name='Scan' size={24} color='lfBlack' />
+          </ZoomButton>
+        )}
+      </ImageArea>
 
       <Footer backgroundColor={color}>{icon}</Footer>
-
-      {imageUrl && (
-        <ZoomButton onClick={onZoom}>
-          <LucideIcon name='Scan' size={20} color='lfWhite' />
-        </ZoomButton>
-      )}
-
       {imageUrl && <Description>{description}</Description>}
     </Container>
   )
@@ -93,8 +93,16 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 120px;
+  flex-shrink: 0;
 `
+
+const ImageArea = styled.div`
+  position: relative;
+  width: 100%;
+`
+
 const StyledImageInput = styled(ImageInput)`
+  width: 100%;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 `
@@ -120,13 +128,11 @@ const Description = styled.p`
   word-break: break-word;
   white-space: pre-wrap;
 `
-
 const ZoomButton = styled.button`
   position: absolute;
-  top: 90px;
-  right: 2px;
+  bottom: 4px;
+  right: 4px;
   background: transparent;
-
   border: none;
   padding: 4px;
   cursor: pointer;
