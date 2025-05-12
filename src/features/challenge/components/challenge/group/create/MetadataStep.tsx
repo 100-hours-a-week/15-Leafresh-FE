@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 
-import { useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import styled from '@emotion/styled'
 
@@ -102,12 +102,22 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
     watch('examples'),
   ])
 
-  const formValue = watch()
+  const title = watch('title')
+  const category = watch('category')
+  const startDate = watch('startDate')
+  const endDate = watch('endDate')
+  const startTime = watch('startTime')
+  const endTime = watch('endTime')
+  const maxParticipant = watch('maxParticipant')
+  const examples = watch('examples')
 
-  const handleExamplesChange = (updated: VerificationImageData[]) => {
-    setValue('examples', updated)
-    trigger('examples')
-  }
+  const handleExamplesChange = useCallback(
+    (updated: VerificationImageData[]) => {
+      setValue('examples', updated)
+      trigger('examples')
+    },
+    [setValue, trigger],
+  )
 
   const handleMetaSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -127,7 +137,7 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
 
       <FieldGroup>
         <FieldWrapper>
-          <Input label='챌린지 제목' value={formValue.title} required {...register('title')} />
+          <Input label='챌린지 제목' value={title} required {...register('title')} />
           <ErrorText message={isSubmitted ? errors.title?.message : ''} />
         </FieldWrapper>
 
@@ -154,8 +164,8 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
           <StyledDatePicker
             label='챌린지 기간'
             icon={<LucideIcon name='Calendar' size={16} />}
-            startDate={formValue.startDate}
-            endDate={formValue.endDate}
+            startDate={startDate}
+            endDate={endDate}
             setStartDate={date => {
               if (date) {
                 setValue('startDate', date)
@@ -177,8 +187,8 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
         <FieldWrapper>
           <StyledTimePicker
             label='인증 가능 시간 *'
-            startValue={formValue.startTime}
-            endValue={formValue.endTime}
+            startValue={startTime}
+            endValue={endTime}
             onChangeStart={value => {
               setValue('startTime', value)
               trigger('startTime')
@@ -216,7 +226,7 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
             title='인증샷 예시'
             description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
-            examples={formValue.examples}
+            examples={examples}
             onChange={handleExamplesChange}
             required
           />
@@ -293,18 +303,18 @@ const SubmitButton = styled.button`
   border: none;
 `
 
-const StyledDatePicker = styled(DatePicker)`
+const StyledDatePicker = memo(styled(DatePicker)`
   font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.semiBold};
-`
+`)
 
-const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
+const StyledChallengeVerifyExamples = memo(styled(ChallengeVerifyExamples)`
   font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
-`
+`)
 
-const StyledTimePicker = styled(TimePicker)`
+const StyledTimePicker = memo(styled(TimePicker)`
   width: 100%;
   font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
-`
+`)
