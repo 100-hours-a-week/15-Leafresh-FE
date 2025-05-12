@@ -18,7 +18,7 @@ interface StatusConfig {
 const statusMap: Record<VerificationStatus, StatusConfig> = {
   SUCCESS: {
     barColor: theme.colors.lfGreenMain.base,
-    iconName: 'CheckCheck',
+    iconName: 'Check',
     iconColorKey: 'lfBlack',
   },
   FAILURE: {
@@ -59,7 +59,8 @@ export default VerificationImageCard
 
 /* ===== Styled ===== */
 const Card = styled.div`
-  width: 120px;
+  width: 150px;
+  height: 140px;
   border-radius: ${theme.radius.sm};
   overflow: hidden;
   background: ${theme.colors.lfLightGray.base};
@@ -71,7 +72,7 @@ const Card = styled.div`
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
-  padding-top: 100%;
+  padding-top: 115px;
   background: #eee;
 `
 
