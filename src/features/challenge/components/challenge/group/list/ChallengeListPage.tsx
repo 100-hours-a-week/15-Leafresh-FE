@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
@@ -42,10 +43,8 @@ const ChallengeListPage = () => {
   const [input, setInput] = useState<string>('')
 
   // URL에서 category, search 파라미터 읽기
-  const categoryParam = searchParams.get('category') || ''
-  const category = categories.includes(categoryParam as ChallengeCategoryType)
-    ? (categoryParam as ChallengeCategoryType)
-    : ''
+  const category = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(searchParams.get('category') || '')
+
   const initialSearch = searchParams.get('search') || ''
 
   // 로컬 input 초기화
@@ -64,7 +63,7 @@ const ChallengeListPage = () => {
 
   // 무한 스크롤 훅 호출 (URL 변경 시 재요청)
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteGroupChallenges(
-    category,
+    category as string,
     initialSearch,
   )
 

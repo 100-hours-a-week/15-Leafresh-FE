@@ -9,7 +9,7 @@ import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import { DayType } from '@entities/challenge/type'
+import { ChallengeCategoryType, DayType } from '@entities/challenge/type'
 import { EventChallenge, getEventChallengeList } from '@features/challenge/api/get-event-challenge-list'
 import {
   getGroupChallengeCategoryList,
@@ -96,6 +96,11 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
+  /** 카테고리 리스트로 이동 */
+  const handleCategoryRoute = (category: ChallengeCategoryType) => {
+    router.push(URL.CHALLENGE.GROUP.LIST.value(category))
+  }
+
   return (
     <Container>
       <BannerSection>
@@ -111,7 +116,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
         <SectionTitle>챌린지 카테고리</SectionTitle>
         <CategoryGrid>
           {categories.map(cat => (
-            <CategoryItem key={cat.category}>
+            <CategoryItem key={cat.category} onClick={() => handleCategoryRoute(cat.category)}>
               <Image src={cat.imageUrl} alt={cat.label} width={48} height={48} />
               <CategoryLabel>{cat.label}</CategoryLabel>
             </CategoryItem>
