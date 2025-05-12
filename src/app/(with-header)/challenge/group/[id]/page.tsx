@@ -1,7 +1,11 @@
 import { notFound } from 'next/navigation'
 
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import ChallengeGroupDetails from '@features/challenge/components/challenge/group/details/ChallengeGroupDetails'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 
 interface GroupChallengeDetailsPageProps {
   params: { id: string }
@@ -15,25 +19,23 @@ const GroupChallengeDetailsPage = async ({ params }: GroupChallengeDetailsPagePr
 
   const queryClient = getQueryClient()
 
-  return <ChallengeGroupDetails challengeId={idNumber} />
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(idNumber),
+      queryFn: () => getGroupChallengeDetails(idNumber),
+    })
 
-  // try {
-  //   await queryClient.prefetchQuery({
-  //     queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(id),
-  //     queryFn: () => getGroupChallengeDetails(id),
-  //   })
+    const dehydratedState = dehydrate(queryClient)
 
-  //   const dehydratedState = dehydrate(queryClient)
-
-  //   return (
-  //     // <HydrationBoundary state={dehydratedState}>
-  //     // <ChallengeGroupDetails challengeId={id} />
-  //     // </HydrationBoundary>
-  //   )
-  // } catch (err) {
-  //   console.error('[SSR] 그룹 챌린지 상세 데이터 로드 실패:', err)
-  //   return <div>챌린지 상세 정보를 불러오는 데 실패했습니다.</div>
-  // }
+    return (
+      <HydrationBoundary state={dehydratedState}>
+        <ChallengeGroupDetails challengeId={idNumber} />
+      </HydrationBoundary>
+    )
+  } catch (err) {
+    console.error('[SSR] 그룹 챌린지 상세 데이터 로드 실패:', err)
+    return <div>챌린지 상세 정보를 불러오는 데 실패했습니다.</div>
+  }
 }
 
 export default GroupChallengeDetailsPage

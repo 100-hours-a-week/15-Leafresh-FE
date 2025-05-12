@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import { getGroupChallengeDetails, GroupChallengeDetail } from '@features/challenge/api/get-group-challenge-details'
+import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import ChallengeVerifyExamples, {
   VerificationImageData,
@@ -23,70 +23,9 @@ import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
-import { DateFormatString, TimeFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
 
 import ChallengeVerifyCarousel from './ChallengeVerifyCarousel'
-
-export const dummyGroupChallengeDetail: GroupChallengeDetail = {
-  id: 1,
-  isEvent: true,
-  category: 'ZERO_WASTE',
-  title: '클린 그릭',
-  description:
-    '챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...',
-  startDate: '2025-05-12' as DateFormatString,
-  endDate: '2025-05-14' as DateFormatString,
-  verificationStartTime: '00:00' as TimeFormatString,
-  verificationEndTime: '23:59' as TimeFormatString,
-  leafReward: 30,
-  thumbnailUrl: '/icon/category_zero_waste.png',
-  exampleImages: [
-    {
-      id: 1,
-      imageUrl: '/icon/category_zero_waste.png',
-      type: 'SUCCESS',
-      description: '성공 인증샷 설명 1',
-      sequenceNumber: 1,
-    },
-    {
-      id: 2,
-      imageUrl: '/icon/category_zero_waste.png',
-      type: 'SUCCESS',
-      description: '성공 인증샷 설명 2',
-      sequenceNumber: 2,
-    },
-    {
-      id: 3,
-      imageUrl: '/icon/category_zero_waste.png',
-      type: 'FAILURE',
-      description:
-        '실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명',
-      sequenceNumber: 3,
-    },
-    {
-      id: 4,
-      imageUrl: '/icon/category_zero_waste.png',
-      type: 'FAILURE',
-      description: '실패 인증샷 설명',
-      sequenceNumber: 4,
-    },
-  ],
-  verificationImages: [
-    '/icon/category_zero_waste.png',
-    '/icon/category_zero_waste.png',
-    '/icon/category_zero_waste.png',
-    '/icon/category_zero_waste.png',
-    '/icon/category_zero_waste.png',
-    '/icon/category_zero_waste.png',
-    '/icon/category_zero_waste.png',
-    '/icon/category_zero_waste.png',
-    '/icon/category_zero_waste.png',
-  ],
-  maxParticipantCount: 50,
-  currentParticipantCount: 24,
-  status: 'NOT_SUBMITTED',
-}
 
 type WarningType = {
   isWarning: boolean
@@ -129,9 +68,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
 
   if (isLoading || !data?.data) return <Loading />
 
-  /** TODO: DB에 데이터가 채워지면 해당 상수로 교체 */
-  //  const challengeData = data.data
-  const challengeData = dummyGroupChallengeDetail
+  const challengeData = data.data
   const {
     thumbnailUrl,
     category,
@@ -273,7 +210,11 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
             <div>참여자 인증 사진</div>
             <MoreButton onClick={handleRouteToVerificationsPage}>더 보기</MoreButton>
           </SectionTitle>
-          <ChallengeVerifyCarousel images={verificationImages} />
+          {verificationImages.length === 0 ? (
+            <NoVerficiationImageText>아직 인증사진이 없습니다!</NoVerficiationImageText>
+          ) : (
+            <ChallengeVerifyCarousel images={verificationImages} />
+          )}
         </Section>
 
         <Section>
@@ -452,3 +393,70 @@ const Warning = styled.div<{ isWarning: boolean }>`
 const StyledBackButton = styled(BackButton)`
   position: absolute;
 `
+
+const NoVerficiationImageText = styled.div`
+  text-align: center;
+  padding: 20px;
+  font-weight: ${theme.fontWeight.medium};
+  color: ${theme.colors.lfRed.base};
+`
+
+// export const dummyGroupChallengeDetail: GroupChallengeDetail = {
+//   id: 1,
+//   isEvent: true,
+//   category: 'ZERO_WASTE',
+//   title: '클린 그릭',
+//   description:
+//     '챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...',
+//   startDate: '2025-05-12' as DateFormatString,
+//   endDate: '2025-05-14' as DateFormatString,
+//   verificationStartTime: '00:00' as TimeFormatString,
+//   verificationEndTime: '23:59' as TimeFormatString,
+//   leafReward: 30,
+//   thumbnailUrl: '/icon/category_zero_waste.png',
+//   exampleImages: [
+//     {
+//       id: 1,
+//       imageUrl: '/icon/category_zero_waste.png',
+//       type: 'SUCCESS',
+//       description: '성공 인증샷 설명 1',
+//       sequenceNumber: 1,
+//     },
+//     {
+//       id: 2,
+//       imageUrl: '/icon/category_zero_waste.png',
+//       type: 'SUCCESS',
+//       description: '성공 인증샷 설명 2',
+//       sequenceNumber: 2,
+//     },
+//     {
+//       id: 3,
+//       imageUrl: '/icon/category_zero_waste.png',
+//       type: 'FAILURE',
+//       description:
+//         '실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명',
+//       sequenceNumber: 3,
+//     },
+//     {
+//       id: 4,
+//       imageUrl: '/icon/category_zero_waste.png',
+//       type: 'FAILURE',
+//       description: '실패 인증샷 설명',
+//       sequenceNumber: 4,
+//     },
+//   ],
+//   verificationImages: [
+//     '/icon/category_zero_waste.png',
+//     '/icon/category_zero_waste.png',
+//     '/icon/category_zero_waste.png',
+//     '/icon/category_zero_waste.png',
+//     '/icon/category_zero_waste.png',
+//     '/icon/category_zero_waste.png',
+//     '/icon/category_zero_waste.png',
+//     '/icon/category_zero_waste.png',
+//     '/icon/category_zero_waste.png',
+//   ],
+//   maxParticipantCount: 50,
+//   currentParticipantCount: 24,
+//   status: 'NOT_SUBMITTED',
+// }
