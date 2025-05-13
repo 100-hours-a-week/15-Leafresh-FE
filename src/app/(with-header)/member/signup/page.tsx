@@ -18,6 +18,7 @@ import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
+import { theme } from '@shared/styles/theme'
 
 const SignupPage = () => {
   const router = useRouter()
@@ -135,13 +136,13 @@ const SignupPage = () => {
       <Title>회원가입</Title>
 
       <FieldWrapper>
-        <Label htmlFor='nickname'>닉네임 *</Label>
-        <InputRow>
+        <InputWrapper>
+          <Label htmlFor='nickname'>닉네임 *</Label>
           <Input id='nickname' {...register('nickname')} />
-          <CheckButton type='button' onClick={handleCheckDuplicate}>
-            중복 확인
-          </CheckButton>
-        </InputRow>
+        </InputWrapper>
+        <CheckButton type='button' onClick={handleCheckDuplicate}>
+          중복 확인
+        </CheckButton>
         <ErrorText message={errors.nickname?.message} />
       </FieldWrapper>
 
@@ -155,6 +156,7 @@ export default SignupPage
 const Form = styled.form`
   height: 100%;
 
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -168,7 +170,18 @@ const Title = styled.h2`
   font-weight: bold;
 `
 
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`
 const FieldWrapper = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
   margin-bottom: 24px;
 `
 
@@ -178,13 +191,7 @@ const Label = styled.label`
   margin-bottom: 8px;
 `
 
-const InputRow = styled.div`
-  display: flex;
-  gap: 8px;
-`
-
 const Input = styled.input`
-  flex: 1;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -192,21 +199,24 @@ const Input = styled.input`
 
 const CheckButton = styled.button`
   background-color: #4c8b5d;
-  color: white;
+  font-size: ${theme.fontSize.base};
+  color: ${theme.colors.lfWhite.base};
+
+  margin-top: 6px;
   padding: 12px 16px;
   border: none;
   border-radius: 6px;
-  font-size: 14px;
+
   cursor: pointer;
 `
 
 const SubmitButton = styled.button`
-  background-color: #99c69f;
-  color: black;
+  background-color: ${theme.colors.lfGreenInactive.base};
+  color: ${theme.colors.lfBlack.base};
   font-weight: bold;
   height: 50px;
   border: none;
-  border-radius: 12px;
+  border-radius: ${theme.radius.sm};
   font-size: 16px;
   cursor: pointer;
 `

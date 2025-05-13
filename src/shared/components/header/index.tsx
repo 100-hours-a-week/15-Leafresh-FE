@@ -33,7 +33,6 @@ const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
   const { isOpen, close, toggle } = useDrawerStore()
   const { openConfirmModal, isOpen: isConfirmModalOpen } = useConfirmModalStore()
-  const { open } = useDrawerStore()
 
   const { userInfo, clearUserInfo } = useOAuthUserStore()
 
@@ -63,10 +62,6 @@ const Header = ({ height, padding }: HeaderProps) => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-
-  useEffect(() => {
-    console.log(drawerRight)
-  }, [drawerRight])
 
   useOutsideClick(drawerRef as React.RefObject<HTMLElement>, () => {
     if (!isConfirmModalOpen) toggle()
@@ -136,9 +131,10 @@ const Header = ({ height, padding }: HeaderProps) => {
           <LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
             <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
           </LogoWrapper>
-          <MenuButton onClick={open}>
-            <Menu size={24} strokeWidth={2.5} />
-          </MenuButton>
+          <MenuButtons>
+            <AlarmButton name='Bell' size={24} onClick={() => router.push(URL.MEMBER.ALARM.value)} />
+            <Menu size={24} strokeWidth={2.5} onClick={toggle} />
+          </MenuButtons>
         </CustomWidthWrapper>
 
         <AnimatePresence>
@@ -266,18 +262,21 @@ const StyledImage = styled(Image)`
   width: auto;
 `
 
-const MenuButton = styled.button`
+const MenuButtons = styled.button`
+  position: absolute;
+  right: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+
   background: none;
   border: none;
   cursor: pointer;
 `
 
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-`
+const AlarmButton = styled(LucideIcon)``
 
 const Drawer = styled(motion.div)<{ padding: number }>`
   position: fixed;
@@ -345,6 +344,8 @@ const AuthRouteButton = styled.button`
   font-weight: ${theme.fontWeight.medium};
   border-bottom: 1px solid ${theme.colors.lfBlack.base};
   align-self: center;
+
+  cursor: pointer;
 `
 
 const MenuItemWrapper = styled.div`
@@ -361,6 +362,8 @@ const MenuItem = styled.button<{ disabled?: boolean }>`
   font-weight: ${theme.fontWeight.medium};
   color: ${({ disabled }) => (disabled ? theme.colors.lfGray.base : theme.colors.lfBlack.base)};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+
+  cursor: pointer;
 
   &:hover {
     color: ${({ disabled }) => (disabled ? theme.colors.lfGray.base : theme.colors.lfBlue.hover)};
