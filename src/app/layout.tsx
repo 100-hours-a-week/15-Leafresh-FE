@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import CameraModal from '@shared/components/modal/camera-modal/CameraModal'
-import ConfirmModal from '@shared/components/modal/ConfirmModal'
-import InfoModal from '@shared/components/modal/InfoModal'
+import CameraModal from '@shared/components/Modal/camera-modal/CameraModal'
+import ConfirmModal from '@shared/components/Modal/ConfirmModal'
+import InfoModal from '@shared/components/Modal/InfoModal'
 import Toast from '@shared/components/Toast/Toast'
 import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
 import { pretendard } from '@shared/config/font'
