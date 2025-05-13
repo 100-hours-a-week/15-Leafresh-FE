@@ -4,26 +4,12 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { ChallengeCategoryType } from '@entities/challenge/type'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import Chatbot from '@shared/components/chatbot/Chatbot'
-import GridBox from '@shared/components/Wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
-
-const categories: ChallengeCategoryType[] = [
-  '제로웨이스트',
-  '플로깅',
-  '탄소 발자국',
-  '에너지 절약',
-  '업사이클',
-  '문화 공유',
-  '디지털 탄소',
-  '비건',
-  '기타',
-]
 
 type GroupChallenge = {
   id: number
@@ -43,6 +29,8 @@ const ChallengeListPage = () => {
 
   // URL에서 category, search 파라미터 읽기
   const category = searchParams.get('category') || ''
+  console.log(category)
+
   const initialSearch = searchParams.get('search') || ''
 
   // 로컬 input 초기화
@@ -101,7 +89,7 @@ const ChallengeListPage = () => {
           <Header>
             <Title>단체 챌린지{category && <Category> - {category}</Category>}</Title>
             <AddButton onClick={() => router.push(URL.CHALLENGE.GROUP.CREATE.value)} aria-label='추가'>
-              <LucideIcon name='Plus' width={25} height={25} />
+              <LucideIcon name='Plus' size={25} />
             </AddButton>
           </Header>
 
@@ -110,12 +98,12 @@ const ChallengeListPage = () => {
           </SearchBar>
 
           <ChallengeWrapper>
-            <StyledGridBox columns={2} rowGap='16px' columnGap='16px' justifyContent='start'>
+            <GridContainer>
               {groupChallenges.map(challenge => (
                 <StyledGroupChallengeCard key={challenge.id} challenge={challenge} />
               ))}
               {hasNextPage && <ObserverElement ref={observerRef} />}
-            </StyledGridBox>
+            </GridContainer>
             {isFetchingNextPage && <LoadingMore>더 불러오는 중...</LoadingMore>}
             {groupChallenges.length === 0 && <EmptyState>진행 중인 챌린지가 없습니다.</EmptyState>}
           </ChallengeWrapper>
@@ -192,6 +180,7 @@ const Header = styled.header`
 const Category = styled.span`
   font-size: 14px;
   color: ${theme.colors.lfGray.base};
+  font-weight: ${theme.fontWeight.medium};
 `
 const AddButton = styled.button`
   all: unset;
@@ -206,14 +195,14 @@ const Section = styled.section`
 `
 
 const SearchBar = styled.form`
-  padding: 10px 15px;
-  border-bottom: 1px solid #eaeaea;
+  padding: 10px 0px;
 `
 
 const SearchInput = styled.input`
   width: 100%;
+  height: 40px;
   padding: 10px 15px 10px 35px;
-  border-radius: 20px;
+  border-radius: 6px;
   border: none;
   background-color: #f3f3f3;
   font-size: 14px;
@@ -252,7 +241,9 @@ const EmptyState = styled.div`
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.semiBold};
 `
-const StyledGroupChallengeCard = styled(GroupChallengeCard)``
+const StyledGroupChallengeCard = styled(GroupChallengeCard)`
+  width: 100%;
+`
 
 const ChatButton = styled.button`
   position: fixed;
@@ -285,7 +276,11 @@ const Message = styled.div`
   text-align: center;
 `
 
-const StyledGridBox = styled(GridBox)`
-  /* width: 100%; */
-  /* justify-items: stretch; */
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 16px;
+  row-gap: 16px;
+  justify-content: start;
+  width: 100%;
 `

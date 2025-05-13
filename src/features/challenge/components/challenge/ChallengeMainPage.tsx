@@ -114,7 +114,10 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
       </BannerSection>
 
       <Section>
-        <SectionTitle>챌린지 카테고리</SectionTitle>
+        <SectionTitle>
+          <span>챌린지 카테고리</span>
+          <ETCButton onClick={() => handleCategoryRoute('ETC')}>기타 카테고리 보기</ETCButton>
+        </SectionTitle>
         <CategoryGrid>
           {categories.map(cat => (
             <CategoryItem key={cat.category} onClick={() => handleCategoryRoute(cat.category)}>
@@ -256,6 +259,8 @@ const SectionHeader = styled.div`
 `
 
 const SectionTitle = styled.h2`
+  position: relative;
+
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.semiBold};
 `
@@ -265,7 +270,35 @@ const SubDescription = styled.p`
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfDarkGray.base};
 `
+const ETCButton = styled.p`
+  position: absolute;
+  right: 0;
+  top: 50%;
 
+  font-size: ${theme.fontSize.sm};
+  color: ${theme.colors.lfBlue.base};
+  cursor: pointer;
+
+  // 가상 요소 사용해서 밑줄 효과
+  &::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background-color: ${theme.colors.lfBlue.base};
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+    margin-top: 2px;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
+  }
+
+  &:hover {
+    color: ${theme.colors.lfBlue.hover};
+  }
+`
 const MoreEventChallengeButton = styled.button`
   position: absolute;
   right: 0;

@@ -163,8 +163,8 @@ const Header = ({ height, padding }: HeaderProps) => {
                 {isLoggedIn ? (
                   <UserInfo>
                     <ProfileImage src={userInfo?.imageUrl as string} alt='유저 이미지' width={32} height={32} />
+                    <Emoji>🌱</Emoji>
                     <Nickname>{userInfo?.nickname}</Nickname>
-                    <Emoji>🌱</Emoji>ㅡ
                   </UserInfo>
                 ) : (
                   <AuthRouteButton onClick={() => handleRoute(URL.MEMBER.LOGIN.value)}>
