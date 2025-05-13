@@ -4,25 +4,27 @@ import Image from 'next/image'
 
 import styled from '@emotion/styled'
 
+import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 import { theme } from '@shared/styles/theme'
 
 import ChatWindow from './ChatWindow'
 
 const Chatbot = () => {
-  const { value: open, toggle: toggleOpen, setValue: setOpen } = useToggle(false)
+  const { value: isOpen, toggle: toggleOpen, setValue: setOpen } = useToggle(false)
 
+  useScrollLock(isOpen)
   return (
     <>
-      {!open && (
+      {!isOpen && (
         <Launcher onClick={toggleOpen}>
           <Image src='/image/chatbot.png' alt='Leafresh 챗봇' width={48} height={48} />
 
           <Name>챗봇 새순</Name>
         </Launcher>
       )}
-
-      <ChatWindow open={open} onClose={() => setOpen(false)} />
+      {isOpen && <Backdrop onClick={toggleOpen} />} {/* ✅ 클릭 시 닫기 */}
+      <ChatWindow open={isOpen} onClose={() => setOpen(false)} />
     </>
   )
 }
@@ -57,4 +59,11 @@ const Launcher = styled.button`
 `
 const Name = styled.p`
   font-size: ${theme.fontSize.xs};
+`
+
+const Backdrop = styled.div`
+  position: fixed;
+  inset: 0; // top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(0, 0, 0, 0.4); // 반투명
+  z-index: 999; // ChatWindow보다 아래, Launcher보다 위
 `

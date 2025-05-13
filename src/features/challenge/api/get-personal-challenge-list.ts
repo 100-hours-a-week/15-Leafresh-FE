@@ -12,7 +12,7 @@ export type PersonalChallengeType = {
   id: number
   title: string
   description: string
-  imageUrl: string
+  thumbnailUrl: string
   leafReward: number
 }
 

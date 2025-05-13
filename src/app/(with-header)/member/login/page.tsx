@@ -33,7 +33,10 @@ const LoginPage = () => {
       const { data } = await StartLogin()
       if (data?.data) {
         const { redirectUrl } = data.data
-        window.location.href = redirectUrl
+        console.log(redirectUrl)
+
+        // window.location.href = 'https://leafresh.app/oauth/kakao/callback'
+        // window.location.href = redirectUrl
       }
     } catch (_error) {
       openToast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)

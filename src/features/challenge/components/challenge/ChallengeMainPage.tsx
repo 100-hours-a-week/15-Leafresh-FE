@@ -16,6 +16,7 @@ import {
   GroupChallengeCategory,
 } from '@features/challenge/api/get-group-challenge-categories'
 import { getPersonalChallengeList, PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
+import Chatbot from '@shared/components/chatbot/Chatbot'
 import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import { getDayOfWeek } from '@shared/lib/date/utils'
@@ -38,7 +39,7 @@ const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
     imageUrl: '/icon/category_plogging.png',
   },
   {
-    category: 'CARBON_REDUCTION',
+    category: 'CARBON_FOOTPRINT',
     label: '탄소 발자국',
     imageUrl: '/icon/category_carbon_reduction.png',
   },
@@ -48,12 +49,12 @@ const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
     imageUrl: '/icon/category_energy_saving.png',
   },
   {
-    category: 'UPCYCLE',
+    category: 'UPCYCLING',
     label: '업사이클',
     imageUrl: '/icon/category_upcycle.png',
   },
   {
-    category: 'BOOK_SHARE',
+    category: 'MEDIA',
     label: '문화 공유',
     imageUrl: '/icon/category_book_share.png',
   },
@@ -100,6 +101,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
   const handleCategoryRoute = (category: ChallengeCategoryType) => {
     router.push(URL.CHALLENGE.GROUP.LIST.value(category))
   }
+  console.log(eventChallenges)
 
   return (
     <Container>
@@ -134,17 +136,21 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
         </SectionHeader>
         <CarouselWrapper ref={emblaRef}>
           <CarouselInner>
-            {eventChallenges.map(ch => (
-              <EventCard key={ch.id}>
-                <ImageArea>
-                  <Image src={ch.imageUrl} alt={ch.description} width={48} height={48} />
-                </ImageArea>
-                <CardArea>
-                  <CardTitle>{ch.title}</CardTitle>
-                  <CardDescription>{ch.description}</CardDescription>
-                </CardArea>
-              </EventCard>
-            ))}
+            {eventChallenges.length !== 0 ? (
+              eventChallenges.map(ch => (
+                <EventCard key={ch.id}>
+                  <ImageArea>
+                    <Image src={ch.imageUrl} alt={ch.description} width={48} height={48} />
+                  </ImageArea>
+                  <CardArea>
+                    <CardTitle>{ch.title}</CardTitle>
+                    <CardDescription>{ch.description}</CardDescription>
+                  </CardArea>
+                </EventCard>
+              ))
+            ) : (
+              <NoneContent>진행중인 이벤트 챌린지가 없습니다 !</NoneContent>
+            )}
           </CarouselInner>
         </CarouselWrapper>
       </Section>
@@ -162,25 +168,20 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
                 <LeafLabel>{ch.leafReward}</LeafLabel>
               </LeafWrapper>
               <DailyImageArea>
-                <Image
-                  src={ch.imageUrl}
-                  alt={ch.description}
-                  width={48}
-                  height={48}
-                  style={{ objectFit: 'cover', borderRadius: theme.radius.base }}
-                />
+                <DailyImage src={ch.thumbnailUrl} alt={ch.description} width={48} height={48} />
               </DailyImageArea>
 
               {/* <CardImage src={ch.imageUrl} alt={ch.title} width={100} height={100} /> */}
             </CardTop>
             <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>참여하기</JoinButton>
-            <DailyCardDesciptions>
+            <DailyCardDescriptions>
               <CardTitle>{ch.title}</CardTitle>
               <CardDescription>{ch.description}</CardDescription>
-            </DailyCardDesciptions>
+            </DailyCardDescriptions>
           </DailyCard>
         ))}
       </Section>
+      <Chatbot />
     </Container>
   )
 }
@@ -188,6 +189,14 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
 export default ChallengeMainPage
 
 // === Styles ===
+const DailyImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  border-radius: ${theme.radius.base};
+`
+
 const Container = styled.div`
   padding-top: 250px;
   padding-bottom: 80px;
@@ -361,7 +370,6 @@ const CardTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
 `
 
 const LeafWrapper = styled.p`
@@ -389,14 +397,14 @@ const DailyImageArea = styled.div`
   justify-content: center;
   align-items: center;
 
-  ${DailyCard}:hover & {
+  /* ${DailyCard}:hover & {
     transform: scale(1.2);
-  }
+  } */
 `
 
 const JoinButton = styled.button`
   width: 100%;
-  margin: 12px 0;
+  margin: 4px 0;
   padding: 16px 0;
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
@@ -409,7 +417,9 @@ const JoinButton = styled.button`
     background-color: ${theme.colors.lfGreenMain.hover};
   }
 `
-const DailyCardDesciptions = styled.div`
+const DailyCardDescriptions = styled.div`
+  margin-top: 8px;
+
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -417,6 +427,7 @@ const DailyCardDesciptions = styled.div`
   transition: all 0.3s ease; // optional: hover 부드럽게
 `
 const CardTitle = styled.h3`
+  margin: 4px 0px;
   font-size: ${theme.fontSize.md};
   font-weight: ${theme.fontWeight.medium};
 `
@@ -427,46 +438,57 @@ const CardDescription = styled.p`
   white-space: pre-wrap;
 `
 
-const dummyEventChallenges: EventChallenge[] = [
-  {
-    id: 1,
-    title: '[1.환경의날]',
-    description: '이벤트이벤트이벤트\n이벤트이벤트이벤트\n이벤트이벤트이벤트',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-  {
-    id: 2,
-    title: '[2.에너지 절약]',
-    description: '조명을 꺼요\n절약해요\n함께해요',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-  {
-    id: 3,
-    title: '[3.에너지 절약]',
-    description: '조명을 꺼요\n절약해요\n함께해요',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-  {
-    id: 4,
-    title: '[4.에너지 절약]',
-    description: '조명을 꺼요\n절약해요\n함께해요',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-]
+const NoneContent = styled.div`
+  width: 100%;
 
-const dummyPersonalChallenges: PersonalChallengeType[] = [
-  {
-    id: 1,
-    title: '챌린지 제목',
-    description: '챌린지 설명',
-    imageUrl: '/icon/category_zero_waste.png',
-    leafReward: 400,
-  },
-  {
-    id: 2,
-    title: '챌린지 제목',
-    description: '챌린지 설명',
-    imageUrl: '/icon/category_zero_waste.png',
-    leafReward: 400,
-  },
-]
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${theme.fontSize.lg};
+`
+
+// const dummyEventChallenges: EventChallenge[] = [
+//   {
+//     id: 1,
+//     title: '[1.환경의날]',
+//     description: '이벤트이벤트이벤트\n이벤트이벤트이벤트\n이벤트이벤트이벤트',
+//     imageUrl: '/icon/category_zero_waste.png',
+//   },
+//   {
+//     id: 2,
+//     title: '[2.에너지 절약]',
+//     description: '조명을 꺼요\n절약해요\n함께해요',
+//     imageUrl: '/icon/category_zero_waste.png',
+//   },
+//   {
+//     id: 3,
+//     title: '[3.에너지 절약]',
+//     description: '조명을 꺼요\n절약해요\n함께해요',
+//     imageUrl: '/icon/category_zero_waste.png',
+//   },
+//   {
+//     id: 4,
+//     title: '[4.에너지 절약]',
+//     description: '조명을 꺼요\n절약해요\n함께해요',
+//     imageUrl: '/icon/category_zero_waste.png',
+//   },
+// ]
+
+// const dummyPersonalChallenges: PersonalChallengeType[] = [
+//   {
+//     id: 1,
+//     title: '챌린지 제목',
+//     description: '챌린지 설명',
+//     imageUrl: '/icon/category_zero_waste.png',
+//     leafReward: 400,
+//   },
+//   {
+//     id: 2,
+//     title: '챌린지 제목',
+//     description: '챌린지 설명',
+//     imageUrl: '/icon/category_zero_waste.png',
+//     leafReward: 400,
+//   },
+// ]

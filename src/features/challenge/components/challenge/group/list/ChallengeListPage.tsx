@@ -4,7 +4,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
@@ -29,7 +28,7 @@ const categories: ChallengeCategoryType[] = [
 type GroupChallenge = {
   id: number
   title: string
-  imageUrl: string
+  thumbnailUrl: string
   leafReward: number
   startDate: string
   endDate: string
@@ -43,8 +42,7 @@ const ChallengeListPage = () => {
   const [input, setInput] = useState<string>('')
 
   // URL에서 category, search 파라미터 읽기
-  const category = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(searchParams.get('category') || '')
-
+  const category = searchParams.get('category') || ''
   const initialSearch = searchParams.get('search') || ''
 
   // 로컬 input 초기화
@@ -112,12 +110,12 @@ const ChallengeListPage = () => {
           </SearchBar>
 
           <ChallengeWrapper>
-            <GridBox columns={2} rowGap='16px' columnGap='16px'>
+            <StyledGridBox columns={2} rowGap='16px' columnGap='16px' justifyContent='start'>
               {groupChallenges.map(challenge => (
-                <GroupChallengeCard key={challenge.id} challenge={challenge} />
+                <StyledGroupChallengeCard key={challenge.id} challenge={challenge} />
               ))}
               {hasNextPage && <ObserverElement ref={observerRef} />}
-            </GridBox>
+            </StyledGridBox>
             {isFetchingNextPage && <LoadingMore>더 불러오는 중...</LoadingMore>}
             {groupChallenges.length === 0 && <EmptyState>진행 중인 챌린지가 없습니다.</EmptyState>}
           </ChallengeWrapper>
@@ -226,7 +224,7 @@ const SearchInput = styled.input`
 `
 
 const ChallengeWrapper = styled.div`
-  padding: 16px;
+  padding: 16px 0px;
   display: flex;
   justify-content: center;
 `
@@ -254,6 +252,7 @@ const EmptyState = styled.div`
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.semiBold};
 `
+const StyledGroupChallengeCard = styled(GroupChallengeCard)``
 
 const ChatButton = styled.button`
   position: fixed;
@@ -284,4 +283,9 @@ const ChatButton = styled.button`
 const Message = styled.div`
   padding: 40px;
   text-align: center;
+`
+
+const StyledGridBox = styled(GridBox)`
+  /* width: 100%; */
+  /* justify-items: stretch; */
 `

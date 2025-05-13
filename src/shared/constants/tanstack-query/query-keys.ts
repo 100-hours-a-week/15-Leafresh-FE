@@ -44,7 +44,7 @@ const CHALLENGE_QUERY_KEYS = {
 
 const MEMBER_QUERY_KEYS = {
   AUTH: {
-    LOGIN: (provider: LowercaseOAuthType) => ['member', 'oauth', provider], // ✅ 이미 배열로 OK
+    LOGIN: (provider: LowercaseOAuthType) => ['member', 'oauth', provider],
     CALLBACK: (provider: LowercaseOAuthType) => ['member', 'oauth', provider, 'callback'],
   },
 
