@@ -33,6 +33,7 @@ const LoginPage = () => {
       const { data } = await StartLogin()
       if (data?.data) {
         const { redirectUrl } = data.data
+
         window.location.href = redirectUrl
       }
     } catch (_error) {

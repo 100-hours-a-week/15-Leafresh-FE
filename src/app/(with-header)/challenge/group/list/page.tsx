@@ -4,7 +4,7 @@ import Loading from '@shared/components/loading'
 
 import ChallengeListPage from '../../../../../features/challenge/components/challenge/group/list/ChallengeListPage'
 
-const Page = () => {
+const Page = async () => {
   return (
     <Suspense fallback={<Loading />}>
       <ChallengeListPage />

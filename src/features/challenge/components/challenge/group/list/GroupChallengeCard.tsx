@@ -11,22 +11,23 @@ interface GroupChallengeProps {
   challenge: {
     id: number
     title: string
-    imageUrl: string
+    thumbnailUrl: string
     leafReward: number
     startDate: string
     endDate: string
     remainingDay: number
     currentParticipantCount: number
   }
+  className?: string
 }
 
-const GroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge }) => {
+const GroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge, className }) => {
   const router = useRouter()
   return (
-    <CardContainer onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(challenge.id))}>
+    <CardContainer onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(challenge.id))} className={className}>
       <ImageContainer>
-        {challenge?.imageUrl && challenge.imageUrl !== 'string' ? (
-          <CoverImage src={challenge.imageUrl} alt={challenge?.title || '챌린지 이미지'} />
+        {challenge?.thumbnailUrl && challenge.thumbnailUrl !== 'string' ? (
+          <CoverImage src={challenge.thumbnailUrl} alt={challenge?.title || '챌린지 이미지'} />
         ) : (
           <PlaceholderWrapper>
             <PlaceholderIcon>

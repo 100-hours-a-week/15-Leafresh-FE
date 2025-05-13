@@ -17,7 +17,7 @@ export interface FetchGroupChallengesParams {
 export interface GroupChallengeItem {
   id: number
   title: string
-  imageUrl: string
+  thumbnailUrl: string
   leafReward: number
   startDate: string
   endDate: string
