@@ -51,6 +51,11 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [selectedWorkType, setSelectedWorkType] = useState<string | null>(null)
 
+  //카테고리 버튼 클릭 여부 - 연속 클릭 방지
+  const [isCategorySending, setIsCategorySending] = useState(false)
+  //채팅 전송 여부 - 연속 전송 방지
+  const [isSending, setIsSending] = useState(false)
+
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // 메시지 영역으로 자동 스크롤
@@ -101,7 +106,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
         {
           type: 'message',
           role: 'bot',
-          text: '안녕하세요! 저는 Leafresh의 챗봇 새순입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도도를 위해 거주 지역과 직장 형태를 선택해주세요!',
+          text: '안녕하세요! 저는 Leafresh의 챗봇 새순입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
         },
         {
           type: 'horizontal-cards',
@@ -126,7 +131,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
         // 챌린지 카테고리 선택지 추가
         addChatItem('selection', undefined, undefined, {
           title: '챌린지 선택',
-          subtitle: '참여하고 싶은 챌린지를 선택해주세요.',
+          subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
           imageUrl: '/image/chatbotcategory.png',
           options: [
             { label: '제로웨이스트', value: '제로웨이스트' },
@@ -176,6 +181,8 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
 
   // 챌린지 선택 처리
   const handleChallengeSelect = async (value: string) => {
+    if (isCategorySending) return // 중복 방지
+    setIsCategorySending(true)
     // 사용자 선택 메시지 추가
     const displayValue = getDisplayLabel(value)
     addChatItem('message', 'user', displayValue)
@@ -238,12 +245,13 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
 
   // 재선택 처리
   const handleRetry = () => {
+    setIsCategorySending(false)
     addChatItem('message', 'bot', '참여하고 싶은 챌린지 유형을 선택해주세요!')
 
     // 챌린지 카테고리 선택지 다시 추가
     addChatItem('selection', undefined, undefined, {
       title: '챌린지 선택',
-      subtitle: '참여하고 싶은 챌린지를 선택해주세요.',
+      subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
       imageUrl: '/image/chatbotcategory.png',
       options: [
         { label: '제로웨이스트', value: '제로웨이스트' },
@@ -279,9 +287,10 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
 
   // 사용자 메시지 전송 처리
   const handleSendMessage = async (text: string) => {
-    if (!text.trim()) return
+    if (!text.trim() || isSending) return
 
     // 사용자 메시지 추가
+    setIsSending(true) // 전송 시작
     addChatItem('message', 'user', text)
     setLoading(true)
 
@@ -351,6 +360,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
       )
     }
 
+    setIsSending(false)
     // 상위 콜백 호출
     onSend(text)
     setInputText('')

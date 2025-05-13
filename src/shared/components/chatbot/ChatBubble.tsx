@@ -1,79 +1,3 @@
-// 'use client'
-
-// import React, { ReactNode } from 'react'
-// import styled from '@emotion/styled'
-// import Image from 'next/image'
-// import { theme } from '@shared/styles/emotion/theme'
-
-// export interface ChatBubbleProps {
-//   role: 'bot' | 'user'
-//   loading?: boolean
-//   children: ReactNode
-//   buttonText?: string
-//   onClick?: () => void
-// }
-
-// const ChatBubble = ({ role, loading, children, buttonText, onClick }: ChatBubbleProps) => (
-//   <Container role={role}>
-//     {role === 'bot' && (
-//       <Avatar>
-//         <Image src='/image/chatbot.png' alt='chatbot' width={30} height={30} />
-//       </Avatar>
-//     )}
-//     <BubbleWrapper>
-//       <NameText role={role}>{role === 'bot' && '새순'}</NameText>
-//       <Bubble role={role}>{loading ? '잠시만 기다려주세요…' : children}</Bubble>
-//       {buttonText && <RetryButton onClick={onClick}>{buttonText}</RetryButton>}
-//     </BubbleWrapper>
-//   </Container>
-// )
-
-// export default ChatBubble
-
-// const Container = styled.div<{ role: 'bot' | 'user' }>`
-//   display: flex;
-//   align-items: flex-start;
-//   justify-content: ${({ role }) => (role === 'bot' ? 'flex-start' : 'flex-end')};
-//   gap: 8px;
-// `
-
-// const Avatar = styled.div`
-//   width: 32px;
-//   height: 32px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   order: ${({ role }) => (role === 'user' ? 1 : 0)};
-// `
-
-// const BubbleWrapper = styled.div`
-//   display: flex;
-//   flex-direction: column;
-// `
-// const NameText = styled.p`
-//   font-size: ${theme.fontSize.xss};
-// `
-
-// const Bubble = styled.div<{ role: 'bot' | 'user' }>`
-//   max-width: 235px;
-//   min-width: 60px;
-//   padding: 16px 12px;
-//   background: ${({ role }) => (role === 'bot' ? '#AFF9BB' : `${theme.colors.lfWhite.base}`)};
-//   color: ${({ role }) => (role === 'bot' ? '#333333' : `${theme.colors.lfBlack.base}`)};
-//   justify-content: center;
-//   display: flex;
-//   border-radius: 20px;
-//   white-space: pre-wrap;
-//   font-size: 8px;
-//   font-weight: ${theme.fontWeight.semiBold};
-//   box-shadow: ${theme.shadow.lfPrime};
-// `
-
-// const RetryButton = styled.button`
-//   width: 164px;
-//   height: 37px;
-// `
-
 'use client'
 
 import Image from 'next/image'
@@ -152,7 +76,7 @@ const Bubble = styled.div<{ role: 'bot' | 'user' }>`
   flex-direction: column;
   border-radius: 20px;
   white-space: pre-wrap;
-  font-size: 8px;
+  font-size: ${theme.fontSize.xss};
   font-weight: ${theme.fontWeight.semiBold};
   box-shadow: ${theme.shadow.lfPrime};
 `
