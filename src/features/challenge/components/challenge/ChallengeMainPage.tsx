@@ -101,7 +101,6 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
   const handleCategoryRoute = (category: ChallengeCategoryType) => {
     router.push(URL.CHALLENGE.GROUP.LIST.value(category))
   }
-  console.log(eventChallenges)
 
   return (
     <Container>
