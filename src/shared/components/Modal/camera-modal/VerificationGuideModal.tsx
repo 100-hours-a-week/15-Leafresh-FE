@@ -16,7 +16,7 @@ import {
 } from '@features/challenge/api/get-personal-challenge-rules'
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ChallengeDataType } from '@shared/context/modal/CameraModalStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'

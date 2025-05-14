@@ -4,8 +4,8 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getGroupChallengeParticipateList } from '@features/challenge/api/participate/get-group-participant-list'
 import ChallengeGroupParticipateList from '@features/challenge/components/challenge/participate/list/ChallengeGroupParticipateList'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 
 interface GroupChallengeParticipateListPageProps {
   params: Promise<{ id: string }>

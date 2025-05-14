@@ -5,8 +5,8 @@ import { getEventChallengeList } from '@features/challenge/api/get-event-challen
 import { getGroupChallengeCategoryList } from '@features/challenge/api/get-group-challenge-categories'
 import { getPersonalChallengeList } from '@features/challenge/api/get-personal-challenge-list'
 import ChallengeMainPage from '@features/challenge/components/challenge/ChallengeMainPage'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 
 const Page = async () => {

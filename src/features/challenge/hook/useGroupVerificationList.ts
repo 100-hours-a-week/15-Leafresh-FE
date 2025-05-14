@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import {
   getGroupVerifications,

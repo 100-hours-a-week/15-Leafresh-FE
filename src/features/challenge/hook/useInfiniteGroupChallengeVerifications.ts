@@ -1,6 +1,6 @@
 import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import type { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
 
 import {

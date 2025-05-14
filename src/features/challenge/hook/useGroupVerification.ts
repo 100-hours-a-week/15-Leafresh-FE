@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { MUTATION_KEYS } from '@shared/constants/tanstack-query/mutation-keys'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import {
   getGroupVerificationResult,
