@@ -176,6 +176,7 @@ const Backdrop = styled.div`
 
   inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
   z-index: 999;
 `
 const StyledImage = styled(Image)`
