@@ -20,11 +20,11 @@ const ChatBubble = ({ role, loading, children, subDescription, buttonText, onCli
   <Container role={role}>
     {role === 'bot' && (
       <Avatar>
-        <Image src='/image/chatbot.png' alt='chatbot' width={30} height={30} />
+        <Image src='/image/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
       </Avatar>
     )}
     <BubbleWrapper>
-      <NameText role={role}>{role === 'bot' && '새순'}</NameText>
+      <NameText role={role}>{role === 'bot' && '수피'}</NameText>
       <Bubble role={role}>
         {loading ? '잠시만 기다려주세요…' : children}
         {subDescription && <SubDescription role={role}>{subDescription}</SubDescription>}
@@ -61,7 +61,8 @@ const BubbleWrapper = styled.div`
 
 const NameText = styled.p<{ role: 'bot' | 'user' }>`
   font-size: ${theme.fontSize.xss};
-  margin: 0 0 4px 4px;
+  font-weight: ${theme.fontWeight.semiBold};
+  margin: 8px 0 0 0;
 `
 
 const Bubble = styled.div<{ role: 'bot' | 'user' }>`

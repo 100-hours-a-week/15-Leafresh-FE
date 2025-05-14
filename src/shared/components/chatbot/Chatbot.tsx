@@ -40,7 +40,7 @@ const Chatbot = () => {
         <Launcher onClick={toggleOpen}>
           <Image src='/image/chatbot.png' alt='Leafresh 챗봇' width={48} height={48} />
 
-          <Name>챗봇 새순</Name>
+          <Name>챗봇 수피</Name>
         </Launcher>
       )}
       {isOpen && <Backdrop onClick={toggleOpen} />} {/* ✅ 클릭 시 닫기 */}
