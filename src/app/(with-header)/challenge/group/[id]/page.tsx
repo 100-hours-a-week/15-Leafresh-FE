@@ -4,6 +4,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import ChallengeGroupDetails from '@features/challenge/components/challenge/group/details/ChallengeGroupDetails'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
@@ -23,6 +24,7 @@ const GroupChallengeDetailsPage = async ({ params }: GroupChallengeDetailsPagePr
     await queryClient.prefetchQuery({
       queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(idNumber),
       queryFn: () => getGroupChallengeDetails(idNumber),
+      ...QUERY_OPTIONS.CHALLENGE.GROUP.DETAILS,
     })
 
     const dehydratedState = dehydrate(queryClient)
