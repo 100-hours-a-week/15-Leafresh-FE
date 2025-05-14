@@ -29,14 +29,15 @@ const CameraModal = () => {
   const [tab, setTab] = useState<number>(0)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [description, setDescription] = useState<string>('')
-
   const [showGuide, setShowGuide] = useState<boolean>(false)
+  const [scrollTop, setScrollTop] = useState<number>(0)
 
   const TABS = !challengeData ? CAMERA_TABS : CHALLENGE_TABS
 
   useEffect(() => {
     if (!isOpen || !videoRef.current) return
 
+    setScrollTop(window.scrollY)
     navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
       if (videoRef.current) {
         videoRef.current.srcObject = stream
@@ -90,16 +91,6 @@ const CameraModal = () => {
       }
     }, 'image/jpeg')
   }
-
-  // const handleConfirm = () => {
-  //   if (!previewUrl) return
-  //   if (hasDescription && !description) return
-
-  //   onComplete({ imageUrl: previewUrl, description: hasDescription ? description : undefined })
-  //   close()
-  //   setPreviewUrl(null)
-  //   setDescription('')
-  // }
 
   const handleConfirm = async () => {
     if (!previewUrl) return
@@ -176,44 +167,60 @@ const CameraModal = () => {
 
   if (!isOpen) return null
   return (
-    <Wrapper>
-      <Header>
-        {previewUrl ? (
-          <BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
-        ) : (
-          <CloseButton name='X' onClick={close} size={30} />
-        )}
-        {title}
-      </Header>
-      <CameraWrapper>
-        {previewUrl ? <ImagePreview src={previewUrl} /> : <CameraView ref={videoRef} autoPlay playsInline />}
-      </CameraWrapper>
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
+    <Overlay>
+      <Wrapper style={{ top: `${scrollTop}px` }}>
+        <Header>
+          {previewUrl ? (
+            <BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
+          ) : (
+            <CloseButton name='X' onClick={close} size={30} />
+          )}
+          {title}
+        </Header>
+        <CameraWrapper>
+          {previewUrl ? <ImagePreview src={previewUrl} /> : <CameraView ref={videoRef} autoPlay playsInline />}
+        </CameraWrapper>
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-      <ContentWrapper>{content}</ContentWrapper>
+        <ContentWrapper>{content}</ContentWrapper>
 
-      <SwitchWrapper>
-        {!previewUrl ? (
-          <SwitchTap tabs={TABS} currentIndex={tab} onChange={handleTabChange} />
-        ) : (
-          <ConfirmButton onClick={handleConfirm}>{confirmText}</ConfirmButton>
-        )}
+        <SwitchWrapper>
+          {!previewUrl ? (
+            <SwitchTap tabs={TABS} currentIndex={tab} onChange={handleTabChange} />
+          ) : (
+            <ConfirmButton onClick={handleConfirm}>{confirmText}</ConfirmButton>
+          )}
 
-        {challengeData && (
-          <VerificationGuideModal isOpen={showGuide} challengeData={challengeData} onClose={() => setTab(0)} />
-        )}
-      </SwitchWrapper>
-    </Wrapper>
+          {challengeData && (
+            <VerificationGuideModal isOpen={showGuide} challengeData={challengeData} onClose={() => setTab(0)} />
+          )}
+        </SwitchWrapper>
+      </Wrapper>
+    </Overlay>
   )
 }
 
 export default CameraModal
 
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
+  z-index: 199;
+`
+
 const Wrapper = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 320px;
+  max-width: 500px;
+  width: 100%;
   height: 100vh;
 
   display: flex;

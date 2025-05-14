@@ -56,18 +56,6 @@ const HeaderContainer = styled.header<{ height: number }>`
   z-index: 100;
 `
 
-const ContentWrapper = styled.div<{ padding: number }>`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 500px;
-
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
 const CustomWidthWrapper = styled.div<{ padding: number }>`
   width: 100%;
   padding: ${({ padding }) => `0px ${padding}px`};
