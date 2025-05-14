@@ -73,7 +73,7 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/group/${challengeId}`,
     }),
 
-    // 참여하기
+    // 참여
     PARTICIPATE: (challengeId: number) => ({
       method: HttpMethod.POST,
       path: `/api/challenges/group/${challengeId}/participations`,

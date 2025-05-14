@@ -127,7 +127,7 @@ const SignupPage = () => {
       imageUrl: userInfo.imageUrl,
     }
 
-    SignUpMutate(body)
+    SignUpMutate({ body })
   }
 
   return (

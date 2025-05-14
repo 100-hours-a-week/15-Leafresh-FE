@@ -6,8 +6,8 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import {
   getGroupVerificationResult,
-  postGroupVerification,
-  type PostGroupVerificationRequest,
+  PostGroupVerification,
+  PostGroupVerificationBody,
   type PostGroupVerificationResponse,
 } from '../api/participate/verification/group-verification'
 // import { showNotification } from '@/libs/showNotification'
@@ -15,9 +15,9 @@ import {
 /** 인증 제출 뮤테이션 */
 export const usePostGroupVerification = (challengeId: number) => {
   const qc = useQueryClient()
-  return useMutation<PostGroupVerificationResponse, Error, PostGroupVerificationRequest>({
-    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFY(challengeId)],
-    mutationFn: body => postGroupVerification(challengeId, body),
+  return useMutation<PostGroupVerificationResponse, Error, PostGroupVerificationBody>({
+    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFY],
+    mutationFn: body => PostGroupVerification({ challengeId, body }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId) })
     },

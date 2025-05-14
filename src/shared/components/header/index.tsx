@@ -13,7 +13,7 @@ import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { Logout } from '@features/member/api/logout'
 import { Unregister } from '@features/member/api/unregister'
 import { URL } from '@shared/constants/route/route'
-import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { useConfirmModalStore } from '@shared/context/Modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
@@ -85,7 +85,8 @@ const Header = ({ height, padding }: HeaderProps) => {
       // TODO: 유효한 로그인 정보 확인해서 분기 처리
       return
     }
-    LogoutMutate(userInfo.provider)
+    const provider = userInfo.provider
+    LogoutMutate({ provider })
   }
 
   /** 회원탈퇴 로직 */

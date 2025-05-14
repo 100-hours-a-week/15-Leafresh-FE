@@ -86,7 +86,7 @@ const GroupChallengeCreatePage = () => {
       sequenceNumber: index + 1,
     }))
 
-    CreateGroupChallengeMutate({
+    const body = {
       title,
       description,
       category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
@@ -97,7 +97,8 @@ const GroupChallengeCreatePage = () => {
       verificationStartTime: startTime as TimeFormatString,
       verificationEndTime: endTime as TimeFormatString,
       exampleImages: exampleImages as ExampleImageType[],
-    })
+    }
+    CreateGroupChallengeMutate({ body })
   }
 
   return (

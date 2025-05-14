@@ -133,7 +133,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     }
 
     /** 제출하기 */
-    ParticipateMutate(challengeId)
+    ParticipateMutate({ challengeId })
   }
 
   /** 단체 챌린지 참여 이력 페이지로 이동 */
