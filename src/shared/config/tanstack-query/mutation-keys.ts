@@ -1,62 +1,46 @@
 const CHALLENGE_MUTATION_KEYS = {
   /** 개인 챌린지 */
   PERSONAL: {
-    // 인증 제출
-    VERIFY: (challengeId: number) => `[challenges, personal, ${challengeId}, verify]`,
+    VERIFY: ['challenges', 'personal', 'verify'] as const, // 인증 제출
   },
 
   /** 단체 챌린지 */
   GROUP: {
-    // 생성
-    CREATE: (challengeId: number) => `[challenges, group, ${challengeId}, create]`,
-    // 수정
-    UPDATE: (challengeId: number) => `[challenges, group, ${challengeId}, modify]`,
-
-    // 삭제
-    DELETE: (challengeId: number) => `[challenges, group, ${challengeId}, delete]`,
-
-    // 참여 이력 생성
-    PARTICIPATE: (challengeId: number) => `[challenges, group, ${challengeId}, participate]`,
-
-    // 인증 제출 (생성)
-    VERIFY: (challengeId: number) => `[challenges, group, ${challengeId}, verify]`,
+    CREATE: ['challenges', 'group', 'create'] as const, // 생성
+    UPDATE: ['challenges', 'group', 'modify'] as const, // 수정
+    DELETE: ['challenges', 'group', 'delete'] as const, // 삭제
+    PARTICIPATE: ['challenges', 'group', 'participate'] as const, // 참여
+    VERIFY: ['challenges', 'group', 'verify'] as const, // 인증 제출
   },
 }
+
 const MEMBER_MUTATION_KEYS = {
   AUTH: {
-    LOGOUT: `[member, logout]`, // 리프레시 토큰 제거
-    RE_ISSUE: `[member, token, reissue]`, // 토큰 재발급
+    LOGOUT: ['member', 'logout'] as const,
+    RE_ISSUE: ['member', 'token', 'reissue'] as const,
   },
 
-  // CRUD
-  SIGNUP: `[member, signup]`, // 회원가입
-  MODIFY: `[member, info]`, // 회원정보 수정
-  UNREGISTER: `[member, unregister]`, // 회원 탈퇴
+  SIGNUP: ['member', 'signup'] as const,
+  MODIFY: ['member', 'info'] as const,
+  UNREGISTER: ['member', 'unregister'] as const,
 
-  // 알림
   NOTIFICATION: {
-    READ: `[member, notifications, read]`, // 알림 읽음 처리
+    READ: ['member', 'notifications', 'read'] as const,
   },
 }
-// const POST_MUTATION_KEYS = {}
+
 const STORE_MUTATION_KEYS = {
   TIME_DEAL: {
-    // 타임딜 상품 주문
-    ORDER: (productId: number) => `[store, order, product, timedeal, ${productId}]`,
+    ORDER: ['store', 'order', 'product', 'timedeal'] as const,
   },
   PRODUCTS: {
-    // 상품 주문
-    ORDER: (productId: number) => `[store, order, product, ${productId}]`,
+    ORDER: ['store', 'order', 'product'] as const,
   },
 }
 
-/*
- * POST DELETE PATCH PUT
- * Mutation Keys to use Mutations convenient
- */
 export const MUTATION_KEYS = {
   CHALLENGE: CHALLENGE_MUTATION_KEYS,
   MEMBER: MEMBER_MUTATION_KEYS,
   STORE: STORE_MUTATION_KEYS,
   // POST: POST_MUTATION_KEYS,
-}
+} as const
