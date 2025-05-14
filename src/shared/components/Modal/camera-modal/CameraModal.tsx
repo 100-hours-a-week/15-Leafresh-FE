@@ -297,7 +297,7 @@ const ShootText = styled.span`
 `
 
 const SwitchWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   flex: 1;
 
   display: flex;
