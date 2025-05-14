@@ -170,7 +170,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
                 <LeafLabel>{ch.leafReward}</LeafLabel>
               </LeafWrapper>
               <DailyImageArea>
-                <DailyImage src={ch.thumbnailUrl} alt={ch.description} width={48} height={48} />
+                <DailyImage src={ch.thumbnailUrl} alt={ch.description} width={400} height={220} />
               </DailyImageArea>
 
               {/* <CardImage src={ch.imageUrl} alt={ch.title} width={100} height={100} /> */}
