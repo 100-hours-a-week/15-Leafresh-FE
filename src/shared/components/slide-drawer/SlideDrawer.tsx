@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useMutation } from '@tanstack/react-query'
 
@@ -32,12 +32,21 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
   const { isOpen, close, toggle } = useDrawerStore()
   const { openConfirmModal, isOpen: isConfirmModalOpen } = useConfirmModalStore()
   const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const [scrollTop, setScrollTop] = useState<number>(0)
 
   const isLoggedIn: boolean = !!userInfo
 
   const drawerRef = useRef<HTMLDivElement>(null)
 
   const openToast = useToast()
+
+  /** 해당 useEffect는 useScrollLock() 위에 존재해야 합니다! */
+  useEffect(() => {
+    if (isOpen) {
+      setScrollTop(window.scrollY)
+      console.log(window.scrollY)
+    }
+  }, [isOpen])
 
   useOutsideClick(drawerRef as React.RefObject<HTMLElement>, () => {
     if (!isConfirmModalOpen) toggle()
@@ -108,6 +117,7 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
           <Backdrop />
           <Drawer
             ref={drawerRef}
+            style={{ top: `${scrollTop}px` }}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
