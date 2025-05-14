@@ -61,7 +61,8 @@ const Overlay = styled.div`
 
 const ModalContainer = styled.div`
   width: 100%;
-  max-width: 280px;
+  min-width: 280px;
+  max-width: 320px;
 
   display: flex;
   flex-direction: column;
@@ -71,7 +72,7 @@ const ModalContainer = styled.div`
   background-color: ${theme.colors.lfWhite.base};
   color: ${theme.colors.lfBlack.base};
 
-  padding: 16px 24px;
+  padding: 18px 24px;
   border-radius: ${theme.radius.lg};
   box-shadow: ${theme.shadow.lfPrime};
 
@@ -80,7 +81,7 @@ const ModalContainer = styled.div`
 
 const Title = styled.h2`
   font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.bold};
+  font-weight: ${theme.fontWeight.semiBold};
   text-align: left;
 
   margin-bottom: 12px;
@@ -88,12 +89,12 @@ const Title = styled.h2`
 `
 
 const Description = styled.p`
-  font-size: ${theme.fontSize.xs};
+  font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.regular};
   text-align: left;
 
   color: ${theme.colors.lfDarkGray.base};
-  margin-bottom: 32px;
+  margin: 2px 0 24px 0;
   white-space: pre-line;
 `
 

@@ -394,6 +394,7 @@ const DailyCard = styled.div`
   margin-top: 16px;
 
   cursor: pointer;
+  box-shadow: ${theme.shadow.lfPrime};
 `
 
 const CardTop = styled.div`

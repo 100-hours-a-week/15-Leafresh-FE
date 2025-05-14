@@ -68,9 +68,6 @@ const CameraModal = () => {
     }
   }, [isOpen, previewUrl])
 
-  console.log('isOpen: ', isOpen)
-  console.log('scrollLock executed if', isOpen)
-
   useScrollLock(isOpen)
 
   const capture = () => {
@@ -274,8 +271,8 @@ const ImagePreview = styled.img`
 
 const ContentWrapper = styled.div`
   width: 100%;
-  height: 225px;
-  padding: 12px 36px;
+  height: 250px;
+  padding: 18px 36px 0px 36px;
 
   position: relative;
   display: flex;
@@ -301,10 +298,10 @@ const ShootText = styled.span`
 const SwitchWrapper = styled.div`
   width: 100%;
   flex: 1;
-
+  padding: 12px 36px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `
 
 const TextAreaWrapper = styled.div`
@@ -355,6 +352,7 @@ const ConfirmButton = styled.button`
 `
 
 const CloseButton = styled(LucideIcon)`
+  cursor: pointer;
   position: absolute;
   right: 20px;
   top: 50%;

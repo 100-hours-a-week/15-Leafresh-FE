@@ -249,7 +249,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
         <Section>
           <StyledChallengeVerifyExamples
             title='인증샷 예시'
-            description=''
+            description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
             examples={verificationExampleImages}
             onChange={() => {}}
