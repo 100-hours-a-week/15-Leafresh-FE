@@ -73,7 +73,7 @@ const VerificationImageInput = ({
         />
         {imageUrl && (
           <ZoomButton onClick={onZoom}>
-            <LucideIcon name='Scan' size={24} color='lfBlack' />
+            <LucideIcon name='Scan' size={24} color='lfWhite' />
           </ZoomButton>
         )}
       </ImageArea>

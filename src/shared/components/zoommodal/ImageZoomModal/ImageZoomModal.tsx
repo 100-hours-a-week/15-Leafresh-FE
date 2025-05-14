@@ -25,7 +25,8 @@ const ImageZoomModal = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     skipSnaps: false, // 꼭 snap 되도록
-    dragFree: false, // 살짝 드래그는 원래 위치 유지
+    dragFree: true, // 살짝 드래그 해도 이동
+    inViewThreshold: 0.1, // 드래그 스레시홀드
   })
 
   useEffect(() => {
