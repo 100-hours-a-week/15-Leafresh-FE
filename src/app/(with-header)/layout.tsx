@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 
 import Footer from '@shared/components/footer'
 import Header from '@shared/components/header'
+import SlideDrawer from '@shared/components/slide-drawer/SlideDrawer'
 import { theme } from '@shared/styles/theme'
 
 const HEADER_HEIGHT = 60
@@ -16,7 +17,7 @@ const WithHeaderLayout = ({
   return (
     <>
       <Header height={HEADER_HEIGHT} padding={WIDTH_PADDING} />
-      {/* <SlideDrawer height={HEADER_HEIGHT} padding={WIDTH_PADDING} /> */}
+      <SlideDrawer height={HEADER_HEIGHT} padding={WIDTH_PADDING} />
       <Main marginTop={HEADER_HEIGHT}>{children}</Main>
       <Footer padding={WIDTH_PADDING} />
     </>
