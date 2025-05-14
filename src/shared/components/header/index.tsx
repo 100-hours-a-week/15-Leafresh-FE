@@ -7,11 +7,10 @@ import { useRouter } from 'next/navigation'
 
 import { useRef } from 'react'
 import styled from '@emotion/styled'
-import { useMutation } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { LogoutResponseType, LogoutVariables } from '@features/member/api/logout'
-import { Unregister } from '@features/member/api/unregister'
+import { UnregisterResponseType } from '@features/member/api/unregister'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
@@ -53,19 +52,9 @@ const Header = ({ height, padding }: HeaderProps) => {
   )
 
   /** 회원탈퇴 */
-  const { mutate: UnregisterMutate, isPending: isUnregistering } = useMutation({
-    mutationFn: Unregister,
-    onSuccess: response => {
-      toggle()
-      clearUserInfo()
-      openToast(ToastType.Success, '회원탈퇴 성공')
-      router.push(URL.MAIN.INDEX.value)
-    },
-    onError: () => {
-      openToast(ToastType.Error, '회원탈퇴 실패.\n다시 시도해주세요')
-    },
-  })
-
+  const { mutate: UnregisterMutate, isPending: isUnregistering } = useMutationStore<UnregisterResponseType, void>(
+    MUTATION_KEYS.MEMBER.UNREGISTER,
+  )
   /** 라우팅 로직 */
   const handleRoute = (url: string) => {
     router.push(url)
@@ -104,7 +93,18 @@ const Header = ({ height, padding }: HeaderProps) => {
     openConfirmModal({
       title: '회원탈퇴 하시겠습니까?',
       description: '탈퇴 시 데이터를 복구할 수 없습니다.',
-      onConfirm: () => UnregisterMutate(),
+      onConfirm: () =>
+        UnregisterMutate(undefined, {
+          onSuccess: response => {
+            toggle()
+            clearUserInfo()
+            openToast(ToastType.Success, '회원탈퇴 성공')
+            router.push(URL.MAIN.INDEX.value)
+          },
+          onError: () => {
+            openToast(ToastType.Error, '회원탈퇴 실패.\n다시 시도해주세요')
+          },
+        }),
     })
   }
   return (
