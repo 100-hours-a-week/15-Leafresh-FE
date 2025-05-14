@@ -10,16 +10,24 @@ import { Unregister } from '@features/member/api/unregister'
 import { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
 
 import { MUTATION_KEYS } from './mutation-keys'
+import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
 
 const queryClient = getQueryClient()
+
+/**
+ * 참고
+ * data: mutate return value
+ * variables: mutate 인자
+ */
 
 /** 개인 챌린지 */
 // 인증 제출
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
   mutationFn: VerifyGroupChallenge,
   onSuccess(data, variables, context) {
-    // TODO: 무효화 로직
+    const { challengeId } = variables
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId) }) // 개인 챌린지 상세 조회
   },
 })
 
@@ -28,7 +36,10 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.CREATE, {
   mutationFn: CreateChallenge,
   onSuccess(data, variables, context) {
-    // TODO: 무효화 로직
+    const allCategoryQueryKeys = QUERY_KEYS.CHALLENGE.GROUP.LIST('ZERO_WASTE', '').slice(0, 2)
+    queryClient.invalidateQueries({ queryKey: allCategoryQueryKeys }) // 단체 챌린지 목록 조회 (검색 포함)
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.CREATIONS }) // 생성한 단체 챌린지 목록 조회
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT }) // 참여한 단체 챌린지 카운트 조회 (인증페이지)
   },
 })
 
@@ -58,7 +69,10 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.DELETE, {
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
   mutationFn: ParticipateGroupChallenge,
   onSuccess(data, variables, context) {
-    // TODO: 무효화 로직
+    const { challengeId } = variables
+
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId) }) // 단체 챌린지 상세 조회
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS }) // member - 참여한 단체 챌린지 목록 조회
   },
 })
 
@@ -75,7 +89,8 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.LOGOUT, {
   mutationFn: Logout,
   onSuccess() {
-    // TODO: 무효화 로직
+    const MEMBER_QUERIES = ['member']
+    queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
   },
 })
 
@@ -91,13 +106,12 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.RE_ISSUE, {
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.SIGNUP, {
   mutationFn: SignUp,
   onSuccess() {
-    // TODO: 회원가입 후 무효화 로직
-    return {} as ApiResponse<unknown>
+    // 무효화 로직 없음
   },
 })
 
-// 수정
-queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.SIGNUP, {
+// 회원정보 수정
+queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.MODIFY, {
   // TODO: 수정 API 연결
   onSuccess() {
     // TODO: 수정 후 무효화 로직
@@ -109,7 +123,8 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.SIGNUP, {
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
   mutationFn: Unregister,
   onSuccess() {
-    // TODO: 무효화 로직
+    const MEMBER_QUERIES = ['member']
+    queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
   },
 })
 
