@@ -5,17 +5,22 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
-import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
+import {
+  ParticipateGroupChallengeResponse,
+  ParticipateGroupChallengeVariables,
+} from '@features/challenge/api/participate-group-challenge'
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import BackButton from '@shared/components/Button/BackButton'
 import DatePicker from '@shared/components/datepicker/DatePicker'
 import Loading from '@shared/components/loading'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/Toast/type'
@@ -55,16 +60,10 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
   })
 
   /** 단체 챌린지 참여 이력 생성 */
-  const { mutate: ParticipateMutate, isPending } = useMutation({
-    mutationFn: ParticipateGroupChallenge,
-    onSuccess: () => {
-      openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
-      router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
-    },
-    onError: (error: ErrorResponse) => {
-      openToast(ToastType.Error, error.message)
-    },
-  })
+  const { mutate: ParticipateMutate, isPending } = useMutationStore<
+    ParticipateGroupChallengeResponse,
+    ParticipateGroupChallengeVariables
+  >(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE)
 
   if (isLoading || !data?.data) return <Loading />
 
@@ -133,7 +132,18 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     }
 
     /** 제출하기 */
-    ParticipateMutate({ challengeId })
+    ParticipateMutate(
+      { challengeId },
+      {
+        onSuccess: () => {
+          openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+          router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
+        },
+        onError: (error: ErrorResponse) => {
+          openToast(ToastType.Error, error.message)
+        },
+      },
+    )
   }
 
   /** 단체 챌린지 참여 이력 페이지로 이동 */

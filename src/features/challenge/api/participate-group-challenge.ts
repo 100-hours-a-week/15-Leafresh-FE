@@ -1,11 +1,11 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
-type ParticipateGroupChallengeResponse = ApiResponse<{
+export type ParticipateGroupChallengeResponse = ApiResponse<{
   id: number
 }>
 
-type ParticipateGroupChallengeVariables = {
+export type ParticipateGroupChallengeVariables = {
   challengeId: number
 }
 /**
