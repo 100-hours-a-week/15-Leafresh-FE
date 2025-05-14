@@ -98,12 +98,14 @@ const ChallengeListPage = () => {
           </SearchBar>
 
           <ChallengeWrapper>
-            <GridContainer>
-              {groupChallenges.map(challenge => (
-                <StyledGroupChallengeCard key={challenge.id} challenge={challenge} />
-              ))}
-              {hasNextPage && <ObserverElement ref={observerRef} />}
-            </GridContainer>
+            {groupChallenges.length !== 0 && (
+              <GridContainer>
+                {groupChallenges.map(challenge => (
+                  <StyledGroupChallengeCard key={challenge.id} challenge={challenge} />
+                ))}
+                {hasNextPage && <ObserverElement ref={observerRef} />}
+              </GridContainer>
+            )}
             {isFetchingNextPage && <LoadingMore>더 불러오는 중...</LoadingMore>}
             {groupChallenges.length === 0 && <EmptyState>진행 중인 챌린지가 없습니다.</EmptyState>}
           </ChallengeWrapper>
