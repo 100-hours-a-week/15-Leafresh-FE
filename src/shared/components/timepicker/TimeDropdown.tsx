@@ -84,7 +84,7 @@ export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpe
             ))}
           </Column>
           <Column style={{ marginLeft: '2px' }}>
-            {Array.from({ length: 60 }, (_, i) => i).map(m => (
+            {Array.from({ length: 6 }, (_, i) => i * 10).map(m => (
               <Option key={m} selected={m === minute} onClick={() => setMinute(m)}>
                 {String(m).padStart(2, '0')}
               </Option>
@@ -92,9 +92,9 @@ export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpe
           </Column>
         </Columns>
         <ActionWrapper>
-          <ActButton onClick={handleClose}>Cancel</ActButton>
+          <ActButton onClick={handleClose}>취소</ActButton>
           <ActButton primary onClick={handleConfirm}>
-            OK
+            확인
           </ActButton>
         </ActionWrapper>
       </Dropdown>
@@ -151,7 +151,7 @@ const Columns = styled.div`
 `
 const Column = styled.ul`
   width: 50%;
-  max-height: 200px;
+  max-height: 150px;
   overflow-y: auto;
   border-right: 1px solid ${theme.colors.lfBlue};
 
@@ -160,7 +160,8 @@ const Column = styled.ul`
   }
 `
 const Option = styled.li<{ selected: boolean }>`
-  padding: 5px 21px;
+  padding: 8px 21px;
+  text-align: center;
   cursor: pointer;
   background: ${({ selected }) => (selected ? `${theme.colors.lfGreenMain.hover}` : `${theme.colors.lfWhite.base}`)};
   color: ${({ selected }) => (selected ? `${theme.colors.lfWhite.base}` : `${theme.colors.lfGray.base}`)};
