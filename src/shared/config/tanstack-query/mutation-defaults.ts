@@ -36,8 +36,11 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.CREATE, {
   mutationFn: CreateChallenge,
   onSuccess(data, variables, context) {
-    const allCategoryQueryKeys = QUERY_KEYS.CHALLENGE.GROUP.LIST('ZERO_WASTE', '').slice(0, 2)
-    queryClient.invalidateQueries({ queryKey: allCategoryQueryKeys }) // 단체 챌린지 목록 조회 (검색 포함)
+    // 모든 단체 첼린지 목록 조회 (검색 포함) 쿼리 무효화
+    queryClient.invalidateQueries({
+      predicate: query =>
+        Array.isArray(query.queryKey) && query.queryKey[0] === 'challenges' && query.queryKey[1] === 'group',
+    })
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.CREATIONS }) // 생성한 단체 챌린지 목록 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT }) // 참여한 단체 챌린지 카운트 조회 (인증페이지)
   },

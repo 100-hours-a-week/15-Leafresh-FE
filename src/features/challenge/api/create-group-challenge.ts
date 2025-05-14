@@ -7,7 +7,7 @@ import { DateFormatString, TimeFormatString } from '@shared/types/date'
 /**
  * false: 사용 가능 / true 사용 불가능
  */
-type CreateChallengeResponse = ApiResponse<{
+export type CreateChallengeResponse = ApiResponse<{
   id: number
 }>
 
@@ -18,7 +18,7 @@ export type ExampleImageType = {
   sequenceNumber: number
 }
 
-type CreateChallengeBody = {
+export type CreateChallengeBody = {
   title: string
   description: string
   category: ChallengeCategoryType
@@ -31,7 +31,7 @@ type CreateChallengeBody = {
   exampleImages: ExampleImageType[]
 }
 
-type CreateChallengeVariables = {
+export type CreateChallengeVariables = {
   body: CreateChallengeBody
 }
 

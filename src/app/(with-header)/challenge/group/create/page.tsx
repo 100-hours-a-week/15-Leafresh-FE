@@ -7,11 +7,15 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
-import { CreateChallenge, ExampleImageType } from '@features/challenge/api/create-group-challenge'
+import {
+  CreateChallengeBody,
+  CreateChallengeResponse,
+  CreateChallengeVariables,
+  ExampleImageType,
+} from '@features/challenge/api/create-group-challenge'
 import DetailStep, {
   defaultDetailFormValues,
   detailSchema,
@@ -20,6 +24,8 @@ import MetaDataStep, {
   defaultMetaFormValues,
   metaSchema,
 } from '@features/challenge/components/challenge/group/create/MetadataStep'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
 import { formatDateToDateFormatString } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
@@ -41,17 +47,10 @@ const GroupChallengeCreatePage = () => {
   })
 
   /** 단체 챌린지 생성 */
-  const { mutate: CreateGroupChallengeMutate, isPending: isCreating } = useMutation({
-    mutationFn: CreateChallenge,
-    onSuccess: response => {
-      const challengeId: number = response.data.id
-      router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
-    },
-    onError: () => {
-      // TODO : 토스트 에러 처리
-      // openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
-    },
-  })
+  const { mutate: CreateChallengeMutate, isPending: isCreating } = useMutationStore<
+    CreateChallengeResponse,
+    CreateChallengeVariables
+  >(MUTATION_KEYS.CHALLENGE.GROUP.CREATE)
 
   const handleFinalSubmit = () => {
     const data = form.getValues()
@@ -86,7 +85,7 @@ const GroupChallengeCreatePage = () => {
       sequenceNumber: index + 1,
     }))
 
-    const body = {
+    const body: CreateChallengeBody = {
       title,
       description,
       category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
@@ -98,7 +97,19 @@ const GroupChallengeCreatePage = () => {
       verificationEndTime: endTime as TimeFormatString,
       exampleImages: exampleImages as ExampleImageType[],
     }
-    CreateGroupChallengeMutate({ body })
+    CreateChallengeMutate(
+      { body },
+      {
+        onSuccess: response => {
+          const challengeId: number = response.data.data.id
+          router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
+        },
+        onError: () => {
+          // TODO : 토스트 에러 처리
+          // openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
+        },
+      },
+    )
   }
 
   return (
