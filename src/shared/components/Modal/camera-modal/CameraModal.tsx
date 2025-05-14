@@ -26,13 +26,12 @@ const CameraModal = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
+  const TABS = !challengeData ? CAMERA_TABS : CHALLENGE_TABS
   const [tab, setTab] = useState<number>(0)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [description, setDescription] = useState<string>('')
   const [showGuide, setShowGuide] = useState<boolean>(false)
   const [scrollTop, setScrollTop] = useState<number>(0)
-
-  const TABS = !challengeData ? CAMERA_TABS : CHALLENGE_TABS
 
   useEffect(() => {
     if (!isOpen || !videoRef.current) return
@@ -68,6 +67,9 @@ const CameraModal = () => {
       startCamera()
     }
   }, [isOpen, previewUrl])
+
+  console.log('isOpen: ', isOpen)
+  console.log('scrollLock executed if', isOpen)
 
   useScrollLock(isOpen)
 

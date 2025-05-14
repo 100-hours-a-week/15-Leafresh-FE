@@ -11,7 +11,6 @@ import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
 const ImageZoomModal = () => {
@@ -59,9 +58,7 @@ const ImageZoomModal = () => {
         <CloseIcon size={20} onClick={close} />
       </Header>
 
-      <ResultBar result={result}>
-        <LucideIcon name={result === 'SUCCESS' ? 'Check' : 'X'} size={20} />
-      </ResultBar>
+      <ResultBar result={result}>{result === 'SUCCESS' ? '성공 인증샷' : '실패 인증샷'}</ResultBar>
 
       <Viewport ref={emblaRef}>
         <Container className={!isInitial ? 'animate' : ''}>
@@ -89,19 +86,23 @@ const Wrapper = styled.div`
   z-index: 300;
   display: flex;
   flex-direction: column;
-  background-color: #dedede;
+  background-color: black;
 `
 
 const Header = styled.div`
-  padding: 12px;
+  padding: 24px 0;
+
   font-size: 14px;
   font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
   color: #fff;
   position: relative;
+
+  span {
+    font-size: ${theme.fontSize.base};
+  }
 `
 
 const CloseIcon = styled(X)`
@@ -115,10 +116,13 @@ const CloseIcon = styled(X)`
 const ResultBar = styled.div<{ result: ChallengeVerificationResultType }>`
   background-color: ${({ result }) => (result === 'SUCCESS' ? '#2e7d32' : '#c62828')};
   color: #fff;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 0;
+
+  font-size: ${theme.fontSize.lg};
+  padding: 12px 0;
 `
 
 const Viewport = styled.div`

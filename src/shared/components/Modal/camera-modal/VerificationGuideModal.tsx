@@ -115,32 +115,44 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
   return (
     <AnimatePresence>
       {isOpen && (
-        <MotionWrapper
-          drag='y'
-          dragConstraints={{ top: 0 }}
-          onDragEnd={(_, info) => {
-            if (info.offset.y > 100) {
-              onClose()
-            }
-          }}
-          initial={{ y: '100%' }}
-          animate={{ y: 0 }}
-          exit={{ y: '100%' }}
-          transition={{ duration: 0.3 }}
-        >
-          <DragBar />
-          <GuideHeader>
-            인증 방법
-            <CloseButton onClick={onClose}>
-              <LucideIcon name='X' size={24} />
-            </CloseButton>
-          </GuideHeader>
-          <GuideContent>{contents}</GuideContent>
-        </MotionWrapper>
+        <Overlay>
+          <MotionWrapper
+            drag='y'
+            dragConstraints={{ top: 0 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.y > 100) {
+                onClose()
+              }
+            }}
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ duration: 0.3 }}
+          >
+            <DragBar />
+            <GuideHeader>
+              인증 방법
+              <CloseButton onClick={onClose}>
+                <LucideIcon name='X' size={24} />
+              </CloseButton>
+            </GuideHeader>
+            <GuideContent>{contents}</GuideContent>
+          </MotionWrapper>
+        </Overlay>
       )}
     </AnimatePresence>
   )
 }
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
+  z-index: 999;
+`
 
 const MotionWrapper = styled(motion.div)`
   position: absolute;
