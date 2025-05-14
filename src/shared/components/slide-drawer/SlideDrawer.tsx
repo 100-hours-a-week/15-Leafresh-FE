@@ -44,12 +44,11 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
   useEffect(() => {
     if (isOpen) {
       setScrollTop(window.scrollY)
-      console.log(window.scrollY)
     }
   }, [isOpen])
 
   useOutsideClick(drawerRef as React.RefObject<HTMLElement>, () => {
-    if (!isConfirmModalOpen) toggle()
+    if (isOpen) close()
   })
   useKeyClose('Escape', drawerRef as React.RefObject<HTMLElement>, toggle)
   useScrollLock(isOpen)
@@ -121,7 +120,7 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            transition={{ type: 'tween', duration: 0.3 }}
+            transition={{ type: 'tween', duration: 0.2 }}
             padding={padding}
           >
             <DrawerHeader>
@@ -171,7 +170,10 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
 export default SlideDrawer
 
 const Backdrop = styled.div`
-  position: fixed;
+  position: absolute;
+  top: 0;
+  right: 0;
+
   inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;

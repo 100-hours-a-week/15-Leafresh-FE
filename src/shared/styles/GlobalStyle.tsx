@@ -17,7 +17,7 @@ const GlobalStyle = () => {
           max-width: 100vw;
 
           color: ${theme.colors.lfBlack.base};
-          background-color: ${theme.colors.lfWhite.base};
+
           overflow-x: hidden;
         }
 
@@ -46,6 +46,8 @@ const GlobalStyle = () => {
           flex-direction: column;
           justify-content: flex-start;
           align-items: center;
+
+          background-image: linear-gradient(to bottom right, white, #e5e7eb); /* gray-200 */
         }
 
         ::-webkit-scrollbar {
