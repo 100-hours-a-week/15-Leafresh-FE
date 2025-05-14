@@ -2,45 +2,15 @@
 
 import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
-
-import type { AlarmType } from '@features/member/api/get-alarm'
 import { useInfiniteMemberAlarmList } from '@features/member/hooks/useInfiniteMemberAlarmList'
 import { theme } from '@shared/styles/theme'
+
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { ISOFormatString } from '@shared/types/date'
+import { readAllAlarms } from '@features/member/api/read-all-alarms'
 
 export const toISOFormatString = (date: Date): ISOFormatString => date.toISOString() as ISOFormatString
-export const dummyAlarms: AlarmType[] = [
-  {
-    id: 1,
-    title: 'adasdasdasdadasdasdasdadasdasdasdadasdasdasdadasdasdasdadasdasdasd',
-    content: 'asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas',
-    createdAt: toISOFormatString(new Date()),
-    isRead: false,
-    type: 'GROUP',
-    imageUrl: '/icon/category_zero_waste.png',
-    challengeId: 101,
-  },
-  {
-    id: 2,
-    title: '오늘 인증을 잊지 마세요!',
-    content: '하루에 한 번 인증샷을 남겨야 챌린지가 유지돼요!',
-    createdAt: toISOFormatString(new Date(Date.now() - 3600 * 1000)),
-    isRead: false,
-    type: 'PERSONAL',
-    imageUrl: '/icon/category_energy_saving.png',
-    challengeId: 102,
-  },
-  {
-    id: 3,
-    title: '챌린지를 완료했어요 🎉',
-    content: '열심히 한 당신, Leaf 200개 지급 완료!',
-    createdAt: toISOFormatString(new Date(Date.now() - 86400 * 1000)),
-    isRead: true,
-    type: 'GROUP',
-    imageUrl: '/icon/category_upcycle.png',
-    challengeId: 103,
-  },
-]
 
 export function formatRelativeTime(target: Date): string {
   const now = new Date()
@@ -64,10 +34,15 @@ export function formatRelativeTime(target: Date): string {
 
 const MemberAlarmList = () => {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
+  const { mutate: alarmAllRead } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
 
-  // const alarms = data?.pages.flatMap(page => page?.data?.notifications || []) ?? []
-  const alarms = dummyAlarms
+  const alarms = data?.pages.flatMap(page => page?.data?.items || []) ?? []
+  // const alarms = dummyAlarms
   const triggerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    readAllAlarms()
+  }, [])
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage || !triggerRef.current) return

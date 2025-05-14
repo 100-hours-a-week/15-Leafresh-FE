@@ -12,6 +12,7 @@ import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
+import { readAllAlarms } from '@features/member/api/read-all-alarms'
 
 const queryClient = getQueryClient()
 
@@ -83,7 +84,42 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
   mutationFn: PostGroupVerification,
   onSuccess(data, variables, context) {
-    // TODO: 무효화 로직
+    const { challengeId } = variables
+
+    //단체 챌린지 상세
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
+    })
+
+    //인증 규약
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.RULES(challengeId),
+    })
+
+    //인증 결과
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId),
+    })
+
+    //인증 내역 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
+    })
+
+    //챌린지 일별 인증 기록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
+    })
+
+    //참여한 단체 챌린지 목록 -> 성공률
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
+    })
+
+    //알림 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
+    })
   },
 })
 
@@ -133,12 +169,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
 
 // 알림 읽음
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
-  mutationFn: async () => {
-    // TODO: 알림 읽음 API 연결
-    return {} as ApiResponse<unknown>
-  },
+  mutationFn: readAllAlarms,
   onSuccess() {
-    // TODO: 알림 목록 무효화
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST })
   },
 })
 
