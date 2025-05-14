@@ -7,7 +7,7 @@ import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-ch
 import { Logout } from '@features/member/api/logout'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
-import { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
+import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
 
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
@@ -145,5 +145,5 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
  */
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
-  return useMutation<ApiResponse<TData>, Error, TVariables, unknown>({ mutationKey })
+  return useMutation<ApiResponse<TData>, ErrorResponse, TVariables, unknown>({ mutationKey })
 }
