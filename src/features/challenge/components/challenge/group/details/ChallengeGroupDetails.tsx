@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import ChallengeVerifyExamples, {
@@ -18,6 +19,7 @@ import DatePicker from '@shared/components/datepicker/DatePicker'
 import Loading from '@shared/components/loading'
 import { URL } from '@shared/constants/route/route'
 import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
@@ -46,6 +48,11 @@ interface ChallengeGroupDetailsProps {
 }
 
 const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
+  const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const { openConfirmModal } = useConfirmModalStore()
+
+  const isLoggedIn: boolean = !!userInfo
+
   const router = useRouter()
   const openToast = useToast()
   /** 단체 챌린지 상세 가져오기 */
@@ -105,6 +112,15 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     /** 예외0 : disabled 무시하고 제출 */
     if (isButtonDisabled) {
       openToast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
+      return
+    }
+    /** 로그인하지 않음 */
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
       return
     }
     const now = new Date()
@@ -196,7 +212,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
         <Section>
           <StyledChallengeVerifyExamples
             title='인증샷 예시'
-            description=''
+            description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
             examples={verificationExampleImages}
             onChange={() => {}}
