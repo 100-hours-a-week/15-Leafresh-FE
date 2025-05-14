@@ -10,8 +10,10 @@ import styled from '@emotion/styled'
 import { useMutation } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { Logout } from '@features/member/api/logout'
+import { LogoutResponseType, LogoutVariables } from '@features/member/api/logout'
 import { Unregister } from '@features/member/api/unregister'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/Modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
@@ -46,18 +48,9 @@ const Header = ({ height, padding }: HeaderProps) => {
   useScrollLock(isOpen)
 
   /** 로그아웃 */
-  const { mutate: LogoutMutate, isPending: isLoggingOut } = useMutation({
-    mutationFn: Logout,
-    onSuccess: response => {
-      toggle()
-      clearUserInfo()
-      openToast(ToastType.Success, '로그아웃 성공')
-      router.push(URL.MAIN.INDEX.value)
-    },
-    onError: () => {
-      openToast(ToastType.Error, '로그아웃 실패.\n다시 시도해주세요')
-    },
-  })
+  const { mutate: LogoutMutate, isPending: isLoggingOut } = useMutationStore<LogoutResponseType, LogoutVariables>(
+    MUTATION_KEYS.MEMBER.AUTH.LOGOUT,
+  )
 
   /** 회원탈퇴 */
   const { mutate: UnregisterMutate, isPending: isUnregistering } = useMutation({
@@ -86,7 +79,20 @@ const Header = ({ height, padding }: HeaderProps) => {
       return
     }
     const provider = userInfo.provider
-    LogoutMutate({ provider })
+    LogoutMutate(
+      { provider },
+      {
+        onSuccess: response => {
+          toggle()
+          clearUserInfo()
+          openToast(ToastType.Success, '로그아웃 성공')
+          router.push(URL.MAIN.INDEX.value)
+        },
+        onError: () => {
+          openToast(ToastType.Error, '로그아웃 실패.\n다시 시도해주세요')
+        },
+      },
+    )
   }
 
   /** 회원탈퇴 로직 */
