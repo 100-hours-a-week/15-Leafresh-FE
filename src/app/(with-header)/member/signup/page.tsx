@@ -16,6 +16,7 @@ import { SignupFormType, signupSchema } from '@features/member/signup/schema'
 import ErrorText from '@shared/components/errortext'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/Toast/type'
@@ -46,6 +47,7 @@ const SignupPage = () => {
     queryKey: QUERY_KEYS.MEMBER.DUPLICATE_NICKNAME,
     queryFn: () => NicknameDuplicate({ input: nickname }),
     enabled: false,
+    ...QUERY_OPTIONS.MEMBER.DUPLICATE_NICKNAME,
   })
 
   const { mutate: SignUpMutate } = useMutationStore<SignUpResponseType, SignUpVariables>(MUTATION_KEYS.MEMBER.SIGNUP)

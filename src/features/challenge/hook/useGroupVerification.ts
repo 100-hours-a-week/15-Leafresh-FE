@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import {
@@ -37,6 +38,7 @@ export const useGroupVerificationResult = (challengeId: number) => {
     },
     refetchOnWindowFocus: false,
     retry: false,
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION_RESULT,
   })
 
   useEffect(() => {

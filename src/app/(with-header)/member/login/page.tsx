@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import { LowercaseOAuthType } from '@entities/member/type'
 import { Login } from '@features/member/api/oauth-login'
 import Loading from '@shared/components/loading'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
@@ -25,6 +26,7 @@ const LoginPage = () => {
     queryKey: QUERY_KEYS.MEMBER.AUTH.LOGIN(providerRef.current),
     queryFn: () => Login(providerRef.current),
     enabled: false,
+    ...QUERY_OPTIONS.MEMBER.AUTH.LOGIN,
   })
 
   const handleLogin = async (provider: LowercaseOAuthType) => {

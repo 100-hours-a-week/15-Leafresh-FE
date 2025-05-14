@@ -10,6 +10,7 @@ import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { LowercaseOAuthType } from '@entities/member/type'
 import { LoginCallback } from '@features/member/api/oauth-callback'
 import Loading from '@shared/components/loading'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/Toast/type'
@@ -28,6 +29,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
     queryKey: QUERY_KEYS.MEMBER.AUTH.CALLBACK(provider),
     queryFn: () => LoginCallback(provider, { code: code! }),
     enabled: !!code,
+    ...QUERY_OPTIONS.MEMBER.AUTH.CALLBACK,
   })
 
   useEffect(() => {

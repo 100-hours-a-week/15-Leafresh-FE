@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import {
@@ -14,5 +15,5 @@ export const useGroupVerifications = (challengeId: number) =>
   useQuery<GetGroupVerificationsResponse, Error>({
     queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
     queryFn: () => getGroupVerifications(challengeId),
-    staleTime: 1000 * 60 * 5,
+    ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS,
   })

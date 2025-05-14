@@ -21,6 +21,7 @@ import DatePicker from '@shared/components/datepicker/DatePicker'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/Toast/type'
@@ -57,6 +58,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
     queryFn: () => getGroupChallengeDetails(challengeId),
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.DETAILS,
   })
 
   /** 단체 챌린지 참여 이력 생성 */

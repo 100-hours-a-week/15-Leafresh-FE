@@ -24,6 +24,7 @@ import BackButton from '@shared/components/Button/BackButton'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { useCameraModalStore } from '@shared/context/Modal/CameraModalStore'
@@ -103,6 +104,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId),
     queryFn: () => getPersonalChallengeDetails(challengeId),
+    ...QUERY_OPTIONS.CHALLENGE.PERSONAL.DETAILS,
   })
 
   /** 개인 챌린지 인증 생성 (제출) */

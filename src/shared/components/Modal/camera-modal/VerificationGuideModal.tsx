@@ -16,6 +16,7 @@ import {
 } from '@features/challenge/api/get-personal-challenge-rules'
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ChallengeDataType } from '@shared/context/Modal/CameraModalStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
@@ -32,19 +33,24 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
   type ChallengeRulesListResponse = GroupChallengeRulesListResponse | PersonalChallengeRulesListResponse
   let queryKey
   let queryFn
+  let queryDefaults
   switch (type) {
     case 'GROUP':
       queryKey = QUERY_KEYS.CHALLENGE.GROUP.RULES(challengeId)
       queryFn = () => getGroupChallengeRulesList(challengeId)
+      queryDefaults = QUERY_OPTIONS.CHALLENGE.GROUP.RULES
       break
     case 'PERSONAL':
       queryKey = QUERY_KEYS.CHALLENGE.PERSONAL.RULES(challengeId)
       queryFn = () => getPersonalChallengeRulesList(challengeId)
+      queryDefaults = QUERY_OPTIONS.CHALLENGE.PERSONAL.RULES
       break
   }
+
   const { data, isLoading } = useQuery<ChallengeRulesListResponse>({
     queryKey: queryKey,
     queryFn: queryFn,
+    ...queryDefaults,
   })
 
   let contents
