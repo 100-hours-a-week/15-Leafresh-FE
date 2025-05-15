@@ -30,7 +30,6 @@ const ChallengeListPage = () => {
 
   // URL에서 category, search 파라미터 읽기
   const category = searchParams.get('category') || ''
-  console.log(category)
 
   const initialSearch = searchParams.get('search') || ''
 
