@@ -124,23 +124,11 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
     onClose()
   }
 
-  // 메시지 전송 처리 함수
-  const handleSend = (text: string) => {
-    console.log('메시지 전송:', text, '선택된 정보:', selections)
-    // 여기에 API 호출 로직 추가
-  }
-
   return (
     <Window open={open} animationComplete={animationComplete}>
       <Header close={handleReset} />
       <Body>
-        <ChatFrame
-          key={resetCount}
-          step={currentStep}
-          onSelect={handleSelect}
-          onRetry={handleRetry}
-          onSend={handleSend}
-        />
+        <ChatFrame key={resetCount} step={currentStep} onSelect={handleSelect} onRetry={handleRetry} />
       </Body>
     </Window>
   )

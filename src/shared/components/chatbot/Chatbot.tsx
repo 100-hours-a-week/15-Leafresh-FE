@@ -11,7 +11,8 @@ import { theme } from '@shared/styles/theme'
 import ChatWindow from './ChatWindow'
 
 const Chatbot = () => {
-  const { value: isOpen, toggle: toggleOpen, setValue: setOpen } = useToggle(false)
+  const { value: isOpen, setValue: setOpen } = useToggle(false)
+  const [resetCount, setResetCount] = useState(0)
 
   useEffect(() => {
     const updatePosition = () => {
@@ -33,18 +34,34 @@ const Chatbot = () => {
     return () => window.removeEventListener('resize', updatePosition)
   }, [])
 
+  // 닫을 때 초기화까지 포함
+  const handleCloseAndReset = () => {
+    setResetCount(prev => prev + 1) // ChatWindow 내부 ChatFrame을 초기화시키는 키
+    sessionStorage.removeItem('chatSelections') // 혹시 몰라 세션도 지움
+    setOpen(false)
+  }
+
   useScrollLock(isOpen)
   return (
     <>
       {!isOpen && (
-        <Launcher onClick={toggleOpen}>
-          <Image src='/image/chatbot.png' alt='Leafresh 챗봇' width={48} height={48} />
+        <Launcher onClick={() => setOpen(true)}>
+          <Image
+            src='/image/chatbot.png'
+            alt='Leafresh 챗봇'
+            width={48}
+            height={48}
+            style={{
+              backgroundColor: `${theme.colors.lfWhite.base}`,
+              borderRadius: '9999px',
+            }}
+          />
 
           <Name>챗봇 수피</Name>
         </Launcher>
       )}
-      {isOpen && <Backdrop onClick={toggleOpen} />} {/* ✅ 클릭 시 닫기 */}
-      <ChatWindow open={isOpen} onClose={() => setOpen(false)} />
+      {isOpen && <Backdrop onClick={handleCloseAndReset} />}
+      <ChatWindow key={resetCount} open={isOpen} onClose={() => setOpen(false)} />
     </>
   )
 }
@@ -65,12 +82,10 @@ const Launcher = styled.button`
   z-index: 1000;
   transition: transform 0.3s ease;
 
-  /* 호버 효과 */
   &:hover {
     transform: scale(1.1);
   }
 
-  /* 클릭 효과 */
   &:active {
     transform: scale(0.95);
   }
@@ -81,7 +96,7 @@ const Name = styled.p`
 
 const Backdrop = styled.div`
   position: fixed;
-  inset: 0; // top: 0; bottom: 0; left: 0; right: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.4); // 반투명
   z-index: 999; // ChatWindow보다 아래, Launcher보다 위
 `

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
@@ -11,7 +11,7 @@ export interface ChatBubbleProps {
   role: 'bot' | 'user'
   loading?: boolean
   children: ReactNode
-  subDescription?: string // Add subDescription prop
+  subDescription?: string
   buttonText?: string
   onClick?: () => void
 }
@@ -26,7 +26,16 @@ const ChatBubble = ({ role, loading, children, subDescription, buttonText, onCli
     <BubbleWrapper>
       <NameText role={role}>{role === 'bot' && '수피'}</NameText>
       <Bubble role={role}>
-        {loading ? '잠시만 기다려주세요…' : children}
+        {loading
+          ? '잠시만 기다려주세요…'
+          : typeof children === 'string'
+            ? children.split('\n').map((line, i) => (
+                <React.Fragment key={i}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))
+            : children}
         {subDescription && <SubDescription role={role}>{subDescription}</SubDescription>}
         {buttonText && onClick && <RetryButton onClick={onClick}>{buttonText}</RetryButton>}
       </Bubble>
@@ -56,7 +65,7 @@ const BubbleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-width: 260px; /* Slightly wider to accommodate the subDescription */
+  max-width: 260px;
 `
 
 const NameText = styled.p<{ role: 'bot' | 'user' }>`
@@ -82,7 +91,6 @@ const Bubble = styled.div<{ role: 'bot' | 'user' }>`
   box-shadow: ${theme.shadow.lfPrime};
 `
 
-// New styled component for the subDescription
 const SubDescription = styled.div<{ role: 'bot' | 'user' }>`
   padding: 10px 0;
   font-size: 8px;

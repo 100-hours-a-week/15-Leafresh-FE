@@ -17,7 +17,6 @@ export interface ChatFrameProps {
   step: FrameStep
   onSelect: (value: string, step: FrameStep) => void
   onRetry: () => void
-  onSend: (text: string) => void
 }
 
 // chatSelections 타입 정의
@@ -27,13 +26,13 @@ interface ChatSelections {
   category?: string
 }
 
-export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrameProps) {
+export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [inputText, setInputText] = useState('')
   const [chatHistory, setChatHistory] = useState<
     Array<{
       type: 'message' | 'selection' | 'horizontal-cards'
       role?: 'bot' | 'user'
-      text?: string
+      text?: React.ReactNode
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       selectionProps?: any
       subDescription?: string
@@ -207,13 +206,27 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
       const { recommend, challenges } = response.data
 
       // 챌린지 목록 포맷팅
-      let formattedChallenges = ''
-      challenges.forEach((challenge, index) => {
-        formattedChallenges += `${index + 1}. ${challenge.title}\n\u00a0\u00a0${challenge.description}\n`
-      })
+      // const formattedChallenges = challenges.flatMap((challenge, index) => [
+      //   `${index + 1}. ${challenge.title}`,
+      //   <br key={`${index}-title`} />,
+      //   `\u00a0\u00a0${challenge.description}`,
+      //   <br key={`${index}-desc`} />,
+      //   <br key={`${index}-spacer`} />,
+      // ])
 
       // 응답 메시지 구성
-      const responseMessage = `${recommend}\n\n${formattedChallenges}`
+      const responseMessage = [
+        recommend,
+        <br key='r1' />,
+        <br key='r2' />,
+        ...challenges.flatMap((challenge, index) => [
+          `${index + 1}. ${challenge.title}`,
+          <br key={`title-${index}`} />,
+          `\u00a0\u00a0${challenge.description}`,
+          <br key={`desc-${index}`} />,
+          <br key={`gap-${index}`} />,
+        ]),
+      ]
 
       // 카테고리 재선택 버튼 추가
       addChatItem(
@@ -275,7 +288,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
   const addChatItem = (
     type: 'message' | 'selection' | 'horizontal-cards',
     role?: 'bot' | 'user',
-    text?: string,
+    text?: React.ReactNode,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectionProps?: any,
     subDescription?: string, // Add this for secondary text
@@ -361,8 +374,6 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
     }
 
     setIsSending(false)
-    // 상위 콜백 호출
-    onSend(text)
     setInputText('')
   }
 
