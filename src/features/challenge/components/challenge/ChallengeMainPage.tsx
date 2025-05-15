@@ -32,7 +32,7 @@ interface ChallengeMainPageProps {
 const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
   {
     category: 'ZERO_WASTE',
-    label: '제로웨이스트',
+    label: '제로 웨이스트',
     imageUrl: '/icon/category_zero_waste.png',
   },
   {
