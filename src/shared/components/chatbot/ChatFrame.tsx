@@ -17,7 +17,6 @@ export interface ChatFrameProps {
   step: FrameStep
   onSelect: (value: string, step: FrameStep) => void
   onRetry: () => void
-  onSend: (text: string) => void
 }
 
 // chatSelections 타입 정의
@@ -27,13 +26,13 @@ interface ChatSelections {
   category?: string
 }
 
-export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrameProps) {
+export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [inputText, setInputText] = useState('')
   const [chatHistory, setChatHistory] = useState<
     Array<{
       type: 'message' | 'selection' | 'horizontal-cards'
       role?: 'bot' | 'user'
-      text?: string
+      text?: React.ReactNode
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       selectionProps?: any
       subDescription?: string
@@ -50,6 +49,11 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
   // 선택 내용 임시 저장 (사용자 메시지로 표시되기 전까지)
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [selectedWorkType, setSelectedWorkType] = useState<string | null>(null)
+
+  //카테고리 버튼 클릭 여부 - 연속 클릭 방지
+  const [isCategorySending, setIsCategorySending] = useState(false)
+  //채팅 전송 여부 - 연속 전송 방지
+  const [isSending, setIsSending] = useState(false)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -101,7 +105,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
         {
           type: 'message',
           role: 'bot',
-          text: '안녕하세요! 저는 Leafresh의 챗봇 새순입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도도를 위해 거주 지역과 직장 형태를 선택해주세요!',
+          text: '안녕하세요! 저는 Leafresh의 챗봇 새순입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
         },
         {
           type: 'horizontal-cards',
@@ -126,7 +130,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
         // 챌린지 카테고리 선택지 추가
         addChatItem('selection', undefined, undefined, {
           title: '챌린지 선택',
-          subtitle: '참여하고 싶은 챌린지를 선택해주세요.',
+          subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
           imageUrl: '/image/chatbotcategory.png',
           options: [
             { label: '제로웨이스트', value: '제로웨이스트' },
@@ -176,6 +180,8 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
 
   // 챌린지 선택 처리
   const handleChallengeSelect = async (value: string) => {
+    if (isCategorySending) return // 중복 방지
+    setIsCategorySending(true)
     // 사용자 선택 메시지 추가
     const displayValue = getDisplayLabel(value)
     addChatItem('message', 'user', displayValue)
@@ -200,13 +206,27 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
       const { recommend, challenges } = response.data
 
       // 챌린지 목록 포맷팅
-      let formattedChallenges = ''
-      challenges.forEach((challenge, index) => {
-        formattedChallenges += `${index + 1}. ${challenge.title}\n\u00a0\u00a0${challenge.description}\n`
-      })
+      // const formattedChallenges = challenges.flatMap((challenge, index) => [
+      //   `${index + 1}. ${challenge.title}`,
+      //   <br key={`${index}-title`} />,
+      //   `\u00a0\u00a0${challenge.description}`,
+      //   <br key={`${index}-desc`} />,
+      //   <br key={`${index}-spacer`} />,
+      // ])
 
       // 응답 메시지 구성
-      const responseMessage = `${recommend}\n\n${formattedChallenges}`
+      const responseMessage = [
+        recommend,
+        <br key='r1' />,
+        <br key='r2' />,
+        ...challenges.flatMap((challenge, index) => [
+          `${index + 1}. ${challenge.title}`,
+          <br key={`title-${index}`} />,
+          `\u00a0\u00a0${challenge.description}`,
+          <br key={`desc-${index}`} />,
+          <br key={`gap-${index}`} />,
+        ]),
+      ]
 
       // 카테고리 재선택 버튼 추가
       addChatItem(
@@ -238,12 +258,13 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
 
   // 재선택 처리
   const handleRetry = () => {
+    setIsCategorySending(false)
     addChatItem('message', 'bot', '참여하고 싶은 챌린지 유형을 선택해주세요!')
 
     // 챌린지 카테고리 선택지 다시 추가
     addChatItem('selection', undefined, undefined, {
       title: '챌린지 선택',
-      subtitle: '참여하고 싶은 챌린지를 선택해주세요.',
+      subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
       imageUrl: '/image/chatbotcategory.png',
       options: [
         { label: '제로웨이스트', value: '제로웨이스트' },
@@ -267,7 +288,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
   const addChatItem = (
     type: 'message' | 'selection' | 'horizontal-cards',
     role?: 'bot' | 'user',
-    text?: string,
+    text?: React.ReactNode,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectionProps?: any,
     subDescription?: string, // Add this for secondary text
@@ -279,9 +300,10 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
 
   // 사용자 메시지 전송 처리
   const handleSendMessage = async (text: string) => {
-    if (!text.trim()) return
+    if (!text.trim() || isSending) return
 
     // 사용자 메시지 추가
+    setIsSending(true) // 전송 시작
     addChatItem('message', 'user', text)
     setLoading(true)
 
@@ -351,8 +373,7 @@ export default function ChatFrame({ step, onSelect, onRetry, onSend }: ChatFrame
       )
     }
 
-    // 상위 콜백 호출
-    onSend(text)
+    setIsSending(false)
     setInputText('')
   }
 

@@ -62,7 +62,7 @@ export const defaultMetaFormValues: MetaFormValues = {
   startDate: new Date(),
   endDate: new Date(),
   startTime: '00:00',
-  endTime: '23:59',
+  endTime: '23:50',
   maxParticipant: 0,
   examples: [
     { url: null, description: '', type: 'SUCCESS' },
