@@ -6,12 +6,13 @@ import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import styled from '@emotion/styled'
 
-import { FullFormValues } from '@app/(with-header)/challenge/group/create/page'
 import ErrorText from '@shared/components/errortext'
 import ImageInput from '@shared/components/image-input'
 import Loading from '@shared/components/loading'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
+
+import { FullFormValues } from './GroupChallengeCreatePage'
 
 export const detailSchema = z.object({
   description: z.string().min(1, '챌린지 설명을 입력해주세요'),

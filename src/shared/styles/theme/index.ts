@@ -84,6 +84,8 @@ const borderRadiusThemes = {
 
 const breakPointThemes = {
   mobile: '390px',
+  tablet: '768px',
+  desktop: '1024px',
 }
 
 export const theme = {
