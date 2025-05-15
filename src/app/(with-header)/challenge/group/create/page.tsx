@@ -106,7 +106,7 @@ const GroupChallengeCreatePage = () => {
     }))
 
     CreateGroupChallengeMutate({
-      title,
+      // title,
       description,
       category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
       maxParticipantCount: maxParticipant,
