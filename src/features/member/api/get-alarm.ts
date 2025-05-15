@@ -20,7 +20,7 @@ export type AlarmType = {
 }
 
 export type MemberAlarmList = {
-  items: AlarmType[]
+  notifications: AlarmType[]
   hasNext: boolean
   cursorInfo: {
     lastCursorId: number
