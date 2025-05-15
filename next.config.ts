@@ -14,8 +14,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'http',
-        hostname: 'img1.kakaocdn.net', // 정확히 이 도메인이어야 함
-        pathname: '/**', // 해당 경로 하위 모든 이미지 허용
+        hostname: 'img1.kakaocdn.net',
+      },
+      {
+        protocol: 'http',
+        hostname: 't1.kakaocdn.net',
       },
     ],
   },

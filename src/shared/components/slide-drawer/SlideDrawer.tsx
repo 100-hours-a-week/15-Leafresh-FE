@@ -130,9 +130,9 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
 
             {isLoggedIn ? (
               <UserInfo>
+                {/* <Emoji>🌱</Emoji> */}
                 <ProfileImage src={userInfo?.imageUrl as string} alt='유저 이미지' width={32} height={32} />
                 <Nickname>{userInfo?.nickname}</Nickname>
-                <Emoji>🌱</Emoji>ㅡ
               </UserInfo>
             ) : (
               <AuthRouteButton onClick={() => handleRoute(URL.MEMBER.LOGIN.value)}>로그인 / 회원가입</AuthRouteButton>
@@ -262,7 +262,7 @@ const MenuItemWrapper = styled.div`
 const MenuItem = styled.button<{ disabled?: boolean }>`
   all: unset;
   padding: 17px 0;
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
   color: ${({ disabled }) => (disabled ? theme.colors.lfGray.base : theme.colors.lfBlack.base)};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -275,10 +275,9 @@ const MenuItem = styled.button<{ disabled?: boolean }>`
   text-align: center;
 `
 
-const DangerItem = styled(MenuItem)`
+const DangerItem = styled(MenuItem)<{ disabled?: boolean }>`
   color: ${({ disabled }) => (disabled ? theme.colors.lfGray.base : theme.colors.lfRed.base)};
 
-  cursor: pointer;
   &:hover {
     color: ${({ disabled }) => (disabled ? theme.colors.lfGray.base : theme.colors.lfRed.hover)};
   }

@@ -34,40 +34,44 @@ const CameraModal = () => {
   const [scrollTop, setScrollTop] = useState<number>(0)
 
   useEffect(() => {
-    if (!isOpen || !videoRef.current) return
+    const startCamera = async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+        return
+      }
 
-    setScrollTop(window.scrollY)
-    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
       if (videoRef.current) {
         videoRef.current.srcObject = stream
       }
-    })
+    }
 
-    return () => {
+    const stopCamera = () => {
       const stream = videoRef.current?.srcObject as MediaStream | undefined
       stream?.getTracks().forEach(track => track.stop())
+      if (videoRef.current) {
+        videoRef.current.srcObject = null
+      }
     }
-  }, [isOpen])
+
+    if (isOpen) {
+      setScrollTop(window.scrollY)
+      if (!previewUrl) {
+        startCamera()
+      }
+    } else {
+      stopCamera()
+    }
+
+    return () => {
+      stopCamera()
+    }
+  }, [isOpen, previewUrl])
 
   useEffect(() => {
     if (tab === 1 && challengeData) setShowGuide(true)
     else setShowGuide(false)
   }, [tab])
-
-  /** 카메라 재시작 */
-  useEffect(() => {
-    const startCamera = async () => {
-      if (videoRef.current) {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-        videoRef.current.srcObject = stream
-      }
-    }
-
-    if (isOpen && !previewUrl) {
-      startCamera()
-    }
-  }, [isOpen, previewUrl])
-
   useScrollLock(isOpen)
 
   const capture = () => {

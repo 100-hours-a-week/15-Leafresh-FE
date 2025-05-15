@@ -7,7 +7,8 @@ import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
  * false: 사용 가능 / true 사용 불가능
  */
 type SignUpResponseType = ApiResponse<{
-  isDuplicated: boolean
+  nickname: string
+  imageUrl: string
 }>
 
 export type SignUpBody = {

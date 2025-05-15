@@ -22,7 +22,7 @@ import { theme } from '@shared/styles/theme'
 
 const SignupPage = () => {
   const router = useRouter()
-  const { userInfo } = useOAuthUserStore()
+  const { userInfo, setUserInfo } = useOAuthUserStore()
   const openToast = useToast()
 
   const [isDuplicateChecked, setIsDuplicateChecked] = useState<boolean>(false)
@@ -50,15 +50,16 @@ const SignupPage = () => {
   const { mutate: SignUpMutate } = useMutation({
     mutationFn: SignUp,
     onSuccess: response => {
-      if (response.data.isDuplicated) {
-        setError('nickname', {
-          type: 'manual',
-          message: '이미 존재하는 유저입니다.',
-        })
-      } else {
-        openToast(ToastType.Success, '회원가입이 완료되었습니다.')
-        router.replace(URL.MAIN.INDEX.value)
-      }
+      const { imageUrl, nickname } = response.data // 유저 정보
+
+      setUserInfo({
+        isMember: true, // 회원가입 완료 상태로 전환
+        email: userInfo?.email || '',
+        provider: userInfo?.provider || 'kakao',
+        imageUrl,
+        nickname,
+      })
+      router.replace(URL.MAIN.INDEX.value) // 회원가입 후 메인으로 이동
     },
     onError: () => {
       openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
@@ -66,6 +67,7 @@ const SignupPage = () => {
   })
 
   useEffect(() => {
+    /** 이미 회원가입한 유저일 경우 */
     if (userInfo?.isMember) {
       // if (!userInfo || userInfo?.isMember) {
       router.replace(URL.MAIN.INDEX.value)

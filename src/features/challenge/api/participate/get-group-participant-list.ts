@@ -17,7 +17,7 @@ export type VerificationType = {
 }
 
 export type GroupChallengeParticipateList = {
-  verifications: VerificationType[]
+  items: VerificationType[]
   hasNext: boolean
   cursorInfo: {
     lastCursorId: number
