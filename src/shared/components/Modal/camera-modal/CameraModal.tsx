@@ -18,6 +18,7 @@ import VerificationGuideModal from './VerificationGuideModal'
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
 
+type FacingMode = 'user' | 'environment'
 const CameraModal = () => {
   const openToast = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
@@ -33,6 +34,8 @@ const CameraModal = () => {
   const [showGuide, setShowGuide] = useState<boolean>(false)
   const [scrollTop, setScrollTop] = useState<number>(0)
 
+  const [facingMode, setFacingMode] = useState<FacingMode>('user')
+
   useEffect(() => {
     const startCamera = async () => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -40,9 +43,26 @@ const CameraModal = () => {
         return
       }
 
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream
+      try {
+        // 👉 후면 카메라 요청 시 실제 존재하는지 확인
+        if (facingMode === 'environment') {
+          const devices = await navigator.mediaDevices.enumerateDevices()
+          const hasBackCamera = devices.some(
+            device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'),
+          )
+
+          if (!hasBackCamera) {
+            openToast(ToastType.Error, '해당 기기에서는 후면 카메라를 지원하지 않습니다.')
+            setFacingMode('user')
+            return
+          }
+        }
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } })
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream
+        }
+      } catch (error) {
+        openToast(ToastType.Error, '카메라 접근이 거부되었습니다.')
       }
     }
 
@@ -66,7 +86,7 @@ const CameraModal = () => {
     return () => {
       stopCamera()
     }
-  }, [isOpen, previewUrl])
+  }, [isOpen, previewUrl, facingMode])
 
   useEffect(() => {
     if (tab === 1 && challengeData) setShowGuide(true)
@@ -141,10 +161,18 @@ const CameraModal = () => {
   let content
   if (!previewUrl || (previewUrl && !hasDescription)) {
     content = (
-      <ShootButtonWrapper onClick={capture}>
-        <LucideIcon name='Camera' size={50} />
-        <ShootText>촬영하기</ShootText>
-      </ShootButtonWrapper>
+      <ShootWrapper type='button'>
+        <ShootButtonWrapper onClick={capture}>
+          <LucideIcon name='Camera' size={50} />
+          <ShootText>촬영하기</ShootText>
+        </ShootButtonWrapper>
+        <CovertCameraButton
+          name='SwitchCamera'
+          size={40}
+          strokeWidth={2}
+          onClick={() => setFacingMode(prev => (prev === 'user' ? 'environment' : 'user'))}
+        />
+      </ShootWrapper>
     )
   } else if (hasDescription) {
     let label
@@ -284,12 +312,14 @@ const ContentWrapper = styled.div`
 
   background-color: ${theme.colors.lfInputBackground.base};
 `
-const ShootButtonWrapper = styled.button`
+const ShootWrapper = styled.button`
   width: 100%;
   height: 100%;
   border: none;
   font-size: 24px;
   cursor: pointer;
+
+  /* position: relative; */
 
   background-color: ${theme.colors.lfInputBackground.base};
 `
@@ -361,4 +391,15 @@ const CloseButton = styled(LucideIcon)`
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
+`
+
+const ShootButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
+const CovertCameraButton = styled(LucideIcon)`
+  position: absolute;
+  right: 25px;
 `
