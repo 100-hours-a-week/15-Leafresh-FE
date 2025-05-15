@@ -2,45 +2,14 @@
 
 import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
-
-import type { AlarmType } from '@features/member/api/get-alarm'
 import { useInfiniteMemberAlarmList } from '@features/member/hooks/useInfiniteMemberAlarmList'
 import { theme } from '@shared/styles/theme'
+
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { ISOFormatString } from '@shared/types/date'
 
 export const toISOFormatString = (date: Date): ISOFormatString => date.toISOString() as ISOFormatString
-export const dummyAlarms: AlarmType[] = [
-  {
-    id: 1,
-    title: 'adasdasdasdadasdasdasdadasdasdasdadasdasdasdadasdasdasdadasdasdasd',
-    content: 'asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas',
-    createdAt: toISOFormatString(new Date()),
-    isRead: false,
-    type: 'GROUP',
-    imageUrl: '/icon/category_zero_waste.png',
-    challengeId: 101,
-  },
-  {
-    id: 2,
-    title: '오늘 인증을 잊지 마세요!',
-    content: '하루에 한 번 인증샷을 남겨야 챌린지가 유지돼요!',
-    createdAt: toISOFormatString(new Date(Date.now() - 3600 * 1000)),
-    isRead: false,
-    type: 'PERSONAL',
-    imageUrl: '/icon/category_energy_saving.png',
-    challengeId: 102,
-  },
-  {
-    id: 3,
-    title: '챌린지를 완료했어요 🎉',
-    content: '열심히 한 당신, Leaf 200개 지급 완료!',
-    createdAt: toISOFormatString(new Date(Date.now() - 86400 * 1000)),
-    isRead: true,
-    type: 'GROUP',
-    imageUrl: '/icon/category_upcycle.png',
-    challengeId: 103,
-  },
-]
 
 export function formatRelativeTime(target: Date): string {
   const now = new Date()
@@ -63,11 +32,15 @@ export function formatRelativeTime(target: Date): string {
 }
 
 const MemberAlarmList = () => {
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
+  const { mutate: alarmAllRead } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
 
-  // const alarms = data?.pages.flatMap(page => page?.data?.notifications || []) ?? []
-  const alarms = dummyAlarms
+  const alarms = data?.pages.flatMap(page => page?.data?.notifications || []) ?? []
   const triggerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    alarmAllRead()
+  }, [])
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage || !triggerRef.current) return
@@ -87,7 +60,7 @@ const MemberAlarmList = () => {
     <Wrapper>
       <Title>알림</Title>
       <AlarmList>
-        {alarms.length !== 0 ? (
+        {isLoading ? null : alarms.length !== 0 ? (
           alarms.map(alarm => (
             <AlarmCard key={alarm.id}>
               <AlarmImage src={alarm.imageUrl} alt='알림 이미지' />
@@ -130,30 +103,37 @@ const AlarmList = styled.div`
 const AlarmCard = styled.div`
   display: flex;
   gap: 12px;
-  background: ${theme.colors.lfInputBackground.base};
+  background: ${theme.colors.lfWhite.base};
+  border: solid 1px ${theme.colors.lfGreenBorder.base};
   padding: 16px;
   border-radius: ${theme.radius.base};
   box-shadow: ${theme.shadow.lfInput};
 `
 
 const AlarmImage = styled.img`
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   object-fit: cover;
-  border-radius: ${theme.radius.base};
+  border: solid 1px ${theme.colors.lfGreenBorder.base};
+  border-radius: ${theme.radius.full};
 `
 
 const Content = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   gap: 4px;
 `
 
 const AlarmTitle = styled.div`
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.semiBold};
-  white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 한 줄 말줄임 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   word-break: break-word;
 `
 
@@ -161,7 +141,11 @@ const AlarmDesc = styled.div`
   font-size: ${theme.fontSize.sm};
   margin-top: 8px;
   color: ${theme.colors.lfDarkGray.base};
-  white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 두 줄 말줄임 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   word-break: break-word;
 `
 

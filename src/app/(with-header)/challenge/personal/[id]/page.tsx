@@ -4,8 +4,9 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getPersonalChallengeDetails } from '@features/challenge/api/get-personal-challenge-details'
 import ChallengePersonalDetails from '@features/challenge/components/challenge/personal/details/ChallengePersonalDetails'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 
 interface PersonalChallengeDetailsProps {
   params: Promise<{ id: string }>
@@ -23,6 +24,7 @@ const PersonalChallengeDetails = async ({ params }: PersonalChallengeDetailsProp
     await queryClient.prefetchQuery({
       queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(idNumber),
       queryFn: () => getPersonalChallengeDetails(idNumber),
+      ...QUERY_OPTIONS.CHALLENGE.PERSONAL.DETAILS,
     })
 
     const dehydratedState = dehydrate(queryClient)

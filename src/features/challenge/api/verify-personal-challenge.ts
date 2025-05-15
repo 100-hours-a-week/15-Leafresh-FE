@@ -2,7 +2,7 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ISOFormatString } from '@shared/types/date'
 
-type VerifyGroupChallengeResponseType = ApiResponse<{
+export type VerifyGroupChallengeResponseType = ApiResponse<{
   submittedAt: ISOFormatString
 }>
 
@@ -11,7 +11,7 @@ export type VerifyPersonalChallengeBody = {
   content: string
 }
 
-type VerifyVariables = {
+export type VerifyVariables = {
   challengeId: number
   body: VerifyPersonalChallengeBody
 }

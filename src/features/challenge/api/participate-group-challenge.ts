@@ -1,13 +1,16 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
-type ParticipateGroupChallengeResponseType = ApiResponse<{
+export type ParticipateGroupChallengeResponse = ApiResponse<{
   id: number
 }>
 
+export type ParticipateGroupChallengeVariables = {
+  challengeId: number
+}
 /**
- * 닉네임 중복 검사 API
+ * 단체 챌린지 참여 이력 생성
  */
-export const ParticipateGroupChallenge = (challengeId: number) => {
-  return fetchRequest<ParticipateGroupChallengeResponseType>(ENDPOINTS.CHALLENGE.GROUP.PARTICIPATE(challengeId))
+export const ParticipateGroupChallenge = ({ challengeId }: ParticipateGroupChallengeVariables) => {
+  return fetchRequest<ParticipateGroupChallengeResponse>(ENDPOINTS.CHALLENGE.GROUP.PARTICIPATE(challengeId))
 }
