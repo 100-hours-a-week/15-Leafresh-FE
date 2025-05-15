@@ -95,7 +95,7 @@ export default function ChallengeParticipatePage() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   max-width: 500px;
   margin: 0 auto;
   padding: 0;
