@@ -285,4 +285,5 @@ const Message = styled.div`
 const Grid = styled(GridBox)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
 `

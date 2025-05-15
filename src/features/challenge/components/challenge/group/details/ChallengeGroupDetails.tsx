@@ -154,7 +154,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
       { challengeId },
       {
         onSuccess: () => {
-          openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+          openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
           router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
         },
         onError: (error: ErrorResponse) => {
