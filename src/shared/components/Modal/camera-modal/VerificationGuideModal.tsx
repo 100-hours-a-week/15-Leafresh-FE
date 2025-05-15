@@ -35,6 +35,7 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
   type ChallengeRulesListResponse = GroupChallengeRulesListResponse | PersonalChallengeRulesListResponse
   let queryKey
   let queryFn
+
   switch (type) {
     case 'GROUP':
       queryKey = QUERY_KEYS.CHALLENGE.GROUP.RULES(challengeId)

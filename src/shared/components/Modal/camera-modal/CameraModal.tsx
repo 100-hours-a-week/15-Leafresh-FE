@@ -92,7 +92,7 @@ const CameraModal = () => {
     if (tab === 1 && challengeData) setShowGuide(true)
     else setShowGuide(false)
   }, [tab])
-  useScrollLock(isOpen)
+  const { lockScroll, unlockScroll } = useScrollLock(isOpen)
 
   const capture = () => {
     if (!canvasRef.current || !videoRef.current) return
