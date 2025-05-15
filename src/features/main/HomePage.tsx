@@ -8,7 +8,7 @@ import { URL } from '@shared/constants/route/route'
 import { theme } from '@shared/styles/theme'
 
 import ChallengeImageSlider from './ChallengeImageSlider'
-import CumulativeInfo from './CumulativeInfo'
+// import CumulativeInfo from './CumulativeInfo'
 
 const HomePage = () => {
   const router = useRouter()
@@ -23,7 +23,7 @@ const HomePage = () => {
       <TreeSection>
         <Title>지구를 위한 실천 한 가지</Title>
         <Tree src='/image/Main_1.png' alt='LeafreshTree' width={273} height={273} />
-        <CumulativeInfo />
+        {/* <CumulativeInfo /> */}
       </TreeSection>
       <Section>
         <SubTitle>Small task, Global ripple</SubTitle>
