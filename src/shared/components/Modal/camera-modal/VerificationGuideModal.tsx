@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'motion/react'
 
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -27,6 +28,8 @@ interface VerificationGuideModalProps {
   onClose: () => void
 }
 const VerificationGuideModal = ({ isOpen, challengeData, onClose }: VerificationGuideModalProps) => {
+  const [isHovering, setIsHovering] = useState<boolean>(false)
+
   const { id: challengeId, type } = challengeData
 
   type ChallengeRulesListResponse = GroupChallengeRulesListResponse | PersonalChallengeRulesListResponse
@@ -66,7 +69,6 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
     const timeText = `${certificationPeriod.startTime} ~ ${certificationPeriod.endTime}`
 
     const today = new Date()
-    const year = today.getFullYear().toString().slice(2)
     const month = (today.getMonth() + 1).toString().padStart(2, '0')
     const date = today.getDate().toString().padStart(2, '0')
     const weekday = today.toLocaleDateString('ko-KR', { weekday: 'long' })
@@ -115,7 +117,7 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
   return (
     <AnimatePresence>
       {isOpen && (
-        <Overlay>
+        <Overlay onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           <MotionWrapper
             drag='y'
             dragConstraints={{ top: 0 }}
@@ -129,7 +131,7 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
             exit={{ y: '100%' }}
             transition={{ duration: 0.3 }}
           >
-            <DragBar />
+            <DragBar isHover={isHovering} />
             <GuideHeader>
               인증 방법
               <CloseButton onClick={onClose}>
@@ -168,12 +170,15 @@ const MotionWrapper = styled(motion.div)`
   box-shadow: ${theme.shadow.lfPrime};
   z-index: 300;
 `
-const DragBar = styled.div`
-  width: 40px;
-  height: 5px;
+const DragBar = styled.div<{ isHover: boolean }>`
+  width: 60px;
+  height: 6px;
   border-radius: 4px;
   background: ${theme.colors.lfGray.base};
   margin: 8px auto 12px;
+
+  background: ${({ isHover }) => (isHover ? theme.colors.lfDarkGray.base : theme.colors.lfGray.base)};
+  transition: background-color 0.2s ease;
 `
 
 const GuideHeader = styled.div`
