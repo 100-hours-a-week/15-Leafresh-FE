@@ -41,7 +41,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
       router.replace(URL.MEMBER.SIGNUP.value)
     } else {
       openToast(ToastType.Success, '로그인 성공')
-      router.replace(URL.MAIN.INDEX.value)
+      router.replace(URL.CHALLENGE.INDEX.value)
     }
   }, [data, router, openToast, setUserInfo])
 

@@ -59,7 +59,7 @@ const SignupPage = () => {
         imageUrl,
         nickname,
       })
-      router.replace(URL.MAIN.INDEX.value) // 회원가입 후 메인으로 이동
+      router.replace(URL.CHALLENGE.INDEX.value) // 회원가입 후 챌린지 메인으로 이동
     },
     onError: () => {
       openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
@@ -70,7 +70,7 @@ const SignupPage = () => {
     /** 이미 회원가입한 유저일 경우 */
     if (userInfo?.isMember) {
       // if (!userInfo || userInfo?.isMember) {
-      router.replace(URL.MAIN.INDEX.value)
+      router.replace(URL.CHALLENGE.INDEX.value)
     }
   }, [userInfo])
 
