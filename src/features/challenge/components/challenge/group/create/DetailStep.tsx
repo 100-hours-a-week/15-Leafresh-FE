@@ -73,11 +73,11 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
 
   const formValue = watch()
 
-  const handleDetailSubmit = () => {
-    if (!isSubmitted) {
-      setIsSubmitted(true)
-    }
-    if (isValid) {
+  const handleDetailSubmit = async () => {
+    setIsSubmitted(true)
+    const isFormValid = await trigger()
+
+    if (isFormValid) {
       onSubmit()
     }
   }

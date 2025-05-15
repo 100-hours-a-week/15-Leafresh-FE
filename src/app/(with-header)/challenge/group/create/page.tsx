@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import { z } from 'zod'
 
-import { useMemo,useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,7 +13,6 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/c
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
   CreateChallengeBody,
-  CreateChallengeResponse,
   CreateChallengeVariables,
   ExampleImageType,
 } from '@features/challenge/api/create-group-challenge'
@@ -88,7 +87,7 @@ const GroupChallengeCreatePage = () => {
 
   /** 단체 챌린지 생성 */
   const { mutate: CreateChallengeMutate, isPending: isCreating } = useMutationStore<
-    CreateChallengeResponse,
+    { id: number },
     CreateChallengeVariables
   >(MUTATION_KEYS.CHALLENGE.GROUP.CREATE)
 
@@ -133,7 +132,7 @@ const GroupChallengeCreatePage = () => {
       { body },
       {
         onSuccess: response => {
-          const challengeId: number = response.data.data.id
+          const challengeId: number = response.data.id
           router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
         },
         onError: () => {
