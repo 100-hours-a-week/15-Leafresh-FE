@@ -7,13 +7,10 @@ import { useRouter } from 'next/navigation'
 import styled from '@emotion/styled'
 
 import { URL } from '@shared/constants/route/route'
-import { useBackButtonStore } from '@shared/context/back-button/BackButtonStore'
 import { useDrawerStore } from '@shared/context/slide-drawer/DrawerStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LogoImage from '@public/image/logo.svg'
-
-import BackButton from '../Button/BackButton'
 
 interface HeaderProps {
   height: number
@@ -23,13 +20,11 @@ interface HeaderProps {
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
   const { open: openDrawer } = useDrawerStore()
-  const { isVisible, onClick } = useBackButtonStore()
 
   return (
     <HeaderContainer height={height}>
       <CustomWidthWrapper padding={padding}>
         <LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
-          {isVisible && <BackButton onClick={onClick} />}
           <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
         </LogoWrapper>
         <MenuButtons>
@@ -71,9 +66,6 @@ const CustomWidthWrapper = styled.div<{ padding: number }>`
 `
 
 const LogoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
   cursor: pointer;
 `
 
