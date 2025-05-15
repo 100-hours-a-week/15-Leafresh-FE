@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { URL } from '@shared/constants/route/route'
 import { useDrawerStore } from '@shared/context/slide-drawer/DrawerStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
@@ -20,6 +21,8 @@ interface HeaderProps {
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
   const { open: openDrawer } = useDrawerStore()
+  const { userInfo } = useOAuthUserStore()
+  const isLoggedIn: boolean = !!userInfo
 
   return (
     <HeaderContainer height={height}>
@@ -28,7 +31,7 @@ const Header = ({ height, padding }: HeaderProps) => {
           <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
         </LogoWrapper>
         <MenuButtons>
-          <AlarmButton name='Bell' size={24} onClick={() => router.push(URL.MEMBER.ALARM.value)} />
+          {isLoggedIn && <AlarmButton name='Bell' size={24} onClick={() => router.push(URL.MEMBER.ALARM.value)} />}
           <Menu size={24} strokeWidth={2.5} onClick={openDrawer} />
         </MenuButtons>
       </CustomWidthWrapper>
