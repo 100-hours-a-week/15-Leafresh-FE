@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import { useCameraModalStore } from '@shared/context/Modal/CameraModalStore'
+import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
@@ -92,7 +92,9 @@ const CameraModal = () => {
     if (tab === 1 && challengeData) setShowGuide(true)
     else setShowGuide(false)
   }, [tab])
-  const { lockScroll, unlockScroll } = useScrollLock(isOpen)
+
+  // useScrollLock(isOpen)
+  useScrollLock(isOpen && !previewUrl)
 
   const capture = () => {
     if (!canvasRef.current || !videoRef.current) return
