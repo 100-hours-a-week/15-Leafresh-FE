@@ -6,16 +6,19 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { OAuthType } from '@entities/member/type'
 import { NicknameDuplicate } from '@features/member/api/nickname-duplicate'
-import { SignUp, SignUpBody } from '@features/member/api/signup'
+import { SignUpBody, SignUpResponseType, SignUpVariables } from '@features/member/api/signup'
 import { SignupFormType, signupSchema } from '@features/member/signup/schema'
 import ErrorText from '@shared/components/errortext'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 
@@ -44,25 +47,10 @@ const SignupPage = () => {
     queryKey: QUERY_KEYS.MEMBER.DUPLICATE_NICKNAME,
     queryFn: () => NicknameDuplicate({ input: nickname }),
     enabled: false,
+    ...QUERY_OPTIONS.MEMBER.DUPLICATE_NICKNAME,
   })
 
-  const { mutate: SignUpMutate } = useMutation({
-    mutationFn: SignUp,
-    onSuccess: response => {
-      if (response.data.isDuplicated) {
-        setError('nickname', {
-          type: 'manual',
-          message: '이미 존재하는 유저입니다.',
-        })
-      } else {
-        openToast(ToastType.Success, '회원가입이 완료되었습니다.')
-        router.replace(URL.MAIN.INDEX.value)
-      }
-    },
-    onError: () => {
-      openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
-    },
-  })
+  const { mutate: SignUpMutate } = useMutationStore<SignUpResponseType, SignUpVariables>(MUTATION_KEYS.MEMBER.SIGNUP)
 
   useEffect(() => {
     if (userInfo?.isMember) {
@@ -127,7 +115,25 @@ const SignupPage = () => {
       imageUrl: userInfo.imageUrl,
     }
 
-    SignUpMutate(body)
+    SignUpMutate(
+      { body },
+      {
+        onSuccess: response => {
+          if (response.data.data.isDuplicated) {
+            setError('nickname', {
+              type: 'manual',
+              message: '이미 존재하는 유저입니다.',
+            })
+          } else {
+            openToast(ToastType.Success, '회원가입이 완료되었습니다.')
+            router.replace(URL.MAIN.INDEX.value)
+          }
+        },
+        onError: () => {
+          openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
+        },
+      },
+    )
   }
 
   return (

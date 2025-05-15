@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { useCameraModalStore } from '@shared/context/Modal/CameraModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
@@ -90,16 +90,6 @@ const CameraModal = () => {
       }
     }, 'image/jpeg')
   }
-
-  // const handleConfirm = () => {
-  //   if (!previewUrl) return
-  //   if (hasDescription && !description) return
-
-  //   onComplete({ imageUrl: previewUrl, description: hasDescription ? description : undefined })
-  //   close()
-  //   setPreviewUrl(null)
-  //   setDescription('')
-  // }
 
   const handleConfirm = async () => {
     if (!previewUrl) return

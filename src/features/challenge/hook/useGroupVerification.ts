@@ -1,13 +1,14 @@
 import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { MUTATION_KEYS } from '@shared/constants/tanstack-query/mutation-keys'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import {
   getGroupVerificationResult,
-  postGroupVerification,
-  type PostGroupVerificationRequest,
+  PostGroupVerification,
+  PostGroupVerificationBody,
   type PostGroupVerificationResponse,
 } from '../api/participate/verification/group-verification'
 // import { showNotification } from '@/libs/showNotification'
@@ -15,9 +16,9 @@ import {
 /** 인증 제출 뮤테이션 */
 export const usePostGroupVerification = (challengeId: number) => {
   const qc = useQueryClient()
-  return useMutation<PostGroupVerificationResponse, Error, PostGroupVerificationRequest>({
-    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFY(challengeId)],
-    mutationFn: body => postGroupVerification(challengeId, body),
+  return useMutation<PostGroupVerificationResponse, Error, PostGroupVerificationBody>({
+    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFY],
+    mutationFn: body => PostGroupVerification({ challengeId, body }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId) })
     },
@@ -37,6 +38,7 @@ export const useGroupVerificationResult = (challengeId: number) => {
     },
     refetchOnWindowFocus: false,
     retry: false,
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION_RESULT,
   })
 
   useEffect(() => {

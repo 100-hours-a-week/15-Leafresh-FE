@@ -9,10 +9,20 @@ import { useGroupVerificationResult, usePostGroupVerification } from '@features/
 import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import {
+  PostGroupVerificationBody,
+  PostGroupVerificationResponse,
+} from '@features/challenge/api/participate/verification/group-verification'
+
 export default function GroupVerificationPage({ participateId }: { participateId: string }) {
   const challengeId = Number(participateId)
   const { data, isLoading, error } = useGroupVerifications(challengeId)
-  const postMutation = usePostGroupVerification(challengeId)
+  const postMutation = useMutationStore<
+    PostGroupVerificationResponse,
+    { challengeId: number; body: PostGroupVerificationBody }
+  >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY)
   const resultQuery = useGroupVerificationResult(challengeId)
 
   const router = useRouter()
@@ -31,8 +41,11 @@ export default function GroupVerificationPage({ participateId }: { participateId
       // 2. 완료 콜백: imageUrl → Blob → FormData → mutate
       async ({ imageUrl, description }) => {
         postMutation.mutate({
-          imageUrl: imageUrl,
-          content: description,
+          challengeId,
+          body: {
+            imageUrl,
+            content: description,
+          },
         })
       },
       /* 3. hasDescription */ true,

@@ -5,21 +5,28 @@ import { useRouter } from 'next/navigation'
 
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import {
   getPersonalChallengeDetails,
   PersonalChallengeDetail,
 } from '@features/challenge/api/get-personal-challenge-details'
-import { VerifyGroupChallenge, VerifyPersonalChallengeBody } from '@features/challenge/api/verify-personal-challenge'
+import {
+  VerifyGroupChallengeResponseType,
+  VerifyPersonalChallengeBody,
+  VerifyVariables,
+} from '@features/challenge/api/verify-personal-challenge'
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import BackButton from '@shared/components/Button/BackButton'
 import Loading from '@shared/components/loading'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import { useCameraModalStore } from '@shared/context/Modal/CameraModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
@@ -97,19 +104,13 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId),
     queryFn: () => getPersonalChallengeDetails(challengeId),
+    ...QUERY_OPTIONS.CHALLENGE.PERSONAL.DETAILS,
   })
 
   /** 개인 챌린지 인증 생성 (제출) */
-  const { mutate: VerifyMutate, isPending } = useMutation({
-    mutationFn: VerifyGroupChallenge,
-    onSuccess: () => {
-      openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
-      router.replace(URL.CHALLENGE.INDEX.value) // 챌린지 목록 페이지로 이동
-    },
-    onError: (error: ErrorResponse) => {
-      openToast(ToastType.Error, error.message)
-    },
-  })
+  const { mutate: VerifyMutate, isPending } = useMutationStore<VerifyGroupChallengeResponseType, VerifyVariables>(
+    MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY,
+  )
 
   if (isLoading || !data?.data) return <Loading />
 
@@ -144,6 +145,8 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
 
   /** 이미지 촬영 모달 열기 */
   const openImageModal = () => {
+    console.log('openimagemodal')
+
     openCameraModal(
       // #1. 카메라 모달 제목
       `${title} 챌린지`,
@@ -201,10 +204,21 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
       content: description,
     }
 
-    VerifyMutate({
-      challengeId,
-      body,
-    })
+    VerifyMutate(
+      {
+        challengeId,
+        body,
+      },
+      {
+        onSuccess: () => {
+          openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+          router.replace(URL.CHALLENGE.INDEX.value) // 챌린지 목록 페이지로 이동
+        },
+        onError: (error: ErrorResponse) => {
+          openToast(ToastType.Error, error.message)
+        },
+      },
+    )
   }
 
   return (

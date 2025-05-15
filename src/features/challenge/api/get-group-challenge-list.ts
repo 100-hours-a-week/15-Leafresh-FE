@@ -30,7 +30,7 @@ export interface GroupChallengeItem {
  */
 export interface FetchGroupChallengesResponse
   extends ApiResponse<{
-    items: GroupChallengeItem[]
+    groupChallenges: GroupChallengeItem[]
     hasNext: boolean
     cursorInfo: {
       lastCursorId: number

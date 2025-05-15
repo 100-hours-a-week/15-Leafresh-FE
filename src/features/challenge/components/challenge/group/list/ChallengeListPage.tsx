@@ -80,7 +80,7 @@ const ChallengeListPage = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   // API 데이터 뽑아오기
-  const groupChallenges: GroupChallenge[] = data?.pages.flatMap(p => p.data.items) ?? []
+  const groupChallenges: GroupChallenge[] = data?.pages.flatMap(p => p.data.groupChallenges) ?? []
 
   if (isLoading) return <Message>Loading challenges…</Message>
   if (error) return <Message>Error: {error.message}</Message>
@@ -100,7 +100,14 @@ const ChallengeListPage = () => {
         <Section>
           <Header>
             <Title>단체 챌린지{category && <Category> - {category}</Category>}</Title>
-            <AddButton onClick={() => router.push(URL.CHALLENGE.GROUP.CREATE.value)} aria-label='추가'>
+            <AddButton
+              onClick={() => {
+                const params = new URLSearchParams()
+                if (category) params.set('category', category)
+                router.push(`${URL.CHALLENGE.GROUP.CREATE.value}?${params.toString()}`)
+              }}
+              aria-label='추가'
+            >
               <LucideIcon name='Plus' width={25} height={25} />
             </AddButton>
           </Header>
