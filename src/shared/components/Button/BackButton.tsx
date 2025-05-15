@@ -9,16 +9,18 @@ export interface BackButtonProps {
 
 const BackButton = ({ onClick, className }: BackButtonProps) => {
   const handleClick = () => {
-    onClick?.()
-    if (typeof window !== 'undefined') {
-      // 클라이언트에서만 뒤로가기 수행
+    console.log('클릭시 이걸 실행하세요', onClick)
+
+    if (onClick) {
+      onClick()
+    } else if (typeof window !== 'undefined') {
       window.history.back()
     }
   }
 
   return (
     <Button aria-label='back' onClick={handleClick} className={className}>
-      <LucideIcon name='MoveLeft' size={29} color='lfBlack' />
+      <LucideIcon name='ChevronLeft' size={29} color='lfBlack' />
     </Button>
   )
 }
