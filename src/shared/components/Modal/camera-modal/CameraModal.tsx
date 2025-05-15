@@ -86,7 +86,7 @@ const CameraModal = () => {
     return () => {
       stopCamera()
     }
-  }, [isOpen, previewUrl, facingMode])
+  }, [isOpen])
 
   useEffect(() => {
     if (tab === 1 && challengeData) setShowGuide(true)
@@ -287,7 +287,9 @@ const BackButton = styled(LucideIcon)`
 const CameraWrapper = styled.div`
   gap: 16px;
   width: 100%;
-  /* aspect-ratio: 1/1; */
+  aspect-ratio: 4/3;
+
+  position: relative;
   background-color: ${theme.colors.lfInputBackground.base};
 `
 

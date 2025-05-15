@@ -152,14 +152,14 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   /** 이미지 촬영 모달 열기 */
   const openImageModal = () => {
     // #0. 로그인 상태가 아닐 때
-    if (!isLoggedIn) {
-      openConfirmModal({
-        title: '로그인이 필요합니다.',
-        description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
-      })
-      return
-    }
+    // if (!isLoggedIn) {
+    //   openConfirmModal({
+    //     title: '로그인이 필요합니다.',
+    //     description: '로그인 페이지로 이동 하시겠습니까?',
+    //     onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+    //   })
+    //   return
+    // }
     openCameraModal(
       // #1. 카메라 모달 제목
       `${title} 챌린지`,
