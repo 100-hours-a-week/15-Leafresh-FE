@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 import { LowercaseOAuthType } from '../type'
 
@@ -16,8 +17,16 @@ interface OAuthUserState {
   clearUserInfo: () => void
 }
 
-export const useOAuthUserStore = create<OAuthUserState>(set => ({
-  userInfo: null,
-  setUserInfo: info => set({ userInfo: info }),
-  clearUserInfo: () => set({ userInfo: null }),
-}))
+export const useOAuthUserStore = create<OAuthUserState>()(
+  persist(
+    set => ({
+      userInfo: null,
+      setUserInfo: info => set({ userInfo: info }),
+      clearUserInfo: () => set({ userInfo: null }),
+    }),
+    {
+      name: 'oauth-user-info', // localStorage key
+      partialize: state => ({ userInfo: state.userInfo }), // 선택적 저장
+    },
+  ),
+)
