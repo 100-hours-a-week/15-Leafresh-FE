@@ -11,9 +11,6 @@ export function useScrollLock(enabled: boolean) {
     scrollYRef.current = window.scrollY
     const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth
 
-    console.log('window.innerWidth:', window.innerWidth)
-    console.log('document.documentElement.clientWidth: ', document.documentElement.clientWidth)
-
     document.body.style.position = 'fixed'
     document.body.style.top = `-${scrollYRef.current}px`
     document.body.style.overflowY = 'scroll'
