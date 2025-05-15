@@ -1,205 +1,121 @@
-import React, { useEffect, useRef, useState } from 'react'
+'use client'
+
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import styled from '@emotion/styled'
 
-// 이미지 타입 정의
 interface ImageType {
   url: string
 }
-
-// Props 타입 정의
 interface ChallengeImageSliderProps {
   images: ImageType[]
 }
-
-// 슬라이드 콘텐츠 props 타입
 interface SlideContentProps {
   translateX: number
 }
 
 const ChallengeImageSlider: React.FC<ChallengeImageSliderProps> = ({ images = [] }) => {
-  const [translateX, setTranslateX] = useState(0)
-  const [isScrollHijacked, setIsScrollHijacked] = useState(false)
   const sliderRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const lastScrollY = useRef(0)
+  const translateXRef = useRef(0)
+  const [renderTranslateX, setRenderTranslateX] = useState(0)
   const maxTranslateRef = useRef(0)
+  const [isSliderVisible, setIsSliderVisible] = useState(false)
+  const touchYRef = useRef(0)
 
+  // 가로 이동 로직
+  const handleTranslate = useCallback((delta: number) => {
+    let next = translateXRef.current - delta
+    if (next > 0) next = 0
+    if (next < maxTranslateRef.current) next = maxTranslateRef.current
+    translateXRef.current = next
+    setRenderTranslateX(next)
+  }, [])
+
+  // 슬라이더 노출 비율 체크
+  const checkVisibility = useCallback(() => {
+    if (!sliderRef.current) return
+    const rect = sliderRef.current.getBoundingClientRect()
+    const vh = window.innerHeight
+    const visibleTop = Math.max(rect.top, 0)
+    const visibleBot = Math.min(rect.bottom, vh)
+    const visibleHeight = Math.max(visibleBot - visibleTop, 0)
+    setIsSliderVisible(visibleHeight / rect.height >= 0.8)
+  }, [])
+
+  // 콘텐츠 크기 계산
   useEffect(() => {
-    if (!sliderRef.current || !contentRef.current || !sectionRef.current) return
+    if (!contentRef.current || !sliderRef.current) return
+    const width = contentRef.current.scrollWidth
+    const container = sliderRef.current.clientWidth
+    maxTranslateRef.current = -(width - container)
+  }, [images])
 
-    // 최대 이동 가능 거리 계산
-    const contentWidth = contentRef.current.scrollWidth
-    const containerWidth = sliderRef.current.clientWidth
-    maxTranslateRef.current = -(contentWidth - containerWidth)
-
-    // 스크롤 이벤트가 발생하기 전에 체크
-    const wheelEventHandler = (e: WheelEvent) => {
-      const sliderRect = sliderRef.current?.getBoundingClientRect()
-      if (!sliderRect) return
-
-      // 슬라이더가 화면에 보이는지 확인
-      const isSliderVisible = sliderRect.top < window.innerHeight && sliderRect.bottom > 0
-
-      if (isSliderVisible) {
-        // 현재 가로 스크롤 위치
-        const currentTranslateX = translateX
-
-        // 휠 방향에 따라 이동 방향 결정
-        const direction = e.deltaY > 0 ? 1 : -1
-
-        // 이동할 거리 계산
-        const moveAmount = direction * 30 // 이동 속도 조절
-
-        // 새 위치 계산
-        let newTranslateX = currentTranslateX - moveAmount
-
-        // 경계 체크
-        if (newTranslateX > 0) {
-          newTranslateX = 0
-        } else if (newTranslateX < maxTranslateRef.current) {
-          newTranslateX = maxTranslateRef.current
-        }
-
-        // 경계에 도달했는지 확인
-        const isAtLeftEdge = newTranslateX === 0 && direction === -1
-        const isAtRightEdge = newTranslateX === maxTranslateRef.current && direction === 1
-
-        // 경계에 도달하지 않았으면 스크롤 이벤트 가로채기
-        if (!isAtLeftEdge && !isAtRightEdge) {
-          e.preventDefault()
-          setTranslateX(newTranslateX)
-          setIsScrollHijacked(true)
-        } else {
-          // 경계에 도달했으면 하이재킹 해제
-          setIsScrollHijacked(false)
-        }
-      } else {
-        // 슬라이더가 보이지 않으면 하이재킹 해제
-        setIsScrollHijacked(false)
-      }
-    }
-
-    // 터치 이벤트를 위한 변수
-    let touchStartX = 0
-    let touchStartY = 0
-    let isTouchHorizontal = false
-
-    // 터치 시작 이벤트 핸들러
-    const touchStartHandler = (e: TouchEvent) => {
-      touchStartX = e.touches[0].clientX
-      touchStartY = e.touches[0].clientY
-      isTouchHorizontal = false
-    }
-
-    const touchMoveHandler = (e: TouchEvent) => {
-      const sliderRect = sliderRef.current?.getBoundingClientRect()
-      if (!sliderRect || !isTouchHorizontal) {
-        // 처음 터치 방향을 결정
-        const touchX = e.touches[0].clientX
-        const touchY = e.touches[0].clientY
-        const diffX = Math.abs(touchX - touchStartX)
-        const diffY = Math.abs(touchY - touchStartY)
-
-        // 수평 이동이 수직 이동보다 크면 수평 스와이프로 간주
-        if (diffX > diffY) {
-          isTouchHorizontal = true
-        } else {
-          return // 수직 스와이프는 처리하지 않음
-        }
-      }
-
-      // 여기에서 오류가 발생한 부분
-      // sliderRect가 위에서 null 체크를 했지만, 이 부분에서는 다시 체크해야 함
-      if (!sliderRect) return // sliderRect가 없으면 함수 종료
-
-      // 슬라이더가 화면에 보이는지 확인
-      const isSliderVisible = sliderRect.top < window.innerHeight && sliderRect.bottom > 0
-
-      if (isSliderVisible && isTouchHorizontal) {
-        const touchX = e.touches[0].clientX
-        const diffX = touchStartX - touchX
-
-        // 새 위치 계산
-        let newTranslateX = translateX - diffX * 0.5 // 이동 속도 조절
-
-        // 경계 체크
-        if (newTranslateX > 0) {
-          newTranslateX = 0
-        } else if (newTranslateX < maxTranslateRef.current) {
-          newTranslateX = maxTranslateRef.current
-        }
-
-        e.preventDefault() // 기본 스크롤 방지
-        setTranslateX(newTranslateX)
-
-        // 다음 터치 이동의 기준점 업데이트
-        touchStartX = touchX
-      }
-    }
-
-    // 이벤트 리스너 등록
-    window.addEventListener('wheel', wheelEventHandler, { passive: false })
-    window.addEventListener('touchstart', touchStartHandler, { passive: true })
-    window.addEventListener('touchmove', touchMoveHandler, { passive: false })
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+  // 스크롤/리사이즈 트리거
+  useEffect(() => {
+    checkVisibility()
+    window.addEventListener('scroll', checkVisibility)
+    window.addEventListener('resize', checkVisibility)
     return () => {
-      window.removeEventListener('wheel', wheelEventHandler)
-      window.removeEventListener('touchstart', touchStartHandler)
-      window.removeEventListener('touchmove', touchMoveHandler)
+      window.removeEventListener('scroll', checkVisibility)
+      window.removeEventListener('resize', checkVisibility)
     }
-  }, [translateX])
+  }, [checkVisibility])
+
+  // 휠 이벤트만 window에 바인딩
+  useEffect(() => {
+    const wheelHandler = (e: WheelEvent) => {
+      if (!isSliderVisible || !sliderRef.current) return
+      const { top, bottom } = sliderRef.current.getBoundingClientRect()
+      if (e.clientY < top || e.clientY > bottom) return
+      const atLeft = translateXRef.current === 0
+      const atRight = translateXRef.current === maxTranslateRef.current
+      const down = e.deltaY > 0
+      const hijack = (down && !atRight) || (!down && !atLeft)
+      if (!hijack) return
+      e.preventDefault()
+      handleTranslate(down ? 30 : -30)
+    }
+    window.addEventListener('wheel', wheelHandler, { passive: false })
+    return () => {
+      window.removeEventListener('wheel', wheelHandler)
+    }
+  }, [isSliderVisible, handleTranslate])
+
+  // 터치 핸들러 (컨테이너에 직접 할당)
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchYRef.current = e.touches[0].clientY
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!isSliderVisible || !sliderRef.current) return
+    const { top, bottom } = sliderRef.current.getBoundingClientRect()
+    if (touchYRef.current < top || touchYRef.current > bottom) return
+    const currentY = e.touches[0].clientY
+    const diff = currentY - touchYRef.current
+    if (Math.abs(diff) < 10) return
+    e.preventDefault()
+    // 상하 스와이프 → 가로 이동 (방향 반전)
+    handleTranslate(diff > 0 ? -30 : 30)
+    touchYRef.current = currentY
+  }
 
   return (
-    <SliderSection ref={sectionRef}>
-      <SlideContainer ref={sliderRef}>
-        <SlideContent ref={contentRef} translateX={translateX}>
-          {images && images.length > 0
-            ? images.map((image, index) => (
-                <ImageContainer key={index} className='slide-item'>
-                  <StyledImage src={image.url} alt={`챌린지 이미지 ${index + 1}`} />
-                </ImageContainer>
-              ))
-            : Array(3)
-                .fill(null)
-                .map((_, index) => (
-                  <ImageContainer key={index} className='slide-item'>
-                    <StyledSvg
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='currentColor'
-                      strokeWidth='2'
-                    >
-                      <rect x='3' y='3' width='18' height='18' rx='2' ry='2' />
-                      <circle cx='8.5' cy='8.5' r='1.5' />
-                      <polyline points='21 15 16 10 5 21' />
-                    </StyledSvg>
-                  </ImageContainer>
-                ))}
+    <SliderSection ref={sliderRef}>
+      <SlideContainer onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
+        <SlideContent ref={contentRef} translateX={renderTranslateX}>
+          {images.map((img, i) => (
+            <ImageContainer key={i}>
+              <StyledImage src={img.url} alt={`슬라이드 ${i + 1}`} />
+            </ImageContainer>
+          ))}
         </SlideContent>
       </SlideContainer>
-
-      {/* 스크롤 상태 표시 (개발 모드에서만 보임) */}
-      {/* {process.env.NODE_ENV === 'development' && (
-        <ScrollStatus isHijacked={isScrollHijacked}>
-          {isScrollHijacked ? '좌우 스크롤 중' : '페이지 스크롤 중'}
-        </ScrollStatus>
-      )} */}
-
-      {/* 스크롤 가이드 */}
-      <ScrollGuide isVisible={isScrollHijacked}>
-        <ScrollIcon />
-        <ScrollText>스크롤하여 더 보기</ScrollText>
-      </ScrollGuide>
     </SliderSection>
   )
 }
 
 export default ChallengeImageSlider
 
-// 슬라이더 섹션
 const SliderSection = styled.div`
   position: relative;
   width: 100%;
@@ -207,22 +123,20 @@ const SliderSection = styled.div`
   padding-bottom: 40px;
 `
 
-// 슬라이더 컨테이너
 const SlideContainer = styled.div`
   width: 100%;
   overflow: hidden;
   position: relative;
+  overscroll-behavior: contain;
 `
 
-// 가로로 스크롤되는 콘텐츠
 const SlideContent = styled.div<SlideContentProps>`
   display: flex;
-  transform: translateX(${props => props.translateX}px);
+  transform: translateX(${p => p.translateX}px);
   transition: transform 0.2s ease-out;
   padding-left: 40px;
 `
 
-// 개별 이미지 컨테이너
 const ImageContainer = styled.div`
   min-width: 280px;
   height: 380px;
@@ -234,95 +148,13 @@ const ImageContainer = styled.div`
   justify-content: center;
   overflow: hidden;
   flex-shrink: 0;
-  background-color: #f9f9f9;
+  background: #f9f9f9;
 `
 
-// 이미지 스타일링
 const StyledImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
-
-// 플레이스홀더 SVG 스타일링
-const StyledSvg = styled.svg`
-  width: 48px;
-  height: 48px;
-  color: #ccc;
-`
-
-// 스크롤 상태 표시 (개발 모드용)
-interface ScrollStatusProps {
-  isHijacked: boolean
-}
-
-const ScrollStatus = styled.div<ScrollStatusProps>`
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: ${props => (props.isHijacked ? 'rgba(76, 175, 80, 0.7)' : 'rgba(33, 150, 243, 0.7)')};
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  z-index: 1000;
-`
-
-// 스크롤 가이드 컴포넌트
-interface ScrollGuideProps {
-  isVisible: boolean
-}
-
-const ScrollGuide = styled.div<ScrollGuideProps>`
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: ${props => (props.isVisible ? 1 : 0)};
-  transition: opacity 0.3s;
-  pointer-events: none;
-`
-
-const ScrollIcon = styled.div`
-  width: 20px;
-  height: 30px;
-  border: 2px solid rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  position: relative;
-  margin-bottom: 5px;
-
-  &:before {
-    content: '';
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: scrollAnimation 1.5s infinite;
-  }
-
-  @keyframes scrollAnimation {
-    0% {
-      top: 6px;
-      opacity: 1;
-    }
-    100% {
-      top: 20px;
-      opacity: 0;
-    }
-  }
-`
-
-const ScrollText = styled.span`
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
 `
 
 /* -------비상 상황 대비 메인 페이지 슬라이더------------ 
