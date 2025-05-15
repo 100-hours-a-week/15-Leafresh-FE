@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
@@ -57,7 +57,7 @@ const Chatbot = () => {
             }}
           />
 
-          <Name>챗봇 수피</Name>
+          <Name>챗봇 새순</Name>
         </Launcher>
       )}
       {isOpen && <Backdrop onClick={handleCloseAndReset} />}
@@ -92,6 +92,7 @@ const Launcher = styled.button`
 `
 const Name = styled.p`
   font-size: ${theme.fontSize.xs};
+  font-weight: ${theme.fontWeight.semiBold};
 `
 
 const Backdrop = styled.div`

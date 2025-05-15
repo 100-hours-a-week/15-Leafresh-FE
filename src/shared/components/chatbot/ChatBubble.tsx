@@ -13,10 +13,11 @@ export interface ChatBubbleProps {
   children: ReactNode
   subDescription?: string
   buttonText?: string
+  isAnswer?: boolean
   onClick?: () => void
 }
 
-const ChatBubble = ({ role, loading, children, subDescription, buttonText, onClick }: ChatBubbleProps) => (
+const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAnswer, onClick }: ChatBubbleProps) => (
   <Container role={role}>
     {role === 'bot' && (
       <Avatar>
@@ -24,8 +25,8 @@ const ChatBubble = ({ role, loading, children, subDescription, buttonText, onCli
       </Avatar>
     )}
     <BubbleWrapper>
-      <NameText role={role}>{role === 'bot' && '수피'}</NameText>
-      <Bubble role={role}>
+      <NameText role={role}>{role === 'bot' && '새순'}</NameText>
+      <Bubble role={role} isAnswer={isAnswer}>
         {loading
           ? '잠시만 기다려주세요…'
           : typeof children === 'string'
@@ -74,13 +75,15 @@ const NameText = styled.p<{ role: 'bot' | 'user' }>`
   margin: 8px 0 0 0;
 `
 
-const Bubble = styled.div<{ role: 'bot' | 'user' }>`
+const Bubble = styled.div<{ role: 'bot' | 'user'; isAnswer?: boolean }>`
   max-width: 235px;
   min-width: 60px;
   padding: 16px 12px;
   line-height: 0.8rem;
-  background: ${({ role }) => (role === 'bot' ? '#AFF9BB' : `${theme.colors.lfWhite.base}`)};
+  background: ${({ role, isAnswer }) =>
+    isAnswer ? theme.colors.lfWhite.base : role === 'bot' ? '#AFF9BB' : theme.colors.lfWhite.base};
   color: ${({ role }) => (role === 'bot' ? '#333333' : `${theme.colors.lfBlack.base}`)};
+  border: ${({ isAnswer }) => (isAnswer ? `solid 1px ${theme.colors.lfGreenBorder.base}` : 'none')};
   justify-content: center;
   display: flex;
   flex-direction: column;
@@ -92,11 +95,10 @@ const Bubble = styled.div<{ role: 'bot' | 'user' }>`
 `
 
 const SubDescription = styled.div<{ role: 'bot' | 'user' }>`
-  padding: 10px 0;
   font-size: 8px;
   color: ${theme.colors.lfGreenMain.base};
   text-align: center;
-  padding: 10px 8px;
+  margin-bottom: 10px;
   white-space: pre-wrap;
   line-height: 1.4;
   max-width: 235px;
