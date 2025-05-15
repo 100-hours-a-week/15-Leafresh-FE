@@ -121,14 +121,14 @@ const CardContent = styled.div`
 
 const CardTitle = styled.h3`
   align-self: flex-start;
-  margin: 5px 0 0 0;
-  font-size: ${theme.fontSize.xss};
+  margin: 5px 0 5px 2px;
+  font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.semiBold};
   color: ${theme.colors.lfBlack.base};
 
   /* 챌린지 타입 제목 스타일 */
   [data-type='challenge'] & {
-    color: ${theme.colors.lfGreenMain.base};
+    color: ${theme.colors.lfBlack.base};
   }
 
   /* 재선택 버튼에는 제목 안 보이게 */
@@ -140,7 +140,7 @@ const CardTitle = styled.h3`
 const CardSubtitle = styled.p`
   margin: 0;
   align-self: flex-start;
-  font-size: 6px;
+  font-size: 8px;
   color: ${theme.colors.lfGreenMain.base};
 
   /* 재선택 버튼에는 부제목 안 보이게 */
@@ -176,8 +176,9 @@ const OptionsGrid = styled.div`
 const OptionButton = styled.button`
   width: 27px;
   height: 23px;
-  font-size: 6px;
-  color: #27824a;
+  font-size: 7px;
+  color: ${theme.colors.lfBlack.base};
+  font-weight: ${theme.fontWeight.extraBold};
   background: linear-gradient(
     146.15deg,
     rgba(20, 174, 92, 0.38) -2.5%,

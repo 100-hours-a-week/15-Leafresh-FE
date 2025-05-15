@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import Chatbot from '@shared/components/chatbot/Chatbot'
+import GridBox from '@shared/components/Wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
@@ -68,7 +69,7 @@ const ChallengeListPage = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   // API 데이터 뽑아오기
-  const groupChallenges: GroupChallenge[] = data?.pages.flatMap(p => p.data.items) ?? []
+  const groupChallenges: GroupChallenge[] = data?.pages.flatMap(p => p.data.groupChallenges) ?? []
 
   if (isLoading) return <Message>Loading challenges…</Message>
   if (error) return <Message>Error: {error.message}</Message>
@@ -88,8 +89,15 @@ const ChallengeListPage = () => {
         <Section>
           <Header>
             <Title>단체 챌린지{category && <Category> - {category}</Category>}</Title>
-            <AddButton onClick={() => router.push(URL.CHALLENGE.GROUP.CREATE.value)} aria-label='추가'>
-              <LucideIcon name='Plus' size={25} />
+            <AddButton
+              onClick={() => {
+                const params = new URLSearchParams()
+                if (category) params.set('category', category)
+                router.push(`${URL.CHALLENGE.GROUP.CREATE.value}?${params.toString()}`)
+              }}
+              aria-label='추가'
+            >
+              <LucideIcon name='Plus' width={25} height={25} />
             </AddButton>
           </Header>
 
@@ -99,12 +107,12 @@ const ChallengeListPage = () => {
 
           <ChallengeWrapper>
             {groupChallenges.length !== 0 && (
-              <GridContainer>
+              <Grid>
                 {groupChallenges.map(challenge => (
                   <StyledGroupChallengeCard key={challenge.id} challenge={challenge} />
                 ))}
                 {hasNextPage && <ObserverElement ref={observerRef} />}
-              </GridContainer>
+              </Grid>
             )}
             {isFetchingNextPage && <LoadingMore>더 불러오는 중...</LoadingMore>}
             {groupChallenges.length === 0 && <EmptyState>진행 중인 챌린지가 없습니다.</EmptyState>}
@@ -225,10 +233,6 @@ const ObserverElement = styled.div`
   height: 20px;
 `
 
-const NoneContent = styled.h2`
-  font-size: ${theme.fontSize.lg};
-`
-
 const LoadingMore = styled.div`
   text-align: center;
   padding: 10px;
@@ -278,11 +282,7 @@ const Message = styled.div`
   text-align: center;
 `
 
-const GridContainer = styled.div`
+const Grid = styled(GridBox)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  column-gap: 16px;
-  row-gap: 16px;
-  justify-content: start;
-  width: 100%;
 `

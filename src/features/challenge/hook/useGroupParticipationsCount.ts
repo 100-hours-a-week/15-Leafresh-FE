@@ -1,7 +1,8 @@
 // src/features/challenge/group/participate/hook/useGroupParticipationsCount.ts
 import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import { fetchGroupParticipationsCount } from '../api/participate/group-participant-count'
 
@@ -18,5 +19,5 @@ export const useGroupParticipationsCount = () =>
       const res = await fetchGroupParticipationsCount() // no status param
       return res.data.count
     },
-    staleTime: 5 * 60 * 1000,
+    ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
   })

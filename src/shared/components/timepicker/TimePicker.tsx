@@ -109,7 +109,7 @@ const PanelLabel = styled.div`
   font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.semiBold};
   color: ${theme.colors.lfBlack.base};
-  margin-bottom: 4px;
+  margin-bottom: 15px;
 `
 const Divider = styled.div`
   width: 0.1px;

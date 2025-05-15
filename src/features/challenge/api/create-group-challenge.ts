@@ -7,7 +7,7 @@ import { DateFormatString, TimeFormatString } from '@shared/types/date'
 /**
  * false: 사용 가능 / true 사용 불가능
  */
-type CreateChallengeResponseType = ApiResponse<{
+export type CreateChallengeResponse = ApiResponse<{
   id: number
 }>
 
@@ -18,7 +18,7 @@ export type ExampleImageType = {
   sequenceNumber: number
 }
 
-type CreateChallengeBody = {
+export type CreateChallengeBody = {
   title: string
   description: string
   category: ChallengeCategoryType
@@ -31,11 +31,15 @@ type CreateChallengeBody = {
   exampleImages: ExampleImageType[]
 }
 
+export type CreateChallengeVariables = {
+  body: CreateChallengeBody
+}
+
 /**
  * 닉네임 중복 검사 API
  */
-export const CreateChallenge = (body: CreateChallengeBody) => {
-  return fetchRequest<CreateChallengeResponseType>(ENDPOINTS.CHALLENGE.GROUP.CREATE, {
+export const CreateChallenge = ({ body }: CreateChallengeVariables) => {
+  return fetchRequest<CreateChallengeResponse>(ENDPOINTS.CHALLENGE.GROUP.CREATE, {
     body,
   })
 }

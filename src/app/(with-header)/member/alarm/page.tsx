@@ -4,8 +4,8 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import MemberAlarmList from '@features/challenge/components/member/alarm/MemberAlramList'
 import { getMemberAlarmList } from '@features/member/api/get-alarm'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 
 const MemberAlarmPage = async () => {
   const queryClient = getQueryClient()

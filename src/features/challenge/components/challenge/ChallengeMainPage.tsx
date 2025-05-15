@@ -17,8 +17,9 @@ import {
 } from '@features/challenge/api/get-group-challenge-categories'
 import { getPersonalChallengeList, PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
 import Chatbot from '@shared/components/chatbot/Chatbot'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
-import { QUERY_KEYS } from '@shared/constants/tanstack-query/query-keys'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
@@ -80,16 +81,19 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
   const { data: categoriesData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.CATEGORIES,
     queryFn: getGroupChallengeCategoryList,
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.CATEGORIES,
   })
 
   const { data: eventData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.EVENT.LIST,
     queryFn: getEventChallengeList,
+    ...QUERY_OPTIONS.CHALLENGE.EVENT.LIST,
   })
 
   const { data: personalData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.LIST(dayOfWeek),
     queryFn: () => getPersonalChallengeList({ dayOfWeek }),
+    ...QUERY_OPTIONS.CHALLENGE.PERSONAL.LIST,
   })
 
   // const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
