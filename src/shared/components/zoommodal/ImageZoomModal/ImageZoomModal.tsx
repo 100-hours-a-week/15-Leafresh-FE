@@ -80,6 +80,8 @@ export default ImageZoomModal
 
 const Wrapper = styled.div`
   position: fixed;
+  min-width: 320px;
+  max-width: 500px;
   width: 100%;
   height: 100dvh;
   top: 0;
