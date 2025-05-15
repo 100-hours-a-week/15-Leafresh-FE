@@ -271,7 +271,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 20px 16px;
+  padding: 20px 0px;
 `
 
 const DescriptionSection = styled.section`

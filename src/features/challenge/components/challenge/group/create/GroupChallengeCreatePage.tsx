@@ -162,7 +162,7 @@ export default GroupChallengeCreatePage
 
 const PageWrapper = styled.div`
   width: 100%;
-  padding: 20px 16px;
+  padding: 20px 0px;
   display: flex;
   flex-direction: column;
   gap: 24px;
