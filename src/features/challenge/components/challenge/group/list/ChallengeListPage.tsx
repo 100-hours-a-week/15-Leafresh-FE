@@ -110,12 +110,12 @@ const ChallengeListPage = () => {
           </SearchBar>
 
           <ChallengeWrapper>
-            <StyledGridBox columns={2} rowGap='16px' columnGap='16px' justifyContent='start'>
+            <Grid>
               {groupChallenges.map(challenge => (
                 <StyledGroupChallengeCard key={challenge.id} challenge={challenge} />
               ))}
               {hasNextPage && <ObserverElement ref={observerRef} />}
-            </StyledGridBox>
+            </Grid>
             {isFetchingNextPage && <LoadingMore>더 불러오는 중...</LoadingMore>}
             {groupChallenges.length === 0 && <EmptyState>진행 중인 챌린지가 없습니다.</EmptyState>}
           </ChallengeWrapper>
@@ -234,10 +234,6 @@ const ObserverElement = styled.div`
   height: 20px;
 `
 
-const NoneContent = styled.h2`
-  font-size: ${theme.fontSize.lg};
-`
-
 const LoadingMore = styled.div`
   text-align: center;
   padding: 10px;
@@ -285,7 +281,7 @@ const Message = styled.div`
   text-align: center;
 `
 
-const StyledGridBox = styled(GridBox)`
-  /* width: 100%; */
-  /* justify-items: stretch; */
+const Grid = styled(GridBox)`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 `

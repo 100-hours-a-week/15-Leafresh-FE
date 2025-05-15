@@ -47,7 +47,7 @@ const GridBox = ({
 
   return (
     <Grid
-      display='inline-grid'
+      display='grid'
       templateColumns={templateColumns}
       templateRows={templateRows}
       rowGap={rowGap}

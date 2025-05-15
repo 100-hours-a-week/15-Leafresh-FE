@@ -85,11 +85,11 @@ const VerificationCarousel = ({ verifications }: Props) => {
         <CarouselContainer>
           {chunks.map((group, index) => (
             <Slide key={index}>
-              <GridBox columns={2} rowGap={8} columnGap={8} style={{ margin: '0 auto' }}>
+              <Grid>
                 {group.map(v => (
                   <VerificationImageCard key={v.day} day={v.day} imageUrl={v.imageUrl} status={v.status} />
                 ))}
-              </GridBox>
+              </Grid>
             </Slide>
           ))}
         </CarouselContainer>
@@ -131,6 +131,11 @@ const Slide = styled.div`
   flex: 0 0 100%;
   display: flex;
   padding: 8px 0;
+`
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 `
 
 const Dots = styled.div`
