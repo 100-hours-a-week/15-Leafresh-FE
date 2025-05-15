@@ -3,8 +3,10 @@
 import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
+import { useSearchParams } from 'next/navigation'
+
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -38,12 +40,24 @@ const GroupChallengeCreatePage = () => {
   const [step, setStep] = useState<1 | 2>(1)
   const router = useRouter()
 
-  const form = useForm<FullFormValues>({
-    resolver: zodResolver(fullSchema),
-    defaultValues: {
+  const searchParams = useSearchParams()
+  const categoryFromQuery = searchParams.get('category') ?? ''
+
+  const convertCategory = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')
+  const categoryKor = convertCategory(categoryFromQuery) ?? '' // '제로웨이스트'
+
+  const defaultValues = useMemo(() => {
+    return {
       ...defaultMetaFormValues,
       ...defaultDetailFormValues,
-    },
+      category: categoryKor,
+    }
+  }, [categoryFromQuery])
+
+  const form = useForm<FullFormValues>({
+    resolver: zodResolver(fullSchema),
+    defaultValues,
+    mode: 'onChange',
   })
 
   /** 단체 챌린지 생성 */
