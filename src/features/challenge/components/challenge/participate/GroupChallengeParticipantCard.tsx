@@ -35,7 +35,7 @@ const GroupChallengeParticipantCard = ({
   return (
     <CardContainer className={className} onClick={onClick}>
       <LeftSection>
-        <ChallengeImage src={imageUrl} alt={title} width={130} height={130} />
+        <ChallengeImage src={imageUrl} alt={title} width={120} height={120} />
       </LeftSection>
       <RightSection>
         <TitleSection>
@@ -86,7 +86,7 @@ const CardContainer = styled.div`
 const LeftSection = styled.div`
   width: 130px;
   height: 100%;
-  background-color: ${theme.colors.lfGreenMain.base};
+  /* background-color: ${theme.colors.lfGreenMain.base}; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,7 +94,9 @@ const LeftSection = styled.div`
 `
 
 const ChallengeImage = styled.img`
-  object-fit: contain;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
   border-radius: 8px;
   display: flex;
   align-items: center;
