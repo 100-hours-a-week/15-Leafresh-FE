@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'motion/react'
 
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -18,7 +19,7 @@ import ChallengeVerifyExamples from '@features/challenge/components/common/Chall
 import Loading from '@shared/components/loading'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ChallengeDataType } from '@shared/context/Modal/CameraModalStore'
+import { ChallengeDataType } from '@shared/context/modal/CameraModalStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
@@ -28,6 +29,8 @@ interface VerificationGuideModalProps {
   onClose: () => void
 }
 const VerificationGuideModal = ({ isOpen, challengeData, onClose }: VerificationGuideModalProps) => {
+  const [isHovering, setIsHovering] = useState<boolean>(false)
+
   const { id: challengeId, type } = challengeData
 
   type ChallengeRulesListResponse = GroupChallengeRulesListResponse | PersonalChallengeRulesListResponse
@@ -72,7 +75,6 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
     const timeText = `${certificationPeriod.startTime} ~ ${certificationPeriod.endTime}`
 
     const today = new Date()
-    const year = today.getFullYear().toString().slice(2)
     const month = (today.getMonth() + 1).toString().padStart(2, '0')
     const date = today.getDate().toString().padStart(2, '0')
     const weekday = today.toLocaleDateString('ko-KR', { weekday: 'long' })
@@ -121,29 +123,68 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
   return (
     <AnimatePresence>
       {isOpen && (
-        <MotionWrapper initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ duration: 0.4 }}>
-          <GuideHeader>
-            인증 방법
-            <CloseButton onClick={onClose}>
-              <LucideIcon name='X' size={24} />
-            </CloseButton>
-          </GuideHeader>
-          <GuideContent>{contents}</GuideContent>
-        </MotionWrapper>
+        <Overlay onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+          <MotionWrapper
+            drag='y'
+            dragConstraints={{ top: 0 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.y > 100) {
+                onClose()
+              }
+            }}
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ duration: 0.3 }}
+          >
+            <DragBar isHover={isHovering} />
+            <GuideHeader>
+              인증 방법
+              <CloseButton onClick={onClose}>
+                <LucideIcon name='X' size={24} />
+              </CloseButton>
+            </GuideHeader>
+            <GuideContent>{contents}</GuideContent>
+          </MotionWrapper>
+        </Overlay>
       )}
     </AnimatePresence>
   )
 }
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
+  z-index: 999;
+`
 
 const MotionWrapper = styled(motion.div)`
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 80%;
+
+  display: flex;
+  flex-direction: column;
   border-top-left-radius: ${theme.radius.xl};
   border-top-right-radius: ${theme.radius.xl};
   background: ${theme.colors.lfWhite.base};
   box-shadow: ${theme.shadow.lfPrime};
+  z-index: 300;
+`
+const DragBar = styled.div<{ isHover: boolean }>`
+  width: 60px;
+  height: 6px;
+  border-radius: 4px;
+  background: ${theme.colors.lfGray.base};
+  margin: 8px auto 12px;
+
+  background: ${({ isHover }) => (isHover ? theme.colors.lfDarkGray.base : theme.colors.lfGray.base)};
+  transition: background-color 0.2s ease;
 `
 
 const GuideHeader = styled.div`
@@ -151,12 +192,16 @@ const GuideHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 30px 38px 30px;
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.bold};
 `
 
-const GuideContent = styled.div``
+const GuideContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+`
 
 const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
   padding: 20px 30px 0px 30px;
@@ -169,6 +214,7 @@ const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
 
 const CloseButton = styled.button`
   position: absolute;
+  top: 15px;
   right: 15px;
   background: transparent;
   border: none;

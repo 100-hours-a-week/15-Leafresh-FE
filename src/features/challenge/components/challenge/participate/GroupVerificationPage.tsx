@@ -4,17 +4,16 @@ import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
-import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
-import { useGroupVerificationResult, usePostGroupVerification } from '@features/challenge/hook/useGroupVerification'
-import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
-
-import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
-import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import {
   PostGroupVerificationBody,
   PostGroupVerificationResponse,
 } from '@features/challenge/api/participate/verification/group-verification'
+import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
+import { useGroupVerificationResult } from '@features/challenge/hook/useGroupVerification'
+import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 
 export default function GroupVerificationPage({ participateId }: { participateId: string }) {
   const challengeId = Number(participateId)

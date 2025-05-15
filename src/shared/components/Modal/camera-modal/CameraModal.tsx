@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import { useCameraModalStore } from '@shared/context/Modal/CameraModalStore'
+import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
@@ -18,6 +18,7 @@ import VerificationGuideModal from './VerificationGuideModal'
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
 
+type FacingMode = 'user' | 'environment'
 const CameraModal = () => {
   const openToast = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
@@ -26,49 +27,74 @@ const CameraModal = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
+  const TABS = !challengeData ? CAMERA_TABS : CHALLENGE_TABS
   const [tab, setTab] = useState<number>(0)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [description, setDescription] = useState<string>('')
-
   const [showGuide, setShowGuide] = useState<boolean>(false)
+  const [scrollTop, setScrollTop] = useState<number>(0)
 
-  const TABS = !challengeData ? CAMERA_TABS : CHALLENGE_TABS
+  const [facingMode, setFacingMode] = useState<FacingMode>('user')
 
   useEffect(() => {
-    if (!isOpen || !videoRef.current) return
-
-    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream
+    const startCamera = async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+        return
       }
-    })
 
-    return () => {
+      try {
+        // 👉 후면 카메라 요청 시 실제 존재하는지 확인
+        if (facingMode === 'environment') {
+          const devices = await navigator.mediaDevices.enumerateDevices()
+          const hasBackCamera = devices.some(
+            device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'),
+          )
+
+          if (!hasBackCamera) {
+            openToast(ToastType.Error, '해당 기기에서는 후면 카메라를 지원하지 않습니다.')
+            setFacingMode('user')
+            return
+          }
+        }
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } })
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream
+        }
+      } catch (error) {
+        openToast(ToastType.Error, '카메라 접근이 거부되었습니다.')
+      }
+    }
+
+    const stopCamera = () => {
       const stream = videoRef.current?.srcObject as MediaStream | undefined
       stream?.getTracks().forEach(track => track.stop())
+      if (videoRef.current) {
+        videoRef.current.srcObject = null
+      }
     }
-  }, [isOpen])
+
+    if (isOpen) {
+      setScrollTop(window.scrollY)
+      if (!previewUrl) {
+        startCamera()
+      }
+    } else {
+      stopCamera()
+    }
+
+    return () => {
+      stopCamera()
+    }
+  }, [isOpen, previewUrl, facingMode])
 
   useEffect(() => {
     if (tab === 1 && challengeData) setShowGuide(true)
     else setShowGuide(false)
   }, [tab])
 
-  /** 카메라 재시작 */
-  useEffect(() => {
-    const startCamera = async () => {
-      if (videoRef.current) {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-        videoRef.current.srcObject = stream
-      }
-    }
-
-    if (isOpen && !previewUrl) {
-      startCamera()
-    }
-  }, [isOpen, previewUrl])
-
-  useScrollLock(isOpen)
+  // useScrollLock(isOpen)
+  useScrollLock(isOpen && !previewUrl)
 
   const capture = () => {
     if (!canvasRef.current || !videoRef.current) return
@@ -137,10 +163,18 @@ const CameraModal = () => {
   let content
   if (!previewUrl || (previewUrl && !hasDescription)) {
     content = (
-      <ShootButtonWrapper onClick={capture}>
-        <LucideIcon name='Camera' size={50} />
-        <ShootText>촬영하기</ShootText>
-      </ShootButtonWrapper>
+      <ShootWrapper type='button'>
+        <ShootButtonWrapper onClick={capture}>
+          <LucideIcon name='Camera' size={50} />
+          <ShootText>촬영하기</ShootText>
+        </ShootButtonWrapper>
+        <CovertCameraButton
+          name='SwitchCamera'
+          size={40}
+          strokeWidth={2}
+          onClick={() => setFacingMode(prev => (prev === 'user' ? 'environment' : 'user'))}
+        />
+      </ShootWrapper>
     )
   } else if (hasDescription) {
     let label
@@ -166,44 +200,60 @@ const CameraModal = () => {
 
   if (!isOpen) return null
   return (
-    <Wrapper>
-      <Header>
-        {previewUrl ? (
-          <BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
-        ) : (
-          <CloseButton name='X' onClick={close} size={30} />
-        )}
-        {title}
-      </Header>
-      <CameraWrapper>
-        {previewUrl ? <ImagePreview src={previewUrl} /> : <CameraView ref={videoRef} autoPlay playsInline />}
-      </CameraWrapper>
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
+    <Overlay>
+      <Wrapper style={{ top: `${scrollTop}px` }}>
+        <Header>
+          {previewUrl ? (
+            <BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
+          ) : (
+            <CloseButton name='X' onClick={close} size={30} />
+          )}
+          {title}
+        </Header>
+        <CameraWrapper>
+          {previewUrl ? <ImagePreview src={previewUrl} /> : <CameraView ref={videoRef} autoPlay playsInline />}
+        </CameraWrapper>
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-      <ContentWrapper>{content}</ContentWrapper>
+        <ContentWrapper>{content}</ContentWrapper>
 
-      <SwitchWrapper>
-        {!previewUrl ? (
-          <SwitchTap tabs={TABS} currentIndex={tab} onChange={handleTabChange} />
-        ) : (
-          <ConfirmButton onClick={handleConfirm}>{confirmText}</ConfirmButton>
-        )}
+        <SwitchWrapper>
+          {!previewUrl ? (
+            <SwitchTap tabs={TABS} currentIndex={tab} onChange={handleTabChange} />
+          ) : (
+            <ConfirmButton onClick={handleConfirm}>{confirmText}</ConfirmButton>
+          )}
 
-        {challengeData && (
-          <VerificationGuideModal isOpen={showGuide} challengeData={challengeData} onClose={() => setTab(0)} />
-        )}
-      </SwitchWrapper>
-    </Wrapper>
+          {challengeData && (
+            <VerificationGuideModal isOpen={showGuide} challengeData={challengeData} onClose={() => setTab(0)} />
+          )}
+        </SwitchWrapper>
+      </Wrapper>
+    </Overlay>
   )
 }
 
 export default CameraModal
 
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
+  z-index: 199;
+`
+
 const Wrapper = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 320px;
+  max-width: 500px;
+  width: 100%;
   height: 100vh;
 
   display: flex;
@@ -255,8 +305,8 @@ const ImagePreview = styled.img`
 
 const ContentWrapper = styled.div`
   width: 100%;
-  height: 225px;
-  padding: 12px 36px;
+  height: 250px;
+  padding: 18px 36px 0px 36px;
 
   position: relative;
   display: flex;
@@ -264,12 +314,14 @@ const ContentWrapper = styled.div`
 
   background-color: ${theme.colors.lfInputBackground.base};
 `
-const ShootButtonWrapper = styled.button`
+const ShootWrapper = styled.button`
   width: 100%;
   height: 100%;
   border: none;
   font-size: 24px;
   cursor: pointer;
+
+  /* position: relative; */
 
   background-color: ${theme.colors.lfInputBackground.base};
 `
@@ -280,12 +332,12 @@ const ShootText = styled.span`
 `
 
 const SwitchWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   flex: 1;
-
+  padding: 12px 36px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `
 
 const TextAreaWrapper = styled.div`
@@ -336,8 +388,20 @@ const ConfirmButton = styled.button`
 `
 
 const CloseButton = styled(LucideIcon)`
+  cursor: pointer;
   position: absolute;
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
+`
+
+const ShootButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
+const CovertCameraButton = styled(LucideIcon)`
+  position: absolute;
+  right: 25px;
 `

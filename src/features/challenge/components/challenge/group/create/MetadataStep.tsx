@@ -25,13 +25,13 @@ const PARTICIPANT_OPTIONS = Array.from(
   (_, i) => PARTICIPANT_RANGE.MIN + i * PARTICIPANT_RANGE.RANGE,
 )
 export const metaSchema = z.object({
-  title: z.string().min(1, '챌린지 제목을 입력해주세요'),
-  category: z.string().min(1, '카테고리를 선택해주세요'),
-  startDate: z.date({ required_error: '시작일을 선택해주세요' }),
-  endDate: z.date({ required_error: '종료일을 선택해주세요' }),
-  startTime: z.string().min(1, '시작 시간을 선택해주세요'),
-  endTime: z.string().min(1, '종료 시간을 선택해주세요'),
-  maxParticipant: z.number({ required_error: '최대 인원을 선택해주세요' }).min(1, '최대 인원을 선택해주세요'),
+  title: z.string().min(1, '챌린지 제목을 입력해주세요.'),
+  category: z.string().min(1, '카테고리를 선택해주세요.'),
+  startDate: z.date({ required_error: '시작일을 선택해주세요.' }),
+  endDate: z.date({ required_error: '종료일을 선택해주세요.' }),
+  startTime: z.string().min(1, '시작 시간을 선택해주세요.'),
+  endTime: z.string().min(1, '종료 시간을 선택해주세요.'),
+  maxParticipant: z.number({ required_error: '최대 인원을 선택해주세요.' }).min(1, '최대 인원을 선택해주세요.'),
   examples: z
     .array(
       z.object({
@@ -60,7 +60,7 @@ export const defaultMetaFormValues: MetaFormValues = {
   title: '',
   category: '',
   startDate: new Date(),
-  endDate: new Date(),
+  endDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
   startTime: '00:00',
   endTime: '23:50',
   maxParticipant: 0,
@@ -120,6 +120,10 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
   )
 
   const handleMetaSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('클릭 태그:', (e.target as HTMLElement).tagName)
+    console.log('클래스명:', (e.target as HTMLElement).className)
+    console.log('텍스트:', (e.target as HTMLElement).textContent)
+
     e.preventDefault()
     if (!isSubmitted) {
       setIsSubmitted(true)

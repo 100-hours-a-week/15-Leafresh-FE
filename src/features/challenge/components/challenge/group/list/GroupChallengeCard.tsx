@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 
 import { URL } from '@shared/constants/route/route'
 import { theme } from '@shared/styles/theme'
+import LeafIcon from '@public/icon/leaf.png'
 
 interface GroupChallengeProps {
   challenge: {
@@ -38,11 +39,6 @@ const GroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge, classNam
             </PlaceholderIcon>
           </PlaceholderWrapper>
         )}
-
-        <RewardBadge>
-          <Image src='/icon/leaf.png' alt='leaf' width={24} height={24} />
-          <RewardText>{challenge?.leafReward || 30}개</RewardText>
-        </RewardBadge>
       </ImageContainer>
 
       <ContentContainer>
@@ -50,8 +46,13 @@ const GroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge, classNam
 
         <TagsContainer>
           <Tag>{challenge.remainingDay === 0 ? '# 오늘부터 시작' : `#${challenge.remainingDay}일 뒤 시작`}</Tag>
-          <Tag>#{challenge?.currentParticipantCount || 0}명 참여중</Tag>
+          <Tag># {challenge?.currentParticipantCount || 0}명 참여중</Tag>
         </TagsContainer>
+
+        <RewardBadge>
+          <Image src={LeafIcon} alt='재화' width={24} height={24} />
+          <RewardText>{challenge?.leafReward || 30}개</RewardText>
+        </RewardBadge>
       </ContentContainer>
     </CardContainer>
   )
@@ -64,17 +65,16 @@ const CardContainer = styled.div`
   width: 180px;
   border-radius: ${theme.radius.base};
   overflow: hidden;
-  box-shadow: ${theme.shadow.lfPrime};
-
-  &:active {
-    scale: 0.95;
-  }
+  cursor: pointer;
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1);
 `
 
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 150px;
+  aspect-ratio: 4/3;
 `
 //이미지가 유효하지 않을 시
 const PlaceholderWrapper = styled.div`
@@ -122,38 +122,41 @@ const CoverImage = styled.img`
   object-fit: cover;
 `
 const RewardBadge = styled.div`
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
+  align-self: flex-end;
+  margin-top: 14px;
+
   display: flex;
   align-items: center;
-  padding-right: 2px;
+  margin-right: 8px;
   border-radius: 5px;
 `
 
 const RewardText = styled.span`
-  font-size: 8px;
-  font-weight: ${theme.fontWeight.bold};
+  font-size: ${theme.fontSize.xss};
+  font-weight: ${theme.fontWeight.semiBold};
 `
 
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  padding: 10px 5px;
+  padding: 10px 8px;
 `
 
 const Title = styled.div`
   margin-bottom: 10px;
   font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.medium};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-weight: ${theme.fontWeight.medium};
 `
 
 const TagsContainer = styled.div`
   display: flex;
+  align-items: center;
+
+  gap: 8px;
 `
 
 const Tag = styled.span`

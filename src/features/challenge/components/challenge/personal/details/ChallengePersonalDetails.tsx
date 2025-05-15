@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import {
   getPersonalChallengeDetails,
   PersonalChallengeDetail,
@@ -27,7 +28,8 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
-import { useCameraModalStore } from '@shared/context/Modal/CameraModalStore'
+import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
@@ -99,6 +101,10 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   const router = useRouter()
   const openToast = useToast()
   const { open: openCameraModal } = useCameraModalStore()
+  const { userInfo } = useOAuthUserStore()
+  const { openConfirmModal } = useConfirmModalStore()
+
+  const isLoggedIn: boolean = !!userInfo
 
   /** 개인 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
@@ -145,8 +151,15 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
 
   /** 이미지 촬영 모달 열기 */
   const openImageModal = () => {
-    console.log('openimagemodal')
-
+    // #0. 로그인 상태가 아닐 때
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
+      return
+    }
     openCameraModal(
       // #1. 카메라 모달 제목
       `${title} 챌린지`,
@@ -263,7 +276,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
         <Section>
           <StyledChallengeVerifyExamples
             title='인증샷 예시'
-            description=''
+            description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
             examples={verificationExampleImages}
             onChange={() => {}}

@@ -21,10 +21,11 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
+import { theme } from '@shared/styles/theme'
 
 const SignupPage = () => {
   const router = useRouter()
-  const { userInfo } = useOAuthUserStore()
+  const { userInfo, setUserInfo } = useOAuthUserStore()
   const openToast = useToast()
 
   const [isDuplicateChecked, setIsDuplicateChecked] = useState<boolean>(false)
@@ -53,9 +54,10 @@ const SignupPage = () => {
   const { mutate: SignUpMutate } = useMutationStore<SignUpResponseType, SignUpVariables>(MUTATION_KEYS.MEMBER.SIGNUP)
 
   useEffect(() => {
+    /** 이미 회원가입한 유저일 경우 */
     if (userInfo?.isMember) {
       // if (!userInfo || userInfo?.isMember) {
-      router.replace(URL.MAIN.INDEX.value)
+      router.replace(URL.CHALLENGE.INDEX.value)
     }
   }, [userInfo])
 
@@ -119,15 +121,16 @@ const SignupPage = () => {
       { body },
       {
         onSuccess: response => {
-          if (response.data.data.isDuplicated) {
-            setError('nickname', {
-              type: 'manual',
-              message: '이미 존재하는 유저입니다.',
-            })
-          } else {
-            openToast(ToastType.Success, '회원가입이 완료되었습니다.')
-            router.replace(URL.MAIN.INDEX.value)
-          }
+          const { imageUrl, nickname } = response.data.data // 유저 정보
+
+          setUserInfo({
+            isMember: true, // 회원가입 완료 상태로 전환
+            email: userInfo?.email || '',
+            provider: userInfo?.provider || 'kakao',
+            imageUrl,
+            nickname,
+          })
+          router.replace(URL.CHALLENGE.INDEX.value) // 회원가입 후 챌린지 메인으로 이동
         },
         onError: () => {
           openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
@@ -141,13 +144,13 @@ const SignupPage = () => {
       <Title>회원가입</Title>
 
       <FieldWrapper>
-        <Label htmlFor='nickname'>닉네임 *</Label>
-        <InputRow>
+        <InputWrapper>
+          <Label htmlFor='nickname'>닉네임 *</Label>
           <Input id='nickname' {...register('nickname')} />
-          <CheckButton type='button' onClick={handleCheckDuplicate}>
-            중복 확인
-          </CheckButton>
-        </InputRow>
+        </InputWrapper>
+        <CheckButton type='button' onClick={handleCheckDuplicate}>
+          중복 확인
+        </CheckButton>
         <ErrorText message={errors.nickname?.message} />
       </FieldWrapper>
 
@@ -161,6 +164,7 @@ export default SignupPage
 const Form = styled.form`
   height: 100%;
 
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -174,7 +178,18 @@ const Title = styled.h2`
   font-weight: bold;
 `
 
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`
 const FieldWrapper = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
   margin-bottom: 24px;
 `
 
@@ -184,13 +199,7 @@ const Label = styled.label`
   margin-bottom: 8px;
 `
 
-const InputRow = styled.div`
-  display: flex;
-  gap: 8px;
-`
-
 const Input = styled.input`
-  flex: 1;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -198,21 +207,24 @@ const Input = styled.input`
 
 const CheckButton = styled.button`
   background-color: #4c8b5d;
-  color: white;
+  font-size: ${theme.fontSize.base};
+  color: ${theme.colors.lfWhite.base};
+
+  margin-top: 6px;
   padding: 12px 16px;
   border: none;
   border-radius: 6px;
-  font-size: 14px;
+
   cursor: pointer;
 `
 
 const SubmitButton = styled.button`
-  background-color: #99c69f;
-  color: black;
+  background-color: ${theme.colors.lfGreenInactive.base};
+  color: ${theme.colors.lfBlack.base};
   font-weight: bold;
   height: 50px;
   border: none;
-  border-radius: 12px;
+  border-radius: ${theme.radius.sm};
   font-size: 16px;
   cursor: pointer;
 `

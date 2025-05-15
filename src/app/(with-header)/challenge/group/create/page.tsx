@@ -1,12 +1,11 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { z } from 'zod'
 
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSearchParams } from 'next/navigation'
-
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -14,7 +13,6 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/c
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
   CreateChallengeBody,
-  CreateChallengeResponse,
   CreateChallengeVariables,
   ExampleImageType,
 } from '@features/challenge/api/create-group-challenge'
@@ -33,7 +31,34 @@ import { formatDateToDateFormatString } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
 
-const fullSchema = metaSchema.merge(detailSchema)
+const fullSchema = metaSchema
+  .merge(detailSchema)
+  .refine(
+    ({ startDate, endDate }) => {
+      const start = startDate.setHours(0, 0, 0, 0)
+      const end = endDate.setHours(0, 0, 0, 0)
+      const msDiff = end - start
+      return msDiff > 0
+    },
+    {
+      path: ['endDate'],
+      message: '하루 지속되는 챌린지는 불가능합니다.',
+    },
+  )
+  .refine(
+    data => {
+      const msPerDay = 24 * 60 * 60 * 1000
+      const start = data.startDate.setHours(0, 0, 0, 0)
+      const end = data.endDate.setHours(0, 0, 0, 0)
+      const diffDays = (end - start) / msPerDay
+      return diffDays >= 1
+    },
+    {
+      path: ['endDate'],
+      message: '종료일은 시작일보다 정확히 하루 뒤여야 합니다.',
+    },
+  )
+
 export type FullFormValues = z.infer<typeof fullSchema>
 
 const GroupChallengeCreatePage = () => {
@@ -62,7 +87,7 @@ const GroupChallengeCreatePage = () => {
 
   /** 단체 챌린지 생성 */
   const { mutate: CreateChallengeMutate, isPending: isCreating } = useMutationStore<
-    CreateChallengeResponse,
+    { id: number },
     CreateChallengeVariables
   >(MUTATION_KEYS.CHALLENGE.GROUP.CREATE)
 
@@ -82,14 +107,6 @@ const GroupChallengeCreatePage = () => {
       startTime,
       endTime,
     } = data
-
-    /**
-     * {
-      type: "SUCCESS" | "FAILURE";
-      url: string | null;
-      description: string;
-      }
-     */
 
     const filteredExamples = examples.filter(example => example.url !== null)
     const exampleImages = filteredExamples.map((example, index) => ({
@@ -115,7 +132,7 @@ const GroupChallengeCreatePage = () => {
       { body },
       {
         onSuccess: response => {
-          const challengeId: number = response.data.data.id
+          const challengeId: number = response.data.id
           router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
         },
         onError: () => {

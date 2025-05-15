@@ -17,7 +17,7 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteGroupChallengeVerifications(challengeId)
 
-  const verifications = data?.pages.flatMap(page => page?.data?.verifications || []) ?? []
+  const verifications = data?.pages.flatMap(page => page?.data?.items || []) ?? []
   // const verifications = dummyVerifications
   const triggerRef = useRef<HTMLDivElement>(null)
 

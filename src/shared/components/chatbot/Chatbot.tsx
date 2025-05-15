@@ -1,7 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
+import { useEffect,useState } from 'react'
 import styled from '@emotion/styled'
 
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'

@@ -5,6 +5,7 @@ import { PostGroupVerification } from '@features/challenge/api/participate/verif
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
 import { Logout } from '@features/member/api/logout'
+import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
@@ -12,7 +13,6 @@ import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
-import { readAllAlarms } from '@features/member/api/read-all-alarms'
 
 const queryClient = getQueryClient()
 

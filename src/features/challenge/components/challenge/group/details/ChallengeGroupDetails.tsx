@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import {
   ParticipateGroupChallengeResponse,
@@ -24,6 +25,7 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
@@ -52,6 +54,11 @@ interface ChallengeGroupDetailsProps {
 }
 
 const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
+  const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const { openConfirmModal } = useConfirmModalStore()
+
+  const isLoggedIn: boolean = !!userInfo
+
   const router = useRouter()
   const openToast = useToast()
   /** 단체 챌린지 상세 가져오기 */
@@ -108,6 +115,15 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
       openToast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
       return
     }
+    /** 로그인하지 않음 */
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
+      return
+    }
     const now = new Date()
 
     const startDateTime = new Date(`${startDate}T${verificationStartTime}`)
@@ -138,7 +154,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
       { challengeId },
       {
         onSuccess: () => {
-          openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+          openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
           router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
         },
         onError: (error: ErrorResponse) => {
@@ -208,7 +224,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
         <Section>
           <StyledChallengeVerifyExamples
             title='인증샷 예시'
-            description=''
+            description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
             examples={verificationExampleImages}
             onChange={() => {}}

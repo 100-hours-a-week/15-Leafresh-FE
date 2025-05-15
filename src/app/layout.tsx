@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 
-import CameraModal from '@shared/components/modal/camera-modal/CameraModal'
-import ConfirmModal from '@shared/components/modal/ConfirmModal'
-import InfoModal from '@shared/components/modal/InfoModal'
+import ModalProvider from '@shared/components/modal/ModalProvider'
 import Toast from '@shared/components/Toast/Toast'
 import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
 import { pretendard } from '@shared/config/font'
@@ -24,11 +22,9 @@ const RootLayout = ({
       <body className={`${pretendard.className}`}>
         <Providers>
           <LayoutWrapper>{children}</LayoutWrapper>
-          <ConfirmModal />
-          <CameraModal />
-          <InfoModal />
-          <Toast />
+          <ModalProvider />
           <ImageZoomModal />
+          <Toast />
         </Providers>
       </body>
     </html>

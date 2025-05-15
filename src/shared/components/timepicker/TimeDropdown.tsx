@@ -68,6 +68,7 @@ export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpe
   return (
     <Wrapper ref={wrapperRef}>
       <Trigger
+        type='button'
         onClick={() => {
           onOpenChange(!isOpen)
         }}
@@ -92,8 +93,10 @@ export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpe
           </Column>
         </Columns>
         <ActionWrapper>
-          <ActButton onClick={handleClose}>취소</ActButton>
-          <ActButton primary onClick={handleConfirm}>
+          <ActButton type='button' onClick={handleClose}>
+            취소
+          </ActButton>
+          <ActButton type='button' primary onClick={handleConfirm}>
             확인
           </ActButton>
         </ActionWrapper>

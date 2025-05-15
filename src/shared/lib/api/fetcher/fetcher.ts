@@ -1,4 +1,5 @@
-import { EndpointType } from '@shared/constants/endpoint/endpoint'
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { ENDPOINTS, EndpointType } from '@shared/constants/endpoint/endpoint'
 
 const BASE_URL = 'https://leafresh.app'
 
@@ -22,7 +23,39 @@ type OptionsType = {
   query?: Record<string, string | number>
 }
 
-export async function fetchRequest<T>(endpoint: EndpointType, options: OptionsType = {}): Promise<T> {
+let isRefreshing = false
+let refreshPromise: Promise<void> | null = null
+
+async function refreshAccessToken(): Promise<void> {
+  if (isRefreshing) return refreshPromise ?? Promise.resolve()
+
+  isRefreshing = true
+
+  refreshPromise = (async () => {
+    try {
+      const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE}`, {
+        method: 'POST',
+        credentials: 'include', // 쿠키 포함
+      })
+
+      if (!response.ok) {
+        throw new Error('Refresh failed')
+      }
+
+      isRefreshing = false
+    } catch (error) {
+      // 로그인 정보 초기화
+      useOAuthUserStore.getState().clearUserInfo()
+
+      isRefreshing = false
+      throw error
+    }
+  })()
+
+  return refreshPromise
+}
+
+export async function fetchRequest<T>(endpoint: EndpointType, options: OptionsType = {}, isRetry = false): Promise<T> {
   /** Request */
   const { method, path } = endpoint
 
@@ -57,6 +90,21 @@ export async function fetchRequest<T>(endpoint: EndpointType, options: OptionsTy
   const data = contentType?.includes('application/json') ? await response.json() : await response.text()
 
   if (!response.ok) {
+    // ✅ Access Token 만료 추정 시 재시도
+    if ((response.status === 401 || response.status === 403) && !isRetry) {
+      try {
+        await refreshAccessToken()
+        return fetchRequest<T>(endpoint, options, true) // 딱 한 번만 재시도
+      } catch (refreshError) {
+        const error: ErrorResponse = {
+          status: 401,
+          message: '세션이 만료되었습니다. 다시 로그인해주세요.',
+          data: null,
+        }
+        throw error
+      }
+    }
+
     const error: ErrorResponse = {
       status: response.status,
       message: typeof data === 'object' && data?.message ? data.message : 'Unknown error',

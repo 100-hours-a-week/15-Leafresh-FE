@@ -60,18 +60,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 12px;
 `
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
-const Title = styled.h3`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.bold};
-`
-
 const Viewport = styled.div`
   overflow: hidden;
   width: 100%;
@@ -79,6 +67,7 @@ const Viewport = styled.div`
 
 const Track = styled.div`
   display: flex;
+  gap: 8px;
 `
 
 const Slide = styled.div`

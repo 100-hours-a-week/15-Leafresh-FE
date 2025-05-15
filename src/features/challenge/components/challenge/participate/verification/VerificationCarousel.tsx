@@ -5,8 +5,6 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import GridBox from '@shared/components/Wrapper/GridBox'
-
 import VerificationImageCard, { VerificationStatus } from './VerificationCard'
 
 interface Verification {
@@ -136,6 +134,7 @@ const Slide = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
 `
 
 const Dots = styled.div`

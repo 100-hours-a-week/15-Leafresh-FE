@@ -20,7 +20,7 @@ const statusMap: Record<number, ChallengeStatus> = {
 }
 
 export default function ChallengeParticipatePage() {
-  const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState(1)
   const status = statusMap[tab]
   const router = useRouter()
 
@@ -33,7 +33,6 @@ export default function ChallengeParticipatePage() {
   // API 오류 여부
   const hasError = Boolean(error)
 
-  // API 정상 시 실제 챌린지, 오류 시 dummy 전체
   const realChallenges = data?.pages.flatMap(p => p.data.challenges) ?? []
   // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
@@ -59,7 +58,7 @@ export default function ChallengeParticipatePage() {
     }
   }, [hasError, hasNextPage, isFetchingNextPage, fetchNextPage])
 
-  // if (isLoading && !hasError) return <div>Loading challenges…</div>
+  if (isLoading && !hasError) return <div>Loading challenges…</div>
 
   return (
     <Container>
