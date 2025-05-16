@@ -9,6 +9,8 @@ import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupCha
 import Chatbot from '@shared/components/chatbot/Chatbot'
 import GridBox from '@shared/components/Wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
+
+import { Spinner } from '@chakra-ui/react'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
@@ -30,14 +32,30 @@ const ChallengeListPage = () => {
 
   // URL에서 category, search 파라미터 읽기
   const category = searchParams.get('category') || ''
-  console.log(category)
 
-  const initialSearch = searchParams.get('search') || ''
+  const searchKeyword = searchParams.get('search') || ''
 
   // 로컬 input 초기화
   useEffect(() => {
-    setInput(initialSearch)
-  }, [initialSearch])
+    setInput(searchKeyword)
+  }, [searchKeyword])
+
+  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteGroupChallenges(
+    category,
+    searchKeyword,
+  )
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if (input === '' && searchParams.get('search')) {
+        const params = new URLSearchParams(searchParams.toString())
+        params.delete('search')
+        router.replace(`?${params.toString()}`)
+      }
+    }, 300)
+
+    return () => clearTimeout(delayDebounce)
+  }, [input, searchParams, router])
 
   // 검색 폼 제출 핸들러
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -47,12 +65,6 @@ const ChallengeListPage = () => {
     else params.delete('search')
     router.push(`?${params.toString()}`)
   }
-
-  // 무한 스크롤 훅 호출 (URL 변경 시 재요청)
-  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteGroupChallenges(
-    category as string,
-    initialSearch,
-  )
 
   // 무한 스크롤 옵저버
   const observerRef = useRef<HTMLDivElement>(null)
@@ -71,7 +83,7 @@ const ChallengeListPage = () => {
   // API 데이터 뽑아오기
   const groupChallenges: GroupChallenge[] = data?.pages.flatMap(p => p.data.groupChallenges) ?? []
 
-  if (isLoading) return <Message>Loading challenges…</Message>
+  if (isLoading) return <Spinner size='lg' style={{ marginTop: '100px' }} />
   if (error) return <Message>Error: {error.message}</Message>
 
   return (
@@ -102,7 +114,13 @@ const ChallengeListPage = () => {
           </Header>
 
           <SearchBar onSubmit={handleSearchSubmit}>
-            <SearchInput type='text' placeholder='챌린지 검색' value={input} onChange={e => setInput(e.target.value)} />
+            <SearchInput
+              type='text'
+              inputMode='search'
+              placeholder='챌린지 검색'
+              value={input}
+              onChange={e => setInput(e.target.value)}
+            />
           </SearchBar>
 
           <ChallengeWrapper>
@@ -114,7 +132,7 @@ const ChallengeListPage = () => {
                 {hasNextPage && <ObserverElement ref={observerRef} />}
               </Grid>
             )}
-            {isFetchingNextPage && <LoadingMore>더 불러오는 중...</LoadingMore>}
+            {isFetchingNextPage && <Spinner size='sm' />}
             {groupChallenges.length === 0 && <EmptyState>진행 중인 챌린지가 없습니다.</EmptyState>}
           </ChallengeWrapper>
         </Section>
@@ -249,32 +267,6 @@ const EmptyState = styled.div`
 `
 const StyledGroupChallengeCard = styled(GroupChallengeCard)`
   width: 100%;
-`
-
-const ChatButton = styled.button`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  background-color: white;
-  border-radius: 50%;
-  border: none;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-  cursor: pointer;
-
-  &::before {
-    content: '';
-    width: 24px;
-    height: 24px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-  }
 `
 
 const Message = styled.div`

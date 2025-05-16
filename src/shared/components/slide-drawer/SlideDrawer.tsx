@@ -23,6 +23,7 @@ import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LogoImage from '@public/image/logo.svg'
+import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
 
 interface SlideDrawerProps {
   height: number
@@ -32,6 +33,7 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
   const router = useRouter()
   const { isOpen, close, toggle } = useDrawerStore()
   const { openConfirmModal, isOpen: isConfirmModalOpen } = useConfirmModalStore()
+  const { openInfoModal, isOpen: isInfoModalOpen } = useInfoModalStore()
   const { userInfo, clearUserInfo } = useOAuthUserStore()
   const [scrollTop, setScrollTop] = useState<number>(0)
 
@@ -155,12 +157,24 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
               <MenuItem disabled={!isLoggedIn} onClick={() => handleRoute(URL.CHALLENGE.PARTICIPATE.INDEX.value)}>
                 인증하기
               </MenuItem>
-              <MenuItem disabled={false} onClick={() => handleRoute(URL.STORE.INDEX.value)}>
+              <MenuItem
+                disabled={false}
+                onClick={() => openInfoModal({ title: '추가 예정입니다!', description: 'V2를 기대해주세요!' })}
+              >
                 포스팅
               </MenuItem>
-              <MenuItem disabled={false} onClick={() => handleRoute(URL.STORE.INDEX.value)}>
+              {/* <MenuItem disabled={false} onClick={() => handleRoute(URL.STORE.INDEX.value)}>
+                포스팅
+              </MenuItem> */}
+              <MenuItem
+                disabled={false}
+                onClick={() => openInfoModal({ title: '추가 예정입니다!', description: 'V2를 기대해주세요!' })}
+              >
                 나뭇잎 상점
               </MenuItem>
+              {/* <MenuItem disabled={false} onClick={() => handleRoute(URL.STORE.INDEX.value)}>
+                나뭇잎 상점
+              </MenuItem> */}
               <MenuItem disabled={!isLoggedIn} onClick={handleLogout}>
                 로그아웃
               </MenuItem>

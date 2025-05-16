@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import styled from '@emotion/styled'
 
 import {
@@ -14,6 +12,7 @@ import { useGroupVerifications } from '@features/challenge/hook/useGroupVerifica
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { theme } from '@shared/styles/theme'
 
 export default function GroupVerificationPage({ participateId }: { participateId: string }) {
   const challengeId = Number(participateId)
@@ -23,8 +22,6 @@ export default function GroupVerificationPage({ participateId }: { participateId
     { challengeId: number; body: PostGroupVerificationBody }
   >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY)
   const resultQuery = useGroupVerificationResult(challengeId)
-
-  const router = useRouter()
 
   const { open: openCameraModal } = useCameraModalStore()
 
@@ -101,8 +98,8 @@ const Container = styled.div`
 `
 const Title = styled.h2`
   align-self: center;
-  font-size: 1.25rem;
-  font-weight: bold;
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.bold};
 `
 const Stats = styled.div`
   display: flex;
@@ -112,12 +109,12 @@ const Stat = styled.div`
   text-align: center;
 `
 const Label = styled.div`
-  font-size: 0.875rem;
-  color: #555;
+  font-size: ${theme.fontSize.sm};
+  color: ${theme.colors.lfDarkGray.base};
 `
 const Count = styled.div`
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: ${theme.fontSize.md};
+  font-weight: ${theme.fontWeight.bold};
   margin-top: 4px;
 `
 const GridWrapper = styled.div`
@@ -136,20 +133,22 @@ const ButtonGroup = styled.div`
 const QuestionButton = styled.button`
   text-align: center;
   padding: 12px;
-  background: #2e7d32;
-  color: #fff;
+  background: ${theme.colors.lfGreenInactive.base};
+  color: ${theme.colors.lfWhite.base};
   border: none;
   border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
+  font-size: ${theme.fontSize.md};
+  font-weight: ${theme.fontWeight.regular};
+  /* cursor: pointer; */
+  cursor: default;
 `
 const ActionButton = styled.button`
   padding: 12px;
-  background: #2e7d32;
-  color: #fff;
+  background: ${theme.colors.lfGreenMain.base};
+  color: ${theme.colors.lfWhite.base};
   border: none;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: ${theme.fontSize.md};
   cursor: pointer;
   &:disabled {
     opacity: 0.6;
@@ -158,22 +157,18 @@ const ActionButton = styled.button`
 `
 const DisabledButton = styled.button`
   padding: 12px;
-  background: #ccc;
-  color: #666;
+  background: ${theme.colors.lfGreenInactive.base};
+  color: ${theme.colors.lfWhite.base};
   border: none;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: ${theme.fontSize.md};
   cursor: default;
 `
 const Message = styled.div`
   padding: 40px;
   text-align: center;
 `
-const PollingMessage = styled.div`
-  text-align: center;
-  font-size: 0.875rem;
-  color: #555;
-`
+
 const ResultMessage = styled.div`
   text-align: center;
   font-size: 1rem;

@@ -77,6 +77,7 @@ const Card = styled.div`
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: solid 1px ${theme.colors.lfBlack.base};
   margin: 8px 0;
 
   &[data-type='challenge'] {

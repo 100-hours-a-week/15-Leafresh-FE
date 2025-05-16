@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-// 챗봇 API import
 import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
 import SlideArea from '@shared/components/slidearea/SlideArea'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
@@ -37,6 +36,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       selectionProps?: any
       subDescription?: string
       buttonText?: string
+      isAnswer?: boolean
       onClick?: () => void
     }>
   >([])
@@ -50,10 +50,11 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [selectedWorkType, setSelectedWorkType] = useState<string | null>(null)
 
-  //카테고리 버튼 클릭 여부 - 연속 클릭 방지
-  const [isCategorySending, setIsCategorySending] = useState(false)
-  //채팅 전송 여부 - 연속 전송 방지
-  const [isSending, setIsSending] = useState(false)
+  const chatSelectionsRef = useRef(chatSelections)
+
+  // 단일 상태로 통합하여 요청 처리 상태 관리
+  // 0: 아무 작업 안함, 1: 카테고리 선택 중, 2: 채팅 전송 중
+  const [requestStatus, setRequestStatus] = useState(0)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -75,7 +76,6 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         try {
           setChatSelections(JSON.parse(storedSelections))
         } catch (error) {
-          console.error('Failed to parse stored selections:', error)
           // 파싱 실패 시 초기화
           sessionStorage.removeItem('chatSelections')
         }
@@ -83,18 +83,10 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     }
   }, [])
 
-  // chatSelections 업데이트 함수
   const updateChatSelections = (updates: Partial<ChatSelections>) => {
-    setChatSelections(prev => {
-      const updated = { ...prev, ...updates }
-
-      // SessionStorage에 저장
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('chatSelections', JSON.stringify(updated))
-      }
-
-      return updated
-    })
+    setChatSelections(prev => ({ ...prev, ...updates }))
+    chatSelectionsRef.current = { ...chatSelectionsRef.current, ...updates }
+    sessionStorage.setItem('chatSelections', JSON.stringify(chatSelectionsRef.current))
   }
 
   // 초기 메시지 및 단계별 UI 설정
@@ -105,7 +97,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         {
           type: 'message',
           role: 'bot',
-          text: '안녕하세요! 저는 Leafresh의 챗봇 새순입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
+          text: '안녕하세요! 저는 Leafresh의 챗봇 수피입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
         },
         {
           type: 'horizontal-cards',
@@ -143,7 +135,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             { label: '디지털 탄소', value: '디지털 탄소' },
           ],
           selectionType: 'challenge',
-          onSelect: (value: string) => handleChallengeSelect(value),
+          onSelect: handleChallengeSelect,
         })
       }, 300)
 
@@ -180,39 +172,34 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
 
   // 챌린지 선택 처리
   const handleChallengeSelect = async (value: string) => {
-    if (isCategorySending) return // 중복 방지
-    setIsCategorySending(true)
-    // 사용자 선택 메시지 추가
-    const displayValue = getDisplayLabel(value)
-    addChatItem('message', 'user', displayValue)
+    // 다른 요청이 처리 중이면 중복 처리 방지
+    if (requestStatus !== 0) {
+      return
+    }
 
-    // chatSelections에 location, workType 유지하고 category 추가
-    updateChatSelections({ category: value })
-
-    // 챌린지 추천 로딩 표시
-    setLoading(true)
+    // 카테고리 전송 시작 표시 (상태: 1)
+    setRequestStatus(1)
 
     try {
-      // API 호출 - 카테고리 기반 추천 (chatSelections 사용)
+      // 1) user 선택 반영
+      const displayValue = getDisplayLabel(value)
+      addChatItem('message', 'user', displayValue)
+
+      // 2) ref를 즉시 동기 갱신
+      updateChatSelections({ category: value })
+
+      // 챌린지 추천 로딩 표시
+      setLoading(true)
+
+      // API 호출 - 카테고리 기반 추천
       const response = await requestCategoryBasedRecommendation({
-        location: chatSelections.location || '',
-        workType: chatSelections.workType || '',
+        location: chatSelectionsRef.current.location || '',
+        workType: chatSelectionsRef.current.workType || '',
         category: value,
       })
 
-      setLoading(false)
-
       // API 응답 데이터 처리
       const { recommend, challenges } = response.data
-
-      // 챌린지 목록 포맷팅
-      // const formattedChallenges = challenges.flatMap((challenge, index) => [
-      //   `${index + 1}. ${challenge.title}`,
-      //   <br key={`${index}-title`} />,
-      //   `\u00a0\u00a0${challenge.description}`,
-      //   <br key={`${index}-desc`} />,
-      //   <br key={`${index}-spacer`} />,
-      // ])
 
       // 응답 메시지 구성
       const responseMessage = [
@@ -236,11 +223,13 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         undefined,
         '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n 챌린지를 언급해주세요!',
         '카테고리 재선택',
-        () => handleRetry(),
+        true,
+        handleRetry,
       )
-    } catch (error: unknown) {
-      setLoading(false)
 
+      // 상위 콜백 호출 - 챌린지 선택은 step 2
+      onSelect(value, 2)
+    } catch (error: unknown) {
       let errorMsg: string
 
       if (typeof error === 'object' && error !== null && 'message' in error) {
@@ -249,16 +238,27 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         errorMsg = '추천 과정에서 오류가 발생했습니다. 다시 시도해주세요.'
       }
 
-      addChatItem('message', 'bot', `죄송합니다. ${errorMsg}`, undefined, undefined, '다시 시도', () => handleRetry())
+      addChatItem('message', 'bot', `죄송합니다. ${errorMsg}`, undefined, undefined, '다시 시도', true, handleRetry)
+    } finally {
+      // 항상 로딩과 요청 상태 초기화
+      setLoading(false)
+      // 요청 처리 완료 (상태: 0)
+      setRequestStatus(0)
     }
-
-    // 상위 콜백 호출 - 챌린지 선택은 step 2
-    onSelect(value, 2)
   }
 
   // 재선택 처리
   const handleRetry = () => {
-    setIsCategorySending(false)
+    // 재선택 처리 시작 전 요청 상태 확인
+    if (requestStatus !== 0) {
+      // 1초 후 재시도 (요청 상태가 초기화되길 기다림)
+      setTimeout(() => handleRetry(), 1000)
+      return
+    }
+
+    // 요청 상태 초기화 보장 (상태: 0)
+    setRequestStatus(0)
+
     addChatItem('message', 'bot', '참여하고 싶은 챌린지 유형을 선택해주세요!')
 
     // 챌린지 카테고리 선택지 다시 추가
@@ -277,7 +277,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         { label: '디지털 탄소', value: '디지털 탄소' },
       ],
       selectionType: 'challenge',
-      onSelect: (value: string) => handleChallengeSelect(value),
+      onSelect: handleChallengeSelect,
     })
 
     // 상위 콜백 호출
@@ -291,43 +291,58 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     text?: React.ReactNode,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectionProps?: any,
-    subDescription?: string, // Add this for secondary text
-    buttonText?: string, // Add this for button text
-    onClick?: () => void, // Add this for button function
+    subDescription?: string,
+    buttonText?: string,
+    isAnswer?: boolean,
+    onClick?: () => void,
   ) => {
-    setChatHistory(prev => [...prev, { type, role, text, selectionProps, subDescription, buttonText, onClick }])
+    setChatHistory(prev => [
+      ...prev,
+      { type, role, text, selectionProps, subDescription, buttonText, isAnswer, onClick },
+    ])
   }
 
   // 사용자 메시지 전송 처리
   const handleSendMessage = async (text: string) => {
-    if (!text.trim() || isSending) return
+    if (!text.trim()) return
 
-    // 사용자 메시지 추가
-    setIsSending(true) // 전송 시작
+    // 이미 다른 요청이 처리 중인 경우 중복 방지
+    if (requestStatus !== 0) {
+      return
+    }
+
+    const formatMultilineText = (text: string): React.ReactNode[] => {
+      return text.split('\n').flatMap((line, i) => [line, <br key={`line-${i}`} />])
+    }
+
+    // 채팅 전송 시작 표시 (상태: 2)
+    setRequestStatus(2)
     addChatItem('message', 'user', text)
     setLoading(true)
 
     try {
-      // API 호출 - 자유 텍스트 기반 추천 (chatSelections 사용)
+      // API 호출 - 자유 텍스트 기반 추천
       const response = await requestFreetextBasedRecommendation({
         location: chatSelections.location || '',
         workType: chatSelections.workType || '',
         message: text,
       })
 
-      setLoading(false)
-
       // API 응답 데이터 처리
       const { recommend, challenges } = response.data
 
-      // 챌린지 목록 포맷팅
-      let formattedChallenges = ''
-      challenges.forEach((challenge, index) => {
-        formattedChallenges += `${index + 1}. ${challenge.title}\n\u00a0\u00a0${challenge.description}\n`
-      })
-
       // 응답 메시지 구성
-      const responseMessage = `${recommend}\n\n${formattedChallenges}`
+      const responseMessage = [
+        ...formatMultilineText(recommend),
+        <br key='r2' />,
+        ...challenges.flatMap((challenge, index) => [
+          `${index + 1}. ${challenge.title}`,
+          <br key={`title-${index}`} />,
+          `\u00a0\u00a0${challenge.description}`,
+          <br key={`desc-${index}`} />,
+          <br key={`gap-${index}`} />,
+        ]),
+      ]
 
       // 카테고리 재선택 버튼 추가
       addChatItem(
@@ -337,11 +352,10 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         undefined,
         '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n 챌린지를 언급해주세요!',
         '카테고리 재선택',
-        () => handleRetry(),
+        true,
+        handleRetry,
       )
     } catch (error: unknown) {
-      setLoading(false)
-
       let errorMessage: string
 
       if (typeof error === 'object' && error !== null && 'status' in error) {
@@ -369,12 +383,16 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         undefined,
         '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n 챌린지를 언급해주세요!',
         '카테고리 재선택',
-        () => handleRetry(),
+        true,
+        handleRetry,
       )
+    } finally {
+      // 모든 처리가 완료된 후 상태 초기화
+      setLoading(false)
+      // 요청 처리 완료 (상태: 0)
+      setRequestStatus(0)
+      setInputText('')
     }
-
-    setIsSending(false)
-    setInputText('')
   }
 
   // 선택값을 표시 가능한 레이블로 변환
@@ -455,6 +473,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
                 role={item.role}
                 subDescription={item.subDescription}
                 buttonText={item.buttonText}
+                isAnswer={item.isAnswer}
                 onClick={item.onClick}
               >
                 {item.text}
@@ -570,14 +589,8 @@ const Input = styled.input`
 
 const SendButton = styled.button`
   width: 44px;
-  background: #27824a;
   border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  &:hover {
-    background: #1e6a3c;
-  }
 `
