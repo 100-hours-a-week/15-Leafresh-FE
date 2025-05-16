@@ -12,6 +12,7 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/c
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
   CreateChallengeBody,
+  CreateChallengeResponse,
   CreateChallengeVariables,
   ExampleImageType,
 } from '@features/challenge/api/create-group-challenge'
@@ -86,7 +87,7 @@ const GroupChallengeCreatePage = () => {
 
   /** 단체 챌린지 생성 */
   const { mutate: CreateChallengeMutate, isPending: isCreating } = useMutationStore<
-    { id: number },
+    CreateChallengeResponse,
     CreateChallengeVariables
   >(MUTATION_KEYS.CHALLENGE.GROUP.CREATE)
 
