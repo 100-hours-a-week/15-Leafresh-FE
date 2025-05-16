@@ -6,7 +6,7 @@ import { memo, useCallback, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import styled from '@emotion/styled'
 
-import { FullFormValues } from '@app/(with-header)/challenge/group/create/page'
+import { FullFormValues } from '@app/(with-header)/challenge/group/create/ChallengeCreatepage'
 import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge/constant'
 import ChallengeVerifyExamples, {
   VerificationImageData,
