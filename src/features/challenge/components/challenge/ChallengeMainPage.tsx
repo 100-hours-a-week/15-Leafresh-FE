@@ -351,12 +351,16 @@ const CategoryLabel = styled.span`
 `
 
 const CarouselWrapper = styled.div`
+  width: 100%;
   height: 160px;
+
+  position: relative;
   overflow: hidden;
   margin-top: 16px;
 `
 
 const CarouselInner = styled.div`
+  width: 100%;
   height: 100%;
 
   position: relative;
@@ -368,7 +372,7 @@ const CarouselInner = styled.div`
 const EventCard = styled.div`
   /* height: 100%;
   aspect-ratio: 18/8; */
-  width: 90%;
+  width: 100%;
   height: auto;
   aspect-ratio: 16 / 6;
 
