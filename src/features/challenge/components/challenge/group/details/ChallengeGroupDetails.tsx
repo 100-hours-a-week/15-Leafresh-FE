@@ -57,7 +57,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
   const { userInfo, clearUserInfo } = useOAuthUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
-  const isLoggedIn: boolean = !!userInfo
+  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   const router = useRouter()
   const openToast = useToast()

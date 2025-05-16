@@ -22,7 +22,7 @@ const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
   const { open: openDrawer } = useDrawerStore()
   const { userInfo } = useOAuthUserStore()
-  const isLoggedIn: boolean = !!userInfo
+  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   return (
     <HeaderContainer height={height}>

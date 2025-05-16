@@ -37,7 +37,7 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
   const { userInfo, clearUserInfo } = useOAuthUserStore()
   const [scrollTop, setScrollTop] = useState<number>(0)
 
-  const isLoggedIn: boolean = !!userInfo
+  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   const drawerRef = useRef<HTMLDivElement>(null)
 

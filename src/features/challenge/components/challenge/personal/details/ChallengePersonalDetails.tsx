@@ -104,7 +104,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   const { userInfo } = useOAuthUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
-  const isLoggedIn: boolean = !!userInfo
+  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   /** 개인 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
