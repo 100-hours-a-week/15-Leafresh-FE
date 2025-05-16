@@ -181,5 +181,5 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
  */
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
-  return useMutation<ApiResponse<TData>, ErrorResponse, TVariables, unknown>({ mutationKey })
+  return useMutation<TData, ErrorResponse, TVariables, unknown>({ mutationKey })
 }

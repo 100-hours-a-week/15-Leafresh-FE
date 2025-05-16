@@ -1,8 +1,13 @@
 'use client'
 import emotionReset from 'emotion-reset'
 
-import { css, Global, Theme, useTheme } from '@emotion/react'
+import { css, Global, keyframes, Theme, useTheme } from '@emotion/react'
 // import { theme } from '../emotion/theme'
+const gradientAnimation = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`
 
 const GlobalStyle = () => {
   const theme: Theme = useTheme()
@@ -33,21 +38,26 @@ const GlobalStyle = () => {
 
         body {
           width: 100%;
-          /* min-width: 320px;
-          max-width: 500px; */
           min-height: 100dvh;
-
-          background-color: ${theme.colors.lfGray.base};
-
-          color: black;
 
           position: relative;
           display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: center;
+          justify-content: center;
+          align-items: flex-start;
 
-          background-image: linear-gradient(to bottom right, white, #e5e7eb); /* gray-200 */
+          background: linear-gradient(
+            -45deg,
+            ${theme.colors.lfGreenInactive.base},
+            ${theme.colors.lfInputBackground.base},
+            #d1e8d4,
+            ${theme.colors.lfGreenInactive.base}
+          );
+          background-size: 400% 400%;
+          animation: ${gradientAnimation} 15s ease infinite;
+
+          color: ${theme.colors.lfBlack.base};
+          overflow-x: hidden;
+          box-shadow: 0 0 40px #0000001a;
         }
 
         ::-webkit-scrollbar {

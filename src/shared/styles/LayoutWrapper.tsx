@@ -16,7 +16,7 @@ const Container = styled.div`
   max-width: 500px;
   width: 100%;
   height: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: ${theme.colors.lfWhite.base};
 
   position: relative;

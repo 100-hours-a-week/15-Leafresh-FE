@@ -57,7 +57,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
   const { userInfo, clearUserInfo } = useOAuthUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
-  const isLoggedIn: boolean = !!userInfo
+  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   const router = useRouter()
   const openToast = useToast()
@@ -271,7 +271,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 20px 16px;
+  padding: 20px 0px;
 `
 
 const DescriptionSection = styled.section`

@@ -2,6 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import React, { useEffect, useRef, useState } from 'react'
+import { Spinner } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
@@ -9,8 +10,6 @@ import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupCha
 import Chatbot from '@shared/components/chatbot/Chatbot'
 import GridBox from '@shared/components/Wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
-
-import { Spinner } from '@chakra-ui/react'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 

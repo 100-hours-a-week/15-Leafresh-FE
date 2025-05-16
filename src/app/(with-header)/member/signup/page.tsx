@@ -121,7 +121,7 @@ const SignupPage = () => {
       { body },
       {
         onSuccess: response => {
-          const { imageUrl, nickname } = response.data.data // 유저 정보
+          const { imageUrl, nickname } = response.data // 유저 정보
 
           setUserInfo({
             isMember: true, // 회원가입 완료 상태로 전환
