@@ -120,7 +120,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
       <Section>
         <SectionTitle>
           <span>챌린지 카테고리</span>
-          <ETCButton onClick={() => handleCategoryRoute('ETC')}>기타 카테고리 보기</ETCButton>
+          {/* <ETCButton onClick={() => handleCategoryRoute('ETC')}>기타 카테고리 보기</ETCButton> */}
         </SectionTitle>
         <CategoryGrid>
           {categories.map(cat => (
@@ -136,21 +136,21 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
         <SectionHeader>
           <SectionTitle>이벤트 챌린지</SectionTitle>
           <SubDescription>기간 한정! 이벤트 챌린지에 참여해보세요!</SubDescription>
-          <MoreEventChallengeButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value('ETC'))}>
+          {/* <MoreEventChallengeButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value('ETC'))}>
             더보기
-          </MoreEventChallengeButton>
+          </MoreEventChallengeButton> */}
         </SectionHeader>
         <CarouselWrapper ref={emblaRef}>
           <CarouselInner>
             {eventChallenges.length !== 0 ? (
               eventChallenges.map(ch => (
-                <EventCard key={ch.id}>
+                <EventCard key={ch.id} onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))}>
                   <ImageArea>
-                    <Image src={ch.imageUrl} alt={ch.description} width={48} height={48} />
+                    <EventImage src={ch.thumbnailUrl} alt={ch.description} width={48} height={48} />
                   </ImageArea>
                   <CardArea>
                     <CardTitle>{ch.title}</CardTitle>
-                    <CardDescription>{ch.description}</CardDescription>
+                    {/* <CardDescription>{ch.description}</CardDescription> */}
                   </CardArea>
                 </EventCard>
               ))
@@ -274,48 +274,48 @@ const SubDescription = styled.p`
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfDarkGray.base};
 `
-const ETCButton = styled.p`
-  position: absolute;
-  right: 0;
-  top: 50%;
+// const ETCButton = styled.p`
+//   position: absolute;
+//   right: 0;
+//   top: 50%;
 
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfBlue.base};
-  cursor: pointer;
+//   font-size: ${theme.fontSize.sm};
+//   color: ${theme.colors.lfBlue.base};
+//   cursor: pointer;
 
-  // 가상 요소 사용해서 밑줄 효과
-  &::after {
-    content: '';
-    display: block;
-    height: 1px;
-    background-color: ${theme.colors.lfBlue.base};
-    transform: scaleX(0);
-    transform-origin: center;
-    transition: transform 0.3s ease;
-    margin-top: 2px;
-  }
+//   // 가상 요소 사용해서 밑줄 효과
+//   &::after {
+//     content: '';
+//     display: block;
+//     height: 1px;
+//     background-color: ${theme.colors.lfBlue.base};
+//     transform: scaleX(0);
+//     transform-origin: center;
+//     transition: transform 0.3s ease;
+//     margin-top: 2px;
+//   }
 
-  &:hover::after {
-    transform: scaleX(1);
-  }
+//   &:hover::after {
+//     transform: scaleX(1);
+//   }
 
-  &:hover {
-    color: ${theme.colors.lfBlue.hover};
-  }
-`
-const MoreEventChallengeButton = styled.button`
-  position: absolute;
-  right: 0;
-  bottom: 0;
+//   &:hover {
+//     color: ${theme.colors.lfBlue.hover};
+//   }
+// `
+// const MoreEventChallengeButton = styled.button`
+//   position: absolute;
+//   right: 0;
+//   bottom: 0;
 
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfBlue.base};
-  cursor: pointer;
+//   font-size: ${theme.fontSize.sm};
+//   color: ${theme.colors.lfBlue.base};
+//   cursor: pointer;
 
-  &:hover {
-    color: ${theme.colors.lfBlue.hover};
-  }
-`
+//   &:hover {
+//     color: ${theme.colors.lfBlue.hover};
+//   }
+// `
 
 const CategoryGrid = styled.div`
   display: grid;
@@ -348,7 +348,7 @@ const CategoryLabel = styled.span`
 `
 
 const CarouselWrapper = styled.div`
-  height: 200px;
+  height: 160px;
   overflow: hidden;
   margin-top: 16px;
 `
@@ -359,12 +359,15 @@ const CarouselInner = styled.div`
   position: relative;
   display: flex;
   gap: 8px; // ✅ 카드 사이 간격
-  padding: 0 40px; // ✅ 좌우 여백 추가로 정중앙 맞추기
+  /* padding: 0 40px; // ✅ 좌우 여백 추가로 정중앙 맞추기 */
   will-change: transform;
 `
 const EventCard = styled.div`
-  height: 100%;
-  aspect-ratio: 16/9;
+  /* height: 100%;
+  aspect-ratio: 18/8; */
+  width: 90%;
+  height: auto;
+  aspect-ratio: 16 / 6;
 
   flex: 0 0 auto;
   background: ${theme.colors.lfInputBackground.base};
@@ -381,6 +384,13 @@ const ImageArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+
+const EventImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: ${theme.radius.base};
 `
 const CardArea = styled.div`
   flex-basis: 60%;
@@ -465,7 +475,7 @@ const DailyCardDescriptions = styled.div`
 `
 const CardTitle = styled.h3`
   margin: 4px 0px;
-  font-size: ${theme.fontSize.md};
+  font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
 `
 

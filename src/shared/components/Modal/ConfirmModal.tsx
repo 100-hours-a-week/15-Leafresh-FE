@@ -50,7 +50,7 @@ const Overlay = styled.div`
 
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 1000;
   background-color: ${theme.colors.lfBackdrop.base};
   /* opacity: 0.3; */
 

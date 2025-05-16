@@ -25,7 +25,7 @@ const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAns
       </Avatar>
     )}
     <BubbleWrapper>
-      <NameText role={role}>{role === 'bot' && '새순'}</NameText>
+      <NameText role={role}>{role === 'bot' && '수피'}</NameText>
       <Bubble role={role} isAnswer={isAnswer}>
         {loading
           ? '잠시만 기다려주세요…'

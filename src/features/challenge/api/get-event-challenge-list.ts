@@ -5,7 +5,7 @@ export type EventChallenge = {
   id: number
   title: string
   description: string
-  imageUrl: string
+  thumbnailUrl: string
 }
 
 type GetEventChallengeListResponse = ApiResponse<{

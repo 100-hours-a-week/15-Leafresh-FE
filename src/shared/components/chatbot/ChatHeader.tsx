@@ -15,7 +15,7 @@ const ChatHeader = ({ close }: ChatHeaderProps): ReactNode => {
     <HeaderWrapper>
       <IconWrapper>
         <Image src='/image/chatbot_bubble.png' alt='챗봇' width={36} height={36} />
-        새순
+        수피
       </IconWrapper>
       <CloseButton onClick={close}>
         <LucideIcon name='X' size={20} color='lfDarkGray' />

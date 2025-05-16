@@ -57,7 +57,7 @@ const Chatbot = () => {
             }}
           />
 
-          <Name>챗봇 새순</Name>
+          <Name>챗봇 수피</Name>
         </Launcher>
       )}
       {isOpen && <Backdrop onClick={handleCloseAndReset} />}

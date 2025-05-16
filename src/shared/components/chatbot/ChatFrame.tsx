@@ -97,7 +97,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         {
           type: 'message',
           role: 'bot',
-          text: '안녕하세요! 저는 Leafresh의 챗봇 새순입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
+          text: '안녕하세요! 저는 Leafresh의 챗봇 수피입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
         },
         {
           type: 'horizontal-cards',
