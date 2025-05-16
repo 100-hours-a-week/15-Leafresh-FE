@@ -21,6 +21,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { getDayOfWeek } from '@shared/lib/date/utils'
+import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
 
@@ -31,7 +32,7 @@ interface ChallengeMainPageProps {
 const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
   {
     category: 'ZERO_WASTE',
-    label: '제로웨이스트',
+    label: '제로 웨이스트',
     imageUrl: '/icon/category_zero_waste.png',
   },
   {
@@ -318,6 +319,8 @@ const SubDescription = styled.p`
 // `
 
 const CategoryGrid = styled.div`
+  margin-top: 10px;
+
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 `
@@ -494,6 +497,10 @@ const NoneContent = styled.div`
 
   font-weight: ${theme.fontWeight.semiBold};
   font-size: ${theme.fontSize.lg};
+
+  ${media.mobile} {
+    font-size: ${theme.fontSize.sm};
+  }
 `
 
 // const dummyEventChallenges: EventChallenge[] = [

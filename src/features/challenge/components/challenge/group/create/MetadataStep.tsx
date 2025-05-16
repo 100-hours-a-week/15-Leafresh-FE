@@ -6,7 +6,6 @@ import { memo, useCallback, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import styled from '@emotion/styled'
 
-import { FullFormValues } from '@app/(with-header)/challenge/group/create/ChallengeCreatepage'
 import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge/constant'
 import ChallengeVerifyExamples, {
   VerificationImageData,
@@ -19,6 +18,8 @@ import TimePicker from '@shared/components/timepicker/TimePicker'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { StyledGeneric } from '@shared/styles/emotion/utils'
 import { theme } from '@shared/styles/theme'
+
+import { FullFormValues } from './GroupChallengeCreatePage'
 
 const PARTICIPANT_OPTIONS = Array.from(
   { length: Math.floor((PARTICIPANT_RANGE.MAX - PARTICIPANT_RANGE.MIN) / PARTICIPANT_RANGE.RANGE) + 1 },

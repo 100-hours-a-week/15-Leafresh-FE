@@ -1,9 +1,11 @@
 import { Suspense } from 'react'
 
-import GroupChallengeCreatePage from './ChallengeCreatepage'
+import GroupChallengeCreatePage from '@features/challenge/components/challenge/group/create/GroupChallengeCreatePage'
+import Loading from '@shared/components/loading'
+
 const Page = async () => {
   return (
-    <Suspense fallback={<div>로딩 중...</div>}>
+    <Suspense fallback={<Loading />}>
       <GroupChallengeCreatePage />
     </Suspense>
   )
