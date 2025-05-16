@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import { z } from 'zod'
 
-import { useMemo, useState } from 'react'
+import { Suspense, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -144,18 +144,20 @@ const GroupChallengeCreatePage = () => {
   }
 
   return (
-    <PageWrapper>
-      {step === 1 ? (
-        <MetaDataStep
-          form={form}
-          onNext={() => {
-            setStep(2)
-          }}
-        />
-      ) : (
-        <DetailStep form={form} onBack={() => setStep(1)} onSubmit={handleFinalSubmit} isCreating={isCreating} />
-      )}
-    </PageWrapper>
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <PageWrapper>
+        {step === 1 ? (
+          <MetaDataStep
+            form={form}
+            onNext={() => {
+              setStep(2)
+            }}
+          />
+        ) : (
+          <DetailStep form={form} onBack={() => setStep(1)} onSubmit={handleFinalSubmit} isCreating={isCreating} />
+        )}
+      </PageWrapper>
+    </Suspense>
   )
 }
 
