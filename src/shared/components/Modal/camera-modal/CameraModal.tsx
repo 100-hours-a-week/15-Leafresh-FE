@@ -26,6 +26,7 @@ const CameraModal = () => {
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const streamRef = useRef<MediaStream | null>(null) // 스트림 참조를 저장할 ref 추가
 
   const TABS = !challengeData ? CAMERA_TABS : CHALLENGE_TABS
   const [tab, setTab] = useState<number>(0)
@@ -36,57 +37,66 @@ const CameraModal = () => {
 
   const [facingMode, setFacingMode] = useState<FacingMode>('user')
 
-  useEffect(() => {
-    const startCamera = async () => {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
-        return
-      }
+  // 카메라 정리 함수를 분리하여 관리
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop())
+      streamRef.current = null
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null
+    }
+  }
 
-      try {
-        // 👉 후면 카메라 요청 시 실제 존재하는지 확인
-        if (facingMode === 'environment') {
-          const devices = await navigator.mediaDevices.enumerateDevices()
-          const hasBackCamera = devices.some(
-            device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'),
-          )
-
-          if (!hasBackCamera) {
-            openToast(ToastType.Error, '해당 기기에서는 후면 카메라를 지원하지 않습니다.')
-            setFacingMode('user')
-            return
-          }
-        }
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } })
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream
-        }
-      } catch (error) {
-        openToast(ToastType.Error, '카메라 접근이 거부되었습니다.')
-      }
+  // 카메라 시작
+  const startCamera = async (mode: FacingMode = facingMode) => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+      return
     }
 
-    const stopCamera = () => {
-      const stream = videoRef.current?.srcObject as MediaStream | undefined
-      stream?.getTracks().forEach(track => track.stop())
+    // 기존 카메라가 있다면 먼저 정리
+    stopCamera()
+
+    try {
+      // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
+      const constraints = {
+        video: { facingMode: facingMode },
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints)
+      streamRef.current = stream // 스트림 참조 저장
+
       if (videoRef.current) {
-        videoRef.current.srcObject = null
+        videoRef.current.srcObject = stream
       }
+    } catch (error) {
+      console.error('Camera error:', error)
+      openToast(ToastType.Error, '잠시만 기다려주세요.')
+      // 카메라 전환 실패 시 다시 전면 카메라로 시도
+      await startCamera('user') // 실패 즉시 전면 카메라 시도
     }
+  }
 
-    if (isOpen) {
+  // 카메라 초기화 및 정리 효과
+  useEffect(() => {
+    if (isOpen && !previewUrl) {
       setScrollTop(window.scrollY)
-      if (!previewUrl) {
-        startCamera()
-      }
-    } else {
-      stopCamera()
+      startCamera()
     }
 
     return () => {
+      // 컴포넌트 언마운트 또는 의존성 변경 시 항상 카메라 정리
       stopCamera()
     }
-  }, [isOpen])
+  }, [isOpen, previewUrl, facingMode])
+
+  // facingMode 변경 시 카메라 재시작-> 같은 기능을 하는 useEffect가 충돌
+  // useEffect(() => {
+  //   if (isOpen && !previewUrl) {
+  //     startCamera()
+  //   }
+  // }, [facingMode])
 
   useEffect(() => {
     if (tab === 1 && challengeData) setShowGuide(true)
