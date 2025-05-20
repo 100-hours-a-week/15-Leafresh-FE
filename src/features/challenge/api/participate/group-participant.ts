@@ -10,30 +10,26 @@ export interface FetchGroupParticipationsParams {
 }
 
 export interface ChallengeResponse {
-  status: number
-  message: string
-  data: {
-    challenges: Array<{
-      id: number
-      title: string
-      thumbnailUrl: string
-      startDate: string
-      endDate: string
-      achievement: {
-        success: number
-        total: number
-      }
-    }>
-    hasNext: boolean
-    cursorInfo: {
-      lastCursorId: number
-      cursorTimestamp: string
+  challenges: Array<{
+    id: number
+    title: string
+    thumbnailUrl: string
+    startDate: string
+    endDate: string
+    achievement: {
+      success: number
+      total: number
     }
+  }>
+  hasNext: boolean
+  cursorInfo: {
+    lastCursorId: number
+    cursorTimestamp: string
   }
 }
 
 export const fetchGroupParticipations = ({ status, cursorId, cursorTimestamp }: FetchGroupParticipationsParams) => {
-  return fetchRequest(ENDPOINTS.MEMBERS.CHALLENGE.GROUP.PARTICIPATIONS, {
+  return fetchRequest<ChallengeResponse>(ENDPOINTS.MEMBERS.CHALLENGE.GROUP.PARTICIPATIONS, {
     query: {
       status,
       ...(cursorId !== undefined ? { cursorId } : {}),

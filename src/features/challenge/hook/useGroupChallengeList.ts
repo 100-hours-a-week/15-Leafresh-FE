@@ -6,6 +6,7 @@ import {
   type FetchGroupChallengesResponse,
 } from '@features/challenge/api/get-group-challenge-list'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
+import { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
 
 /**
  * 단체 챌린지 목록 조회를 위한 React Query 훅 (무한 스크롤)
@@ -15,7 +16,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 export const useInfiniteGroupChallenges = (category: string, input: string) =>
   useInfiniteQuery<
     // 한 페이지당 반환되는 데이터 타입
-    FetchGroupChallengesResponse,
+    ApiResponse<FetchGroupChallengesResponse>,
     // 에러 타입
     Error,
     // 최종 Data 타입: FetchGroupChallengesResponse 그대로 사용
