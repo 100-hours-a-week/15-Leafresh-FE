@@ -10,6 +10,9 @@ import LayoutWrapper from '@shared/styles/LayoutWrapper'
 export const metadata: Metadata = {
   title: 'Leafresh',
   description: '친환경 챌린지 서비스 Leafresh',
+  icons: {
+    icon: '/icon/favicon.ico',
+  },
 }
 
 const RootLayout = ({
