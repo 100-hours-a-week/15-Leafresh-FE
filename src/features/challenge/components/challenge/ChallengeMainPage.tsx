@@ -130,7 +130,9 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
                 <DailyImage src={ch.thumbnailUrl} alt={ch.description} width={400} height={220} />
               </DailyImageArea>
             </CardTop>
-            <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>참여하기</JoinButton>
+            <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
+              자세히 보기
+            </JoinButton>
             <DailyCardDescriptions>
               <CardTitle>{ch.title}</CardTitle>
               <CardDescription>{ch.description}</CardDescription>
