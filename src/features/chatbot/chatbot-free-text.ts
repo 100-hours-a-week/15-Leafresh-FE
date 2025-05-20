@@ -13,6 +13,7 @@ export const FREETEXT_RECOMMENDATION_ENDPOINT = {
  * 자유 텍스트 기반 챌린지 추천 요청 DTO
  */
 export interface FreetextRecommendationRequestDTO {
+  sessionId: string
   /** 위치 정보 (필수) */
   location: string
   /** 업무 타입 (필수) */

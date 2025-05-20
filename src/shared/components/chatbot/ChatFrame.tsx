@@ -46,9 +46,12 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   // chatSelections 상태
   const [chatSelections, setChatSelections] = useState<ChatSelections>({})
 
-  // 선택 내용 임시 저장 (사용자 메시지로 표시되기 전까지)
+  // 선택 내용
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [selectedWorkType, setSelectedWorkType] = useState<string | null>(null)
+
+  //sessionId
+  const [sessionId, setSessionId] = useState<string | null>(null)
 
   const chatSelectionsRef = useRef(chatSelections)
 
@@ -104,6 +107,10 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         },
       ])
     }
+    const uuid = crypto.randomUUID()
+    const timestamp = Date.now()
+    const newSessionId = `${uuid}-${timestamp}`
+    setSessionId(newSessionId)
   }, [])
 
   // 두 선택이 모두 완료되었을 때 메시지 추가 및 다음 단계로 진행
@@ -193,6 +200,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
 
       // API 호출 - 카테고리 기반 추천
       const response = await requestCategoryBasedRecommendation({
+        sessionId: sessionId || '',
         location: chatSelectionsRef.current.location || '',
         workType: chatSelectionsRef.current.workType || '',
         category: value,
@@ -323,6 +331,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     try {
       // API 호출 - 자유 텍스트 기반 추천
       const response = await requestFreetextBasedRecommendation({
+        sessionId: sessionId || '',
         location: chatSelections.location || '',
         workType: chatSelections.workType || '',
         message: text,
