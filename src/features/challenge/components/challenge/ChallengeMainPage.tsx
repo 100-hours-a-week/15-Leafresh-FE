@@ -29,48 +29,6 @@ interface ChallengeMainPageProps {
   className?: string
 }
 
-const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
-  {
-    category: 'ZERO_WASTE',
-    label: '제로 웨이스트',
-    imageUrl: '/icon/category_zero_waste.png',
-  },
-  {
-    category: 'PLOGGING',
-    label: '플로깅',
-    imageUrl: '/icon/category_plogging.png',
-  },
-  {
-    category: 'CARBON_FOOTPRINT',
-    label: '탄소 발자국',
-    imageUrl: '/icon/category_carbon_reduction.png',
-  },
-  {
-    category: 'ENERGY_SAVING',
-    label: '에너지 절약',
-    imageUrl: '/icon/category_energy_saving.png',
-  },
-  {
-    category: 'UPCYCLING',
-    label: '업사이클',
-    imageUrl: '/icon/category_upcycle.png',
-  },
-  {
-    category: 'MEDIA',
-    label: '문화 공유',
-    imageUrl: '/icon/category_book_share.png',
-  },
-  {
-    category: 'DIGITAL_CARBON',
-    label: '디지털 탄소',
-    imageUrl: '/icon/category_digital_carbon.png',
-  },
-  {
-    category: 'VEGAN',
-    label: '비건',
-    imageUrl: '/icon/category_vegan.png',
-  },
-]
 const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => {
   const router = useRouter()
   const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', startIndex: 1 }, [
@@ -97,8 +55,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
     ...QUERY_OPTIONS.CHALLENGE.PERSONAL.LIST,
   })
 
-  // const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
-  const categories: GroupChallengeCategory[] = dummyGroupChallengeCategories
+  const categories: GroupChallengeCategory[] = categoriesData?.data?.categories.slice(0, -1) ?? []
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
@@ -121,7 +78,6 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
       <Section>
         <SectionTitle>
           <span>챌린지 카테고리</span>
-          {/* <ETCButton onClick={() => handleCategoryRoute('ETC')}>기타 카테고리 보기</ETCButton> */}
         </SectionTitle>
         <CategoryGrid>
           {categories.map(cat => (
@@ -137,9 +93,6 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
         <SectionHeader>
           <SectionTitle>이벤트 챌린지</SectionTitle>
           <SubDescription>기간 한정! 이벤트 챌린지에 참여해보세요!</SubDescription>
-          {/* <MoreEventChallengeButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value('ETC'))}>
-            더보기
-          </MoreEventChallengeButton> */}
         </SectionHeader>
         <CarouselWrapper ref={emblaRef}>
           <CarouselInner>
@@ -151,7 +104,6 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
                   </ImageArea>
                   <CardArea>
                     <CardTitle>{ch.title}</CardTitle>
-                    {/* <CardDescription>{ch.description}</CardDescription> */}
                   </CardArea>
                 </EventCard>
               ))
@@ -177,8 +129,6 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
               <DailyImageArea>
                 <DailyImage src={ch.thumbnailUrl} alt={ch.description} width={400} height={220} />
               </DailyImageArea>
-
-              {/* <CardImage src={ch.imageUrl} alt={ch.title} width={100} height={100} /> */}
             </CardTop>
             <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>참여하기</JoinButton>
             <DailyCardDescriptions>
@@ -275,49 +225,6 @@ const SubDescription = styled.p`
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfDarkGray.base};
 `
-// const ETCButton = styled.p`
-//   position: absolute;
-//   right: 0;
-//   top: 50%;
-
-//   font-size: ${theme.fontSize.sm};
-//   color: ${theme.colors.lfBlue.base};
-//   cursor: pointer;
-
-//   // 가상 요소 사용해서 밑줄 효과
-//   &::after {
-//     content: '';
-//     display: block;
-//     height: 1px;
-//     background-color: ${theme.colors.lfBlue.base};
-//     transform: scaleX(0);
-//     transform-origin: center;
-//     transition: transform 0.3s ease;
-//     margin-top: 2px;
-//   }
-
-//   &:hover::after {
-//     transform: scaleX(1);
-//   }
-
-//   &:hover {
-//     color: ${theme.colors.lfBlue.hover};
-//   }
-// `
-// const MoreEventChallengeButton = styled.button`
-//   position: absolute;
-//   right: 0;
-//   bottom: 0;
-
-//   font-size: ${theme.fontSize.sm};
-//   color: ${theme.colors.lfBlue.base};
-//   cursor: pointer;
-
-//   &:hover {
-//     color: ${theme.colors.lfBlue.hover};
-//   }
-// `
-
 const CategoryGrid = styled.div`
   margin-top: 10px;
 
@@ -365,13 +272,10 @@ const CarouselInner = styled.div`
 
   position: relative;
   display: flex;
-  gap: 8px; // ✅ 카드 사이 간격
-  /* padding: 0 40px; // ✅ 좌우 여백 추가로 정중앙 맞추기 */
+  gap: 8px;
   will-change: transform;
 `
 const EventCard = styled.div`
-  /* height: 100%;
-  aspect-ratio: 18/8; */
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 6;
@@ -450,10 +354,6 @@ const DailyImageArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* ${DailyCard}:hover & {
-    transform: scale(1.2);
-  } */
 `
 
 const JoinButton = styled.button`
@@ -548,5 +448,48 @@ const NoneContent = styled.div`
 //     description: '챌린지 설명',
 //     imageUrl: '/icon/category_zero_waste.png',
 //     leafReward: 400,
+//   },
+// ]
+
+// const dummyGroupChallengeCategories: GroupChallengeCategory[] = [
+//   {
+//     category: 'ZERO_WASTE',
+//     label: '제로 웨이스트',
+//     imageUrl: '/icon/category_zero_waste.png',
+//   },
+//   {
+//     category: 'PLOGGING',
+//     label: '플로깅',
+//     imageUrl: '/icon/category_plogging.png',
+//   },
+//   {
+//     category: 'CARBON_FOOTPRINT',
+//     label: '탄소 발자국',
+//     imageUrl: '/icon/category_carbon_reduction.png',
+//   },
+//   {
+//     category: 'ENERGY_SAVING',
+//     label: '에너지 절약',
+//     imageUrl: '/icon/category_energy_saving.png',
+//   },
+//   {
+//     category: 'UPCYCLING',
+//     label: '업사이클',
+//     imageUrl: '/icon/category_upcycle.png',
+//   },
+//   {
+//     category: 'MEDIA',
+//     label: '문화 공유',
+//     imageUrl: '/icon/category_book_share.png',
+//   },
+//   {
+//     category: 'DIGITAL_CARBON',
+//     label: '디지털 탄소',
+//     imageUrl: '/icon/category_digital_carbon.png',
+//   },
+//   {
+//     category: 'VEGAN',
+//     label: '비건',
+//     imageUrl: '/icon/category_vegan.png',
 //   },
 // ]

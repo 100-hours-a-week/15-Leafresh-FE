@@ -41,12 +41,12 @@ export const DAYS_KOR: DayTypeKor[] = DAY_PAIRS.map(pair => pair.kor)
 
 /** 카테고리 */
 export const CHALLENGE_CATEGORY_PAIRS: ConstantPair[] = [
-  { kor: '제로 웨이스트', eng: 'ZERO_WASTE' },
+  { kor: '제로웨이스트', eng: 'ZERO_WASTE' },
   { kor: '플로깅', eng: 'PLOGGING' },
   { kor: '탄소 발자국', eng: 'CARBON_FOOTPRINT' },
   { kor: '에너지 절약', eng: 'ENERGY_SAVING' },
-  { kor: '업사이클', eng: 'UPCYCLING' },
-  { kor: '문화 공유', eng: 'MEDIA' },
+  { kor: '중고거래/업사이클', eng: 'UPCYCLING' },
+  { kor: '서적, 영화', eng: 'MEDIA' },
   { kor: '디지털 탄소', eng: 'DIGITAL_CARBON' },
   { kor: '비건', eng: 'VEGAN' },
   { kor: '기타', eng: 'ETC' },
