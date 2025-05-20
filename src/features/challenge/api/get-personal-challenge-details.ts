@@ -2,7 +2,7 @@
 
 import { ChallengeVerificationResultType, ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { TimeFormatString } from '@shared/types/date'
 
 export type PersonalChallengeDetail = {
@@ -24,8 +24,8 @@ export type PersonalChallengeDetail = {
   status: ChallengeVerificationStatusType
 }
 
-type PersonalChallengeDetailResponse = ApiResponse<PersonalChallengeDetail>
+type PersonalChallengeDetailResponse = PersonalChallengeDetail
 
-export const getPersonalChallengeDetails = (id: number): Promise<PersonalChallengeDetailResponse> => {
+export const getPersonalChallengeDetails = (id: number) => {
   return fetchRequest<PersonalChallengeDetailResponse>(ENDPOINTS.CHALLENGE.PERSONAL.DETAILS(id))
 }

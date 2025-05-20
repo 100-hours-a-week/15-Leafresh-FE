@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 /**
  * 요청 파라미터 타입
@@ -28,21 +28,20 @@ export interface GroupChallengeItem {
 /**
  * 응답 데이터 타입
  */
-export interface FetchGroupChallengesResponse
-  extends ApiResponse<{
-    groupChallenges: GroupChallengeItem[]
-    hasNext: boolean
-    cursorInfo: {
-      lastCursorId: number
-      cursorTimestamp: string
-    }
-  }> {}
+export type FetchGroupChallengesResponse = {
+  groupChallenges: GroupChallengeItem[]
+  hasNext: boolean
+  cursorInfo: {
+    lastCursorId: number
+    cursorTimestamp: string
+  }
+}
 
 /**
  * 단체 챌린지 목록 조회 (검색 및 카테고리 필터 포함)
  * GET /api/challenges/group?input=…&category=…&cursorId=…&cursorTimestamp=…
  */
-export const fetchGroupChallenges = (params: FetchGroupChallengesParams): Promise<FetchGroupChallengesResponse> => {
+export const fetchGroupChallenges = (params: FetchGroupChallengesParams) => {
   // query 객체에 undefined 값은 제외하고 문자열/숫자 타입으로만 전환
   const query: Record<string, string | number> = {}
   if (params.category) query.category = params.category

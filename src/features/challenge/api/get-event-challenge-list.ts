@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 export type EventChallenge = {
   id: number
@@ -8,10 +8,10 @@ export type EventChallenge = {
   thumbnailUrl: string
 }
 
-type GetEventChallengeListResponse = ApiResponse<{
+type GetEventChallengeListResponse = {
   eventChallenges: EventChallenge[]
-}>
+}
 
-export const getEventChallengeList = (): Promise<GetEventChallengeListResponse> => {
+export const getEventChallengeList = () => {
   return fetchRequest<GetEventChallengeListResponse>(ENDPOINTS.CHALLENGE.EVENT.LIST)
 }

@@ -1,6 +1,6 @@
 import { ChallengeCategoryType, ChallengeCategoryTypeKor } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 export type GroupChallengeCategory = {
   category: ChallengeCategoryType
@@ -8,10 +8,10 @@ export type GroupChallengeCategory = {
   imageUrl: string
 }
 
-type GroupChallengeCategoryListResponse = ApiResponse<{
+type GroupChallengeCategoryListResponse = {
   categories: GroupChallengeCategory[]
-}>
+}
 
-export const getGroupChallengeCategoryList = (): Promise<GroupChallengeCategoryListResponse> => {
+export const getGroupChallengeCategoryList = () => {
   return fetchRequest<GroupChallengeCategoryListResponse>(ENDPOINTS.CHALLENGE.GROUP.CATEGORIES)
 }

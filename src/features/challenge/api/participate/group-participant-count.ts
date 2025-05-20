@@ -17,6 +17,6 @@ export interface CountResponse {
  * 참여한 단체 챌린지 개수 조회
  * GET /api/members/challenges/group/participations/count
  */
-export const fetchGroupParticipationsCount = (): Promise<CountResponse> => {
-  return fetchRequest(ENDPOINTS.CHALLENGE.GROUP.COUNT)
+export const fetchGroupParticipationsCount = () => {
+  return fetchRequest<CountResponse>(ENDPOINTS.CHALLENGE.GROUP.COUNT)
 }

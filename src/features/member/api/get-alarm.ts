@@ -1,6 +1,6 @@
 import { ChallengeType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ISOFormatString } from '@shared/types/date'
 
 export interface MemberAlarmListParams {
@@ -28,12 +28,9 @@ export type MemberAlarmList = {
   }
 }
 
-type GetMemberAlarmListResponse = ApiResponse<MemberAlarmList>
+type GetMemberAlarmListResponse = MemberAlarmList
 
-export const getMemberAlarmList = ({
-  cursorId,
-  cursorTimestamp,
-}: MemberAlarmListParams): Promise<GetMemberAlarmListResponse> => {
+export const getMemberAlarmList = ({ cursorId, cursorTimestamp }: MemberAlarmListParams) => {
   return fetchRequest<GetMemberAlarmListResponse>(ENDPOINTS.MEMBERS.NOTIFICATION.LIST, {
     query: {
       ...(cursorId !== undefined ? { cursorId } : {}),

@@ -32,11 +32,7 @@ export interface ChallengeResponse {
   }
 }
 
-export const fetchGroupParticipations = ({
-  status,
-  cursorId,
-  cursorTimestamp,
-}: FetchGroupParticipationsParams): Promise<ChallengeResponse> => {
+export const fetchGroupParticipations = ({ status, cursorId, cursorTimestamp }: FetchGroupParticipationsParams) => {
   return fetchRequest(ENDPOINTS.MEMBERS.CHALLENGE.GROUP.PARTICIPATIONS, {
     query: {
       status,
