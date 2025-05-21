@@ -60,17 +60,29 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { GroupChallengeResponse } from '@features/member/api/challenge/get-group-creations'
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/hooks/useInfiniteMemberChallengeCreationsList'
 import { URL } from '@shared/constants/route/route'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { ToastType } from '@shared/context/Toast/type'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LogoCharacterImage from '@public/image/main-icon.svg'
 
 const MemberChallengeCreationsPage = (): ReactNode => {
   const router = useRouter()
+  const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const openToast = useToast()
+
+  const { openConfirmModal } = useConfirmModalStore()
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberGroupChallengeCreations()
   const triggerRef = useRef<HTMLDivElement>(null)
+
+  // 지역변수
+  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage || !triggerRef.current) return
@@ -90,7 +102,29 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   const handleModify = () => {}
 
   /** 단체 챌린지 삭제 */
-  const handleDelete = () => {}
+  const handleDelete = (name: string, currentParticipantCount: number) => {
+    // 1. 로그인 상태 확인
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
+      return
+    }
+    // 2. 참여자 여부 확인 (없어야 함)
+    if (!currentParticipantCount) {
+      openToast(ToastType.Error, '참여자가 있어, 수정할 수 없습니다!')
+      return
+    }
+
+    // 3. 확인 모달 열기
+    openConfirmModal({
+      title: `${name} 챌린지를 삭제하시겠습니까?`,
+      description: '삭제 시 되돌릴 수 없습니다',
+      onConfirm: () => {}, //TODO: 삭제 Mutation
+    })
+  }
 
   /** 단체 챌린지 생성하러 가기 */
   const handleCreateChallenge = () => {
@@ -98,8 +132,8 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   }
 
   // TODO: 실제 데이터로 바꾸기
-  const groupChallenges = data?.pages.flatMap(page => page?.data.groupChallenges || []) ?? []
-  // const groupChallenges = dummyMemberGroupChallenge
+  // const groupChallenges = data?.pages.flatMap(page => page?.data.groupChallenges || []) ?? []
+  const groupChallenges = dummyMemberGroupChallenge
 
   let contents: ReactNode
 
@@ -116,32 +150,37 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   } else {
     contents = (
       <ChallengeList>
-        {groupChallenges.map(groupChallenge => (
-          <ChallengeCard key={groupChallenge.id}>
-            <TopImageWrapper>
-              <ChallengeImage src={groupChallenge.imageUrl} alt='챌린지 이미지' />
-              <Badge>제로 웨이스트</Badge>
-            </TopImageWrapper>
-            <CardBody>
-              <TopRow>
-                <ChallengeName>{groupChallenge.name}</ChallengeName>
-                <ActionButtons>
-                  <ModifyButton type='button' onClick={handleModify}>
-                    수정
-                  </ModifyButton>
-                  <DeleteButton type='button' onClick={handleDelete}>
-                    삭제
-                  </DeleteButton>
-                </ActionButtons>
-              </TopRow>
-              <ChallengeDesc>{groupChallenge.description.repeat(5)}</ChallengeDesc>
-              <ParticipantCount>
-                <LucideIcon name='UsersRound' size={12} color='lfBlue' />
-                <span>{groupChallenge.currentParticipantCount}명 참여</span>
-              </ParticipantCount>
-            </CardBody>
-          </ChallengeCard>
-        ))}
+        {groupChallenges.map(groupChallenge => {
+          const { id, imageUrl, name, description, currentParticipantCount, category } = groupChallenge
+          const KOR_category = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(category)
+
+          return (
+            <ChallengeCard key={id}>
+              <TopImageWrapper>
+                <ChallengeImage src={imageUrl} alt='챌린지 이미지' />
+                <Badge>{KOR_category}</Badge>
+              </TopImageWrapper>
+              <CardBody>
+                <TopRow>
+                  <ChallengeName>{name}</ChallengeName>
+                  <ActionButtons>
+                    <ModifyButton type='button' onClick={handleModify}>
+                      수정
+                    </ModifyButton>
+                    <DeleteButton type='button' onClick={() => handleDelete(name, currentParticipantCount)}>
+                      삭제
+                    </DeleteButton>
+                  </ActionButtons>
+                </TopRow>
+                <ChallengeDesc>{description.repeat(5)}</ChallengeDesc>
+                <ParticipantCount>
+                  <LucideIcon name='UsersRound' size={12} color='lfBlue' />
+                  <span>{currentParticipantCount}명 참여</span>
+                </ParticipantCount>
+              </CardBody>
+            </ChallengeCard>
+          )
+        })}
       </ChallengeList>
     )
   }
