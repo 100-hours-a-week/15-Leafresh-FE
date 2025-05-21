@@ -70,7 +70,7 @@ const ChallengeListPage = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   // API 데이터 뽑아오기
-  const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(p => p.groupChallenges) ?? []
+  const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(p => p?.groupChallenges || []) ?? []
 
   if (isLoading) return <Spinner size='lg' style={{ marginTop: '100px' }} />
   if (error) return <Message>Error: {error.message}</Message>
