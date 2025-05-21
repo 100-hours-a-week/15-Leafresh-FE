@@ -62,8 +62,14 @@ import styled from '@emotion/styled'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import {
+  DeleteGroupChallengeResponse,
+  DeleteGroupChallengeVariables,
+} from '@features/challenge/api/delete-group-challenge'
 import { GroupChallengeResponse } from '@features/member/api/challenge/get-group-creations'
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/hooks/useInfiniteMemberChallengeCreationsList'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
@@ -78,7 +84,8 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   const openToast = useToast()
 
   const { openConfirmModal } = useConfirmModalStore()
-  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberGroupChallengeCreations()
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
+    useInfiniteMemberGroupChallengeCreations()
   const triggerRef = useRef<HTMLDivElement>(null)
 
   // 지역변수
@@ -102,7 +109,13 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   const handleModify = () => {}
 
   /** 단체 챌린지 삭제 */
-  const handleDelete = (name: string, currentParticipantCount: number) => {
+  const { mutate: DeleteGroupChallengeMutate, isPending: isDeleting } = useMutationStore<
+    DeleteGroupChallengeResponse,
+    DeleteGroupChallengeVariables
+  >(MUTATION_KEYS.CHALLENGE.GROUP.DELETE)
+
+  /** 단체 챌린지 삭제 */
+  const handleDelete = (id: number, name: string, currentParticipantCount: number) => {
     // 1. 로그인 상태 확인
     if (!isLoggedIn) {
       openConfirmModal({
@@ -119,10 +132,28 @@ const MemberChallengeCreationsPage = (): ReactNode => {
     }
 
     // 3. 확인 모달 열기
+    const title = name.trim().endsWith('챌린지') ? `${name}를 삭제하시겠습니까?` : `${name} 챌린지를 삭제하시겠습니까?`
+
     openConfirmModal({
-      title: `${name} 챌린지를 삭제하시겠습니까?`,
+      title,
       description: '삭제 시 되돌릴 수 없습니다',
-      onConfirm: () => {}, //TODO: 삭제 Mutation
+      onConfirm: () =>
+        DeleteGroupChallengeMutate(
+          { challengeId: id },
+          {
+            // 성공
+            onSuccess(data, variables, context) {
+              // 리로드
+              refetch()
+              openToast(ToastType.Success, '챌린지가 삭제되었습니다')
+            },
+            // 실패
+            onError(error, variables, context) {
+              const { message } = error
+              openToast(ToastType.Error, message)
+            },
+          },
+        ),
     })
   }
 
@@ -142,7 +173,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   } else if (groupChallenges.length === 0) {
     contents = (
       <EmptyWrapper>
-        <Image src={LogoCharacterImage} alt='로고 캐릭터 ' />
+        <Image src={LogoCharacterImage} alt='로고 캐릭터' />
         <NoChallengeMessage>생성한 챌린지가 없습니다!</NoChallengeMessage>
         <CreateButton onClick={handleCreateChallenge}>챌린지 생성하러 가기</CreateButton>
       </EmptyWrapper>
@@ -167,7 +198,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
                     <ModifyButton type='button' onClick={handleModify}>
                       수정
                     </ModifyButton>
-                    <DeleteButton type='button' onClick={() => handleDelete(name, currentParticipantCount)}>
+                    <DeleteButton type='button' onClick={() => handleDelete(id, name, currentParticipantCount)}>
                       삭제
                     </DeleteButton>
                   </ActionButtons>
