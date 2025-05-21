@@ -129,7 +129,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
                 <CardTitle>{ch.title}</CardTitle>
                 <CardDescription>{ch.description}</CardDescription>
                 <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
-                  참여하기
+                  자세히 보기
                 </JoinButton>
               </DailyCardDescriptions>
             </DailyCard>

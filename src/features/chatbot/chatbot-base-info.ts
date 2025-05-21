@@ -11,6 +11,7 @@ export const CATEGORY_RECOMMENDATION_ENDPOINT = {
  * 카테고리 기반 챌린지 추천 요청 DTO
  */
 export interface CategoryRecommendationRequestDTO {
+  sessionId: string
   /** 위치 정보 (필수) */
   location: string
   /** 업무 타입 (필수) */

@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
+import { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
 
 import {
   getGroupVerificationResult,
@@ -16,7 +17,7 @@ import {
 /** 인증 제출 뮤테이션 */
 export const usePostGroupVerification = (challengeId: number) => {
   const qc = useQueryClient()
-  return useMutation<PostGroupVerificationResponse, Error, PostGroupVerificationBody>({
+  return useMutation<ApiResponse<PostGroupVerificationResponse>, Error, PostGroupVerificationBody>({
     mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFY],
     mutationFn: body => PostGroupVerification({ challengeId, body }),
     onSuccess: () => {

@@ -1,6 +1,7 @@
 import { ChallengeType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { InfiniteScrollResponse } from '@shared/types/api'
 import { ISOFormatString } from '@shared/types/date'
 
 export interface MemberAlarmListParams {
@@ -19,14 +20,9 @@ export type AlarmType = {
   challengeId: number
 }
 
-export type MemberAlarmList = {
+export type MemberAlarmList = InfiniteScrollResponse<{
   notifications: AlarmType[]
-  hasNext: boolean
-  cursorInfo: {
-    lastCursorId: number
-    cursorTimestamp: ISOFormatString
-  }
-}
+}>
 
 type GetMemberAlarmListResponse = MemberAlarmList
 

@@ -1,5 +1,6 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { InfiniteScrollResponse } from '@shared/types/api'
 
 /**
  * 요청 파라미터 타입
@@ -28,14 +29,9 @@ export interface GroupChallengeItem {
 /**
  * 응답 데이터 타입
  */
-export type FetchGroupChallengesResponse = {
+export type FetchGroupChallengesResponse = InfiniteScrollResponse<{
   groupChallenges: GroupChallengeItem[]
-  hasNext: boolean
-  cursorInfo: {
-    lastCursorId: number
-    cursorTimestamp: string
-  }
-}
+}>
 
 /**
  * 단체 챌린지 목록 조회 (검색 및 카테고리 필터 포함)

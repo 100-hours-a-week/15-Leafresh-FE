@@ -148,7 +148,7 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
               <CategoryDropdown
                 label='카테고리'
                 required
-                options={CHALLENGE_CATEGORIES_KOR}
+                options={CHALLENGE_CATEGORIES_KOR.slice(0, -1)}
                 selected={field.value}
                 onChange={val => field.onChange(val)}
                 getOptionKey={opt => opt}
