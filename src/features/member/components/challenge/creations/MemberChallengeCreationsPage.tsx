@@ -106,7 +106,25 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
   /** 단체 챌린지 수정 */
-  const handleModify = () => {}
+  const handleModify = (id: number, name: string, currentParticipantCount: number) => {
+    // 1. 로그인 상태 확인
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
+      return
+    }
+    // 2. 참여자 여부 확인 (없어야 함)
+    if (!currentParticipantCount) {
+      openToast(ToastType.Error, '참여자가 있어, 수정할 수 없습니다!')
+      return
+    }
+
+    // 3. 단체 챌린지 수정 페이지로 이동
+    router.push(URL.CHALLENGE.GROUP.MODIFY.value(id))
+  }
 
   /** 단체 챌린지 삭제 */
   const { mutate: DeleteGroupChallengeMutate, isPending: isDeleting } = useMutationStore<
@@ -127,7 +145,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
     }
     // 2. 참여자 여부 확인 (없어야 함)
     if (!currentParticipantCount) {
-      openToast(ToastType.Error, '참여자가 있어, 수정할 수 없습니다!')
+      openToast(ToastType.Error, '참여자가 있어, 삭제할 수 없습니다!')
       return
     }
 
@@ -195,7 +213,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
                 <TopRow>
                   <ChallengeName>{name}</ChallengeName>
                   <ActionButtons>
-                    <ModifyButton type='button' onClick={handleModify}>
+                    <ModifyButton type='button' onClick={() => handleModify(id, name, currentParticipantCount)}>
                       수정
                     </ModifyButton>
                     <DeleteButton type='button' onClick={() => handleDelete(id, name, currentParticipantCount)}>
