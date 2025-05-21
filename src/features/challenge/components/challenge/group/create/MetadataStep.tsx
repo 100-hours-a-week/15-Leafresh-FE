@@ -119,10 +119,6 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
   )
 
   const handleMetaSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log('클릭 태그:', (e.target as HTMLElement).tagName)
-    console.log('클래스명:', (e.target as HTMLElement).className)
-    console.log('텍스트:', (e.target as HTMLElement).textContent)
-
     e.preventDefault()
     if (!isSubmitted) {
       setIsSubmitted(true)
