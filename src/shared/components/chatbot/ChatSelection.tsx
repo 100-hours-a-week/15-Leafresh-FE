@@ -41,7 +41,9 @@ const ChatSelection: React.FC<ChatSelectionProps> = ({
           <Image
             src={imageUrl}
             alt='cardimg'
-            fill={true}
+            // fill={true}
+            width={selectionType === 'challenge' ? 208 : 150}
+            height={108}
             style={{
               objectFit: 'cover', // 이미지를 컨테이너에 맞게 조절
               objectPosition: 'center', // 이미지 중앙 기준 />
