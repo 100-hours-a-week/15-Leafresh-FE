@@ -555,12 +555,14 @@ const Container = styled.div`
 
 const MessagesContainer = styled.div`
   display: flex;
+  width: 100%;
+  padding-right: 20px;
   flex-direction: column;
   gap: 12px;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 4px;
+  margin-left: 10px;
 `
 
 const SelectionWrapper = styled.div`
