@@ -1,15 +1,11 @@
 import { ChallengeCategoryType, ChallengeVerificationResultType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'
 
-// TODO : isDuplicated -> isAvailable 로 변수명 저정
-/**
- * false: 사용 가능 / true 사용 불가능
- */
-export type CreateChallengeResponse = ApiResponse<{
+export type CreateChallengeResponse = {
   id: number
-}>
+}
 
 export type ExampleImageType = {
   imageUrl: string

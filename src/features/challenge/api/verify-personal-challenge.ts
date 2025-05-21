@@ -1,10 +1,10 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ISOFormatString } from '@shared/types/date'
 
-export type VerifyGroupChallengeResponseType = ApiResponse<{
+export type VerifyGroupChallengeResponseType = {
   submittedAt: ISOFormatString
-}>
+}
 
 export type VerifyPersonalChallengeBody = {
   imageUrl: string

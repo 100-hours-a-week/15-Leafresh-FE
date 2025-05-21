@@ -1,15 +1,11 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
-export interface CountResponse {
-  status: number
-  message: string
-  data: {
-    count: {
-      notStarted: number
-      ongoing: number
-      completed: number
-    }
+export interface GroupParticipationsCount {
+  count: {
+    notStarted: number
+    ongoing: number
+    completed: number
   }
 }
 
@@ -17,6 +13,6 @@ export interface CountResponse {
  * 참여한 단체 챌린지 개수 조회
  * GET /api/members/challenges/group/participations/count
  */
-export const fetchGroupParticipationsCount = (): Promise<CountResponse> => {
-  return fetchRequest(ENDPOINTS.CHALLENGE.GROUP.COUNT)
+export const fetchGroupParticipationsCount = () => {
+  return fetchRequest<GroupParticipationsCount>(ENDPOINTS.CHALLENGE.GROUP.COUNT)
 }

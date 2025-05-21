@@ -13,11 +13,8 @@ export interface CountObj {
 }
 
 export const useGroupParticipationsCount = () =>
-  useQuery<CountObj, Error>({
-    queryKey: [...QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS, 'count'] as const,
-    queryFn: async () => {
-      const res = await fetchGroupParticipationsCount() // no status param
-      return res.data.count
-    },
-    ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
+  useQuery({
+    queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT,
+    queryFn: fetchGroupParticipationsCount, // no status param
+    ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.COUNT,
   })

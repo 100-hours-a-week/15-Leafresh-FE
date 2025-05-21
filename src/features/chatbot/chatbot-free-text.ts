@@ -1,7 +1,5 @@
 import { HttpMethod } from '@shared/constants/http'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
-
-import { RecommendationResponseDataDTO } from './chatbot-base-info'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 // 자유 텍스트 기반 챌린지 추천 요청 엔드포인트
 export const FREETEXT_RECOMMENDATION_ENDPOINT = {
@@ -31,9 +29,7 @@ export interface FreetextRecommendationRequestDTO {
  * @throws 500 - 서버 내부 오류 ("서버 내부 오류로 인해 챌린지 추천에 실패했습니다.")
  * @throws 502 - AI 서버 연결 실패 ("AI 서버로부터 추천 결과를 받아오는 데 실패했습니다.")
  */
-export const requestFreetextBasedRecommendation = (
-  body: FreetextRecommendationRequestDTO,
-): Promise<ApiResponse<RecommendationResponseDataDTO>> => {
+export const requestFreetextBasedRecommendation = (body: FreetextRecommendationRequestDTO) => {
   // message가 5글자 이상인지 로컬에서 검증 (선택적)
   if (body.message && body.message.length < 5) {
     return Promise.reject({

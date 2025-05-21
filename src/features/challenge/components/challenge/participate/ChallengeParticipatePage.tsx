@@ -28,12 +28,14 @@ export default function ChallengeParticipatePage() {
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteGroupParticipations(status)
 
-  const { data: CountObj } = useGroupParticipationsCount()
+  const { data: CountData } = useGroupParticipationsCount()
+
+  const CountObj = CountData?.data.count
 
   // API 오류 여부
   const hasError = Boolean(error)
 
-  const realChallenges = data?.pages.flatMap(p => p.data.challenges) ?? []
+  const realChallenges = data?.pages.flatMap(p => p.challenges) ?? []
   // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
     `참여 전 (${CountObj?.notStarted ?? 0})`,
