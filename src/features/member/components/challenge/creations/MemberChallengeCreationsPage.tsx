@@ -105,6 +105,12 @@ const MemberChallengeCreationsPage = (): ReactNode => {
     return () => observer.disconnect()
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
+  /** 단체 챌린지 삭제 */
+  const { mutate: DeleteGroupChallengeMutate, isPending: isDeleting } = useMutationStore<
+    DeleteGroupChallengeResponse,
+    DeleteGroupChallengeVariables
+  >(MUTATION_KEYS.CHALLENGE.GROUP.DELETE)
+
   /** 단체 챌린지 수정 */
   const handleModify = (id: number, name: string, currentParticipantCount: number) => {
     // 1. 로그인 상태 확인
@@ -125,12 +131,6 @@ const MemberChallengeCreationsPage = (): ReactNode => {
     // 3. 단체 챌린지 수정 페이지로 이동
     router.push(URL.CHALLENGE.GROUP.MODIFY.value(id))
   }
-
-  /** 단체 챌린지 삭제 */
-  const { mutate: DeleteGroupChallengeMutate, isPending: isDeleting } = useMutationStore<
-    DeleteGroupChallengeResponse,
-    DeleteGroupChallengeVariables
-  >(MUTATION_KEYS.CHALLENGE.GROUP.DELETE)
 
   /** 단체 챌린지 삭제 */
   const handleDelete = (id: number, name: string, currentParticipantCount: number) => {
@@ -175,6 +175,11 @@ const MemberChallengeCreationsPage = (): ReactNode => {
     })
   }
 
+  /** 단체 챌린지 상세 보기 */
+  const handleShowDetails = (id: number) => {
+    router.push(URL.CHALLENGE.GROUP.DETAILS.value(id))
+  }
+
   /** 단체 챌린지 생성하러 가기 */
   const handleCreateChallenge = () => {
     router.push(URL.CHALLENGE.GROUP.CREATE.value)
@@ -204,7 +209,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
           const KOR_category = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(category)
 
           return (
-            <ChallengeCard key={id}>
+            <ChallengeCard key={id} onClick={() => handleShowDetails(id)}>
               <TopImageWrapper>
                 <ChallengeImage src={imageUrl} alt='챌린지 이미지' />
                 <Badge className='badge'>{KOR_category}</Badge>
