@@ -54,7 +54,7 @@ interface ChallengeGroupDetailsProps {
 }
 
 const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
-  const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const { userInfo } = useOAuthUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
   const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
@@ -176,7 +176,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
           <Thumbnail src={thumbnailUrl} alt='썸네일' fill />
         </ThumbnailImageWrapper>
         <Participant>
-          <LucideIcon name='UserRound' size={15} fill='lfBlack' /> {currentParticipantCount}명 참여중
+          <LucideIcon name='UsersRound' size={24} color='lfBlue' /> {currentParticipantCount}명 참여중
         </Participant>
 
         <Descriptions>
@@ -302,17 +302,17 @@ const Participant = styled.div`
   padding: 14px 0;
   font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfBlack.base};
+  color: ${theme.colors.lfBlue.base};
 
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 `
 
 const Descriptions = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 `
 
 const Title = styled.h2`
@@ -323,6 +323,7 @@ const Description = styled.p`
   font-size: ${theme.fontSize.base};
   white-space: pre-wrap;
   word-break: break-word;
+  line-height: 1.6;
 `
 
 const MoreButton = styled.button`
@@ -432,7 +433,7 @@ const StyledBackButton = styled(BackButton)`
 
 const NoVerficiationImageText = styled.div`
   text-align: center;
-  padding: 20px;
+  padding: 30px;
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfRed.base};
 `
