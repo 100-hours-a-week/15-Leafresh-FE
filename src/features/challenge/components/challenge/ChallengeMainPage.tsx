@@ -289,14 +289,6 @@ const EventImage = styled(Image)`
   object-position: center center;
   border-radius: ${theme.radius.base};
 `
-const CardArea = styled.div`
-  flex-basis: 60%;
-  padding: 10px 10px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
 
 const DailyCardWrapper = styled.div`
   width: 100%;
@@ -312,7 +304,7 @@ const DailyCardWrapper = styled.div`
 
 const DailyCard = styled.div`
   width: 100%;
-  background: ${theme.colors.lfInputBackground.base};
+  background: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
 
   box-shadow: ${theme.shadow.lfInput};
