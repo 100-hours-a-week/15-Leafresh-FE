@@ -234,7 +234,7 @@ const ChallengeCard = styled.div`
 const TopImageWrapper = styled.div`
   background: #d9d9d9;
   width: 100%;
-  aspect-ratio: 2/1;
+  aspect-ratio: 3/2;
   position: relative;
   display: flex;
   align-items: center;
