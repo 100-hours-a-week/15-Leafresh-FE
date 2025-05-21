@@ -23,7 +23,6 @@ import { URL } from '@shared/constants/route/route'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
-import LeafIcon from '@public/icon/leaf.png'
 
 interface ChallengeMainPageProps {
   className?: string
@@ -99,12 +98,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
             {eventChallenges.length !== 0 ? (
               eventChallenges.map(ch => (
                 <EventCard key={ch.id} onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))}>
-                  <ImageArea>
-                    <EventImage src={ch.thumbnailUrl} alt={ch.description} width={48} height={48} />
-                  </ImageArea>
-                  <CardArea>
-                    <CardTitle>{ch.title}</CardTitle>
-                  </CardArea>
+                  <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
                 </EventCard>
               ))
             ) : (
@@ -119,24 +113,28 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
           <SectionTitle>일일 챌린지</SectionTitle>
           <SubDescription>다양한 사람들과 함께 챌린지에 참여해보세요!</SubDescription>
         </SectionHeader>
-        {personalChallenges.map(ch => (
-          <DailyCard key={ch.id}>
-            <CardTop>
-              <LeafWrapper>
+        <DailyCardWrapper>
+          {personalChallenges.map(ch => (
+            <DailyCard key={ch.id}>
+              <CardTop>
+                {/* <LeafWrapper>
                 <LeafImage src={LeafIcon} alt='나뭇잎 아이콘' />
                 <LeafLabel>{ch.leafReward}</LeafLabel>
-              </LeafWrapper>
-              <DailyImageArea>
-                <DailyImage src={ch.thumbnailUrl} alt={ch.description} width={400} height={220} />
-              </DailyImageArea>
-            </CardTop>
-            <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>참여하기</JoinButton>
-            <DailyCardDescriptions>
-              <CardTitle>{ch.title}</CardTitle>
-              <CardDescription>{ch.description}</CardDescription>
-            </DailyCardDescriptions>
-          </DailyCard>
-        ))}
+              </LeafWrapper> */}
+                <DailyImageArea>
+                  <DailyImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                </DailyImageArea>
+              </CardTop>
+              <DailyCardDescriptions>
+                <CardTitle>{ch.title}</CardTitle>
+                <CardDescription>{ch.description}</CardDescription>
+                <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
+                  참여하기
+                </JoinButton>
+              </DailyCardDescriptions>
+            </DailyCard>
+          ))}
+        </DailyCardWrapper>
       </Section>
       <Chatbot />
     </Container>
@@ -146,13 +144,6 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
 export default ChallengeMainPage
 
 // === Styles ===
-const DailyImage = styled(Image)`
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  border-radius: ${theme.radius.base};
-`
 
 const Container = styled.div`
   padding-top: 250px;
@@ -160,7 +151,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 48px;
 `
 
 const BannerSection = styled.section`
@@ -203,7 +194,6 @@ const SubTitle = styled.h2`
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 10px;
 `
 
 const SectionHeader = styled.div`
@@ -226,7 +216,7 @@ const SubDescription = styled.p`
   color: ${theme.colors.lfDarkGray.base};
 `
 const CategoryGrid = styled.div`
-  margin-top: 10px;
+  margin-top: 20px;
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -259,7 +249,8 @@ const CategoryLabel = styled.span`
 
 const CarouselWrapper = styled.div`
   width: 100%;
-  height: 160px;
+  /* height: 160px; */
+  aspect-ratio: 5/3;
 
   position: relative;
   overflow: hidden;
@@ -277,30 +268,25 @@ const CarouselInner = styled.div`
 `
 const EventCard = styled.div`
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 6;
 
-  flex: 0 0 auto;
   background: ${theme.colors.lfInputBackground.base};
   border-radius: ${theme.radius.base};
   display: flex;
   flex-direction: row;
-  padding: 16px;
   gap: 12px;
 
   cursor: pointer;
-`
-const ImageArea = styled.div`
-  flex-basis: 40%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+  &:hover {
+    opacity: 0.7;
+  }
 `
 
 const EventImage = styled(Image)`
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   object-fit: cover;
+  object-position: center center;
   border-radius: ${theme.radius.base};
 `
 const CardArea = styled.div`
@@ -312,14 +298,24 @@ const CardArea = styled.div`
   gap: 12px;
 `
 
+const DailyCardWrapper = styled.div`
+  width: 100%;
+  margin-top: 20px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+`
+
 const DailyCard = styled.div`
+  width: 100%;
   background: ${theme.colors.lfInputBackground.base};
   border-radius: ${theme.radius.base};
-  padding: 16px;
-  margin-top: 16px;
 
-  cursor: pointer;
-  box-shadow: ${theme.shadow.lfPrime};
+  box-shadow: ${theme.shadow.lfInput};
 `
 
 const CardTop = styled.div`
@@ -334,6 +330,7 @@ const LeafWrapper = styled.p`
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 20;
 
   display: flex;
   align-items: center;
@@ -354,17 +351,26 @@ const DailyImageArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  border-top-left-radius: ${theme.radius.base};
+  border-top-right-radius: ${theme.radius.base};
+  overflow: hidden;
+`
+
+const DailyImage = styled(Image)`
+  object-fit: cover;
 `
 
 const JoinButton = styled.button`
   width: 100%;
-  margin: 4px 0;
+  margin: 12px 0;
   padding: 16px 0;
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.semiBold};
+  box-shadow: ${theme.shadow.lfInput};
   cursor: pointer;
 
   &:hover {
@@ -372,23 +378,25 @@ const JoinButton = styled.button`
   }
 `
 const DailyCardDescriptions = styled.div`
+  padding: 0 16px;
   margin-top: 8px;
+  margin-bottom: 8px;
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 
   transition: all 0.3s ease; // optional: hover 부드럽게
 `
 const CardTitle = styled.h3`
   margin: 4px 0px;
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.semiBold};
 `
 
 const CardDescription = styled.p`
   font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfDarkGray.base};
+  color: ${theme.colors.lfBlack.base};
   white-space: pre-wrap;
 `
 
