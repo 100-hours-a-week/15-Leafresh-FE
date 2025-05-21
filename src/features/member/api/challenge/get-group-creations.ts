@@ -1,6 +1,7 @@
+import { ChallengeCategoryType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
-import { InfiniteScrollResponse } from '@shared/types/\bapi'
+import { InfiniteScrollResponse } from '@shared/types/api'
 import { ISOFormatString } from '@shared/types/date'
 
 interface MemberGroupChallengeCreationsParams {
@@ -8,7 +9,7 @@ interface MemberGroupChallengeCreationsParams {
   cursorTimestamp?: ISOFormatString
 }
 
-type GroupChallengeResponse = {
+export type GroupChallengeResponse = {
   id: number
   name: string
   description: string
@@ -16,6 +17,7 @@ type GroupChallengeResponse = {
   endDate: string
   imageUrl: string
   currentParticipantCount: number
+  category: ChallengeCategoryType
 }
 
 export type MemberGroupChallengeCreationsResponse = InfiniteScrollResponse<{
