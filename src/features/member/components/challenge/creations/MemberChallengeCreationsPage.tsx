@@ -9,7 +9,7 @@ const dummyMemberGroupChallenge: GroupChallengeResponse[] = [
     endDate: '2025-06-30',
     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
     currentParticipantCount: 42,
-    category: 'ZERO_WASTE',
+    category: 'UPCYCLING',
   },
   {
     id: 2,
@@ -80,7 +80,7 @@ import LogoCharacterImage from '@public/image/main-icon.svg'
 
 const MemberChallengeCreationsPage = (): ReactNode => {
   const router = useRouter()
-  const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const { userInfo } = useOAuthUserStore()
   const openToast = useToast()
 
   const { openConfirmModal } = useConfirmModalStore()
@@ -207,7 +207,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
             <ChallengeCard key={id}>
               <TopImageWrapper>
                 <ChallengeImage src={imageUrl} alt='챌린지 이미지' />
-                <Badge>{KOR_category}</Badge>
+                <Badge className='badge'>{KOR_category}</Badge>
               </TopImageWrapper>
               <CardBody>
                 <TopRow>
@@ -236,7 +236,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
 
   return (
     <Wrapper>
-      <Title>노아의 단체 챌린지</Title>
+      <Title>{userInfo?.nickname || '익명'}의 단체 챌린지</Title>
       {contents}
       <Observer ref={triggerRef}>{isFetchingNextPage && '불러오는 중...'}</Observer>
     </Wrapper>
@@ -264,7 +264,7 @@ const Title = styled.h1`
 const ChallengeList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 18px;
 `
 
 const ChallengeCard = styled.div`
@@ -272,8 +272,14 @@ const ChallengeCard = styled.div`
   border-radius: 12px;
   overflow: hidden;
   box-shadow: ${theme.shadow.lfInput};
-
   cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    .badge {
+      opacity: 1;
+    }
+  }
 `
 
 const TopImageWrapper = styled.div`
@@ -303,10 +309,7 @@ const Badge = styled.div`
   font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.medium};
   border-radius: ${theme.radius.full};
-  transition: transform 2s ease-out;
-  &:hover {
-    opacity: 1;
-  }
+  transition: opacity 0.3s ease;
 `
 
 const CardBody = styled.div`
