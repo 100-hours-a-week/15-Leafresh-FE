@@ -2,12 +2,12 @@ import { useCallback, useState } from 'react'
 
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { HttpMethod } from '@shared/constants/http'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
-type signedUrlResponse = ApiResponse<{
+type PresignedUrlResponse = {
   uploadUrl: string // GCS로 PUT 요청을 보낼 PreSigned URL
   fileUrl: string // 버킷 내부에 저장될 객체 경로 (key)
-}>
+}
 
 export function useImageUpload() {
   const [loading, setLoading] = useState(false)
@@ -20,7 +20,7 @@ export function useImageUpload() {
     const uniqueName = `${Date.now()}-${uniqueId}-${file.name}`
 
     try {
-      const signed = await fetchRequest<signedUrlResponse>(ENDPOINTS.S3.PRESIGNED_URL, {
+      const signed = await fetchRequest<PresignedUrlResponse>(ENDPOINTS.S3.PRESIGNED_URL, {
         body: {
           fileName: uniqueName,
           contentType: file.type,

@@ -1,5 +1,6 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { InfiniteScrollResponse } from '@shared/types/api'
 import { ISOFormatString } from '@shared/types/date'
 
 export interface GroupChallengeParticipateListParams {
@@ -16,22 +17,17 @@ export type VerificationType = {
   description: string
 }
 
-export type GroupChallengeParticipateList = {
+export type GroupChallengeParticipateList = InfiniteScrollResponse<{
   items: VerificationType[]
-  hasNext: boolean
-  cursorInfo: {
-    lastCursorId: number
-    cursorTimestamp: ISOFormatString
-  }
-}
+}>
 
-type GetGroupChallengeParticipateListResponse = ApiResponse<GroupChallengeParticipateList>
+type GetGroupChallengeParticipateListResponse = GroupChallengeParticipateList
 
 export const getGroupChallengeParticipateList = ({
   challengeId,
   cursorId,
   cursorTimestamp,
-}: GroupChallengeParticipateListParams): Promise<GetGroupChallengeParticipateListResponse> => {
+}: GroupChallengeParticipateListParams) => {
   return fetchRequest<GetGroupChallengeParticipateListResponse>(ENDPOINTS.CHALLENGE.GROUP.VERIFICATIONS(challengeId), {
     query: {
       ...(cursorId !== undefined ? { cursorId } : {}),

@@ -1,8 +1,8 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
-export type ReadAllAlarmsResponse = ApiResponse<null>
+export type ReadAllAlarmsResponse = null
 
-export const readAllAlarms = (): Promise<ReadAllAlarmsResponse> => {
+export const readAllAlarms = () => {
   return fetchRequest<ReadAllAlarmsResponse>(ENDPOINTS.MEMBERS.NOTIFICATION.READ)
 }

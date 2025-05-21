@@ -6,7 +6,7 @@ import {
   ChallengeVerificationStatusType,
 } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'
 
 export type GroupChallengeDetail = {
@@ -34,8 +34,8 @@ export type GroupChallengeDetail = {
   status: ChallengeVerificationStatusType
 }
 
-type GetGroupChallengeDetailResponse = ApiResponse<GroupChallengeDetail>
+type GetGroupChallengeDetailResponse = GroupChallengeDetail
 
-export const getGroupChallengeDetails = (id: number): Promise<GetGroupChallengeDetailResponse> => {
+export const getGroupChallengeDetails = (id: number) => {
   return fetchRequest<GetGroupChallengeDetailResponse>(ENDPOINTS.CHALLENGE.GROUP.DETAILS(id))
 }

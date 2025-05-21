@@ -55,7 +55,11 @@ async function refreshAccessToken(): Promise<void> {
   return refreshPromise
 }
 
-export async function fetchRequest<T>(endpoint: EndpointType, options: OptionsType = {}, isRetry = false): Promise<T> {
+export async function fetchRequest<T>(
+  endpoint: EndpointType,
+  options: OptionsType = {},
+  isRetry = false,
+): Promise<ApiResponse<T>> {
   /** Request */
   const { method, path } = endpoint
 
@@ -113,7 +117,7 @@ export async function fetchRequest<T>(endpoint: EndpointType, options: OptionsTy
     throw error
   }
 
-  return data as T
+  return data as ApiResponse<T>
 }
 
 /** 사용 예시

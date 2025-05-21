@@ -1,5 +1,5 @@
 import { HttpMethod } from '@shared/constants/http'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 // 카테고리 기반 챌린지 추천 요청 엔드포인트
 export const CATEGORY_RECOMMENDATION_ENDPOINT = {
@@ -50,8 +50,6 @@ export interface RecommendationResponseDataDTO {
  * @throws 500 - 서버 내부 오류 ("서버 내부 오류로 추천에 실패했습니다.")
  * @throws 502 - AI 서버 연결 실패 ("AI 서버로부터 추천 결과를 받아오는 데 실패했습니다.")
  */
-export const requestCategoryBasedRecommendation = (
-  body: CategoryRecommendationRequestDTO,
-): Promise<ApiResponse<RecommendationResponseDataDTO>> => {
+export const requestCategoryBasedRecommendation = (body: CategoryRecommendationRequestDTO) => {
   return fetchRequest(CATEGORY_RECOMMENDATION_ENDPOINT, { body })
 }

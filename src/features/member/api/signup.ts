@@ -1,14 +1,11 @@
 import { OAuthType } from '@entities/member/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
-/**
- * false: 사용 가능 / true 사용 불가능
- */
-export type SignUpResponseType = ApiResponse<{
+export type SignUpResponse = {
   nickname: string
   imageUrl: string
-}>
+}
 
 export type SignUpBody = {
   email: string
@@ -28,7 +25,7 @@ export type SignUpVariables = {
  * 회원가입
  */
 export const SignUp = ({ body }: SignUpVariables) => {
-  return fetchRequest<SignUpResponseType>(ENDPOINTS.MEMBERS.SIGNUP, {
+  return fetchRequest<SignUpResponse>(ENDPOINTS.MEMBERS.SIGNUP, {
     body,
   })
 }

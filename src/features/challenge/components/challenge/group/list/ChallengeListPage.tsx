@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Spinner } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 
+import { GroupChallengeItem } from '@features/challenge/api/get-group-challenge-list'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import Chatbot from '@shared/components/chatbot/Chatbot'
@@ -12,17 +13,6 @@ import GridBox from '@shared/components/Wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
-
-type GroupChallenge = {
-  id: number
-  title: string
-  thumbnailUrl: string
-  leafReward: number
-  startDate: string
-  endDate: string
-  remainingDay: number
-  currentParticipantCount: number
-}
 
 const ChallengeListPage = () => {
   const searchParams = useSearchParams()
@@ -80,7 +70,7 @@ const ChallengeListPage = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   // API 데이터 뽑아오기
-  const groupChallenges: GroupChallenge[] = data?.pages.flatMap(p => p.data.groupChallenges) ?? []
+  const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(p => p.groupChallenges) ?? []
 
   if (isLoading) return <Spinner size='lg' style={{ marginTop: '100px' }} />
   if (error) return <Message>Error: {error.message}</Message>

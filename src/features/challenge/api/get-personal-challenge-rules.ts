@@ -1,6 +1,6 @@
 import { ChallengeVerificationResultType, DayType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { TimeFormatString } from '@shared/types/date'
 
 export type PersonalChallengeExampleImageType = {
@@ -11,15 +11,15 @@ export type PersonalChallengeExampleImageType = {
   type: ChallengeVerificationResultType
 }
 
-export type PersonalChallengeRulesListResponse = ApiResponse<{
+export type PersonalChallengeRulesListResponse = {
   certificationPeriod: {
     dayOfWeek: DayType
     startTime: TimeFormatString
     endTime: TimeFormatString
   }
   exampleImages: PersonalChallengeExampleImageType[]
-}>
+}
 
-export const getPersonalChallengeRulesList = (challengeId: number): Promise<PersonalChallengeRulesListResponse> => {
+export const getPersonalChallengeRulesList = (challengeId: number) => {
   return fetchRequest<PersonalChallengeRulesListResponse>(ENDPOINTS.CHALLENGE.PERSONAL.RULES(challengeId))
 }

@@ -121,10 +121,6 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
   )
 
   const handleMetaSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log('클릭 태그:', (e.target as HTMLElement).tagName)
-    console.log('클래스명:', (e.target as HTMLElement).className)
-    console.log('텍스트:', (e.target as HTMLElement).textContent)
-
     e.preventDefault()
     if (!isSubmitted) {
       setIsSubmitted(true)
@@ -154,7 +150,7 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
               <CategoryDropdown
                 label='카테고리'
                 required
-                options={CHALLENGE_CATEGORIES_KOR}
+                options={CHALLENGE_CATEGORIES_KOR.slice(0, -1)}
                 selected={field.value}
                 onChange={val => field.onChange(val)}
                 getOptionKey={opt => opt}
