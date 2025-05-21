@@ -297,7 +297,7 @@ const BackButton = styled(LucideIcon)`
 const CameraWrapper = styled.div`
   gap: 16px;
   width: 100%;
-  aspect-ratio: 3/2;
+  aspect-ratio: 4/3;
 
   position: relative;
   background-color: ${theme.colors.lfInputBackground.base};

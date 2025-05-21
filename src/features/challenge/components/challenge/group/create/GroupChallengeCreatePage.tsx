@@ -62,7 +62,7 @@ const fullSchema = metaSchema
 export type FullFormValues = z.infer<typeof fullSchema>
 
 const GroupChallengeCreatePage = () => {
-  const [step, setStep] = useState<1 | 2>(1)
+  const [step, setStep] = useState<1 | 2>(2)
   const router = useRouter()
 
   const searchParams = useSearchParams()
@@ -94,7 +94,6 @@ const GroupChallengeCreatePage = () => {
   const handleFinalSubmit = () => {
     const data = form.getValues()
 
-    // TODO : 시작시간 - 종료시간 데이터 넣기
     const {
       title,
       description,

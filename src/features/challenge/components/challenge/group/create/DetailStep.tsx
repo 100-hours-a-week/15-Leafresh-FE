@@ -108,15 +108,17 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
             <InfoIcon>ⓘ</InfoIcon>
           </LabelRow>
           <SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</SubText>
-          <ImageInput
-            label='사진 추가하기'
-            icon={null}
+          <StyledImageInput
+            label='이미지를 업로드해주세요'
+            icon={<LucideIcon name='Image' size={24} />}
             imageUrl={formValue.thumbnailUrl || null}
             onChange={({ imageUrl }) => {
               setValue('thumbnailUrl', imageUrl ?? '')
               trigger('thumbnailUrl')
             }}
+            backgroundColor='lfWhite'
             cameraTitle='챌린지 썸네일'
+            aspectRatio='FIVE_THREE'
           />
           <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
         </FieldWrapper>
@@ -235,4 +237,9 @@ const SubmitButton = styled.button<{ $active: boolean }>`
   font-weight: ${theme.fontWeight.semiBold};
   cursor: pointer;
   border: none;
+`
+
+const StyledImageInput = styled(ImageInput)`
+  width: 100%;
+  border: 1px solid ${theme.colors.lfGray.base};
 `
