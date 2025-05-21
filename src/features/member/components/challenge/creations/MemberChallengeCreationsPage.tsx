@@ -55,17 +55,20 @@ const dummyMemberGroupChallenge: GroupChallengeResponse[] = [
 // const dummyMemberGroupChallenge: GroupChallengeResponse[] = []
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { ReactNode, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
 import { GroupChallengeResponse } from '@features/member/api/challenge/get-group-creations'
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/hooks/useInfiniteMemberChallengeCreationsList'
+import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LogoCharacterImage from '@public/image/main-icon.svg'
 
 const MemberChallengeCreationsPage = (): ReactNode => {
+  const router = useRouter()
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberGroupChallengeCreations()
   const triggerRef = useRef<HTMLDivElement>(null)
 
@@ -83,6 +86,17 @@ const MemberChallengeCreationsPage = (): ReactNode => {
     return () => observer.disconnect()
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
+  /** 단체 챌린지 수정 */
+  const handleModify = () => {}
+
+  /** 단체 챌린지 삭제 */
+  const handleDelete = () => {}
+
+  /** 단체 챌린지 생성하러 가기 */
+  const handleCreateChallenge = () => {
+    router.push(URL.CHALLENGE.GROUP.CREATE.value)
+  }
+
   // TODO: 실제 데이터로 바꾸기
   const groupChallenges = data?.pages.flatMap(page => page?.data.groupChallenges || []) ?? []
   // const groupChallenges = dummyMemberGroupChallenge
@@ -96,7 +110,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
       <EmptyWrapper>
         <Image src={LogoCharacterImage} alt='로고 캐릭터 ' />
         <NoChallengeMessage>생성한 챌린지가 없습니다!</NoChallengeMessage>
-        <CreateButton>챌린지 생성하러 가기</CreateButton>
+        <CreateButton onClick={handleCreateChallenge}>챌린지 생성하러 가기</CreateButton>
       </EmptyWrapper>
     )
   } else {
@@ -112,8 +126,12 @@ const MemberChallengeCreationsPage = (): ReactNode => {
               <TopRow>
                 <ChallengeName>{groupChallenge.name}</ChallengeName>
                 <ActionButtons>
-                  <EditButton type='button'>수정</EditButton>
-                  <DeleteButton type='button'>삭제</DeleteButton>
+                  <ModifyButton type='button' onClick={handleModify}>
+                    수정
+                  </ModifyButton>
+                  <DeleteButton type='button' onClick={handleDelete}>
+                    삭제
+                  </DeleteButton>
                 </ActionButtons>
               </TopRow>
               <ChallengeDesc>{groupChallenge.description.repeat(5)}</ChallengeDesc>
@@ -227,7 +245,7 @@ const ActionButtons = styled.div`
   gap: 8px;
 `
 
-const EditButton = styled.button`
+const ModifyButton = styled.button`
   color: ${theme.colors.lfBlack.base};
   background: none;
   border: none;
