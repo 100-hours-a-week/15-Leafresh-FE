@@ -140,7 +140,7 @@ interface PreviewImageViewProps {
 const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio }: PreviewImageViewProps) => {
   return (
     <ImageBox aspectRatio={aspectRatio}>
-      <Image alt='preview' src={imageUrl} fill style={{ objectFit: 'cover' }} />
+      <PreviewImage alt='preview' src={imageUrl} fill />
       {!readOnly && (
         <RemoveButton type='button' onClick={onRemove}>
           <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
@@ -164,6 +164,15 @@ const ImageBox = styled.div<{ aspectRatio: string }>`
   position: relative;
   overflow: hidden;
   box-shadow: ${theme.shadow.lfPrime};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const PreviewImage = styled(Image)`
+  object-fit: cover;
+  object-position: center center;
 `
 
 const RemoveButton = styled.button`

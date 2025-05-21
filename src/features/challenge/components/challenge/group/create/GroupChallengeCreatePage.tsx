@@ -62,7 +62,7 @@ const fullSchema = metaSchema
 export type FullFormValues = z.infer<typeof fullSchema>
 
 const GroupChallengeCreatePage = () => {
-  const [step, setStep] = useState<1 | 2>(2)
+  const [step, setStep] = useState<1 | 2>(1)
   const router = useRouter()
 
   const searchParams = useSearchParams()
