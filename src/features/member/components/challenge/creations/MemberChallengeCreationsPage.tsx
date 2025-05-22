@@ -294,12 +294,19 @@ const TopImageWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  overflow: hidden;
 `
 
 const ChallengeImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.35s ease;
+
+  ${ChallengeCard}:hover & {
+    transform: scale(1.05); // ✅ 1.1배 확대
+  }
 `
 
 const Badge = styled.div`
