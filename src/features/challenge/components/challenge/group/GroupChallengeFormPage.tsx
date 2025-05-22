@@ -27,6 +27,8 @@ import MetaDataStep, { metaSchema } from '@features/challenge/components/challen
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
+import { ToastType } from '@shared/context/Toast/type'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import { formatDateToDateFormatString } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
@@ -70,6 +72,7 @@ interface GroupChallengeFormPageProps {
 const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: GroupChallengeFormPageProps) => {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const openToast = useToast()
 
   const [step, setStep] = useState<1 | 2>(1)
 
@@ -149,9 +152,8 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
           const challengeId: number = response.data.id
           router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
         },
-        onError: () => {
-          // TODO : 토스트 에러 처리
-          // openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
+        onError(error) {
+          openToast(ToastType.Error, error.message)
         },
       },
     )
@@ -229,13 +231,12 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
       { challengeId, body },
       {
         onSuccess: () => {
-          alert('수정 성공!')
-
-          // router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
+          // 단체 챌린지 상세 페이지로 이동
+          openToast(ToastType.Success, '챌린지 수정 성공')
+          router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
         },
-        onError: () => {
-          // TODO: 토스트 에러 처리
-          alert('수정 실패!')
+        onError(error) {
+          openToast(ToastType.Error, error.message)
         },
       },
     )
