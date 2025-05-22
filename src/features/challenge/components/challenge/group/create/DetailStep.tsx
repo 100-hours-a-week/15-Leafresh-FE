@@ -19,12 +19,7 @@ export const detailSchema = z.object({
   thumbnailUrl: z.string().min(1, '썸네일 이미지를 등록해주세요'),
 })
 
-type DetailFormValues = z.infer<typeof detailSchema>
-
-export const defaultDetailFormValues: DetailFormValues = {
-  description: '',
-  thumbnailUrl: '',
-}
+export type DetailFormValues = z.infer<typeof detailSchema>
 
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>

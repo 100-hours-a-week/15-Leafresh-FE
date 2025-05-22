@@ -16,14 +16,8 @@ import {
   CreateChallengeVariables,
   ExampleImageType,
 } from '@features/challenge/api/create-group-challenge'
-import DetailStep, {
-  defaultDetailFormValues,
-  detailSchema,
-} from '@features/challenge/components/challenge/group/create/DetailStep'
-import MetaDataStep, {
-  defaultMetaFormValues,
-  metaSchema,
-} from '@features/challenge/components/challenge/group/create/MetadataStep'
+import DetailStep, { detailSchema } from '@features/challenge/components/challenge/group/create/DetailStep'
+import MetaDataStep, { metaSchema } from '@features/challenge/components/challenge/group/create/MetadataStep'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
@@ -61,27 +55,34 @@ const fullSchema = metaSchema
 
 export type FullFormValues = z.infer<typeof fullSchema>
 
-const GroupChallengeCreatePage = () => {
-  const [step, setStep] = useState<1 | 2>(1)
+interface GroupChallengeCreatePageProps {
+  defaultValues: FullFormValues
+  isEdit?: boolean
+  challengeId?: number
+}
+
+const GroupChallengeCreatePage = ({ defaultValues, isEdit = false, challengeId }: GroupChallengeCreatePageProps) => {
+  const searchParams = useSearchParams()
   const router = useRouter()
 
-  const searchParams = useSearchParams()
+  const [step, setStep] = useState<1 | 2>(1)
+
   const categoryFromQuery = searchParams.get('category') ?? ''
+  const categoryKor: string = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(categoryFromQuery) ?? ''
 
-  const convertCategory = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')
-  const categoryKor = convertCategory(categoryFromQuery) ?? '' // '제로웨이스트'
-
-  const defaultValues = useMemo(() => {
-    return {
-      ...defaultMetaFormValues,
-      ...defaultDetailFormValues,
+  const mergedDefaultValues = useMemo(() => {
+    const createdDefaultValues: FullFormValues = {
+      ...defaultValues,
       category: categoryKor,
     }
-  }, [categoryFromQuery])
+    const modifyDefaultValues: FullFormValues = { ...defaultValues }
+
+    return !isEdit ? createdDefaultValues : modifyDefaultValues
+  }, [categoryFromQuery, defaultValues])
 
   const form = useForm<FullFormValues>({
     resolver: zodResolver(fullSchema),
-    defaultValues,
+    defaultValues: mergedDefaultValues,
     mode: 'onChange',
   })
 

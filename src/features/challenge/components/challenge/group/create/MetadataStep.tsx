@@ -54,20 +54,7 @@ export const metaSchema = z.object({
     ),
 })
 
-type MetaFormValues = z.infer<typeof metaSchema>
-export const defaultMetaFormValues: MetaFormValues = {
-  title: '',
-  category: '',
-  startDate: new Date(),
-  endDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-  startTime: '00:00',
-  endTime: '23:50',
-  maxParticipant: 0,
-  examples: [
-    { url: null, description: '', type: 'SUCCESS' },
-    { url: null, description: '', type: 'FAILURE' },
-  ],
-}
+export type MetaFormValues = z.infer<typeof metaSchema>
 
 interface MetaDataStepProps {
   form: UseFormReturn<FullFormValues>
@@ -124,6 +111,8 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
       setIsSubmitted(true)
     }
     if (isMetaValid) {
+      console.log('다음 스텝으로 넘어갑니다.')
+
       onNext()
     }
   }
