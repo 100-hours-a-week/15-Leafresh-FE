@@ -12,6 +12,7 @@ import {
   DeleteGroupChallengeResponse,
   DeleteGroupChallengeVariables,
 } from '@features/challenge/api/delete-group-challenge'
+import { GroupChallengeResponse } from '@features/member/api/challenge/get-group-creations'
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/hooks/useInfiniteMemberChallengeCreationsList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
@@ -22,6 +23,60 @@ import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LogoCharacterImage from '@public/image/main-icon.svg'
+
+const dummyMemberGroupChallenge: GroupChallengeResponse[] = [
+  {
+    id: 1,
+    name: '제로 웨이스트 도전!',
+    description: '일회용품 줄이기 미션에 도전하세요!',
+    startDate: '2025-06-01',
+    endDate: '2025-06-30',
+    imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    currentParticipantCount: 42,
+    category: 'UPCYCLING',
+  },
+  {
+    id: 2,
+    name: '텀블러 챌린지',
+    description: '텀블러를 사용하고 인증해요!',
+    startDate: '2025-06-05',
+    endDate: '2025-06-20',
+    imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    currentParticipantCount: 18,
+    category: 'ZERO_WASTE',
+  },
+  {
+    id: 3,
+    name: '플로깅 마스터',
+    description: '조깅하며 쓰레기를 줍는 챌린지!',
+    startDate: '2025-06-10',
+    endDate: '2025-07-10',
+    imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    currentParticipantCount: 73,
+    category: 'ZERO_WASTE',
+  },
+  {
+    id: 4,
+    name: '친환경 장보기',
+    description: '비닐 대신 장바구니 쓰기 도전!',
+    startDate: '2025-06-15',
+    endDate: '2025-06-30',
+    imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    currentParticipantCount: 55,
+    category: 'ZERO_WASTE',
+  },
+  {
+    id: 5,
+    name: '재활용 분리배출 고수',
+    description: '올바른 분리배출 습관 챌린지',
+    startDate: '2025-06-20',
+    endDate: '2025-07-15',
+    imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    currentParticipantCount: 39,
+    category: 'ZERO_WASTE',
+  },
+]
+// const dummyMemberGroupChallenge: GroupChallengeResponse[] = []
 
 const MemberChallengeCreationsPage = (): ReactNode => {
   const router = useRouter()
@@ -130,8 +185,8 @@ const MemberChallengeCreationsPage = (): ReactNode => {
     router.push(URL.CHALLENGE.GROUP.CREATE.value)
   }
 
-  const groupChallenges = data?.pages.flatMap(page => page?.data.groupChallenges || []) ?? []
-  // const groupChallenges = dummyMemberGroupChallenge
+  // const groupChallenges = data?.pages.flatMap(page => page?.data.groupChallenges || []) ?? []
+  const groupChallenges = dummyMemberGroupChallenge
 
   let contents: ReactNode
 
@@ -262,7 +317,7 @@ const Badge = styled.div`
 `
 
 const CardBody = styled.div`
-  padding: 16px;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -275,7 +330,7 @@ const TopRow = styled.div`
 `
 
 const ChallengeName = styled.div`
-  font-size: ${theme.fontSize.lg};
+  font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semiBold};
 `
 
@@ -307,7 +362,7 @@ const DeleteButton = styled.button`
 
 const ChallengeDesc = styled.div`
   margin: 10px 0 27px 0;
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
   color: ${theme.colors.lfBlack.base};
   line-height: 1.4;
   display: -webkit-box;
