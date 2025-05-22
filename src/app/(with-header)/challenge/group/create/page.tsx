@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 
 import { DetailFormValues } from '@features/challenge/components/challenge/group/create/DetailStep'
-import GroupChallengeCreatePage, {
-  FullFormValues,
-} from '@features/challenge/components/challenge/group/create/GroupChallengeCreatePage'
 import { MetaFormValues } from '@features/challenge/components/challenge/group/create/MetadataStep'
+import GroupChallengeFormPage, {
+  FullFormValues,
+} from '@features/challenge/components/challenge/group/GroupChallengeFormPage'
 import Loading from '@shared/components/loading'
 
 const Page = async () => {
@@ -32,7 +32,7 @@ const Page = async () => {
   }
   return (
     <Suspense fallback={<Loading />}>
-      <GroupChallengeCreatePage defaultValues={defaultFormValues} isEdit={false} />
+      <GroupChallengeFormPage defaultValues={defaultFormValues} isEdit={false} />
     </Suspense>
   )
 }

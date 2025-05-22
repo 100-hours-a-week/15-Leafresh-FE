@@ -55,13 +55,13 @@ const fullSchema = metaSchema
 
 export type FullFormValues = z.infer<typeof fullSchema>
 
-interface GroupChallengeCreatePageProps {
+interface GroupChallengeFormPageProps {
   defaultValues: FullFormValues
   isEdit?: boolean
   challengeId?: number
 }
 
-const GroupChallengeCreatePage = ({ defaultValues, isEdit = false, challengeId }: GroupChallengeCreatePageProps) => {
+const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: GroupChallengeFormPageProps) => {
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -159,7 +159,7 @@ const GroupChallengeCreatePage = ({ defaultValues, isEdit = false, challengeId }
   )
 }
 
-export default GroupChallengeCreatePage
+export default GroupChallengeFormPage
 
 const PageWrapper = styled.div`
   width: 100%;
