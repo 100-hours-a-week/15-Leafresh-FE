@@ -7,7 +7,7 @@ export type CreateChallengeResponse = {
   id: number
 }
 
-export type ExampleImageType = {
+export type ExampleImage = {
   imageUrl: string
   type: ChallengeVerificationResultType
   description: string
@@ -24,7 +24,7 @@ export type CreateChallengeBody = {
   endDate: DateFormatString
   verificationStartTime: TimeFormatString
   verificationEndTime: TimeFormatString
-  exampleImages: ExampleImageType[]
+  exampleImages: ExampleImage[]
 }
 
 export type CreateChallengeVariables = {

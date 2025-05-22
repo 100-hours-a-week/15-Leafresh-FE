@@ -3,11 +3,11 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'
 
-type KeepImage = {
+export type KeepImage = {
   id: number
   sequenceNumber: number
 }
-type NewImage = {
+export type NewImage = {
   imageUrl: string
   type: ChallengeVerificationResultType
   description: string

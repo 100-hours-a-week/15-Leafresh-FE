@@ -14,8 +14,14 @@ import {
   CreateChallengeBody,
   CreateChallengeResponse,
   CreateChallengeVariables,
-  ExampleImageType,
+  ExampleImage,
 } from '@features/challenge/api/create-group-challenge'
+import {
+  KeepImage,
+  ModifyChallengeBody,
+  ModifyChallengeVariables,
+  NewImage,
+} from '@features/challenge/api/modify-group-challenge'
 import DetailStep, { detailSchema } from '@features/challenge/components/challenge/group/create/DetailStep'
 import MetaDataStep, { metaSchema } from '@features/challenge/components/challenge/group/create/MetadataStep'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
@@ -86,13 +92,24 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
     mode: 'onChange',
   })
 
+  console.log('예시 이미지', form.getValues().examples)
+
   /** 단체 챌린지 생성 */
   const { mutate: CreateChallengeMutate, isPending: isCreating } = useMutationStore<
     CreateChallengeResponse,
     CreateChallengeVariables
   >(MUTATION_KEYS.CHALLENGE.GROUP.CREATE)
 
-  const handleFinalSubmit = () => {
+  /** 단체 챌린지 수정 */
+  const { mutate: ModifyChallengeMutate, isPending: isModifying } = useMutationStore<
+    null, // 204 응답
+    ModifyChallengeVariables
+  >(MUTATION_KEYS.CHALLENGE.GROUP.MODIFY)
+
+  /** 단체 챌린지 생성 */
+  const handleCreateSubmit = () => {
+    console.log('❌ 단체 챌린지 수정 실행됨')
+
     const data = form.getValues()
 
     const {
@@ -109,11 +126,11 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
     } = data
 
     const filteredExamples = examples.filter(example => example.url !== null)
-    const exampleImages = filteredExamples.map((example, index) => ({
-      imageUrl: example.url,
+    const exampleImages: ExampleImage[] = filteredExamples.map((example, index) => ({
+      imageUrl: example.url as string,
       type: example.type,
       description: example.description,
-      sequenceNumber: index + 1,
+      sequenceNumber: index + 1, // 1부터 시작
     }))
 
     const body: CreateChallengeBody = {
@@ -126,7 +143,7 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
       endDate: formatDateToDateFormatString(endDate),
       verificationStartTime: startTime as TimeFormatString,
       verificationEndTime: endTime as TimeFormatString,
-      exampleImages: exampleImages as ExampleImageType[],
+      exampleImages: exampleImages,
     }
     CreateChallengeMutate(
       { body },
@@ -143,6 +160,93 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
     )
   }
 
+  /** 단체 챌린지 수정 */
+  const handleModifySubmit = () => {
+    console.log('✅ 단체 챌린지 수정 실행됨')
+
+    if (!challengeId) return
+
+    const {
+      title,
+      description,
+      category,
+      maxParticipant,
+      thumbnailUrl,
+      startDate,
+      endDate,
+      startTime,
+      endTime,
+      examples,
+    } = form.getValues()
+
+    console.log('예시 이미지 : ', examples)
+
+    const originalExamples = defaultValues.examples ?? [] // 초기 데이터
+    const uploadedExamples = examples.filter(e => e.url !== null) // 입력용 삭제
+
+    const keep: KeepImage[] = [] // 유지된 이미지
+    const newImages: NewImage[] = [] // 생성된 이미지
+    const deleted: number[] = [] // 삭제된 이미지
+
+    uploadedExamples.forEach((example, index) => {
+      // 기존에 있던 이미지
+      if (example.id) {
+        keep.push({
+          id: example.id,
+          sequenceNumber: index + 1,
+        })
+      }
+      // 추가된 이미지
+      else {
+        newImages.push({
+          imageUrl: example.url!,
+          type: example.type,
+          description: example.description,
+          sequenceNumber: index + 1,
+        })
+      }
+    })
+
+    // 삭제된 이미지 id 추출
+    originalExamples.forEach(origin => {
+      const stillExists = uploadedExamples.some(e => e.id === origin.id)
+      if (!stillExists && origin.id != null) {
+        deleted.push(origin.id)
+      }
+    })
+
+    const body: ModifyChallengeBody = {
+      title,
+      description,
+      category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
+      maxParticipantCount: maxParticipant,
+      thumbnailImageUrl: thumbnailUrl,
+      startDate: formatDateToDateFormatString(startDate),
+      endDate: formatDateToDateFormatString(endDate),
+      verificationStartTime: startTime as TimeFormatString,
+      verificationEndTime: endTime as TimeFormatString,
+      exampleImages: {
+        keep,
+        new: newImages,
+        deleted,
+      },
+    }
+
+    ModifyChallengeMutate(
+      { challengeId, body },
+      {
+        onSuccess: () => {
+          alert('수정 성공!')
+
+          // router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
+        },
+        onError: () => {
+          // TODO: 토스트 에러 처리
+          alert('수정 실패!')
+        },
+      },
+    )
+  }
   return (
     <PageWrapper>
       {step === 1 ? (
@@ -153,7 +257,12 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
           }}
         />
       ) : (
-        <DetailStep form={form} onBack={() => setStep(1)} onSubmit={handleFinalSubmit} isCreating={isCreating} />
+        <DetailStep
+          form={form}
+          onBack={() => setStep(1)}
+          onSubmit={!isEdit ? handleCreateSubmit : handleModifySubmit}
+          isCreating={isCreating}
+        />
       )}
     </PageWrapper>
   )

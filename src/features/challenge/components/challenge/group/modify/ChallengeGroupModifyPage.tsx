@@ -27,7 +27,6 @@ const ChallengeGroupModifyPage = ({ challengeId }: ChallengeGroupModifyPageProps
   if (challengeData) {
     const {
       id,
-      // isEvent, // 이벤트 챌린지 여부
       category,
       title,
       description,
@@ -35,16 +34,15 @@ const ChallengeGroupModifyPage = ({ challengeId }: ChallengeGroupModifyPageProps
       endDate,
       verificationStartTime,
       verificationEndTime,
-      // leafReward, // 보상 개수
       thumbnailUrl,
       exampleImages,
-      // verificationImages, // 참여자 인증 사진
       maxParticipantCount,
+      // isEvent, // 이벤트 챌린지 여부
+      // leafReward, // 보상 개수
+      // verificationImages, // 참여자 인증 사진
       // currentParticipantCount, // 참여자수
       // status, // 제출 여부
     } = challengeData.data
-
-    console.log(challengeData.data)
 
     const defaultValues: FullFormValues = {
       title,
@@ -56,11 +54,12 @@ const ChallengeGroupModifyPage = ({ challengeId }: ChallengeGroupModifyPageProps
       endDate: new Date(endDate),
       startTime: verificationStartTime,
       endTime: verificationEndTime,
-      examples: exampleImages.map((image, index) => ({
+      examples: exampleImages.map(image => ({
+        id: image.id,
         url: image.imageUrl,
-        type: image.type,
         description: image.description,
-        sequenceNumber: image.sequenceNumber ?? index + 1,
+        type: image.type,
+        // sequenceNumber: image.sequenceNumber,
       })),
     }
 

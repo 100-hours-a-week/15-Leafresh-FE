@@ -36,6 +36,7 @@ export const metaSchema = z.object({
   examples: z
     .array(
       z.object({
+        id: z.number().optional(), // 상세 포함, 생성 미포함
         url: z.string().nullable(),
         description: z.string(),
         type: z.enum(['SUCCESS', 'FAILURE']),

@@ -11,6 +11,7 @@ import { theme } from '@shared/styles/theme'
 import VerificationImageInput from './VerificationImageInput'
 
 export interface VerificationImageData {
+  id?: number
   url: string | null
   description: string
   type: ChallengeVerificationResultType
@@ -67,17 +68,27 @@ const ChallengeVerifyExamples = ({
   ) => {
     if (readOnly) return
 
+    const visibleExamples = examples.filter(e => !(e.id && !e.url))
+    const target = visibleExamples[index]
+    const targetIndex = examples.findIndex(e => e === target)
+
+    if (targetIndex === -1) return // 보호 코드
+
     let newExamples = [...examples]
     const currentCount = newExamples.filter(e => e.url !== null).length
 
-    newExamples[index] = {
-      ...newExamples[index],
+    newExamples[targetIndex] = {
+      ...(data.url === null ? {} : { id: newExamples[targetIndex].id }), // 삭제 시 id 제거
+      ...newExamples[targetIndex],
       ...data,
       type,
     }
 
+    console.log('after: ', newExamples)
+
+    /** Case: 이미지가 추가된 경우 이미지 입력창을 추가 */
     if (data.url !== undefined && data.url !== null) {
-      const hasEmptySlot = newExamples.some(e => e.url === null && e.type === type)
+      const hasEmptySlot = newExamples.some(e => !e.id && e.url === null && e.type === type)
       if (!hasEmptySlot && currentCount < maxCount) {
         newExamples.push({ url: null, description: '', type })
       }
@@ -87,14 +98,18 @@ const ChallengeVerifyExamples = ({
       }
     }
 
+    console.log('after1: ', newExamples)
+
     /** 이미지 입력창 1개만 두기 */
     for (const result_type of CHALLENGE_VERIFICATION_RESULT) {
-      const emptyItems = newExamples.filter(e => e.url === null && e.type === result_type)
+      const emptyItems = newExamples.filter(e => !e.id && e.url === null && e.type === result_type)
       if (emptyItems.length > 1) {
         const firstIndex = newExamples.findIndex(e => e === emptyItems[0])
         newExamples = newExamples.filter((e, idx) => e.url !== null || e.type !== result_type || idx === firstIndex)
       }
     }
+
+    console.log('after2: ', newExamples)
 
     /** 성공 이미지 > 실패 이미지 > 성공 입력창 > 실패 입력창 */
     newExamples.sort((a, b) => {
@@ -103,6 +118,8 @@ const ChallengeVerifyExamples = ({
       if (aUploaded !== bUploaded) return aUploaded ? -1 : 1
       return a.type === 'SUCCESS' ? -1 : 1
     })
+
+    console.log('after3: ', newExamples)
 
     onChange(newExamples)
   }
@@ -135,22 +152,27 @@ const ChallengeVerifyExamples = ({
       {description && <Description>{description}</Description>}
 
       <ScrollArea>
-        {examples.map((example, idx) => (
-          <VerificationImageInput
-            key={example.url ?? `${example.type}-${idx}`}
-            label={`인증 ${example.type === 'SUCCESS' ? '성공' : '실패'} 예시\n이미지 추가`}
-            imageUrl={example.url}
-            description={example.description}
-            cameraTitle={example.type === 'SUCCESS' ? '성공 예시 이미지' : '실패 예시 이미지'}
-            status={example.type}
-            readOnly={readOnly}
-            onChange={({ imageUrl, description }) =>
-              updateExamples(idx, { url: imageUrl, description: description ?? '' }, example.type)
-            }
-            onZoom={() => handleZoomClick(example, idx)}
-            className={verificationInputClassName}
-          />
-        ))}
+        {examples
+          /** 보존용 데이터는 보여주지 않음 (단체 챌린지 수정 과정) */
+          .filter(example => !(example.id && !example.url))
+          .map((example, idx) => {
+            return (
+              <VerificationImageInput
+                key={example.url ?? `${example.type}-${idx}`}
+                label={`인증 ${example.type === 'SUCCESS' ? '성공' : '실패'} 예시\n이미지 추가`}
+                imageUrl={example.url}
+                description={example.description}
+                cameraTitle={example.type === 'SUCCESS' ? '성공 예시 이미지' : '실패 예시 이미지'}
+                status={example.type}
+                readOnly={readOnly}
+                onChange={({ imageUrl, description }) =>
+                  updateExamples(idx, { url: imageUrl, description: description ?? '' }, example.type)
+                }
+                onZoom={() => handleZoomClick(example, idx)}
+                className={verificationInputClassName}
+              />
+            )
+          })}
       </ScrollArea>
     </Wrapper>
   )
