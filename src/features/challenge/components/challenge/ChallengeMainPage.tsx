@@ -111,6 +111,8 @@ const ChallengeMainPage = (): ReactNode => {
               eventChallenges.map(ch => (
                 <EventCard key={ch.id} onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))}>
                   <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                  <EventGradientOverlay />
+                  <EventTitleOverlay>{ch.title}</EventTitleOverlay>
                 </EventCard>
               ))
             ) : (
@@ -118,7 +120,6 @@ const ChallengeMainPage = (): ReactNode => {
             )}
           </CarouselInner>
 
-          {/* ✅ CarouselInner 바깥에서 고정 표시 */}
           {eventChallenges.length > 0 && (
             <CarouselIndicator>
               {selectedIndex + 1} / {eventChallenges.length}
@@ -170,7 +171,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 54px;
 `
 
 const BannerSection = styled.section`
@@ -219,18 +220,18 @@ const SectionHeader = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 `
 
 const SectionTitle = styled.h2`
   position: relative;
 
-  font-size: ${theme.fontSize.lg};
+  font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semiBold};
 `
 
 const SubDescription = styled.p`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfDarkGray.base};
 `
@@ -280,14 +281,11 @@ const CarouselInner = styled.div`
   width: 100%;
   height: 100%;
 
-  /* position: relative; */
   display: flex;
-  /* gap: 8px; */
-  /* will-change: transform; */
 `
 const EventCard = styled.div`
   margin-right: 8px;
-  flex: 0 0 100%; // ✅ 한 슬라이드가 전체 width 차지
+  flex: 0 0 100%;
   height: 100%;
 
   background: ${theme.colors.lfInputBackground.base};
@@ -295,6 +293,8 @@ const EventCard = styled.div`
   display: flex;
   flex-direction: row;
   position: relative;
+
+  overflow: hidden;
   gap: 12px;
 
   cursor: pointer;
@@ -306,6 +306,28 @@ const EventImage = styled(Image)`
   object-fit: cover;
   object-position: center center;
   border-radius: ${theme.radius.base};
+`
+const EventGradientOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.8) 100%);
+  border-radius: ${theme.radius.base};
+`
+
+const EventTitleOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 16px;
+  color: ${theme.colors.lfWhite.base};
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.bold};
+  text-align: center;
+  pointer-events: none;
 `
 
 const DailyCardWrapper = styled.div`
