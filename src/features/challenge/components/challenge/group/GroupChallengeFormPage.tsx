@@ -92,8 +92,6 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
     mode: 'onChange',
   })
 
-  console.log('예시 이미지', form.getValues().examples)
-
   /** 단체 챌린지 생성 */
   const { mutate: CreateChallengeMutate, isPending: isCreating } = useMutationStore<
     CreateChallengeResponse,
@@ -108,8 +106,6 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
 
   /** 단체 챌린지 생성 */
   const handleCreateSubmit = () => {
-    console.log('❌ 단체 챌린지 수정 실행됨')
-
     const data = form.getValues()
 
     const {
@@ -162,8 +158,6 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
 
   /** 단체 챌린지 수정 */
   const handleModifySubmit = () => {
-    console.log('✅ 단체 챌린지 수정 실행됨')
-
     if (!challengeId) return
 
     const {
@@ -178,8 +172,6 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
       endTime,
       examples,
     } = form.getValues()
-
-    console.log('예시 이미지 : ', examples)
 
     const originalExamples = defaultValues.examples ?? [] // 초기 데이터
     const uploadedExamples = examples.filter(e => e.url !== null) // 입력용 삭제

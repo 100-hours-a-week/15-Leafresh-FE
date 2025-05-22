@@ -72,21 +72,29 @@ const ChallengeVerifyExamples = ({
     const target = visibleExamples[index]
     const targetIndex = examples.findIndex(e => e === target)
 
-    if (targetIndex === -1) return // 보호 코드
+    if (targetIndex === -1) return
 
     let newExamples = [...examples]
-    const currentCount = newExamples.filter(e => e.url !== null).length
 
-    newExamples[targetIndex] = {
-      ...(data.url === null ? {} : { id: newExamples[targetIndex].id }), // 삭제 시 id 제거
-      ...newExamples[targetIndex],
-      ...data,
-      type,
+    // 1. 이미지가 있었는데 삭제됨 (url: '...', data.url === null)
+    if (newExamples[targetIndex].url && data.url === null) {
+      newExamples.splice(targetIndex, 1)
+    } else {
+      // 2. 이미지 추가
+      newExamples[targetIndex] = {
+        ...(data.url === null
+          ? {} // 삭제된 경우: id 제거
+          : newExamples[targetIndex].id !== undefined
+            ? { id: newExamples[targetIndex].id } // id 유지
+            : {}), // 새로 추가된 경우: id 없음
+        ...newExamples[targetIndex],
+        ...data,
+        type,
+      }
     }
 
-    console.log('after: ', newExamples)
-
-    /** Case: 이미지가 추가된 경우 이미지 입력창을 추가 */
+    // 3. 이미지가 추가되면 dummy 하나 더 추가
+    const currentCount = newExamples.filter(e => e.url !== null).length
     if (data.url !== undefined && data.url !== null) {
       const hasEmptySlot = newExamples.some(e => !e.id && e.url === null && e.type === type)
       if (!hasEmptySlot && currentCount < maxCount) {
@@ -98,9 +106,7 @@ const ChallengeVerifyExamples = ({
       }
     }
 
-    console.log('after1: ', newExamples)
-
-    /** 이미지 입력창 1개만 두기 */
+    // 4. 입력창은 타입별 하나만
     for (const result_type of CHALLENGE_VERIFICATION_RESULT) {
       const emptyItems = newExamples.filter(e => !e.id && e.url === null && e.type === result_type)
       if (emptyItems.length > 1) {
@@ -109,17 +115,13 @@ const ChallengeVerifyExamples = ({
       }
     }
 
-    console.log('after2: ', newExamples)
-
-    /** 성공 이미지 > 실패 이미지 > 성공 입력창 > 실패 입력창 */
+    // 5. 정렬
     newExamples.sort((a, b) => {
       const aUploaded = a.url !== null
       const bUploaded = b.url !== null
       if (aUploaded !== bUploaded) return aUploaded ? -1 : 1
       return a.type === 'SUCCESS' ? -1 : 1
     })
-
-    console.log('after3: ', newExamples)
 
     onChange(newExamples)
   }

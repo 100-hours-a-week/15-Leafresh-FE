@@ -112,8 +112,6 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
       setIsSubmitted(true)
     }
     if (isMetaValid) {
-      console.log('다음 스텝으로 넘어갑니다.')
-
       onNext()
     }
   }
