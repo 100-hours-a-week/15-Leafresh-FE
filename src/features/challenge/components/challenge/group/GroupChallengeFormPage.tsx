@@ -104,6 +104,7 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
     ModifyChallengeVariables
   >(MUTATION_KEYS.CHALLENGE.GROUP.MODIFY)
 
+  const isPending: boolean = isCreating || isModifying
   /** 단체 챌린지 생성 */
   const handleCreateSubmit = () => {
     const data = form.getValues()
@@ -247,13 +248,15 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
           onNext={() => {
             setStep(2)
           }}
+          isEdit={isEdit}
         />
       ) : (
         <DetailStep
           form={form}
           onBack={() => setStep(1)}
           onSubmit={!isEdit ? handleCreateSubmit : handleModifySubmit}
-          isCreating={isCreating}
+          isPending={isPending}
+          isEdit={isEdit}
         />
       )}
     </PageWrapper>

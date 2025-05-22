@@ -25,7 +25,9 @@ interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
   onBack: () => void
   onSubmit: () => void
-  isCreating: boolean
+  isPending: boolean
+
+  isEdit: boolean
 }
 
 type WarningType = {
@@ -56,7 +58,7 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   },
 ]
 
-const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) => {
+const DetailStep = ({ form, onBack, onSubmit, isPending, isEdit }: DetailsStepProps) => {
   const {
     register,
     setValue,
@@ -77,13 +79,17 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
       onSubmit()
     }
   }
+
+  // 상수
+  const FORM_TITLE: string = isEdit ? '단체 챌린지 수정하기' : '단체 챌린지 만들기'
+  const BUTTON_TEXT = isEdit ? '수정하기' : '생성하기'
   return (
     <Container onSubmit={handleSubmit(handleDetailSubmit)}>
       <DividerWrapper>
         <ButtonWrapper onClick={onBack}>
           <BackButton name='ChevronLeft' size={24} />
         </ButtonWrapper>
-        <Text>단체 챌린지 만들기</Text>
+        <Text>{FORM_TITLE}</Text>
       </DividerWrapper>
       <FieldGroup>
         <FieldWrapper>
@@ -132,7 +138,7 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
       </FieldGroup>
 
       <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
-        {!isCreating ? '생성하기' : <Loading />}
+        {!isPending ? BUTTON_TEXT : <Loading />}
       </SubmitButton>
     </Container>
   )

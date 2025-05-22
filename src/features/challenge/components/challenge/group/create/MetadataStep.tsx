@@ -59,9 +59,10 @@ export type MetaFormValues = z.infer<typeof metaSchema>
 interface MetaDataStepProps {
   form: UseFormReturn<FullFormValues>
   onNext: () => void
+  isEdit: boolean
 }
 
-const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
+const MetaDataStep = ({ form, onNext, isEdit }: MetaDataStepProps) => {
   const {
     register,
     control,
@@ -115,10 +116,12 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
     }
   }
 
+  // 상수
+  const FORM_TITLE: string = isEdit ? '단체 챌린지 수정하기' : '단체 챌린지 만들기'
   return (
     <Form onSubmit={handleMetaSubmit}>
       <DividerWrapper>
-        <Text>단체 챌린지 만들기</Text>
+        <Text>{FORM_TITLE}</Text>
       </DividerWrapper>
 
       <FieldGroup>
