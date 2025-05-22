@@ -46,11 +46,10 @@ export const metaSchema = z.object({
       examples => {
         const validSlots = examples.filter(e => e.url !== null)
         const hasSuccess = validSlots.some(e => e.type === 'SUCCESS')
-        const hasFailure = validSlots.some(e => e.type === 'FAILURE')
-        return hasSuccess && hasFailure
+        return hasSuccess
       },
       {
-        message: '성공/실패 예시 이미지를 최소 1개씩 등록해주세요.',
+        message: '성공 예시 이미지를 최소 1개 등록해주세요.',
       },
     ),
 })
