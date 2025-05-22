@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import styled from '@emotion/styled'
 
 import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/constant'
@@ -39,6 +40,25 @@ const ChallengeVerifyExamples = ({
   verificationInputClassName,
 }: ChallengeVerifyExamplesProps) => {
   const { open } = useImageZoomStore()
+
+  /** 데이터 페칭을 통해 받은 examples 에는 입력을 위한 데이터가 없을 수 있으므로 추가가 필요함 */
+  useEffect(() => {
+    if (readOnly) return
+
+    const nextExamples = [...examples]
+
+    for (const type of CHALLENGE_VERIFICATION_RESULT) {
+      const hasInputSlot = nextExamples.some(e => e.type === type && e.url === null)
+      if (!hasInputSlot) {
+        nextExamples.push({ url: null, description: '', type })
+      }
+    }
+
+    // 변경된 경우만 onChange 호출
+    if (nextExamples.length !== examples.length) {
+      onChange(nextExamples)
+    }
+  }, [])
 
   const updateExamples = (
     index: number,
