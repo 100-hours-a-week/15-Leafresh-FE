@@ -54,7 +54,7 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
     ...QUERY_OPTIONS.CHALLENGE.PERSONAL.LIST,
   })
 
-  const categories: GroupChallengeCategory[] = categoriesData?.data?.categories.slice(0, -1) ?? []
+  const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
