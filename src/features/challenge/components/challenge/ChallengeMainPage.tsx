@@ -24,16 +24,15 @@ import { getDayOfWeek } from '@shared/lib/date/utils'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 
-interface ChallengeMainPageProps {
-  className?: string
-}
-
-const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => {
+const ChallengeMainPage = (): ReactNode => {
   const router = useRouter()
-  const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', startIndex: 1 }, [
-    Autoplay({ delay: 3000, stopOnInteraction: true }),
-  ])
 
+  const [emblaRef] = useEmblaCarousel(
+    {
+      loop: true,
+    },
+    [Autoplay({ delay: 4000, stopOnInteraction: false })], // ✅ 자동 넘김
+  )
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
 
   const { data: categoriesData } = useQuery({
@@ -56,12 +55,14 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
 
   const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
+
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
   /** 카테고리 리스트로 이동 */
   const handleCategoryRoute = (category: ChallengeCategoryType) => {
     router.push(URL.CHALLENGE.GROUP.LIST.value(category))
   }
+  console.log(eventChallenges)
 
   return (
     <Container>
@@ -261,30 +262,29 @@ const CarouselInner = styled.div`
   width: 100%;
   height: 100%;
 
-  position: relative;
+  /* position: relative; */
   display: flex;
-  gap: 8px;
-  will-change: transform;
+  /* gap: 8px; */
+  /* will-change: transform; */
 `
 const EventCard = styled.div`
-  width: 100%;
+  margin-right: 8px;
+  flex: 0 0 100%; // ✅ 한 슬라이드가 전체 width 차지
+  height: 100%;
 
   background: ${theme.colors.lfInputBackground.base};
   border-radius: ${theme.radius.base};
   display: flex;
   flex-direction: row;
+  position: relative;
   gap: 12px;
 
   cursor: pointer;
-
-  &:hover {
-    opacity: 0.7;
-  }
 `
 
 const EventImage = styled(Image)`
-  width: 100%;
-  /* height: 100%; */
+  position: absolute;
+  top: 0;
   object-fit: cover;
   object-position: center center;
   border-radius: ${theme.radius.base};
