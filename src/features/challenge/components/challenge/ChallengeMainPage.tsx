@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -27,12 +27,14 @@ import { theme } from '@shared/styles/theme'
 const ChallengeMainPage = (): ReactNode => {
   const router = useRouter()
 
-  const [emblaRef] = useEmblaCarousel(
+  const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
     },
     [Autoplay({ delay: 4000, stopOnInteraction: false })], // ✅ 자동 넘김
   )
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
+
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
 
   const { data: categoriesData } = useQuery({
@@ -62,7 +64,16 @@ const ChallengeMainPage = (): ReactNode => {
   const handleCategoryRoute = (category: ChallengeCategoryType) => {
     router.push(URL.CHALLENGE.GROUP.LIST.value(category))
   }
-  console.log(eventChallenges)
+  useEffect(() => {
+    if (!emblaApi) return
+
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap())
+    }
+
+    emblaApi.on('select', onSelect)
+    onSelect()
+  }, [emblaApi])
 
   return (
     <Container>
@@ -106,6 +117,13 @@ const ChallengeMainPage = (): ReactNode => {
               <NoneContent>진행중인 이벤트 챌린지가 없습니다 !</NoneContent>
             )}
           </CarouselInner>
+
+          {/* ✅ CarouselInner 바깥에서 고정 표시 */}
+          {eventChallenges.length > 0 && (
+            <CarouselIndicator>
+              {selectedIndex + 1} / {eventChallenges.length}
+            </CarouselIndicator>
+          )}
         </CarouselWrapper>
       </Section>
 
@@ -405,6 +423,20 @@ const NoneContent = styled.div`
   ${media.mobile} {
     font-size: ${theme.fontSize.sm};
   }
+`
+
+const CarouselIndicator = styled.div`
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  color: ${theme.colors.lfWhite.base};
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.semiBold};
+
+  padding: 4px 8px;
+  border-radius: ${theme.radius.sm};
 `
 
 // const dummyEventChallenges: EventChallenge[] = [
