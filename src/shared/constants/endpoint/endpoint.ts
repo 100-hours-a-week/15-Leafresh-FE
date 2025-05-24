@@ -62,7 +62,7 @@ const CHALLENGE_ENDPOINTS = {
     // 생성
     CREATE: { method: HttpMethod.POST, path: '/api/challenges/group' },
     // 수정
-    UPDATE: (challengeId: number) => ({
+    MODIFY: (challengeId: number) => ({
       method: HttpMethod.PATCH,
       path: `/api/challenges/group/${challengeId}`,
     }),

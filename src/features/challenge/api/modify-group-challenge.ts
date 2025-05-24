@@ -3,39 +3,44 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'
 
-export type CreateChallengeResponse = {
+export type KeepImage = {
   id: number
+  sequenceNumber: number
 }
-
-export type ExampleImage = {
+export type NewImage = {
   imageUrl: string
   type: ChallengeVerificationResultType
   description: string
   sequenceNumber: number
 }
 
-export type CreateChallengeBody = {
+export type ModifyChallengeBody = {
   title: string
   description: string
-  category: ChallengeCategoryType
+  category: ChallengeCategoryType // enum 값으로 관리
   maxParticipantCount: number
   thumbnailImageUrl: string
   startDate: DateFormatString
   endDate: DateFormatString
   verificationStartTime: TimeFormatString
   verificationEndTime: TimeFormatString
-  exampleImages: ExampleImage[]
+  exampleImages: {
+    keep: KeepImage[]
+    new: NewImage[]
+    deleted: number[]
+  }
 }
 
-export type CreateChallengeVariables = {
-  body: CreateChallengeBody
+export type ModifyChallengeVariables = {
+  challengeId: number
+  body: ModifyChallengeBody
 }
 
 /**
- * 닉네임 중복 검사 API
+ * 단체 챌린지 수정 API
  */
-export const CreateChallenge = ({ body }: CreateChallengeVariables) => {
-  return fetchRequest<CreateChallengeResponse>(ENDPOINTS.CHALLENGE.GROUP.CREATE, {
+export const ModifyChallenge = ({ challengeId, body }: ModifyChallengeVariables) => {
+  return fetchRequest<null>(ENDPOINTS.CHALLENGE.GROUP.MODIFY(challengeId), {
     body,
   })
 }

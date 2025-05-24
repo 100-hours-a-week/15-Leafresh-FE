@@ -2,7 +2,7 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ISOFormatString } from '@shared/types/date'
 
-export type VerifyGroupChallengeResponseType = {
+export type VerifyGroupChallengeResponse = {
   submittedAt: ISOFormatString
 }
 
@@ -19,7 +19,7 @@ export type VerifyVariables = {
  * 개인 챌린지 인증 제출
  */
 export const VerifyGroupChallenge = ({ challengeId, body }: VerifyVariables) => {
-  return fetchRequest<VerifyGroupChallengeResponseType>(ENDPOINTS.CHALLENGE.PERSONAL.VERIFY(challengeId), {
+  return fetchRequest<VerifyGroupChallengeResponse>(ENDPOINTS.CHALLENGE.PERSONAL.VERIFY(challengeId), {
     body,
   })
 }

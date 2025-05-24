@@ -7,7 +7,7 @@ const CHALLENGE_MUTATION_KEYS = {
   /** 단체 챌린지 */
   GROUP: {
     CREATE: ['challenges', 'group', 'create'] as const, // 생성
-    UPDATE: ['challenges', 'group', 'modify'] as const, // 수정
+    MODIFY: ['challenges', 'group', 'modify'] as const, // 수정
     DELETE: ['challenges', 'group', 'delete'] as const, // 삭제
     PARTICIPATE: ['challenges', 'group', 'participate'] as const, // 참여
     VERIFY: ['challenges', 'group', 'verify'] as const, // 인증 제출

@@ -3,7 +3,7 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'
 
-type ExampleImageType = {
+type ExampleImage = {
   id: number
   imageUrl: string
   description: string
@@ -18,7 +18,7 @@ export type GroupChallengeRulesListResponse = {
     startTime: TimeFormatString
     endTime: TimeFormatString
   }
-  exampleImages: ExampleImageType[]
+  exampleImages: ExampleImage[]
 }
 
 export const getGroupChallengeRulesList = (challengeId: number) => {
