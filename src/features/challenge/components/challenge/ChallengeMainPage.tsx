@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -24,15 +24,16 @@ import { getDayOfWeek } from '@shared/lib/date/utils'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 
-interface ChallengeMainPageProps {
-  className?: string
-}
-
-const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => {
+const ChallengeMainPage = (): ReactNode => {
   const router = useRouter()
-  const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', startIndex: 1 }, [
-    Autoplay({ delay: 3000, stopOnInteraction: true }),
-  ])
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+    },
+    [Autoplay({ delay: 4000, stopOnInteraction: false })], // ✅ 자동 넘김
+  )
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
 
@@ -54,14 +55,25 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
     ...QUERY_OPTIONS.CHALLENGE.PERSONAL.LIST,
   })
 
-  const categories: GroupChallengeCategory[] = categoriesData?.data?.categories.slice(0, -1) ?? []
+  const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
+
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
   /** 카테고리 리스트로 이동 */
   const handleCategoryRoute = (category: ChallengeCategoryType) => {
     router.push(URL.CHALLENGE.GROUP.LIST.value(category))
   }
+  useEffect(() => {
+    if (!emblaApi) return
+
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap())
+    }
+
+    emblaApi.on('select', onSelect)
+    onSelect()
+  }, [emblaApi])
 
   return (
     <Container>
@@ -99,12 +111,20 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
               eventChallenges.map(ch => (
                 <EventCard key={ch.id} onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))}>
                   <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                  <EventGradientOverlay />
+                  <EventTitleOverlay>{ch.title}</EventTitleOverlay>
                 </EventCard>
               ))
             ) : (
               <NoneContent>진행중인 이벤트 챌린지가 없습니다 !</NoneContent>
             )}
           </CarouselInner>
+
+          {eventChallenges.length > 0 && (
+            <CarouselIndicator>
+              {selectedIndex + 1} / {eventChallenges.length}
+            </CarouselIndicator>
+          )}
         </CarouselWrapper>
       </Section>
 
@@ -151,7 +171,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 54px;
 `
 
 const BannerSection = styled.section`
@@ -200,18 +220,18 @@ const SectionHeader = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 `
 
 const SectionTitle = styled.h2`
   position: relative;
 
-  font-size: ${theme.fontSize.lg};
+  font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semiBold};
 `
 
 const SubDescription = styled.p`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfDarkGray.base};
 `
@@ -261,33 +281,53 @@ const CarouselInner = styled.div`
   width: 100%;
   height: 100%;
 
-  position: relative;
   display: flex;
-  gap: 8px;
-  will-change: transform;
 `
 const EventCard = styled.div`
-  width: 100%;
+  margin-right: 8px;
+  flex: 0 0 100%;
+  height: 100%;
 
   background: ${theme.colors.lfInputBackground.base};
   border-radius: ${theme.radius.base};
   display: flex;
   flex-direction: row;
+  position: relative;
+
+  overflow: hidden;
   gap: 12px;
 
   cursor: pointer;
-
-  &:hover {
-    opacity: 0.7;
-  }
 `
 
 const EventImage = styled(Image)`
-  width: 100%;
-  /* height: 100%; */
+  position: absolute;
+  top: 0;
   object-fit: cover;
   object-position: center center;
   border-radius: ${theme.radius.base};
+`
+const EventGradientOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.8) 100%);
+  border-radius: ${theme.radius.base};
+`
+
+const EventTitleOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 16px;
+  color: ${theme.colors.lfWhite.base};
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.bold};
+  text-align: center;
+  pointer-events: none;
 `
 
 const DailyCardWrapper = styled.div`
@@ -405,6 +445,20 @@ const NoneContent = styled.div`
   ${media.mobile} {
     font-size: ${theme.fontSize.sm};
   }
+`
+
+const CarouselIndicator = styled.div`
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  color: ${theme.colors.lfWhite.base};
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.semiBold};
+
+  padding: 4px 8px;
+  border-radius: ${theme.radius.sm};
 `
 
 // const dummyEventChallenges: EventChallenge[] = [
