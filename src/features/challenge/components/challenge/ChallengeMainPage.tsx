@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -23,17 +23,17 @@ import { URL } from '@shared/constants/route/route'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
-import LeafIcon from '@public/icon/leaf.png'
 
-interface ChallengeMainPageProps {
-  className?: string
-}
-
-const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => {
+const ChallengeMainPage = (): ReactNode => {
   const router = useRouter()
-  const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', startIndex: 1 }, [
-    Autoplay({ delay: 3000, stopOnInteraction: true }),
-  ])
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+    },
+    [Autoplay({ delay: 4000, stopOnInteraction: false })], // ✅ 자동 넘김
+  )
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
 
@@ -57,12 +57,23 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
 
   const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
+
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
   /** 카테고리 리스트로 이동 */
   const handleCategoryRoute = (category: ChallengeCategoryType) => {
     router.push(URL.CHALLENGE.GROUP.LIST.value(category))
   }
+  useEffect(() => {
+    if (!emblaApi) return
+
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap())
+    }
+
+    emblaApi.on('select', onSelect)
+    onSelect()
+  }, [emblaApi])
 
   return (
     <Container>
@@ -99,18 +110,21 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
             {eventChallenges.length !== 0 ? (
               eventChallenges.map(ch => (
                 <EventCard key={ch.id} onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))}>
-                  <ImageArea>
-                    <EventImage src={ch.thumbnailUrl} alt={ch.description} width={48} height={48} />
-                  </ImageArea>
-                  <CardArea>
-                    <CardTitle>{ch.title}</CardTitle>
-                  </CardArea>
+                  <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                  <EventGradientOverlay />
+                  <EventTitleOverlay>{ch.title}</EventTitleOverlay>
                 </EventCard>
               ))
             ) : (
               <NoneContent>진행중인 이벤트 챌린지가 없습니다 !</NoneContent>
             )}
           </CarouselInner>
+
+          {eventChallenges.length > 0 && (
+            <CarouselIndicator>
+              {selectedIndex + 1} / {eventChallenges.length}
+            </CarouselIndicator>
+          )}
         </CarouselWrapper>
       </Section>
 
@@ -119,26 +133,28 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
           <SectionTitle>일일 챌린지</SectionTitle>
           <SubDescription>다양한 사람들과 함께 챌린지에 참여해보세요!</SubDescription>
         </SectionHeader>
-        {personalChallenges.map(ch => (
-          <DailyCard key={ch.id}>
-            <CardTop>
-              <LeafWrapper>
+        <DailyCardWrapper>
+          {personalChallenges.map(ch => (
+            <DailyCard key={ch.id}>
+              <CardTop>
+                {/* <LeafWrapper>
                 <LeafImage src={LeafIcon} alt='나뭇잎 아이콘' />
                 <LeafLabel>{ch.leafReward}</LeafLabel>
-              </LeafWrapper>
-              <DailyImageArea>
-                <DailyImage src={ch.thumbnailUrl} alt={ch.description} width={400} height={220} />
-              </DailyImageArea>
-            </CardTop>
-            <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
-              자세히 보기
-            </JoinButton>
-            <DailyCardDescriptions>
-              <CardTitle>{ch.title}</CardTitle>
-              <CardDescription>{ch.description}</CardDescription>
-            </DailyCardDescriptions>
-          </DailyCard>
-        ))}
+              </LeafWrapper> */}
+                <DailyImageArea>
+                  <DailyImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                </DailyImageArea>
+              </CardTop>
+              <DailyCardDescriptions>
+                <CardTitle>{ch.title}</CardTitle>
+                <CardDescription>{ch.description}</CardDescription>
+                <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
+                  자세히 보기
+                </JoinButton>
+              </DailyCardDescriptions>
+            </DailyCard>
+          ))}
+        </DailyCardWrapper>
       </Section>
       <Chatbot />
     </Container>
@@ -148,13 +164,6 @@ const ChallengeMainPage = ({ className }: ChallengeMainPageProps): ReactNode => 
 export default ChallengeMainPage
 
 // === Styles ===
-const DailyImage = styled(Image)`
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  border-radius: ${theme.radius.base};
-`
 
 const Container = styled.div`
   padding-top: 250px;
@@ -162,7 +171,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 54px;
 `
 
 const BannerSection = styled.section`
@@ -205,30 +214,29 @@ const SubTitle = styled.h2`
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 10px;
 `
 
 const SectionHeader = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 `
 
 const SectionTitle = styled.h2`
   position: relative;
 
-  font-size: ${theme.fontSize.lg};
+  font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semiBold};
 `
 
 const SubDescription = styled.p`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfDarkGray.base};
 `
 const CategoryGrid = styled.div`
-  margin-top: 10px;
+  margin-top: 20px;
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -261,7 +269,8 @@ const CategoryLabel = styled.span`
 
 const CarouselWrapper = styled.div`
   width: 100%;
-  height: 160px;
+  /* height: 160px; */
+  aspect-ratio: 5/3;
 
   position: relative;
   overflow: hidden;
@@ -272,56 +281,73 @@ const CarouselInner = styled.div`
   width: 100%;
   height: 100%;
 
-  position: relative;
   display: flex;
-  gap: 8px;
-  will-change: transform;
 `
 const EventCard = styled.div`
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 6;
+  margin-right: 8px;
+  flex: 0 0 100%;
+  height: 100%;
 
-  flex: 0 0 auto;
   background: ${theme.colors.lfInputBackground.base};
   border-radius: ${theme.radius.base};
   display: flex;
   flex-direction: row;
-  padding: 16px;
+  position: relative;
+
+  overflow: hidden;
   gap: 12px;
 
   cursor: pointer;
-`
-const ImageArea = styled.div`
-  flex-basis: 40%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const EventImage = styled(Image)`
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 0;
   object-fit: cover;
+  object-position: center center;
   border-radius: ${theme.radius.base};
 `
-const CardArea = styled.div`
-  flex-basis: 60%;
-  padding: 10px 10px;
+const EventGradientOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.8) 100%);
+  border-radius: ${theme.radius.base};
+`
 
+const EventTitleOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 16px;
+  color: ${theme.colors.lfWhite.base};
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.bold};
+  text-align: center;
+  pointer-events: none;
+`
+
+const DailyCardWrapper = styled.div`
+  width: 100%;
+  margin-top: 20px;
+
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
 `
 
 const DailyCard = styled.div`
-  background: ${theme.colors.lfInputBackground.base};
+  width: 100%;
+  background: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
-  padding: 16px;
-  margin-top: 16px;
 
-  cursor: pointer;
-  box-shadow: ${theme.shadow.lfPrime};
+  box-shadow: ${theme.shadow.lfInput};
 `
 
 const CardTop = styled.div`
@@ -336,6 +362,7 @@ const LeafWrapper = styled.p`
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 20;
 
   display: flex;
   align-items: center;
@@ -356,17 +383,26 @@ const DailyImageArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  border-top-left-radius: ${theme.radius.base};
+  border-top-right-radius: ${theme.radius.base};
+  overflow: hidden;
+`
+
+const DailyImage = styled(Image)`
+  object-fit: cover;
 `
 
 const JoinButton = styled.button`
   width: 100%;
-  margin: 4px 0;
+  margin: 12px 0;
   padding: 16px 0;
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.semiBold};
+  box-shadow: ${theme.shadow.lfInput};
   cursor: pointer;
 
   &:hover {
@@ -374,23 +410,25 @@ const JoinButton = styled.button`
   }
 `
 const DailyCardDescriptions = styled.div`
+  padding: 0 16px;
   margin-top: 8px;
+  margin-bottom: 8px;
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 
   transition: all 0.3s ease; // optional: hover 부드럽게
 `
 const CardTitle = styled.h3`
   margin: 4px 0px;
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.semiBold};
 `
 
 const CardDescription = styled.p`
   font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfDarkGray.base};
+  color: ${theme.colors.lfBlack.base};
   white-space: pre-wrap;
 `
 
@@ -407,6 +445,20 @@ const NoneContent = styled.div`
   ${media.mobile} {
     font-size: ${theme.fontSize.sm};
   }
+`
+
+const CarouselIndicator = styled.div`
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  color: ${theme.colors.lfWhite.base};
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.semiBold};
+
+  padding: 4px 8px;
+  border-radius: ${theme.radius.sm};
 `
 
 // const dummyEventChallenges: EventChallenge[] = [

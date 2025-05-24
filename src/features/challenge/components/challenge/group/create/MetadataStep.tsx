@@ -43,11 +43,9 @@ export const metaSchema = z.object({
     )
     .refine(
       examples => {
-        // const totalSlots: number = examples.length
         const validSlots = examples.filter(e => e.url !== null)
         const hasSuccess = validSlots.some(e => e.type === 'SUCCESS')
         const hasFailure = validSlots.some(e => e.type === 'FAILURE')
-        // const emptySlots = totalSlots - validSlots.length
         return hasSuccess && hasFailure
       },
       {

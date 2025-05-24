@@ -94,7 +94,6 @@ const GroupChallengeCreatePage = () => {
   const handleFinalSubmit = () => {
     const data = form.getValues()
 
-    // TODO : 시작시간 - 종료시간 데이터 넣기
     const {
       title,
       description,

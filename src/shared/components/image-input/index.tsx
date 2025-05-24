@@ -6,6 +6,7 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
+import { ASPECT_RATIOS, AspectRatioType } from '@shared/constants/image-size'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
@@ -18,6 +19,7 @@ interface ImageInputProps {
   fontSize?: ThemeFontSizeType
   backgroundColor?: ThemeColorType
   imageUrl: string | null
+  aspectRatio?: AspectRatioType
 
   cameraTitle: string
   hasDescription?: boolean // 해당 이미지에 대한 설명을 받을지 여부
@@ -36,6 +38,7 @@ const ImageInput = ({
   backgroundColor = 'lfGray',
   imageUrl, // 외부 관리 상태
   className,
+  aspectRatio = 'SQUARE',
 
   cameraTitle,
   hasDescription = false,
@@ -46,6 +49,7 @@ const ImageInput = ({
 }: ImageInputProps) => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
   const { open: openCameraModal } = useCameraModalStore()
+  const aspectRatioValue = ASPECT_RATIOS[aspectRatio]
 
   const handleCapture = () => {
     if (readOnly) return
@@ -83,9 +87,15 @@ const ImageInput = ({
           fontSize={fontSize}
           backgroundColor={backgroundColor}
           readOnly={readOnly}
+          aspectRatio={aspectRatioValue}
         />
       ) : (
-        <PreviewImageView imageUrl={previewImageUrl} onRemove={handleRemoveImage} readOnly={readOnly} />
+        <PreviewImageView
+          imageUrl={previewImageUrl}
+          onRemove={handleRemoveImage}
+          readOnly={readOnly}
+          aspectRatio={aspectRatioValue}
+        />
       )}
     </Wrapper>
   )
@@ -100,11 +110,20 @@ interface EmptyImageViewProps {
   fontSize: ThemeFontSizeType
   backgroundColor: ThemeColorType
   readOnly: boolean
+  aspectRatio: string
 }
 
-const EmptyImageView = ({ onClick, icon, label, fontSize, backgroundColor, readOnly }: EmptyImageViewProps) => {
+const EmptyImageView = ({
+  onClick,
+  icon,
+  label,
+  fontSize,
+  backgroundColor,
+  readOnly,
+  aspectRatio,
+}: EmptyImageViewProps) => {
   return (
-    <EmptyBox onClick={onClick} backgroundColor={backgroundColor} readOnly={readOnly}>
+    <EmptyBox onClick={onClick} backgroundColor={backgroundColor} readOnly={readOnly} aspectRatio={aspectRatio}>
       {icon ?? <LucideIcon name='Plus' size={24} color='lfBlack' />}
       <Text fontSize={fontSize}>{label}</Text>
     </EmptyBox>
@@ -115,12 +134,13 @@ interface PreviewImageViewProps {
   imageUrl: string
   onRemove: () => void
   readOnly: boolean
+  aspectRatio: string
 }
 
-const PreviewImageView = ({ imageUrl, onRemove, readOnly }: PreviewImageViewProps) => {
+const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio }: PreviewImageViewProps) => {
   return (
-    <ImageBox>
-      <Image alt='preview' src={imageUrl} fill style={{ objectFit: 'cover' }} sizes='120px' />
+    <ImageBox aspectRatio={aspectRatio}>
+      <PreviewImage alt='preview' src={imageUrl} fill />
       {!readOnly && (
         <RemoveButton type='button' onClick={onRemove}>
           <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
@@ -138,12 +158,21 @@ const Wrapper = styled.div`
   overflow: hidden;
 `
 
-const ImageBox = styled.div`
+const ImageBox = styled.div<{ aspectRatio: string }>`
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: ${({ aspectRatio }) => aspectRatio};
   position: relative;
   overflow: hidden;
   box-shadow: ${theme.shadow.lfPrime};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const PreviewImage = styled(Image)`
+  object-fit: cover;
+  object-position: center center;
 `
 
 const RemoveButton = styled.button`
@@ -156,9 +185,9 @@ const RemoveButton = styled.button`
   cursor: pointer;
 `
 
-const EmptyBox = styled.div<{ backgroundColor: ThemeColorType; readOnly: boolean }>`
+const EmptyBox = styled.div<{ backgroundColor: ThemeColorType; readOnly: boolean; aspectRatio: string }>`
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: ${({ aspectRatio }) => aspectRatio};
   background-color: ${({ backgroundColor }) => getThemeColor(backgroundColor)};
   display: flex;
   flex-direction: column;

@@ -117,7 +117,7 @@ const ChallengeVerifyExamples = ({
       <ScrollArea>
         {examples.map((example, idx) => (
           <VerificationImageInput
-            key={`${example.type}-${idx}`}
+            key={example.url ?? `${example.type}-${idx}`}
             label={`인증 ${example.type === 'SUCCESS' ? '성공' : '실패'} 예시\n이미지 추가`}
             imageUrl={example.url}
             description={example.description}
