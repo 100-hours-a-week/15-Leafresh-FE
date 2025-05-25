@@ -186,7 +186,11 @@ const Column = styled.ul`
   }
 `
 const Option = styled.li<{ selected: boolean }>`
-  padding: 8px 21px;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   cursor: pointer;
   font-size: ${theme.fontSize.sm};
