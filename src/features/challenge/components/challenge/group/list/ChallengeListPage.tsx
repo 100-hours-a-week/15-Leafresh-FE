@@ -13,14 +13,28 @@ import GridBox from '@shared/components/Wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
+import Image from 'next/image'
 
 const ChallengeListPage = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [input, setInput] = useState<string>('')
 
+  const categoryBannerMap: Record<string, string> = {
+    ZERO_WASTE: '/image/challenge/zero_banner.png',
+    PLOGGING: '/image/challenge/plogging_banner.png',
+    CARBON_FOOTPRINT: '/image/challenge/foot_banner.png',
+    ENERGY_SAVING: '/image/challenge/saving_banner.png',
+    UPCYCLING: '/image/challenge/upcycle_banner.png',
+    MEDIA: '/image/challenge/media_banner.png',
+    DIGITAL_CARBON: '/image/challenge/carbon_banner.png',
+    VEGAN: '/image/challenge/vegan_banner.png',
+    ETC: '/image/challenge/banner_list.png',
+  }
+
   // URL에서 category, search 파라미터 읽기
   const category = searchParams.get('category') || ''
+  const bannerUrl = categoryBannerMap[category] || categoryBannerMap['ETC']
 
   const searchKeyword = searchParams.get('search') || ''
 
@@ -70,14 +84,14 @@ const ChallengeListPage = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   // API 데이터 뽑아오기
-  const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(p => p.groupChallenges) ?? []
+  const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(p => p.groupChallenges || []).filter(Boolean) ?? []
 
   if (isLoading) return <Spinner size='lg' style={{ marginTop: '100px' }} />
   if (error) return <Message>Error: {error.message}</Message>
 
   return (
     <Container>
-      <BannerSection>
+      <BannerSection bannerUrl={bannerUrl}>
         <BannerText>
           <SubTitle>사진 한 장, 지구를 위한 따듯한 걸음</SubTitle>
           <Title>
@@ -89,7 +103,7 @@ const ChallengeListPage = () => {
       <ContentWrapper>
         <Section>
           <Header>
-            <Title>단체 챌린지{category && <Category> - {category}</Category>}</Title>
+            <Title>{category}</Title>
             <AddButton
               onClick={() => {
                 const params = new URLSearchParams()
@@ -113,6 +127,27 @@ const ChallengeListPage = () => {
           </SearchBar>
 
           <ChallengeWrapper>
+            {groupChallenges.length === 0 && (
+              <EmptySection>
+                <Image
+                  src='/image/main-icon.svg'
+                  alt='Leafresh'
+                  width={80}
+                  height={60}
+                  style={{ alignSelf: 'center' }}
+                />
+                <EmptyState>진행 중인 챌린지가 없습니다.</EmptyState>
+                <EmptyButton
+                  onClick={() => {
+                    const params = new URLSearchParams()
+                    if (category) params.set('category', category)
+                    router.push(`${URL.CHALLENGE.GROUP.CREATE.value}?${params.toString()}`)
+                  }}
+                >
+                  챌린지 생성하러 가기
+                </EmptyButton>
+              </EmptySection>
+            )}
             {groupChallenges.length !== 0 && (
               <Grid>
                 {groupChallenges.map(challenge => (
@@ -121,8 +156,6 @@ const ChallengeListPage = () => {
                 {hasNextPage && <ObserverElement ref={observerRef} />}
               </Grid>
             )}
-            {isFetchingNextPage && <Spinner size='sm' />}
-            {groupChallenges.length === 0 && <EmptyState>진행 중인 챌린지가 없습니다.</EmptyState>}
           </ChallengeWrapper>
         </Section>
       </ContentWrapper>
@@ -140,7 +173,7 @@ const Container = styled.div`
   flex-direction: column;
 `
 
-const BannerSection = styled.section`
+const BannerSection = styled.section<{ bannerUrl: string }>`
   min-width: 320px;
   max-width: 500px;
   width: 100vw;
@@ -150,7 +183,7 @@ const BannerSection = styled.section`
   top: 0;
   left: 0;
 
-  background-image: url('/image/banner_list.jpg');
+  background-image: ${({ bannerUrl }) => `url(${bannerUrl})`};
   background-size: cover;
   background-position: center;
 
@@ -194,11 +227,7 @@ const Header = styled.header`
   background-color: white;
   z-index: 100;
 `
-const Category = styled.span`
-  font-size: 14px;
-  color: ${theme.colors.lfGray.base};
-  font-weight: ${theme.fontWeight.medium};
-`
+
 const AddButton = styled.button`
   all: unset;
   font-size: 24px;
@@ -227,6 +256,8 @@ const SearchInput = styled.input`
   background-repeat: no-repeat;
   background-position: 12px center;
   background-size: 16px;
+
+  box-shadow: ${theme.shadow.lfInput};
 `
 
 const ChallengeWrapper = styled.div`
@@ -240,16 +271,15 @@ const ObserverElement = styled.div`
   height: 20px;
 `
 
-const LoadingMore = styled.div`
-  text-align: center;
-  padding: 10px;
-  color: #666;
-  font-size: 14px;
+const EmptySection = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: 40px;
+  padding: 20px;
   color: ${theme.colors.lfBlack.base};
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.semiBold};
@@ -267,4 +297,16 @@ const Grid = styled(GridBox)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+`
+const EmptyButton = styled.button`
+  background-color: ${theme.colors.lfGreenMain.base};
+  color: ${theme.colors.lfWhite.base};
+  font-size: ${theme.fontSize.md};
+  font-weight: ${theme.fontWeight.semiBold};
+  width: 220px;
+  height: 40px;
+  align-self: center;
+  border-radius: ${theme.radius.md};
+  box-shadow: ${theme.shadow.lfPrime};
+  cursor: pointer;
 `
