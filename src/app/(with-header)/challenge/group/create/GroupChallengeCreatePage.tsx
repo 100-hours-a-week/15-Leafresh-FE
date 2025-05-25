@@ -142,17 +142,23 @@ const GroupChallengeCreatePage = () => {
     )
   }
 
+  /** 스텝 변경 */
+  const handleStepChange = (step: 1 | 2) => {
+    setStep(step)
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }
+
   return (
     <PageWrapper>
       {step === 1 ? (
-        <MetaDataStep
-          form={form}
-          onNext={() => {
-            setStep(2)
-          }}
-        />
+        <MetaDataStep form={form} handleStepChange={handleStepChange} />
       ) : (
-        <DetailStep form={form} onBack={() => setStep(1)} onSubmit={handleFinalSubmit} isCreating={isCreating} />
+        <DetailStep
+          form={form}
+          handleStepChange={handleStepChange}
+          onSubmit={handleFinalSubmit}
+          isCreating={isCreating}
+        />
       )}
     </PageWrapper>
   )

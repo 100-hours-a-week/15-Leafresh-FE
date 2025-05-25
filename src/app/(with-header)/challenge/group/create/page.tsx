@@ -1,7 +1,8 @@
 import { Suspense } from 'react'
 
-import GroupChallengeCreatePage from '@features/challenge/components/challenge/group/create/GroupChallengeCreatePage'
 import Loading from '@shared/components/loading'
+
+import GroupChallengeCreatePage from './GroupChallengeCreatePage'
 
 const Page = async () => {
   return (
