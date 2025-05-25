@@ -4,6 +4,7 @@ import ModalProvider from '@shared/components/modal/ModalProvider'
 import Toast from '@shared/components/Toast/Toast'
 import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
 import { pretendard } from '@shared/config/font'
+import AuthGuard from '@shared/config/providers/AuthGaurd'
 import { Providers } from '@shared/config/providers/Providers'
 import LayoutWrapper from '@shared/styles/LayoutWrapper'
 
@@ -24,7 +25,9 @@ const RootLayout = ({
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
         <Providers>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <LayoutWrapper>
+            <AuthGuard>{children}</AuthGuard>
+          </LayoutWrapper>
           <ModalProvider />
           <ImageZoomModal />
           <Toast />
