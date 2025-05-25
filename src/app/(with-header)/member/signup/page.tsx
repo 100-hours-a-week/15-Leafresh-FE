@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { OAuthType } from '@entities/member/type'
 import { NicknameDuplicate } from '@features/member/api/nickname-duplicate'
-import { SignUpBody, SignUpResponseType, SignUpVariables } from '@features/member/api/signup'
+import { SignUpBody, SignUpResponse, SignUpVariables } from '@features/member/api/signup'
 import { SignupFormType, signupSchema } from '@features/member/signup/schema'
 import ErrorText from '@shared/components/errortext'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
@@ -25,7 +25,7 @@ import { theme } from '@shared/styles/theme'
 
 const SignupPage = () => {
   const router = useRouter()
-  const { userInfo, setUserInfo } = useOAuthUserStore()
+  const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
   const openToast = useToast()
 
   const [isDuplicateChecked, setIsDuplicateChecked] = useState<boolean>(false)
@@ -51,15 +51,14 @@ const SignupPage = () => {
     ...QUERY_OPTIONS.MEMBER.DUPLICATE_NICKNAME,
   })
 
-  const { mutate: SignUpMutate } = useMutationStore<SignUpResponseType, SignUpVariables>(MUTATION_KEYS.MEMBER.SIGNUP)
+  const { mutate: SignUpMutate } = useMutationStore<SignUpResponse, SignUpVariables>(MUTATION_KEYS.MEMBER.SIGNUP)
 
   useEffect(() => {
     /** 이미 회원가입한 유저일 경우 */
-    if (userInfo?.isMember) {
-      // if (!userInfo || userInfo?.isMember) {
+    if (OAuthUserInfo?.isMember) {
       router.replace(URL.CHALLENGE.INDEX.value)
     }
-  }, [userInfo])
+  }, [OAuthUserInfo])
 
   const handleCheckDuplicate = async () => {
     if (!nickname) {
@@ -100,36 +99,30 @@ const SignupPage = () => {
       return
     }
 
-    if (!userInfo) {
+    if (!OAuthUserInfo) {
       openToast(ToastType.Error, '로그인 정보가 없습니다.')
       return
     }
 
-    const providerId = Number(userInfo.nickname.replace(/^사용자/, ''))
+    const providerId = Number(OAuthUserInfo.nickname.replace(/^사용자/, ''))
 
     const body: SignUpBody = {
-      email: userInfo.email,
+      email: OAuthUserInfo.email,
       provider: {
-        name: userInfo.provider.toUpperCase() as OAuthType,
+        name: OAuthUserInfo.provider.toUpperCase() as OAuthType,
         id: providerId,
       },
       nickname: data.nickname,
-      imageUrl: userInfo.imageUrl,
+      imageUrl: OAuthUserInfo.imageUrl,
     }
 
     SignUpMutate(
       { body },
       {
-        onSuccess: response => {
-          const { imageUrl, nickname } = response.data // 유저 정보
+        onSuccess: () => {
+          clearOAuthUserInfo() // OAuth는 임시 데이터이므로 이제 필요 없음
 
-          setUserInfo({
-            isMember: true, // 회원가입 완료 상태로 전환
-            email: userInfo?.email || '',
-            provider: userInfo?.provider || 'kakao',
-            imageUrl,
-            nickname,
-          })
+          /** ✅ 주의 : UserStore 정보를 받아오지 않는 이유는 AT+RT 받기를 성공했으면 언젠가는 데이터를 불러올 수 있기 때문이다! */
           router.replace(URL.CHALLENGE.INDEX.value) // 회원가입 후 챌린지 메인으로 이동
         },
         onError: () => {
