@@ -21,6 +21,9 @@ export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpe
   const wrapperRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
+  const hourColumnRef = useRef<HTMLUListElement>(null)
+  const minuteColumnRef = useRef<HTMLUListElement>(null)
+
   const handleConfirm = () => {
     const hh = String(hour).padStart(2, '0')
     const mm = String(minute).padStart(2, '0')
@@ -65,6 +68,25 @@ export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpe
     }
   }, [isOpen])
 
+  //선택한 옵션 포커싱
+  useEffect(() => {
+    if (!isOpen) return
+
+    //현재 문서(페이지)의 스크롤에 영향 주지 않게
+    const scrollToCenter = (columnRef: React.RefObject<HTMLUListElement | null>) => {
+      const container = columnRef.current
+      if (!container) return
+      const selected = container.querySelector('li[data-selected="true"]') as HTMLElement
+      if (!selected) return
+      // 선택된 li 가 container 중앙에 오도록 scrollTop 계산
+      const offset = selected.offsetTop - container.clientHeight / 2 + selected.clientHeight / 2
+      container.scrollTop = offset
+    }
+
+    scrollToCenter(hourColumnRef)
+    scrollToCenter(minuteColumnRef)
+  }, [isOpen])
+
   return (
     <Wrapper ref={wrapperRef}>
       <Trigger
@@ -77,16 +99,16 @@ export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpe
       </Trigger>
       <Dropdown isOpen={isOpen} ref={dropdownRef} onClick={e => e.stopPropagation()}>
         <Columns>
-          <Column>
+          <Column ref={hourColumnRef}>
             {Array.from({ length: 24 }, (_, i) => i).map(h => (
-              <Option key={h} selected={h === hour} onClick={() => setHour(h)}>
+              <Option key={h} data-selected={h === hour} selected={h === hour} onClick={() => setHour(h)}>
                 {String(h).padStart(2, '0')}
               </Option>
             ))}
           </Column>
-          <Column style={{ marginLeft: '2px' }}>
+          <Column ref={minuteColumnRef} style={{ marginLeft: '2px' }}>
             {Array.from({ length: 6 }, (_, i) => i * 10).map(m => (
-              <Option key={m} selected={m === minute} onClick={() => setMinute(m)}>
+              <Option key={m} data-selected={m === minute} selected={m === minute} onClick={() => setMinute(m)}>
                 {String(m).padStart(2, '0')}
               </Option>
             ))}
@@ -157,6 +179,7 @@ const Column = styled.ul`
   max-height: 150px;
   overflow-y: auto;
   border-right: 1px solid ${theme.colors.lfBlue};
+  overscroll-behavior: contain;
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -166,6 +189,7 @@ const Option = styled.li<{ selected: boolean }>`
   padding: 8px 21px;
   text-align: center;
   cursor: pointer;
+  font-size: ${theme.fontSize.sm};
   background: ${({ selected }) => (selected ? `${theme.colors.lfGreenMain.hover}` : `${theme.colors.lfWhite.base}`)};
   color: ${({ selected }) => (selected ? `${theme.colors.lfWhite.base}` : `${theme.colors.lfGray.base}`)};
   &:hover {
