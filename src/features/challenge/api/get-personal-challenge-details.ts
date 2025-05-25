@@ -2,6 +2,7 @@
 
 import { ChallengeVerificationResultType, ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { serverFetchRequest } from '@shared/lib/api/fetcher'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { TimeFormatString } from '@shared/types/date'
 
@@ -28,4 +29,8 @@ type PersonalChallengeDetailResponse = PersonalChallengeDetail
 
 export const getPersonalChallengeDetails = (id: number) => {
   return fetchRequest<PersonalChallengeDetailResponse>(ENDPOINTS.CHALLENGE.PERSONAL.DETAILS(id))
+}
+
+export const getServerPersonalChallengeDetails = (id: number) => {
+  return serverFetchRequest<PersonalChallengeDetailResponse>(ENDPOINTS.CHALLENGE.PERSONAL.DETAILS(id))
 }
