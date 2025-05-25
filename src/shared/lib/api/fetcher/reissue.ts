@@ -1,4 +1,5 @@
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { useUserStore } from '@entities/member/context/UserStore'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
 import { useToastStore } from '@shared/context/Toast/ToastStore'
@@ -30,7 +31,8 @@ export async function refreshAccessToken(): Promise<void> {
       isRefreshing = false
     } catch (error) {
       // 로그인 정보 초기화
-      useOAuthUserStore.getState().clearUserInfo()
+      useOAuthUserStore.getState().clearOAuthUserInfo()
+      useUserStore.getState().clearUserInfo()
 
       // 클라이언트 컴포넌트면 로그인 페이지로 리디렉션
       if (typeof window !== 'undefined') {

@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { useUserStore } from '@entities/member/context/UserStore'
 import { LogoutResponse, LogoutVariables } from '@features/member/api/logout'
 import { UnregisterResponse } from '@features/member/api/unregister'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
@@ -17,6 +18,7 @@ import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
 import { useDrawerStore } from '@shared/context/slide-drawer/DrawerStore'
 import { ToastType } from '@shared/context/Toast/type'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
@@ -34,10 +36,10 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
   const { isOpen, close, toggle } = useDrawerStore()
   const { openConfirmModal, isOpen: isConfirmModalOpen } = useConfirmModalStore()
   const { openInfoModal, isOpen: isInfoModalOpen } = useInfoModalStore()
-  const { userInfo, clearUserInfo } = useOAuthUserStore()
+  const { userInfo, clearUserInfo } = useUserStore()
+  const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
+  const { isLoggedIn } = useAuth()
   const [scrollTop, setScrollTop] = useState<number>(0)
-
-  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   const drawerRef = useRef<HTMLDivElement>(null)
 
@@ -74,16 +76,17 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
 
   /** 로그아웃 로직 */
   const handleLogout = () => {
-    if (!userInfo) {
+    if (!OAuthUserInfo) {
       // TODO: 유효한 로그인 정보 확인해서 분기 처리
       return
     }
-    const provider = userInfo.provider
+    const provider = OAuthUserInfo.provider
     LogoutMutate(
       { provider },
       {
         onSuccess: response => {
           toggle()
+          clearOAuthUserInfo()
           clearUserInfo()
           openToast(ToastType.Success, '로그아웃 성공')
           router.push(URL.MAIN.INDEX.value)
@@ -108,6 +111,7 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
         UnregisterMutate(undefined, {
           onSuccess: response => {
             toggle()
+            clearOAuthUserInfo()
             clearUserInfo()
             openToast(ToastType.Success, '회원탈퇴 성공')
             router.push(URL.MAIN.INDEX.value)
@@ -140,7 +144,6 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
 
             {isLoggedIn ? (
               <UserInfo>
-                {/* <Emoji>🌱</Emoji> */}
                 <ProfileImage src={userInfo?.imageUrl as string} alt='유저 이미지' width={32} height={32} />
                 <Nickname>{userInfo?.nickname}</Nickname>
               </UserInfo>
@@ -246,10 +249,6 @@ const ProfileImage = styled(Image)`
 const Nickname = styled.div`
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
-`
-
-const Emoji = styled.div`
-  font-size: 18px;
 `
 
 const StartButton = styled.div`

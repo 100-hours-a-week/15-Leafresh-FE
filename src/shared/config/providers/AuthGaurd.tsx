@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { useEffect, useState } from 'react'
 
-import { UserInfo, useUserStore } from '@entities/member/context/UserInfoStore'
+import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'

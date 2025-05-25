@@ -8,7 +8,6 @@ import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import {
   getPersonalChallengeDetails,
   PersonalChallengeDetail,
@@ -31,6 +30,7 @@ import { URL } from '@shared/constants/route/route'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
@@ -101,10 +101,8 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   const router = useRouter()
   const openToast = useToast()
   const { open: openCameraModal } = useCameraModalStore()
-  const { userInfo } = useOAuthUserStore()
+  const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
-
-  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   /** 개인 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
@@ -152,14 +150,14 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   /** 이미지 촬영 모달 열기 */
   const openImageModal = () => {
     // #0. 로그인 상태가 아닐 때
-    // if (!isLoggedIn) {
-    //   openConfirmModal({
-    //     title: '로그인이 필요합니다.',
-    //     description: '로그인 페이지로 이동 하시겠습니까?',
-    //     onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
-    //   })
-    //   return
-    // }
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
+      return
+    }
     openCameraModal(
       // #1. 카메라 모달 제목
       `${title} 챌린지`,

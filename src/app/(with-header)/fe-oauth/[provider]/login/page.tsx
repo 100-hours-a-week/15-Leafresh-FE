@@ -21,7 +21,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
   const searchParams = useSearchParams()
   const { provider } = use(params)
   const openToast = useToast()
-  const { setOAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
+  const { setOAuthUserInfo } = useOAuthUserStore()
 
   const code = searchParams.get('code')
 
@@ -42,8 +42,6 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
     if (!isMember) {
       router.replace(URL.MEMBER.SIGNUP.value)
     } else {
-      clearOAuthUserInfo() // OAuth는 임시 데이터이므로 더 이상 필요없음
-
       /** ✅ 주의 : UserStore 정보를 받아오지 않는 이유는 AT+RT 받기를 성공했으면 언젠가는 데이터를 불러올 수 있기 때문이다! */
       openToast(ToastType.Success, '로그인 성공')
       router.replace(URL.CHALLENGE.INDEX.value)

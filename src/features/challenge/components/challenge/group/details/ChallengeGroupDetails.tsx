@@ -8,7 +8,6 @@ import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import {
   ParticipateGroupChallengeResponse,
@@ -27,6 +26,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
@@ -54,10 +54,8 @@ interface ChallengeGroupDetailsProps {
 }
 
 const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
-  const { userInfo } = useOAuthUserStore()
+  const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
-
-  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   const router = useRouter()
   const openToast = useToast()
