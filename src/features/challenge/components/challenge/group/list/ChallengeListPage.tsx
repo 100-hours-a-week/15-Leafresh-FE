@@ -14,6 +14,7 @@ import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import Image from 'next/image'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 
 const ChallengeListPage = () => {
   const searchParams = useSearchParams()
@@ -37,6 +38,8 @@ const ChallengeListPage = () => {
   const bannerUrl = categoryBannerMap[category] || categoryBannerMap['ETC']
 
   const searchKeyword = searchParams.get('search') || ''
+
+  const korCategory = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(category)
 
   // 로컬 input 초기화
   useEffect(() => {
@@ -103,7 +106,7 @@ const ChallengeListPage = () => {
       <ContentWrapper>
         <Section>
           <Header>
-            <Title>{category}</Title>
+            <Title>{korCategory}</Title>
             <AddButton
               onClick={() => {
                 const params = new URLSearchParams()
