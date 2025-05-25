@@ -90,9 +90,13 @@ const ChallengeVerifyExamples = ({
   /** 이미지 확대클릭 */
   const handleZoomClick = (example: VerificationImageData, idx: number) => {
     const { url, description, type } = example
+
+    /** 확대 불가능 이미지인 경우 */
     if (!url || !description) return
 
-    const data: ImageZoomModalData[] = examples.map(
+    /** 이미지가 있는 예시만 확대 */
+    const hasImageExamples: VerificationImageData[] = examples.filter(example => example.url && example.description)
+    const data: ImageZoomModalData[] = hasImageExamples.map(
       example =>
         ({
           result: example.type,
