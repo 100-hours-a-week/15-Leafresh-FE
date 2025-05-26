@@ -20,7 +20,7 @@ import Loading from '@shared/components/loading'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ChallengeDataType } from '@shared/context/modal/CameraModalStore'
-import { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
+import { ApiResponse } from '@shared/lib/api/fetcher/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
