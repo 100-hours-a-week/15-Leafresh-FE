@@ -21,7 +21,7 @@ const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAns
   <Container role={role}>
     {role === 'bot' && (
       <Avatar>
-        <Image src='/image/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
+        <Image src='/image/chatbot/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
       </Avatar>
     )}
     <BubbleWrapper>
@@ -70,13 +70,13 @@ const BubbleWrapper = styled.div`
 `
 
 const NameText = styled.p<{ role: 'bot' | 'user' }>`
-  font-size: ${theme.fontSize.xss};
+  font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.semiBold};
   margin: 8px 0 0 0;
 `
 
 const Bubble = styled.div<{ role: 'bot' | 'user'; isAnswer?: boolean }>`
-  max-width: 235px;
+  max-width: 250px;
   min-width: 60px;
   padding: 16px 12px;
   line-height: 0.8rem;
@@ -89,13 +89,13 @@ const Bubble = styled.div<{ role: 'bot' | 'user'; isAnswer?: boolean }>`
   flex-direction: column;
   border-radius: 20px;
   white-space: pre-wrap;
-  font-size: ${theme.fontSize.xss};
+  font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.semiBold};
   box-shadow: ${theme.shadow.lfPrime};
 `
 
 const SubDescription = styled.div<{ role: 'bot' | 'user' }>`
-  font-size: 8px;
+  font-size: 10px;
   color: ${theme.colors.lfGreenMain.base};
   text-align: center;
   margin-bottom: 10px;
