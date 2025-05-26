@@ -1,9 +1,5 @@
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { useUserStore } from '@entities/member/context/UserStore'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { URL } from '@shared/constants/route/route'
 import { useToastStore } from '@shared/context/toast/ToastStore'
-import { ToastType } from '@shared/context/toast/type'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
@@ -31,18 +27,8 @@ export async function refreshAccessToken(): Promise<void> {
 
       isRefreshing = false
     } catch (error) {
-      // 로그인 정보 초기화
-      useOAuthUserStore.getState().clearOAuthUserInfo()
-      useUserStore.getState().clearUserInfo()
-
-      // 클라이언트 컴포넌트면 로그인 페이지로 리디렉션
-      if (typeof window !== 'undefined') {
-        openToast(ToastType.Error, '세션이 만료되었습니다.\n재로그인 해주세요')
-        window.location.href = URL.MEMBER.LOGIN.value
-      }
-
       isRefreshing = false
-      throw error
+      throw error // ❌ 핸들링 X (fetchRequest에서 처리)
     }
   })()
 

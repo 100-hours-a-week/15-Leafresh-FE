@@ -1,7 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { useUserStore } from '@entities/member/context/UserStore'
 import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
@@ -12,14 +10,12 @@ import { Logout } from '@features/member/api/logout'
 import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
-import { URL } from '@shared/constants/route/route'
-import { useToastStore } from '@shared/context/toast/ToastStore'
-import { ToastType } from '@shared/context/toast/type'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
+import { handleError } from './utils'
 
 const queryClient = getQueryClient()
 
@@ -250,27 +246,4 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
   return useMutation<ApiResponse<TData>, ErrorResponse, TVariables, unknown>({ mutationKey })
-}
-
-let isHandlingAuth = false
-
-export const handleAuthError = (error: ErrorResponse) => {
-  if (typeof window === 'undefined') return
-  if (error.status !== 401 || isHandlingAuth) return
-
-  isHandlingAuth = true
-  useOAuthUserStore.getState().clearOAuthUserInfo()
-  useUserStore.getState().clearUserInfo()
-
-  const openToast = useToastStore.getState().open
-  openToast(ToastType.Error, '세션이 만료되었습니다.\n다시 로그인해주세요')
-
-  window.location.href = URL.MEMBER.LOGIN.value
-}
-
-export const handleError = (error: ErrorResponse) => {
-  if (error.status === 401) return
-
-  const openToast = useToastStore.getState().open
-  openToast(ToastType.Error, error.message)
 }
