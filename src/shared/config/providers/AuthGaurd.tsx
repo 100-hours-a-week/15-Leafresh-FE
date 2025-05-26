@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react'
 import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
+import { ToastType } from '@shared/context/Toast/type'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 /** 보호가 필요한 경로 목록 */
@@ -46,6 +48,7 @@ type UserInfoResponse = {
 const AuthGuard = ({ children }: Props) => {
   const pathname = usePathname()
   const router = useRouter()
+  const openToast = useToast()
 
   const { userInfo, setUserInfo, clearUserInfo } = useUserStore()
   const [isVerified, setIsVerified] = useState(false)
@@ -77,6 +80,7 @@ const AuthGuard = ({ children }: Props) => {
         setIsVerified(true)
       } catch (e) {
         clearUserInfo()
+        openToast(ToastType.Error, '로그인이 필요합니다')
         router.replace(URL.MEMBER.LOGIN.value)
       }
     }
