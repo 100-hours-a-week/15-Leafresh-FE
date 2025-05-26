@@ -18,7 +18,7 @@ import {
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
-import BackButton from '@shared/components/Button/BackButton'
+import BackButton from '@shared/components/button/BackButton'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
