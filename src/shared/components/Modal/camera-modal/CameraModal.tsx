@@ -48,10 +48,10 @@ const CameraModal = () => {
     }
   }
 
-  // 카메라 시작
-  const startCamera = async (mode: FacingMode = 'environment', isFallback = false) => {
+  const startCamera = async (mode: FacingMode = facingMode) => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+      close()
       return
     }
 
@@ -59,36 +59,33 @@ const CameraModal = () => {
     stopCamera()
 
     try {
+      // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
       const constraints = {
         video: { facingMode: mode },
       }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
-      streamRef.current = stream
+      streamRef.current = stream // 스트림 참조 저장
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream
       }
-
-      // 성공한 경우, 현재 모드를 상태로 저장
-      setFacingMode(mode)
     } catch (error) {
-      console.error(`Camera error (${mode}):`, error)
-
       const errorName = (error as DOMException)?.name
 
       if (errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError') {
         openToast(ToastType.Error, '카메라 접근 권한이 없습니다.\n설정에서 권한을 허용해주세요.')
-        close() // ✅ 모달 닫기
+        close()
         return
       }
 
-      if (!isFallback) {
-        // 첫 시도 실패 시 전면 카메라로 재시도
-        await startCamera('user', true)
+      if (mode === 'environment') {
+        openToast(ToastType.Error, '해당 방향을 지원하지 않습니다!')
+        // fallback 시도 (선택사항)
+        setFacingMode('user')
       } else {
         openToast(ToastType.Error, '카메라를 사용할 수 없습니다.')
-        close() // ✅ fallback도 실패했을 경우 닫기
+        close()
       }
     }
   }
