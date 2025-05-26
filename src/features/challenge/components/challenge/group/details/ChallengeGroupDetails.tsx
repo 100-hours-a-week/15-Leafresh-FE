@@ -16,7 +16,7 @@ import {
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
-import BackButton from '@shared/components/Button/BackButton'
+import BackButton from '@shared/components/button/BackButton'
 import DatePicker from '@shared/components/datepicker/DatePicker'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
@@ -25,7 +25,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
-import { ToastType } from '@shared/context/Toast/type'
+import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'

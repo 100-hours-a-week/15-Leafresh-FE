@@ -27,7 +27,7 @@ import MetaDataStep, { metaSchema } from '@features/challenge/components/challen
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
-import { ToastType } from '@shared/context/Toast/type'
+import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/type'
 import { formatDateToDateFormatString } from '@shared/lib/date/utils'

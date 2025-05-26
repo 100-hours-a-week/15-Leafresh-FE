@@ -14,7 +14,7 @@ import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
 import { URL } from '@shared/constants/route/route'
 import { useToastStore } from '@shared/context/Toast/ToastStore'
-import { ToastType } from '@shared/context/Toast/type'
+import { ToastType } from '@shared/context/toast/type'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
@@ -193,7 +193,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.RE_ISSUE, {
     // TODO: 무효화 로직
   },
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ✅
+    handleAuthError(error) // 인증 필요 요청 ❌
   },
 })
 
