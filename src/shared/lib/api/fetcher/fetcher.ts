@@ -1,3 +1,4 @@
+import { handleAuthError } from '@shared/config/tanstack-query/mutation-defaults'
 import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
 import { refreshAccessToken } from './reissue'
@@ -54,6 +55,10 @@ export async function fetchRequest<T>(
           status: 401,
           message: '세션이 만료되었습니다. 다시 로그인해주세요.',
           data: null,
+        }
+        /** 미인증 유저에게는 토스트로 알림 */
+        if (typeof window !== 'undefined') {
+          handleAuthError(error)
         }
         throw error
       }
