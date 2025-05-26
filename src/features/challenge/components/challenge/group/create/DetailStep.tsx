@@ -12,25 +12,22 @@ import Loading from '@shared/components/loading'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
-import { FullFormValues } from './GroupChallengeCreatePage'
+import { FullFormValues } from '../GroupChallengeFormPage'
 
 export const detailSchema = z.object({
   description: z.string().min(1, '챌린지 설명을 입력해주세요'),
   thumbnailUrl: z.string().min(1, '썸네일 이미지를 등록해주세요'),
 })
 
-type DetailFormValues = z.infer<typeof detailSchema>
-
-export const defaultDetailFormValues: DetailFormValues = {
-  description: '',
-  thumbnailUrl: '',
-}
+export type DetailFormValues = z.infer<typeof detailSchema>
 
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
   onBack: () => void
   onSubmit: () => void
-  isCreating: boolean
+  isPending: boolean
+
+  isEdit: boolean
 }
 
 type WarningType = {
@@ -61,7 +58,7 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   },
 ]
 
-const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) => {
+const DetailStep = ({ form, onBack, onSubmit, isPending, isEdit }: DetailsStepProps) => {
   const {
     register,
     setValue,
@@ -82,13 +79,17 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
       onSubmit()
     }
   }
+
+  // 상수
+  const FORM_TITLE: string = isEdit ? '단체 챌린지 수정하기' : '단체 챌린지 만들기'
+  const BUTTON_TEXT = isEdit ? '수정하기' : '생성하기'
   return (
     <Container onSubmit={handleSubmit(handleDetailSubmit)}>
       <DividerWrapper>
         <ButtonWrapper onClick={onBack}>
           <BackButton name='ChevronLeft' size={24} />
         </ButtonWrapper>
-        <Text>단체 챌린지 만들기</Text>
+        <Text>{FORM_TITLE}</Text>
       </DividerWrapper>
       <FieldGroup>
         <FieldWrapper>
@@ -108,15 +109,17 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
             <InfoIcon>ⓘ</InfoIcon>
           </LabelRow>
           <SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</SubText>
-          <ImageInput
-            label='사진 추가하기'
-            icon={null}
+          <StyledImageInput
+            label='이미지를 업로드해주세요'
+            icon={<LucideIcon name='Image' size={24} />}
             imageUrl={formValue.thumbnailUrl || null}
             onChange={({ imageUrl }) => {
               setValue('thumbnailUrl', imageUrl ?? '')
               trigger('thumbnailUrl')
             }}
+            backgroundColor='lfWhite'
             cameraTitle='챌린지 썸네일'
+            aspectRatio='FIVE_THREE'
           />
           <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
         </FieldWrapper>
@@ -135,7 +138,7 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
       </FieldGroup>
 
       <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
-        {!isCreating ? '생성하기' : <Loading />}
+        {!isPending ? BUTTON_TEXT : <Loading />}
       </SubmitButton>
     </Container>
   )
@@ -235,4 +238,9 @@ const SubmitButton = styled.button<{ $active: boolean }>`
   font-weight: ${theme.fontWeight.semiBold};
   cursor: pointer;
   border: none;
+`
+
+const StyledImageInput = styled(ImageInput)`
+  width: 100%;
+  border: 1px solid ${theme.colors.lfGray.base};
 `

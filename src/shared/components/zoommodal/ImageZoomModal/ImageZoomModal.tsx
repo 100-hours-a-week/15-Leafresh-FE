@@ -65,7 +65,7 @@ const ImageZoomModal = () => {
           {data.map(({ imageSrc, description }, idx) => (
             <Slide key={idx}>
               <ImageArea>
-                <StyledImage src={imageSrc} alt='zoom-image' width={390} height={390} />
+                <StyledImage src={imageSrc} alt='zoom-image' fill />
               </ImageArea>
               <Description>{description}</Description>
             </Slide>
@@ -142,23 +142,24 @@ const Viewport = styled.div`
 const Container = styled.div`
   display: flex;
   height: 100%;
+  width: 100%;
 
   &.animate {
     transition: transform 0.3s ease;
   }
 `
-
 const Slide = styled.div`
+  position: relative;
   flex: 0 0 100%;
-  min-width: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 `
 
 const ImageArea = styled.div`
-  width: 390px;
-  height: 390px;
+  width: 100%; // 슬라이드 전체 너비
+  aspect-ratio: 1 / 1; // 정사각형 유지
 
   position: relative;
   display: flex;
@@ -168,12 +169,7 @@ const ImageArea = styled.div`
 `
 
 const StyledImage = styled(Image)`
-  object-fit: contain;
-
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
+  object-fit: cover;
 `
 
 const Description = styled.div`

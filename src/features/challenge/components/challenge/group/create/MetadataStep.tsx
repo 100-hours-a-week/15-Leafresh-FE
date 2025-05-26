@@ -19,7 +19,7 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { StyledGeneric } from '@shared/styles/emotion/utils'
 import { theme } from '@shared/styles/theme'
 
-import { FullFormValues } from './GroupChallengeCreatePage'
+import { FullFormValues } from '../GroupChallengeFormPage'
 
 const PARTICIPANT_OPTIONS = Array.from(
   { length: Math.floor((PARTICIPANT_RANGE.MAX - PARTICIPANT_RANGE.MIN) / PARTICIPANT_RANGE.RANGE) + 1 },
@@ -36,6 +36,7 @@ export const metaSchema = z.object({
   examples: z
     .array(
       z.object({
+        id: z.number().optional(), // 상세 포함, 생성 미포함
         url: z.string().nullable(),
         description: z.string(),
         type: z.enum(['SUCCESS', 'FAILURE']),
@@ -43,40 +44,25 @@ export const metaSchema = z.object({
     )
     .refine(
       examples => {
-        // const totalSlots: number = examples.length
         const validSlots = examples.filter(e => e.url !== null)
         const hasSuccess = validSlots.some(e => e.type === 'SUCCESS')
-        const hasFailure = validSlots.some(e => e.type === 'FAILURE')
-        // const emptySlots = totalSlots - validSlots.length
-        return hasSuccess && hasFailure
+        return hasSuccess
       },
       {
-        message: '성공/실패 예시 이미지를 최소 1개씩 등록해주세요.',
+        message: '성공 예시 이미지를 최소 1개 등록해주세요.',
       },
     ),
 })
 
-type MetaFormValues = z.infer<typeof metaSchema>
-export const defaultMetaFormValues: MetaFormValues = {
-  title: '',
-  category: '',
-  startDate: new Date(),
-  endDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-  startTime: '00:00',
-  endTime: '23:50',
-  maxParticipant: 0,
-  examples: [
-    { url: null, description: '', type: 'SUCCESS' },
-    { url: null, description: '', type: 'FAILURE' },
-  ],
-}
+export type MetaFormValues = z.infer<typeof metaSchema>
 
 interface MetaDataStepProps {
   form: UseFormReturn<FullFormValues>
   onNext: () => void
+  isEdit: boolean
 }
 
-const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
+const MetaDataStep = ({ form, onNext, isEdit }: MetaDataStepProps) => {
   const {
     register,
     control,
@@ -130,10 +116,12 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
     }
   }
 
+  // 상수
+  const FORM_TITLE: string = isEdit ? '단체 챌린지 수정하기' : '단체 챌린지 만들기'
   return (
     <Form onSubmit={handleMetaSubmit}>
       <DividerWrapper>
-        <Text>단체 챌린지 만들기</Text>
+        <Text>{FORM_TITLE}</Text>
       </DividerWrapper>
 
       <FieldGroup>

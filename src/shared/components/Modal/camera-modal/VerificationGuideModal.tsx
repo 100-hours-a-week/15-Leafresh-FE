@@ -52,8 +52,8 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
   }
 
   const { data, isLoading } = useQuery<ApiResponse<ChallengeRulesListResponse>>({
-    queryKey: queryKey,
-    queryFn: queryFn,
+    queryKey,
+    queryFn,
     ...queryDefaults,
   })
 

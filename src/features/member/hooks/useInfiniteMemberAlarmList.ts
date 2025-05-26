@@ -7,8 +7,8 @@ import type { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
 
 import { getMemberAlarmList, MemberAlarmList, MemberAlarmListParams } from '../api/get-alarm'
 
-export const useInfiniteMemberAlarmList = () =>
-  useInfiniteQuery<
+export const useInfiniteMemberAlarmList = () => {
+  return useInfiniteQuery<
     ApiResponse<MemberAlarmList>, // fetch 반환 타입
     Error,
     InfiniteData<ApiResponse<MemberAlarmList>>,
@@ -31,3 +31,4 @@ export const useInfiniteMemberAlarmList = () =>
     initialPageParam: {},
     staleTime: 5 * 60 * 1000,
   })
+}

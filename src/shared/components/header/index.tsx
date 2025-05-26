@@ -27,7 +27,7 @@ const Header = ({ height, padding }: HeaderProps) => {
   return (
     <HeaderContainer height={height}>
       <CustomWidthWrapper padding={padding}>
-        <LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
+        <LogoWrapper onClick={() => router.push(URL.CHALLENGE.INDEX.value)}>
           <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
         </LogoWrapper>
         <MenuButtons>
