@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
+import CheckIcon from '@shared/components/check-icon/CheckIcon'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
@@ -170,20 +171,33 @@ const CameraModal = () => {
 
   let content
   if (!previewUrl || (previewUrl && !hasDescription)) {
-    content = (
-      <ShootWrapper type='button'>
-        <ShootButtonWrapper onClick={capture}>
-          <LucideIcon name='Camera' size={50} />
-          <ShootText>촬영하기</ShootText>
-        </ShootButtonWrapper>
-        <CovertCameraButton
-          name='SwitchCamera'
-          size={40}
-          strokeWidth={2}
-          onClick={() => setFacingMode(prev => (prev === 'user' ? 'environment' : 'user'))}
-        />
-      </ShootWrapper>
-    )
+    // 촬영 후
+    if (previewUrl) {
+      content = (
+        <ShootWrapper type='button'>
+          <ShootButtonWrapper onClick={capture}>
+            <CheckIcon />
+          </ShootButtonWrapper>
+        </ShootWrapper>
+      )
+    }
+    // 촬영 전
+    else {
+      content = (
+        <ShootWrapper type='button'>
+          <ShootButtonWrapper onClick={capture}>
+            <LucideIcon name='Camera' size={50} />
+            <ShootText>촬영하기</ShootText>
+          </ShootButtonWrapper>
+          <CovertCameraButton
+            name='SwitchCamera'
+            size={40}
+            strokeWidth={2}
+            onClick={() => setFacingMode(prev => (prev === 'user' ? 'environment' : 'user'))}
+          />
+        </ShootWrapper>
+      )
+    }
   } else if (hasDescription) {
     let label
     switch (status) {

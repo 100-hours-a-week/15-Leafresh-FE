@@ -12,25 +12,22 @@ import Loading from '@shared/components/loading'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
-import { FullFormValues } from '../../../../../../app/(with-header)/challenge/group/create/GroupChallengeCreatePage'
+import { FullFormValues } from '../GroupChallengeFormPage'
 
 export const detailSchema = z.object({
   description: z.string().min(1, '챌린지 설명을 입력해주세요'),
   thumbnailUrl: z.string().min(1, '썸네일 이미지를 등록해주세요'),
 })
 
-type DetailFormValues = z.infer<typeof detailSchema>
-
-export const defaultDetailFormValues: DetailFormValues = {
-  description: '',
-  thumbnailUrl: '',
-}
+export type DetailFormValues = z.infer<typeof detailSchema>
 
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
   handleStepChange: (step: 1 | 2) => void
   onSubmit: () => void
   isCreating: boolean
+
+  isEdit: boolean
 }
 
 type WarningType = {
@@ -61,7 +58,7 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   },
 ]
 
-const DetailStep = ({ form, handleStepChange, onSubmit, isCreating }: DetailsStepProps) => {
+const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdit }: DetailsStepProps) => {
   const {
     register,
     setValue,
@@ -82,10 +79,14 @@ const DetailStep = ({ form, handleStepChange, onSubmit, isCreating }: DetailsSte
       onSubmit()
     }
   }
+
+  // 상수
+  const FORM_TITLE: string = isEdit ? '단체 챌린지 수정하기' : '단체 챌린지 만들기'
+  const BUTTON_TEXT = isEdit ? '수정하기' : '생성하기'
   return (
     <Container onSubmit={handleSubmit(handleDetailSubmit)}>
       <DividerWrapper>
-        <Text>단체 챌린지 만들기</Text>
+        <Text>{FORM_TITLE}</Text>
       </DividerWrapper>
       <FieldGroup>
         <FieldWrapper>
@@ -137,9 +138,8 @@ const DetailStep = ({ form, handleStepChange, onSubmit, isCreating }: DetailsSte
         <BackButton onClick={() => handleStepChange(1)} type='button' disabled={isCreating}>
           이전
         </BackButton>
-        {/* <BackButton name='ChevronLeft' size={24} /> */}
         <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
-          {!isCreating ? '생성하기' : <Loading />}
+          {!isCreating ? BUTTON_TEXT : <Loading />}
         </SubmitButton>
       </ButtonWrapper>
     </Container>

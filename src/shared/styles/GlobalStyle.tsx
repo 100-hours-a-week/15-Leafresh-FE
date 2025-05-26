@@ -28,6 +28,8 @@ const GlobalStyle = () => {
 
         * {
           box-sizing: border-box;
+
+          line-height: 1.3;
         }
 
         html {
