@@ -28,7 +28,6 @@ import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { ErrorResponse } from '@shared/lib/api/fetcher/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
@@ -155,8 +154,11 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
           openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
           router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
         },
-        onError: (error: ErrorResponse) => {
-          openToast(ToastType.Error, error.message)
+        // 실패
+        onError(error, variables, context) {
+          if (error.status !== 401) {
+            openToast(ToastType.Error, error.message)
+          }
         },
       },
     )

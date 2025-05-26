@@ -8,6 +8,7 @@ import { ToastType } from '@shared/context/Toast/type'
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
 
+//TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
 const BASE_URL = 'https://leafresh.app'
 
 export async function refreshAccessToken(): Promise<void> {

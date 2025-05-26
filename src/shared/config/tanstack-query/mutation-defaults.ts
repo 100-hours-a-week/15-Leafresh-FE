@@ -108,7 +108,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.DELETE, {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT })
   },
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ❌
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 
@@ -122,7 +122,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS }) // member - 참여한 단체 챌린지 목록 조회
   },
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ❌
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 
@@ -169,7 +169,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
   },
 
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ❌
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 
@@ -182,7 +182,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.LOGOUT, {
     queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
   },
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ❌
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 
@@ -193,7 +193,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.RE_ISSUE, {
     // TODO: 무효화 로직
   },
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ❌
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 
@@ -213,7 +213,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.MODIFY, {
     return {} as ApiResponse<unknown>
   },
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ❌
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 
@@ -225,7 +225,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
     queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
   },
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ❌
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 
@@ -236,7 +236,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST })
   },
   onError(error: ErrorResponse, variables, context) {
-    handleAuthError(error) // 인증 필요 요청 ❌
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 

@@ -1,44 +1,10 @@
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { useUserStore } from '@entities/member/context/UserStore'
-import { ENDPOINTS, EndpointType } from '@shared/constants/endpoint/endpoint'
+import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
+import { refreshAccessToken } from './reissue'
 import { ApiResponse, ErrorResponse, OptionsType } from './type'
 
 //TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
 const BASE_URL = 'https://leafresh.app'
-
-let isRefreshing = false
-let refreshPromise: Promise<void> | null = null
-
-async function refreshAccessToken(): Promise<void> {
-  if (isRefreshing) return refreshPromise ?? Promise.resolve()
-
-  isRefreshing = true
-
-  refreshPromise = (async () => {
-    try {
-      const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE}`, {
-        method: 'POST',
-        credentials: 'include', // 쿠키 포함
-      })
-
-      if (!response.ok) {
-        throw new Error('Refresh failed')
-      }
-
-      isRefreshing = false
-    } catch (error) {
-      // 로그인 정보 초기화
-      useOAuthUserStore.getState().clearOAuthUserInfo()
-      useUserStore.getState().clearUserInfo()
-
-      isRefreshing = false
-      throw error
-    }
-  })()
-
-  return refreshPromise
-}
 
 export async function fetchRequest<T>(
   endpoint: EndpointType,
