@@ -13,7 +13,7 @@ import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
 import { URL } from '@shared/constants/route/route'
-import { useToastStore } from '@shared/context/Toast/ToastStore'
+import { useToastStore } from '@shared/context/toast/ToastStore'
 import { ToastType } from '@shared/context/toast/type'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 

@@ -2,8 +2,8 @@ import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { useUserStore } from '@entities/member/context/UserStore'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
-import { useToastStore } from '@shared/context/Toast/ToastStore'
-import { ToastType } from '@shared/context/Toast/type'
+import { useToastStore } from '@shared/context/toast/ToastStore'
+import { ToastType } from '@shared/context/toast/type'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null

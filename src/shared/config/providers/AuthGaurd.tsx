@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
-import { ToastType } from '@shared/context/Toast/type'
+import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
