@@ -1,20 +1,20 @@
 'use client'
+import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import React, { useEffect, useRef, useState } from 'react'
 import { Spinner } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { GroupChallengeItem } from '@features/challenge/api/get-group-challenge-list'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import Chatbot from '@shared/components/chatbot/Chatbot'
-import GridBox from '@shared/components/Wrapper/GridBox'
+import GridBox from '@shared/components/wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
-import Image from 'next/image'
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 
 const ChallengeListPage = () => {
   const searchParams = useSearchParams()
