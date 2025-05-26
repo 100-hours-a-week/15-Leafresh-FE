@@ -58,11 +58,11 @@ export type MetaFormValues = z.infer<typeof metaSchema>
 
 interface MetaDataStepProps {
   form: UseFormReturn<FullFormValues>
-  onNext: () => void
+  handleStepChange: (step: 1 | 2) => void
   isEdit: boolean
 }
 
-const MetaDataStep = ({ form, onNext, isEdit }: MetaDataStepProps) => {
+const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepProps) => {
   const {
     register,
     control,
@@ -112,7 +112,7 @@ const MetaDataStep = ({ form, onNext, isEdit }: MetaDataStepProps) => {
       setIsSubmitted(true)
     }
     if (isMetaValid) {
-      onNext()
+      handleStepChange(2)
     }
   }
 

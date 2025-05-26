@@ -49,10 +49,10 @@ const CameraModal = () => {
     }
   }
 
-  // 카메라 시작
   const startCamera = async (mode: FacingMode = facingMode) => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+      close()
       return
     }
 
@@ -103,7 +103,6 @@ const CameraModal = () => {
     else setShowGuide(false)
   }, [tab])
 
-  // useScrollLock(isOpen)
   useScrollLock(isOpen && !previewUrl)
 
   const capture = () => {

@@ -241,22 +241,22 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
       },
     )
   }
+
+  /** 스텝 변경 */
+  const handleStepChange = (step: 1 | 2) => {
+    setStep(step)
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }
   return (
     <PageWrapper>
       {step === 1 ? (
-        <MetaDataStep
-          form={form}
-          onNext={() => {
-            setStep(2)
-          }}
-          isEdit={isEdit}
-        />
+        <MetaDataStep form={form} handleStepChange={handleStepChange} isEdit={isEdit} />
       ) : (
         <DetailStep
           form={form}
-          onBack={() => setStep(1)}
+          handleStepChange={handleStepChange}
           onSubmit={!isEdit ? handleCreateSubmit : handleModifySubmit}
-          isPending={isPending}
+          isCreating={isCreating}
           isEdit={isEdit}
         />
       )}

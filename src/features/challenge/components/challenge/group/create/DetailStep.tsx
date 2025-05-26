@@ -23,9 +23,9 @@ export type DetailFormValues = z.infer<typeof detailSchema>
 
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
-  onBack: () => void
+  handleStepChange: (step: 1 | 2) => void
   onSubmit: () => void
-  isPending: boolean
+  isCreating: boolean
 
   isEdit: boolean
 }
@@ -58,7 +58,7 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   },
 ]
 
-const DetailStep = ({ form, onBack, onSubmit, isPending, isEdit }: DetailsStepProps) => {
+const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdit }: DetailsStepProps) => {
   const {
     register,
     setValue,
@@ -86,9 +86,6 @@ const DetailStep = ({ form, onBack, onSubmit, isPending, isEdit }: DetailsStepPr
   return (
     <Container onSubmit={handleSubmit(handleDetailSubmit)}>
       <DividerWrapper>
-        <ButtonWrapper onClick={onBack}>
-          <BackButton name='ChevronLeft' size={24} />
-        </ButtonWrapper>
         <Text>{FORM_TITLE}</Text>
       </DividerWrapper>
       <FieldGroup>
@@ -137,9 +134,14 @@ const DetailStep = ({ form, onBack, onSubmit, isPending, isEdit }: DetailsStepPr
         </FieldWrapper>
       </FieldGroup>
 
-      <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
-        {!isPending ? BUTTON_TEXT : <Loading />}
-      </SubmitButton>
+      <ButtonWrapper>
+        <BackButton onClick={() => handleStepChange(1)} type='button' disabled={isCreating}>
+          이전
+        </BackButton>
+        <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
+          {!isCreating ? BUTTON_TEXT : <Loading />}
+        </SubmitButton>
+      </ButtonWrapper>
     </Container>
   )
 }
@@ -163,11 +165,13 @@ const DividerWrapper = styled.div`
 `
 
 const ButtonWrapper = styled.div`
-  position: absolute;
-  left: 0;
-`
+  width: 100%;
 
-const BackButton = styled(LucideIcon)``
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+`
 
 const Text = styled.div`
   font-size: ${theme.fontSize.base};
@@ -230,14 +234,30 @@ const Warning = styled.div<{ isWarning: boolean }>`
 
   color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
 `
-const SubmitButton = styled.button<{ $active: boolean }>`
+
+const BackButton = styled.button<{ disabled?: boolean }>`
+  width: 100%;
+  height: 50px;
+  border-radius: ${theme.radius.base};
+  color: ${theme.colors.lfBlack.base};
+  background-color: ${theme.colors.lfWhite.base};
+  font-weight: ${theme.fontWeight.regular};
+  border: 1px solid ${theme.colors.lfGray.base};
+
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+`
+
+const SubmitButton = styled.button<{ $active: boolean; disabled?: boolean }>`
+  width: 100%;
   height: 50px;
   border-radius: ${theme.radius.base};
   background-color: ${({ $active }) => ($active ? theme.colors.lfGreenMain.base : theme.colors.lfGreenInactive.base)};
   color: ${theme.colors.lfWhite.base};
   font-weight: ${theme.fontWeight.semiBold};
-  cursor: pointer;
   border: none;
+
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `
 
 const StyledImageInput = styled(ImageInput)`
