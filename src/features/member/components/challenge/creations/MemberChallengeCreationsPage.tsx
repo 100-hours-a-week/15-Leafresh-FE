@@ -112,7 +112,15 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   >(MUTATION_KEYS.CHALLENGE.GROUP.DELETE)
 
   /** 단체 챌린지 수정 */
-  const handleModify = (id: number, name: string, currentParticipantCount: number) => {
+  const handleModify = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    id: number,
+    name: string,
+    currentParticipantCount: number,
+  ) => {
+    // 0. 버블링 방지
+    event.stopPropagation()
+
     // 1. 로그인 상태 확인
     if (!isLoggedIn) {
       openConfirmModal({
@@ -133,7 +141,15 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   }
 
   /** 단체 챌린지 삭제 */
-  const handleDelete = (id: number, name: string, currentParticipantCount: number) => {
+  const handleDelete = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    id: number,
+    name: string,
+    currentParticipantCount: number,
+  ) => {
+    // 0. 버블링 방지
+    event.stopPropagation()
+
     // 1. 로그인 상태 확인
     if (!isLoggedIn) {
       openConfirmModal({
@@ -217,10 +233,16 @@ const MemberChallengeCreationsPage = (): ReactNode => {
                 <TopRow>
                   <ChallengeName>{name}</ChallengeName>
                   <ActionButtons>
-                    <ModifyButton type='button' onClick={() => handleModify(id, name, currentParticipantCount)}>
+                    <ModifyButton
+                      type='button'
+                      onClick={event => handleModify(event, id, name, currentParticipantCount)}
+                    >
                       수정
                     </ModifyButton>
-                    <DeleteButton type='button' onClick={() => handleDelete(id, name, currentParticipantCount)}>
+                    <DeleteButton
+                      type='button'
+                      onClick={event => handleDelete(event, id, name, currentParticipantCount)}
+                    >
                       삭제
                     </DeleteButton>
                   </ActionButtons>
