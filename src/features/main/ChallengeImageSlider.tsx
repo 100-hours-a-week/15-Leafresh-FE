@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useScrollTrigger } from './hook/useScrollTrigger'
+import { css,Global } from '@emotion/react'
 import styled from '@emotion/styled'
-import { Global, css } from '@emotion/react'
+
+import { useScrollTrigger } from './hook/useScrollTrigger'
 
 interface ImageType {
   url: string
