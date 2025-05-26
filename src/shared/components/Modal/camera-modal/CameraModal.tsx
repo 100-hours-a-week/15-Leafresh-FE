@@ -48,10 +48,10 @@ const CameraModal = () => {
     }
   }
 
-  // 카메라 시작
   const startCamera = async (mode: FacingMode = facingMode) => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+      close()
       return
     }
 
@@ -97,19 +97,11 @@ const CameraModal = () => {
     }
   }, [isOpen, previewUrl, facingMode])
 
-  // facingMode 변경 시 카메라 재시작-> 같은 기능을 하는 useEffect가 충돌
-  // useEffect(() => {
-  //   if (isOpen && !previewUrl) {
-  //     startCamera()
-  //   }
-  // }, [facingMode])
-
   useEffect(() => {
     if (tab === 1 && challengeData) setShowGuide(true)
     else setShowGuide(false)
   }, [tab])
 
-  // useScrollLock(isOpen)
   useScrollLock(isOpen && !previewUrl)
 
   const capture = () => {

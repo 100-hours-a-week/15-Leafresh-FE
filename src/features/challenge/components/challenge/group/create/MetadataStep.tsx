@@ -19,7 +19,7 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { StyledGeneric } from '@shared/styles/emotion/utils'
 import { theme } from '@shared/styles/theme'
 
-import { FullFormValues } from './GroupChallengeCreatePage'
+import { FullFormValues } from '../../../../../../app/(with-header)/challenge/group/create/GroupChallengeCreatePage'
 
 const PARTICIPANT_OPTIONS = Array.from(
   { length: Math.floor((PARTICIPANT_RANGE.MAX - PARTICIPANT_RANGE.MIN) / PARTICIPANT_RANGE.RANGE) + 1 },
@@ -71,10 +71,10 @@ export const defaultMetaFormValues: MetaFormValues = {
 
 interface MetaDataStepProps {
   form: UseFormReturn<FullFormValues>
-  onNext: () => void
+  handleStepChange: (step: 1 | 2) => void
 }
 
-const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
+const MetaDataStep = ({ form, handleStepChange }: MetaDataStepProps) => {
   const {
     register,
     control,
@@ -124,7 +124,7 @@ const MetaDataStep = ({ form, onNext }: MetaDataStepProps) => {
       setIsSubmitted(true)
     }
     if (isMetaValid) {
-      onNext()
+      handleStepChange(2)
     }
   }
 
