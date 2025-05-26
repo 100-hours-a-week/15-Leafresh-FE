@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import {
   getPersonalChallengeDetails,
+  PersonalChallengeDetail,
 } from '@features/challenge/api/get-personal-challenge-details'
 import {
   VerifyGroupChallengeResponse,
@@ -34,7 +35,44 @@ import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
+import { TimeFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
+
+export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {
+  id: 1,
+  title: '제로 웨이스트 실천하기',
+  description:
+    '하루 동안 일회용품 사용을 줄이고, 텀블러와 장바구니를 활용해보세요.\n실천하는 모습의 인증샷을 업로드해주세요!',
+  thumbnailUrl: '/icon/category_zero_waste.png',
+  dayOfWeek: 'MONDAY',
+  verificationStartTime: '08:00' as TimeFormatString,
+  verificationEndTime: '22:00' as TimeFormatString,
+  leafReward: 15,
+  exampleImages: [
+    {
+      id: 1,
+      imageUrl: '/icon/category_zero_waste.png',
+      type: 'SUCCESS',
+      description: '텀블러 사용 장면',
+      sequenceNumber: 1,
+    },
+    {
+      id: 2,
+      imageUrl: '/icon/category_zero_waste.png',
+      type: 'SUCCESS',
+      description: '장바구니 사용 장면',
+      sequenceNumber: 2,
+    },
+    {
+      id: 3,
+      imageUrl: '/icon/category_zero_waste.png',
+      type: 'FAILURE',
+      description: '일회용 컵을 사용한 장면',
+      sequenceNumber: 3,
+    },
+  ],
+  status: 'NOT_SUBMITTED',
+}
 
 type WarningType = {
   isWarning: boolean
@@ -108,14 +146,14 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   /** 이미지 촬영 모달 열기 */
   const openImageModal = () => {
     // #0. 로그인 상태가 아닐 때
-    if (!isLoggedIn) {
-      openConfirmModal({
-        title: '로그인이 필요합니다.',
-        description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
-      })
-      return
-    }
+    // if (!isLoggedIn) {
+    //   openConfirmModal({
+    //     title: '로그인이 필요합니다.',
+    //     description: '로그인 페이지로 이동 하시겠습니까?',
+    //     onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+    //   })
+    //   return
+    // }
     openCameraModal(
       // #1. 카메라 모달 제목
       `${title} 챌린지`,
@@ -184,7 +222,9 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
           router.replace(URL.CHALLENGE.INDEX.value) // 챌린지 목록 페이지로 이동
         },
         onError: (error: ErrorResponse) => {
-          openToast(ToastType.Error, error.message)
+          if (error.status !== 401) {
+            openToast(ToastType.Error, error.message)
+          }
         },
       },
     )

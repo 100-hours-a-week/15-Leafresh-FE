@@ -29,6 +29,7 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/Toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
+import { ErrorResponse } from '@shared/lib/api/fetcher/type'
 import { formatDateToDateFormatString } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
@@ -235,8 +236,10 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
           openToast(ToastType.Success, '챌린지 수정 성공')
           router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
         },
-        onError(error) {
-          openToast(ToastType.Error, error.message)
+        onError: (error: ErrorResponse) => {
+          if (error.status !== 401) {
+            openToast(ToastType.Error, error.message)
+          }
         },
       },
     )

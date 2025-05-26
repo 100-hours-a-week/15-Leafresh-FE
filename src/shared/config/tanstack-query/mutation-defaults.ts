@@ -1,5 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { useUserStore } from '@entities/member/context/UserStore'
 import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
@@ -10,6 +12,9 @@ import { Logout } from '@features/member/api/logout'
 import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
+import { URL } from '@shared/constants/route/route'
+import { useToastStore } from '@shared/context/Toast/ToastStore'
+import { ToastType } from '@shared/context/Toast/type'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
@@ -32,6 +37,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
     const { challengeId } = variables
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId) }) // 개인 챌린지 상세 조회
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ✅
+  },
 })
 
 /** 단체 챌린지 */
@@ -46,6 +54,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.CREATE, {
     })
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.CREATIONS }) // 생성한 단체 챌린지 목록 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT }) // 참여한 단체 챌린지 카운트 조회 (인증페이지)
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ✅
   },
 })
 
@@ -70,6 +81,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.MODIFY, {
     // 참여한 단체 챌린지 카운트 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT })
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ✅
+  },
 })
 
 // 삭제
@@ -93,6 +107,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.DELETE, {
     // 참여한 단체 챌린지 카운트 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT })
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ❌
+  },
 })
 
 // 참여
@@ -103,6 +120,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
 
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId) }) // 단체 챌린지 상세 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS }) // member - 참여한 단체 챌린지 목록 조회
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ❌
   },
 })
 
@@ -147,6 +167,10 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
       queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
     })
   },
+
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ❌
+  },
 })
 
 /** 멤버 도메인 */
@@ -157,6 +181,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.LOGOUT, {
     const MEMBER_QUERIES = ['member']
     queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ❌
+  },
 })
 
 // 토큰 재발급
@@ -164,6 +191,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.RE_ISSUE, {
   // TODO: 토큰 재발급 API 연결
   onSuccess() {
     // TODO: 무효화 로직
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ❌
   },
 })
 
@@ -182,6 +212,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.MODIFY, {
     // TODO: 수정 후 무효화 로직
     return {} as ApiResponse<unknown>
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ❌
+  },
 })
 
 // 회원탈퇴
@@ -191,6 +224,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
     const MEMBER_QUERIES = ['member']
     queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ❌
+  },
 })
 
 // 알림 읽음
@@ -198,6 +234,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
   mutationFn: readAllAlarms,
   onSuccess() {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleAuthError(error) // 인증 필요 요청 ❌
   },
 })
 
@@ -208,4 +247,17 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
   return useMutation<ApiResponse<TData>, ErrorResponse, TVariables, unknown>({ mutationKey })
+}
+
+export const handleAuthError = (error: ErrorResponse) => {
+  if (typeof window === 'undefined') return
+  if (error.status === 401) {
+    useOAuthUserStore.getState().clearOAuthUserInfo()
+    useUserStore.getState().clearUserInfo()
+
+    const openToast = useToastStore.getState().open
+    openToast(ToastType.Error, '세션이 만료되었습니다.\n다시 로그인해주세요')
+
+    window.location.href = URL.MEMBER.LOGIN.value
+  }
 }
