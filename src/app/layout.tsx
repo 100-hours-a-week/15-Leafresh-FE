@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import ModalProvider from '@shared/components/Modaling/ModalProvider'
+import ModalProvider from '@shared/components/modal/ModalProvider'
 import Toast from '@shared/components/toast/Toast'
 import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
 import { pretendard } from '@shared/config/font'
