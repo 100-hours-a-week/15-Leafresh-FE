@@ -17,7 +17,7 @@ import { useMutationStore } from '@shared/config/tanstack-query/mutation-default
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
-import { ToastType } from '@shared/context/Toast/type'
+import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
