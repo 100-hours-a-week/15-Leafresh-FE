@@ -9,9 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import {
-  getPersonalChallengeDetails,
-} from '@features/challenge/api/get-personal-challenge-details'
+import { getPersonalChallengeDetails } from '@features/challenge/api/get-personal-challenge-details'
 import {
   VerifyGroupChallengeResponse,
   VerifyPersonalChallengeBody,
@@ -29,7 +27,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
-import { ToastType } from '@shared/context/Toast/type'
+import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { ErrorResponse } from '@shared/lib/api/fetcher/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
