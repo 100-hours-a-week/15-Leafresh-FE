@@ -35,7 +35,7 @@ const CameraModal = () => {
   const [showGuide, setShowGuide] = useState<boolean>(false)
   const [scrollTop, setScrollTop] = useState<number>(0)
 
-  const [facingMode, setFacingMode] = useState<FacingMode>('user')
+  const [facingMode, setFacingMode] = useState<FacingMode>('environment')
 
   // 카메라 정리 함수를 분리하여 관리
   const stopCamera = () => {
@@ -61,7 +61,7 @@ const CameraModal = () => {
     try {
       // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
       const constraints = {
-        video: { facingMode: facingMode },
+        video: { facingMode: mode },
       }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
@@ -71,10 +71,16 @@ const CameraModal = () => {
         videoRef.current.srcObject = stream
       }
     } catch (error) {
-      console.error('Camera error:', error)
-      openToast(ToastType.Error, '잠시만 기다려주세요.')
-      // 카메라 전환 실패 시 다시 전면 카메라로 시도
-      await startCamera('user') // 실패 즉시 전면 카메라 시도
+      if (mode === 'environment') {
+        openToast(ToastType.Error, '해당 방향을 지원하지 않습니다!')
+      } else {
+        openToast(ToastType.Error, '잠시만 기다려주세요.')
+      }
+
+      /** 후면 카메라 미지원시 */
+      if (mode === 'environment') {
+        setFacingMode('user')
+      }
     }
   }
 
@@ -244,6 +250,180 @@ const CameraModal = () => {
 }
 
 export default CameraModal
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
+  z-index: 199;
+`
+
+const Wrapper = styled.div`
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 320px;
+  max-width: 500px;
+  width: 100%;
+  height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${theme.colors.lfInputBackground.base};
+  z-index: 200;
+`
+
+const Header = styled.div`
+  width: 100%;
+  height: 90px;
+  background-color: ${theme.colors.lfGreenMain.base};
+  color: ${theme.colors.lfWhite.base};
+  font-size: ${theme.fontSize.xl};
+  font-weight: ${theme.fontWeight.medium};
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const BackButton = styled(LucideIcon)`
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+`
+
+const CameraWrapper = styled.div`
+  gap: 16px;
+  width: 100%;
+  aspect-ratio: 4/3;
+
+  position: relative;
+  background-color: ${theme.colors.lfInputBackground.base};
+`
+
+const CameraView = styled.video`
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+`
+
+const ImagePreview = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`
+
+const ContentWrapper = styled.div`
+  width: 100%;
+  height: 250px;
+  padding: 18px 36px 0px 36px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  background-color: ${theme.colors.lfInputBackground.base};
+`
+const ShootWrapper = styled.button`
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+
+  /* position: relative; */
+
+  background-color: ${theme.colors.lfInputBackground.base};
+`
+
+const ShootText = styled.span`
+  font-size: ${theme.fontSize.base};
+  font-weight: ${theme.fontWeight.semiBold};
+`
+
+const SwitchWrapper = styled.div`
+  width: 100%;
+  flex: 1;
+  padding: 12px 36px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+`
+
+const TextAreaWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+`
+
+const TextAreaLabel = styled.p<{ status: ChallengeVerificationStatusType | undefined }>`
+  color: ${({ status }) =>
+    status === 'SUCCESS'
+      ? theme.colors.lfBlue.base
+      : status === 'FAILURE'
+        ? theme.colors.lfRed.base
+        : theme.colors.lfBlack.base};
+  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${theme.fontSize.base};
+`
+const TextAreaDescription = styled.p`
+  color: ${theme.colors.lfDarkGray};
+  font-size: ${theme.fontSize.xs};
+
+  margin: 10px 0 14px 0;
+`
+
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 100%;
+  border: 1px solid ${theme.colors.lfGray.base};
+  border-radius: ${theme.radius.base};
+  padding: 12px;
+  font-size: ${theme.fontSize.xs};
+  resize: none;
+`
+
+const ConfirmButton = styled.button`
+  width: 100%;
+  padding: 16px;
+  font-size: ${theme.fontSize.base};
+  font-weight: ${theme.fontWeight.medium};
+  background-color: ${theme.colors.lfGreenMain.base};
+  color: ${theme.colors.lfWhite.base};
+  border: none;
+  border-radius: ${theme.radius.base};
+  cursor: pointer;
+`
+
+const CloseButton = styled(LucideIcon)`
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+`
+
+const ShootButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
+const CovertCameraButton = styled(LucideIcon)`
+  position: absolute;
+  right: 25px;
+`
+
 //백업용 이전 코드
 // 'use client'
 
@@ -469,176 +649,3 @@ export default CameraModal
 // }
 
 // export default CameraModal
-
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(1.5px);
-  z-index: 199;
-`
-
-const Wrapper = styled.div`
-  position: fixed;
-  top: 0%;
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 320px;
-  max-width: 500px;
-  width: 100%;
-  height: 100dvh;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: ${theme.colors.lfInputBackground.base};
-  z-index: 200;
-`
-
-const Header = styled.div`
-  width: 100%;
-  height: 90px;
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.medium};
-
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-const BackButton = styled(LucideIcon)`
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-`
-
-const CameraWrapper = styled.div`
-  gap: 16px;
-  width: 100%;
-  aspect-ratio: 4/3;
-
-  position: relative;
-  background-color: ${theme.colors.lfInputBackground.base};
-`
-
-const CameraView = styled.video`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`
-
-const ImagePreview = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`
-
-const ContentWrapper = styled.div`
-  width: 100%;
-  height: 250px;
-  padding: 18px 36px 0px 36px;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-
-  background-color: ${theme.colors.lfInputBackground.base};
-`
-const ShootWrapper = styled.button`
-  width: 100%;
-  height: 100%;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-
-  /* position: relative; */
-
-  background-color: ${theme.colors.lfInputBackground.base};
-`
-
-const ShootText = styled.span`
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const SwitchWrapper = styled.div`
-  width: 100%;
-  flex: 1;
-  padding: 12px 36px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-`
-
-const TextAreaWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-`
-
-const TextAreaLabel = styled.p<{ status: ChallengeVerificationStatusType | undefined }>`
-  color: ${({ status }) =>
-    status === 'SUCCESS'
-      ? theme.colors.lfBlue.base
-      : status === 'FAILURE'
-        ? theme.colors.lfRed.base
-        : theme.colors.lfBlack.base};
-  font-weight: ${theme.fontWeight.semiBold};
-  font-size: ${theme.fontSize.base};
-`
-const TextAreaDescription = styled.p`
-  color: ${theme.colors.lfDarkGray};
-  font-size: ${theme.fontSize.xs};
-
-  margin: 10px 0 14px 0;
-`
-
-const TextArea = styled.textarea`
-  width: 100%;
-  height: 100%;
-  border: 1px solid ${theme.colors.lfGray.base};
-  border-radius: ${theme.radius.base};
-  padding: 12px;
-  font-size: ${theme.fontSize.xs};
-  resize: none;
-`
-
-const ConfirmButton = styled.button`
-  width: 100%;
-  padding: 16px;
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: ${theme.radius.base};
-  cursor: pointer;
-`
-
-const CloseButton = styled(LucideIcon)`
-  cursor: pointer;
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-`
-
-const ShootButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`
-
-const CovertCameraButton = styled(LucideIcon)`
-  position: absolute;
-  right: 25px;
-`
