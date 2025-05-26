@@ -1,9 +1,13 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo,useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
+import {
+  RecommendationResponseDataDTO,
+  requestCategoryBasedRecommendation,
+  requestFreetextBasedRecommendation,
+} from '@features/chatbot'
 import SlideArea from '@shared/components/slidearea/SlideArea'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
@@ -60,6 +64,22 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [requestStatus, setRequestStatus] = useState(0)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const randomLiveImage = [
+    '/image/chatbot/beach.jpg',
+    '/image/chatbot/city.jpg',
+    '/image/chatbot/mountain.jpg',
+    '/image/chatbot/farm.jpg',
+  ]
+
+  const randomWorkImage = [
+    '/image/chatbot/athome.jpg',
+    '/image/chatbot/sales.jpg',
+    '/image/chatbot/fieldwork.jpg',
+    '/image/chatbot/business.jpg',
+  ]
+
+  const liveImage = useMemo(() => randomLiveImage[Math.floor(Math.random() * randomLiveImage.length)], [])
+  const workImage = useMemo(() => randomWorkImage[Math.floor(Math.random() * randomWorkImage.length)], [])
 
   // 메시지 영역으로 자동 스크롤
   const scrollToBottom = () => {
@@ -85,6 +105,45 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       }
     }
   }, [])
+
+  // 가로 스크롤 카드 렌더링
+  const renderHorizontalCards = () => {
+    // 거주 지역 선택 카드
+    const locationCard = (
+      <ChatSelection
+        title='거주 지역 선택'
+        subtitle='* 자신의 생활환경을 위해 선택해주세요.'
+        imageUrl={liveImage}
+        options={[
+          { label: '도시', value: '도시' },
+          { label: '바닷가', value: '바닷가' },
+          { label: '산', value: '산' },
+          { label: '농촌', value: '농촌' },
+        ]}
+        selectionType='location'
+        onSelect={handleLocationSelect}
+      />
+    )
+
+    // 직장 형태 선택 카드
+    const workTypeCard = (
+      <ChatSelection
+        title='직장 형태 선택'
+        subtitle='* 자신의 직업환경을 위해 선택해주세요.'
+        imageUrl={workImage}
+        options={[
+          { label: '사무직', value: '사무직' },
+          { label: '현장직', value: '현장직' },
+          { label: '영업직', value: '영업직' },
+          { label: '재택근무', value: '재택근무' },
+        ]}
+        selectionType='workType'
+        onSelect={handleWorkTypeSelect}
+      />
+    )
+
+    return [locationCard, workTypeCard]
+  }
 
   const updateChatSelections = (updates: Partial<ChatSelections>) => {
     setChatSelections(prev => ({ ...prev, ...updates }))
@@ -130,18 +189,20 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         addChatItem('selection', undefined, undefined, {
           title: '챌린지 선택',
           subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
-          imageUrl: '/image/chatbotcategory.png',
+          imageUrl: '/image/chatbot/chatbotcategory.png',
           options: [
             { label: '제로웨이스트', value: '제로웨이스트' },
             { label: '플로깅', value: '플로깅' },
-            { label: '비건', value: '비건' },
+            { label: '탄소발자국', value: '탄소발자국' },
             { label: '에너지 절약', value: '에너지 절약' },
             { label: '업사이클', value: '업사이클' },
-            { label: '탄소발자국', value: '탄소발자국' },
             { label: '문화 공유', value: '문화 공유' },
             { label: '디지털 탄소', value: '디지털 탄소' },
+            { label: '비건', value: '비건' },
           ],
           selectionType: 'challenge',
+          buttonText: '카테고리 설명',
+          onExplainClick: handleExplainCategory,
           onSelect: handleChallengeSelect,
         })
       }, 300)
@@ -207,7 +268,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       })
 
       // API 응답 데이터 처리
-      const { recommend, challenges } = response.data
+      const { recommend, challenges } = response.data as RecommendationResponseDataDTO
 
       // 응답 메시지 구성
       const responseMessage = [
@@ -255,6 +316,54 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     }
   }
 
+  const handleExplainCategory = () => {
+    addChatItem('message', 'user', '카테고리 설명해줘')
+
+    const categoryDescriptions = [
+      ['1. 제로웨이스트', '쓰레기를 줄이기 위한 실천'],
+      ['2. 플로깅', '조깅하면서 쓰레기를 줍는 활동'],
+      ['3. 탄소발자국', '나의 생활이 만드는 탄소량 줄이기'],
+      ['4. 에너지 절약', '전기, 물, 가스 등을 절약하는 습관'],
+      ['5. 업사이클', '버려지는 물건을 창의적으로 재활용'],
+      ['6. 문화 공유', '환경 관련 문화나 콘텐츠 나누기'],
+      ['7. 디지털 탄소', '데이터 사용을 줄이는 친환경 디지털 습관'],
+      ['8. 비건', '동물성 제품을 줄여 환경 보호 실천하기'],
+    ].flatMap(([title, desc], idx) => [
+      title, // 1. 항목명
+      <br key={`t-${idx}`} />,
+      desc, //    설명
+      <br key={`d-${idx}`} />,
+      <br key={`s-${idx}`} />, // 빈 줄
+    ])
+
+    setTimeout(() => {
+      addChatItem('message', 'bot', categoryDescriptions)
+    }, 300)
+    setTimeout(() => {
+      addChatItem('selection', undefined, undefined, {
+        title: '챌린지 선택',
+        subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
+        imageUrl: '/image/chatbotcategory.png',
+        options: [
+          { label: '제로웨이스트', value: '제로웨이스트' },
+          { label: '플로깅', value: '플로깅' },
+          { label: '비건', value: '비건' },
+          { label: '에너지 절약', value: '에너지 절약' },
+          { label: '업사이클', value: '업사이클' },
+          { label: '탄소발자국', value: '탄소발자국' },
+          { label: '문화 공유', value: '문화 공유' },
+          { label: '디지털 탄소', value: '디지털 탄소' },
+        ],
+        selectionType: 'challenge',
+        buttonText: '카테고리 설명',
+        onExplainClick: handleExplainCategory,
+        onSelect: handleChallengeSelect,
+      })
+    }, 2000)
+
+    onRetry()
+  }
+
   // 재선택 처리
   const handleRetry = () => {
     // 재선택 처리 시작 전 요청 상태 확인
@@ -273,18 +382,20 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     addChatItem('selection', undefined, undefined, {
       title: '챌린지 선택',
       subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
-      imageUrl: '/image/chatbotcategory.png',
+      imageUrl: '/image/chatbot/chatbotcategory.png',
       options: [
         { label: '제로웨이스트', value: '제로웨이스트' },
         { label: '플로깅', value: '플로깅' },
-        { label: '비건', value: '비건' },
+        { label: '탄소발자국', value: '탄소발자국' },
         { label: '에너지 절약', value: '에너지 절약' },
         { label: '업사이클', value: '업사이클' },
-        { label: '탄소발자국', value: '탄소발자국' },
         { label: '문화 공유', value: '문화 공유' },
         { label: '디지털 탄소', value: '디지털 탄소' },
+        { label: '비건', value: '비건' },
       ],
       selectionType: 'challenge',
+      buttonText: '카테고리 설명',
+      onExplainClick: handleExplainCategory,
       onSelect: handleChallengeSelect,
     })
 
@@ -338,7 +449,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       })
 
       // API 응답 데이터 처리
-      const { recommend, challenges } = response.data
+      const { recommend, challenges } = response.data as RecommendationResponseDataDTO
 
       // 응답 메시지 구성
       const responseMessage = [
@@ -429,45 +540,6 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     }
 
     return labelMap[value] || value
-  }
-
-  // 가로 스크롤 카드 렌더링
-  const renderHorizontalCards = () => {
-    // 거주 지역 선택 카드
-    const locationCard = (
-      <ChatSelection
-        title='거주 지역 선택'
-        subtitle='* 자신의 생활환경을 위해 선택해주세요.'
-        imageUrl='/image/chatbotlive.png'
-        options={[
-          { label: '도시', value: '도시' },
-          { label: '바닷가', value: '바닷가' },
-          { label: '산', value: '산' },
-          { label: '농촌', value: '농촌' },
-        ]}
-        selectionType='location'
-        onSelect={handleLocationSelect}
-      />
-    )
-
-    // 직장 형태 선택 카드
-    const workTypeCard = (
-      <ChatSelection
-        title='직장 형태 선택'
-        subtitle='* 자신의 직업환경을 위해 선택해주세요.'
-        imageUrl='/image/chatbotwork.png'
-        options={[
-          { label: '사무직', value: '사무직' },
-          { label: '현장직', value: '현장직' },
-          { label: '영업직', value: '영업직' },
-          { label: '재택근무', value: '재택근무' },
-        ]}
-        selectionType='workType'
-        onSelect={handleWorkTypeSelect}
-      />
-    )
-
-    return [locationCard, workTypeCard]
   }
 
   return (

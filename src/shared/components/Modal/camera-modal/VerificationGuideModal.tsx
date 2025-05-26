@@ -20,6 +20,7 @@ import Loading from '@shared/components/loading'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ChallengeDataType } from '@shared/context/modal/CameraModalStore'
+import { ApiResponse } from '@shared/lib/api/fetcher/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
@@ -50,9 +51,9 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
       break
   }
 
-  const { data, isLoading } = useQuery<ChallengeRulesListResponse>({
-    queryKey: queryKey,
-    queryFn: queryFn,
+  const { data, isLoading } = useQuery<ApiResponse<ChallengeRulesListResponse>>({
+    queryKey,
+    queryFn,
     ...queryDefaults,
   })
 
@@ -65,10 +66,10 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
 
     let periodText = ''
     if (type === 'GROUP') {
-      const groupPeriod = certificationPeriod as GroupChallengeRulesListResponse['data']['certificationPeriod']
+      const groupPeriod = certificationPeriod as GroupChallengeRulesListResponse['certificationPeriod']
       periodText = `${groupPeriod.startDate.slice(2)} ~ ${groupPeriod.endDate.slice(2)}`
     } else {
-      const personalPeriod = certificationPeriod as PersonalChallengeRulesListResponse['data']['certificationPeriod']
+      const personalPeriod = certificationPeriod as PersonalChallengeRulesListResponse['certificationPeriod']
       periodText = convertLanguage(DAY_PAIRS, 'eng', 'kor')(personalPeriod.dayOfWeek) as string
     }
 

@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
+import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
+import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
 import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
@@ -8,7 +10,7 @@ import { Logout } from '@features/member/api/logout'
 import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
+import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
@@ -48,24 +50,48 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.CREATE, {
 })
 
 // 수정
-queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.UPDATE, {
-  mutationFn: async variables => {
-    // TODO: 수정 API 연결
-    return {} as ApiResponse<unknown>
-  },
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.MODIFY, {
+  mutationFn: ModifyChallenge,
   onSuccess(data, variables, context) {
-    // TODO: 무효화 로직
+    const { challengeId } = variables
+
+    // 모든 단체 첼린지 목록 조회 (검색 포함) 쿼리 무효화
+    queryClient.invalidateQueries({
+      predicate: query =>
+        Array.isArray(query.queryKey) && query.queryKey[0] === 'challenges' && query.queryKey[1] === 'group',
+    })
+
+    // 단체 챌린지 상세 조회
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId) })
+
+    // 생성한 단체 챌린지 목록
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.CREATIONS })
+
+    // 참여한 단체 챌린지 카운트 조회
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT })
   },
 })
 
 // 삭제
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.DELETE, {
-  mutationFn: async variables => {
-    // TODO: 삭제 API 연결
-    return {} as ApiResponse<unknown>
-  },
+  mutationFn: DeleteGroupChallenge,
   onSuccess(data, variables, context) {
-    // TODO: 무효화 로직
+    const { challengeId } = variables
+
+    // 모든 단체 첼린지 목록 조회 (검색 포함) 쿼리 무효화
+    queryClient.invalidateQueries({
+      predicate: query =>
+        Array.isArray(query.queryKey) && query.queryKey[0] === 'challenges' && query.queryKey[1] === 'group',
+    })
+
+    // 단체 챌린지 상세 조회
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId) })
+
+    // 생성한 단체 챌린지 목록
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.CREATIONS })
+
+    // 참여한 단체 챌린지 카운트 조회
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT })
   },
 })
 

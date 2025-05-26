@@ -2,27 +2,10 @@ import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { useUserStore } from '@entities/member/context/UserStore'
 import { ENDPOINTS, EndpointType } from '@shared/constants/endpoint/endpoint'
 
+import { ApiResponse, ErrorResponse, OptionsType } from './type'
+
+//TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
 const BASE_URL = 'https://leafresh.app'
-
-export interface ApiResponse<T> {
-  status: number
-  message: string
-  data: T
-}
-
-export interface ErrorResponse extends ApiResponse<null> {}
-
-export interface FetchError<E = unknown> extends Error {
-  response: Response
-  data: E
-}
-
-type OptionsType = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body?: any
-  headers?: HeadersInit
-  query?: Record<string, string | number>
-}
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
@@ -64,17 +47,16 @@ export async function fetchRequest<T>(
 ): Promise<ApiResponse<T>> {
   /** Request */
   const { method, path } = endpoint
-
   const url = new URL(BASE_URL + path)
+
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
   }
 
   const isFormData: boolean = options.body instanceof FormData
-
-  const headers = {
+  const headers: HeadersInit = {
     ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-    ...options.headers,
+    ...(options.headers ?? {}),
   }
 
   let body = undefined
@@ -121,32 +103,3 @@ export async function fetchRequest<T>(
 
   return data as ApiResponse<T>
 }
-
-/** 사용 예시
-1. API 정의
-import { API } from '@/shared/constants/endpoint'
-import { fetchRequest } from '@/shared/lib/fetchRequest'
-
-type CreatePostDTO = {
-  title: string
-  content: string
-}
-
-type CreatePostResponse = ApiResponse<{
-  id: number
-  createdAt: string
-}>
-
-export const createPost = (body: CreatePostDTO): Promise<CreatePostResponse> => {
-  return fetchRequest(API.POSTS.CREATE, { body })
-}
-
-2. Tanstack-query 활용
-const { mutate, isPending, isError, error } = useMutation({
-  mutationFn: createPost,
-  onSuccess: (data) => {
-    console.log('생성 성공:', data.data.id)
-  },
-})
-
- */

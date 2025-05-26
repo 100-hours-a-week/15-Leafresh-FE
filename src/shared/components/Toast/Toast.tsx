@@ -82,6 +82,7 @@ const Message = styled.span`
   flex: 1;
   text-align: center;
   white-space: pre-line;
+  line-height: 1.3;
 `
 
 const CloseIcon = styled.div`

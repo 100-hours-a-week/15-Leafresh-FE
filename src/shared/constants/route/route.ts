@@ -81,8 +81,7 @@ const CHALLENGE_URL = {
     },
     MODIFY: {
       name: '단체 챌린지 수정',
-      value: '/challenge/group/modify',
-      isProtected: true,
+      value: (challengeId: number) => `/challenge/group/${challengeId}/modify`,
     },
     DETAILS: {
       name: '단체 챌린지 상세',

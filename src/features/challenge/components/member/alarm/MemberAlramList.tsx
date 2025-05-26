@@ -75,7 +75,7 @@ const MemberAlarmList = () => {
           <NoAlarmText>도착한 알림이 없습니다!</NoAlarmText>
         )}
       </AlarmList>
-      <Observer ref={triggerRef}>{isFetchingNextPage && '불러오는 중...'}</Observer>
+      <Observer ref={triggerRef}>{isFetchingNextPage && '단체 챌린지 불러오는 중...'}</Observer>
     </Wrapper>
   )
 }

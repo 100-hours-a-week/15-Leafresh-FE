@@ -22,6 +22,8 @@ export interface ChatSelectionProps {
   options: ChatSelectionOption[]
   imageUrl?: string
   onSelect: (value: string) => void
+  buttonText?: string
+  onExplainClick?: () => void
   selectionType?: SelectionType // 선택 타입 추가
 }
 
@@ -32,22 +34,20 @@ const ChatSelection: React.FC<ChatSelectionProps> = ({
   options,
   imageUrl,
   onSelect,
+  buttonText,
+  onExplainClick,
   selectionType = 'challenge', // 기본값 설정
 }) => {
   return (
     <Card data-type={selectionType}>
       {imageUrl && (
         <ImageWrapper data-type={selectionType}>
-          <Image
+          <CardImage
             src={imageUrl}
             alt='cardimg'
             // fill={true}
-            width={selectionType === 'challenge' ? 208 : 150}
+            width={selectionType === 'challenge' ? 250 : 175}
             height={108}
-            style={{
-              objectFit: 'cover', // 이미지를 컨테이너에 맞게 조절
-              objectPosition: 'center', // 이미지 중앙 기준 />
-            }}
           />
         </ImageWrapper>
       )}
@@ -64,6 +64,7 @@ const ChatSelection: React.FC<ChatSelectionProps> = ({
             </OptionButton>
           ))}
         </OptionsGrid>
+        {buttonText && <ExplainButton onClick={onExplainClick}>{buttonText}</ExplainButton>}
       </CardContent>
     </Card>
   )
@@ -83,31 +84,34 @@ const Card = styled.div`
   margin: 8px 0;
 
   &[data-type='challenge'] {
-    max-width: 208px;
-    height: 213px;
+    width: 230px;
+    /* height: 260px; */
     align-items: center;
-  }
-
-  &[data-type='retry'] {
-    max-width: 196px;
-    /* height: 247px; */
-    padding: 15px;
-    background: transparent;
-    align-items: center;
-    white-space: pre-line;
   }
 `
 
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 109px;
+  height: 110px;
   overflow: hidden;
+  object-fit: cover;
+  object-position: center;
+  &[data-type='challenge'] {
+    /* max-width: 250px; */
+    height: 120px;
+    align-items: center;
+  }
 
   /* 재선택 버튼에는 이미지 없음 */
   [data-type='retry'] & {
     display: none;
   }
+`
+
+const CardImage = styled(Image)`
+  object-fit: cover;
+  object-position: center;
 `
 
 const CardContent = styled.div`
@@ -133,55 +137,46 @@ const CardTitle = styled.h3`
   [data-type='challenge'] & {
     color: ${theme.colors.lfBlack.base};
   }
-
-  /* 재선택 버튼에는 제목 안 보이게 */
-  [data-type='retry'] & {
-    display: none;
-  }
 `
 
 const CardSubtitle = styled.p`
   margin: 0;
   align-self: flex-start;
-  font-size: 8px;
+  font-size: 10px;
   color: ${theme.colors.lfGreenMain.base};
-
-  /* 재선택 버튼에는 부제목 안 보이게 */
-  [data-type='retry'] & {
-    display: none;
-  }
 `
 
 const DescWrapper = styled.div`
   display: flex;
   color: black;
-  font-size: 8px;
+  font-size: 10px;
 `
 
 const OptionsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  align-self: center;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   margin: 12px 0;
   width: 100%;
+  /* justify-items: center;
+  align-items: center; */
 
   [data-type='challenge'] & {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
     padding: 0 5px;
-  }
-
-  [data-type='retry'] & {
-    display: flex;
-    justify-content: center;
-    grid-template-columns: auto;
   }
 `
 
 const OptionButton = styled.button`
-  width: 27px;
-  height: 23px;
-  font-size: 7px;
+  width: 70px;
+  height: 30px;
+  justify-self: center;
+  align-self: center;
+  font-size: ${theme.fontSize.xss};
   color: ${theme.colors.lfBlack.base};
-  font-weight: ${theme.fontWeight.extraBold};
+  font-weight: ${theme.fontWeight.semiBold};
   background: linear-gradient(
     146.15deg,
     rgba(20, 174, 92, 0.38) -2.5%,
@@ -204,22 +199,42 @@ const OptionButton = styled.button`
   &:active {
     transform: scale(0.98);
   }
-
-  /* 재선택 버튼 스타일 */
-  &[data-type='retry'] {
-    align-self: center;
-    width: auto;
-    height: auto;
-    padding: 8px 16px;
-    font-size: ${theme.fontSize.md};
-
-    border-radius: 4px;
-  }
   &[data-type='challenge'] {
     align-self: center;
-    width: 36px;
-    height: 23px;
-    font-size: 6px;
+    width: 45px;
+    height: 30px;
     border-radius: 4px;
+    font-size: 8px;
+    font-weight: ${theme.fontWeight.semiBold};
+  }
+`
+
+const ExplainButton = styled.button`
+  background: linear-gradient(
+    146.15deg,
+    rgba(20, 174, 92, 0.38) -2.5%,
+    rgba(147, 209, 178, 0.7) 11.55%,
+    rgba(173, 221, 194, 0.51) 56.73%,
+    rgba(223, 246, 227, 0.62) 85.94%
+  );
+  color: ${theme.colors.lfBlack.base};
+  font-size: ${theme.fontSize.md};
+  font-weight: ${theme.fontWeight.bold};
+  width: 200px;
+  height: 40px;
+  border-radius: ${theme.radius.md};
+  box-shadow: ${theme.shadow.lfPrime};
+  align-self: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #d5e9df;
+  }
+
+  &:active {
+    transform: scale(0.98);
   }
 `

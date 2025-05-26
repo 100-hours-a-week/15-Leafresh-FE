@@ -28,7 +28,7 @@ import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/Toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { ErrorResponse } from '@shared/lib/api/fetcher/fetcher'
+import { ErrorResponse } from '@shared/lib/api/fetcher/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
@@ -170,7 +170,9 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     <Wrapper className={className}>
       <DescriptionSection>
         <StyledBackButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
-        <Thumbnail src={thumbnailUrl} alt='썸네일' width={500} height={200} />
+        <ThumbnailImageWrapper>
+          <Thumbnail src={thumbnailUrl} alt='썸네일' fill />
+        </ThumbnailImageWrapper>
         <Participant>
           <LucideIcon name='UsersRound' size={24} color='lfBlue' /> {currentParticipantCount}명 참여중
         </Participant>
@@ -281,10 +283,16 @@ const DescriptionSection = styled.section`
   gap: 12px;
 `
 
-const Thumbnail = styled(Image)`
+const ThumbnailImageWrapper = styled.div`
   width: 100%;
   aspect-ratio: 14/9;
 
+  position: relative;
+`
+
+const Thumbnail = styled(Image)`
+  width: 100%;
+  object-fit: cover;
   border-radius: ${theme.radius.base};
 `
 
