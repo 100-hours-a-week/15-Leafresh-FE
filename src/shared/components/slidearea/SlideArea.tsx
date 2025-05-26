@@ -25,7 +25,7 @@ export default function SlideArea({ children, className, visibleIndex, onItemSel
 
         // 부드럽게 스크롤
         scrollRef.current.scrollTo({
-          left: targetElement.offsetLeft - 15, // gap 고려
+          left: targetElement.offsetLeft, // gap 고려
           behavior: 'smooth',
         })
       }
@@ -128,6 +128,7 @@ const SlideContainer = styled.div<{ isDragging: boolean }>`
 
   overflow-x: auto;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     display: none;
@@ -141,4 +142,5 @@ const SlideItem = styled.div`
   transition:
     opacity 1s ease,
     transform 1s ease;
+  scroll-snap-align: start;
 `
