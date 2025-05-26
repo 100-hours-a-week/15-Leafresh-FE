@@ -12,7 +12,7 @@ import Loading from '@shared/components/loading'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
-import { FullFormValues } from './GroupChallengeCreatePage'
+import { FullFormValues } from '../../../../../../app/(with-header)/challenge/group/create/GroupChallengeCreatePage'
 
 export const detailSchema = z.object({
   description: z.string().min(1, '챌린지 설명을 입력해주세요'),
@@ -28,7 +28,7 @@ export const defaultDetailFormValues: DetailFormValues = {
 
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
-  onBack: () => void
+  handleStepChange: (step: 1 | 2) => void
   onSubmit: () => void
   isCreating: boolean
 }
@@ -61,7 +61,7 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   },
 ]
 
-const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) => {
+const DetailStep = ({ form, handleStepChange, onSubmit, isCreating }: DetailsStepProps) => {
   const {
     register,
     setValue,
@@ -85,9 +85,6 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
   return (
     <Container onSubmit={handleSubmit(handleDetailSubmit)}>
       <DividerWrapper>
-        <ButtonWrapper onClick={onBack}>
-          <BackButton name='ChevronLeft' size={24} />
-        </ButtonWrapper>
         <Text>단체 챌린지 만들기</Text>
       </DividerWrapper>
       <FieldGroup>
@@ -136,9 +133,15 @@ const DetailStep = ({ form, onBack, onSubmit, isCreating }: DetailsStepProps) =>
         </FieldWrapper>
       </FieldGroup>
 
-      <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
-        {!isCreating ? '생성하기' : <Loading />}
-      </SubmitButton>
+      <ButtonWrapper>
+        <BackButton onClick={() => handleStepChange(1)} type='button' disabled={isCreating}>
+          이전
+        </BackButton>
+        {/* <BackButton name='ChevronLeft' size={24} /> */}
+        <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
+          {!isCreating ? '생성하기' : <Loading />}
+        </SubmitButton>
+      </ButtonWrapper>
     </Container>
   )
 }
@@ -162,11 +165,13 @@ const DividerWrapper = styled.div`
 `
 
 const ButtonWrapper = styled.div`
-  position: absolute;
-  left: 0;
-`
+  width: 100%;
 
-const BackButton = styled(LucideIcon)``
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+`
 
 const Text = styled.div`
   font-size: ${theme.fontSize.base};
@@ -229,14 +234,30 @@ const Warning = styled.div<{ isWarning: boolean }>`
 
   color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
 `
-const SubmitButton = styled.button<{ $active: boolean }>`
+
+const BackButton = styled.button<{ disabled?: boolean }>`
+  width: 100%;
+  height: 50px;
+  border-radius: ${theme.radius.base};
+  color: ${theme.colors.lfBlack.base};
+  background-color: ${theme.colors.lfWhite.base};
+  font-weight: ${theme.fontWeight.regular};
+  border: 1px solid ${theme.colors.lfGray.base};
+
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+`
+
+const SubmitButton = styled.button<{ $active: boolean; disabled?: boolean }>`
+  width: 100%;
   height: 50px;
   border-radius: ${theme.radius.base};
   background-color: ${({ $active }) => ($active ? theme.colors.lfGreenMain.base : theme.colors.lfGreenInactive.base)};
   color: ${theme.colors.lfWhite.base};
   font-weight: ${theme.fontWeight.semiBold};
-  cursor: pointer;
   border: none;
+
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `
 
 const StyledImageInput = styled(ImageInput)`

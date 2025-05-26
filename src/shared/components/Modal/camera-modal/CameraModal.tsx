@@ -35,7 +35,7 @@ const CameraModal = () => {
   const [showGuide, setShowGuide] = useState<boolean>(false)
   const [scrollTop, setScrollTop] = useState<number>(0)
 
-  const [facingMode, setFacingMode] = useState<FacingMode>('user')
+  const [facingMode, setFacingMode] = useState<FacingMode>('environment')
 
   // 카메라 정리 함수를 분리하여 관리
   const stopCamera = () => {
@@ -48,10 +48,10 @@ const CameraModal = () => {
     }
   }
 
-  // 카메라 시작
   const startCamera = async (mode: FacingMode = facingMode) => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+      close()
       return
     }
 
@@ -61,7 +61,7 @@ const CameraModal = () => {
     try {
       // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
       const constraints = {
-        video: { facingMode: facingMode },
+        video: { facingMode: mode },
       }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
@@ -71,10 +71,22 @@ const CameraModal = () => {
         videoRef.current.srcObject = stream
       }
     } catch (error) {
-      console.error('Camera error:', error)
-      openToast(ToastType.Error, '잠시만 기다려주세요.')
-      // 카메라 전환 실패 시 다시 전면 카메라로 시도
-      await startCamera('user') // 실패 즉시 전면 카메라 시도
+      const errorName = (error as DOMException)?.name
+
+      if (errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError') {
+        openToast(ToastType.Error, '카메라 접근 권한이 없습니다.\n설정에서 권한을 허용해주세요.')
+        close()
+        return
+      }
+
+      if (mode === 'environment') {
+        openToast(ToastType.Error, '해당 방향을 지원하지 않습니다!')
+        // fallback 시도 (선택사항)
+        setFacingMode('user')
+      } else {
+        openToast(ToastType.Error, '카메라를 사용할 수 없습니다.')
+        close()
+      }
     }
   }
 
@@ -91,19 +103,11 @@ const CameraModal = () => {
     }
   }, [isOpen, previewUrl, facingMode])
 
-  // facingMode 변경 시 카메라 재시작-> 같은 기능을 하는 useEffect가 충돌
-  // useEffect(() => {
-  //   if (isOpen && !previewUrl) {
-  //     startCamera()
-  //   }
-  // }, [facingMode])
-
   useEffect(() => {
     if (tab === 1 && challengeData) setShowGuide(true)
     else setShowGuide(false)
   }, [tab])
 
-  // useScrollLock(isOpen)
   useScrollLock(isOpen && !previewUrl)
 
   const capture = () => {
