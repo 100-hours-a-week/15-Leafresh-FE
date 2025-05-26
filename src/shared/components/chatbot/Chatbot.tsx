@@ -47,7 +47,7 @@ const Chatbot = () => {
       {!isOpen && (
         <Launcher onClick={() => setOpen(true)}>
           <Image
-            src='/image/chatbot.png'
+            src='/image/chatbot/chatbot.png'
             alt='Leafresh 챗봇'
             width={48}
             height={48}

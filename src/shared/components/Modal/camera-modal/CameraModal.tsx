@@ -35,7 +35,7 @@ const CameraModal = () => {
   const [showGuide, setShowGuide] = useState<boolean>(false)
   const [scrollTop, setScrollTop] = useState<number>(0)
 
-  const [facingMode, setFacingMode] = useState<FacingMode>('user')
+  const [facingMode, setFacingMode] = useState<FacingMode>('environment')
 
   // 카메라 정리 함수를 분리하여 관리
   const stopCamera = () => {
@@ -61,7 +61,7 @@ const CameraModal = () => {
     try {
       // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
       const constraints = {
-        video: { facingMode: facingMode },
+        video: { facingMode: mode },
       }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
@@ -71,10 +71,16 @@ const CameraModal = () => {
         videoRef.current.srcObject = stream
       }
     } catch (error) {
-      console.error('Camera error:', error)
-      openToast(ToastType.Error, '잠시만 기다려주세요.')
-      // 카메라 전환 실패 시 다시 전면 카메라로 시도
-      await startCamera('user') // 실패 즉시 전면 카메라 시도
+      if (mode === 'environment') {
+        openToast(ToastType.Error, '해당 방향을 지원하지 않습니다!')
+      } else {
+        openToast(ToastType.Error, '잠시만 기다려주세요.')
+      }
+
+      /** 후면 카메라 미지원시 */
+      if (mode === 'environment') {
+        setFacingMode('user')
+      }
     }
   }
 
@@ -304,16 +310,15 @@ const CameraWrapper = styled.div`
 `
 
 const CameraView = styled.video`
-  position: absolute;
   width: 100%;
-  /* height: 100%; */
-  /* object-fit: cover; */
+  aspect-ratio: 4/3;
+  object-fit: cover;
 `
 
 const ImagePreview = styled.img`
-  position: absolute;
   width: 100%;
-  /* object-fit: cover; */
+  height: 100%;
+  object-fit: cover;
 `
 
 const ContentWrapper = styled.div`
