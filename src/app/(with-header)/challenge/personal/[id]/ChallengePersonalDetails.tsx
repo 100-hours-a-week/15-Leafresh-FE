@@ -32,7 +32,6 @@ import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { ErrorResponse } from '@shared/lib/api/fetcher/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
@@ -219,11 +218,6 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
         onSuccess: () => {
           openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
           router.replace(URL.CHALLENGE.INDEX.value) // 챌린지 목록 페이지로 이동
-        },
-        onError: (error: ErrorResponse) => {
-          if (error.status !== 401) {
-            openToast(ToastType.Error, error.message)
-          }
         },
       },
     )

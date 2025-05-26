@@ -123,12 +123,6 @@ const MemberChallengeCreationsPage = (): ReactNode => {
               refetch()
               openToast(ToastType.Success, '챌린지가 삭제되었습니다')
             },
-            // 실패
-            onError(error, variables, context) {
-              if (error.status !== 401) {
-                openToast(ToastType.Error, error.message)
-              }
-            },
           },
         ),
     })

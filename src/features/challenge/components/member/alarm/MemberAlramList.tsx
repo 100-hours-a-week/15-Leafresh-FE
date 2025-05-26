@@ -6,7 +6,6 @@ import styled from '@emotion/styled'
 import { useInfiniteMemberAlarmList } from '@features/member/hooks/useInfiniteMemberAlarmList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
@@ -42,13 +41,7 @@ const MemberAlarmList = () => {
   const triggerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    ReadAlarmMutate(undefined, {
-      onError: (error, variables, context) => {
-        if (error.status !== 401) {
-          openToast(ToastType.Error, '회원탈퇴 실패.\n다시 시도해주세요')
-        }
-      },
-    })
+    ReadAlarmMutate()
   }, [])
 
   useEffect(() => {
@@ -90,8 +83,6 @@ const MemberAlarmList = () => {
 }
 
 export default MemberAlarmList
-
-// === 스타일 ===
 
 const Wrapper = styled.div`
   padding: 24px 0;

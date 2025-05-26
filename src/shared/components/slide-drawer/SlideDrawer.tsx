@@ -91,11 +91,6 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
           openToast(ToastType.Success, '로그아웃 성공')
           router.push(URL.MAIN.INDEX.value)
         },
-        onError(error, variables, context) {
-          if (error.status !== 401) {
-            openToast(ToastType.Error, '로그아웃 실패.\n다시 시도해주세요')
-          }
-        },
       },
     )
   }
@@ -117,11 +112,6 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
             clearUserInfo()
             openToast(ToastType.Success, '회원탈퇴 성공')
             router.push(URL.MAIN.INDEX.value)
-          },
-          onError: (error, variables, context) => {
-            if (error.status !== 401) {
-              openToast(ToastType.Error, '회원탈퇴 실패.\n다시 시도해주세요')
-            }
           },
         }),
     })

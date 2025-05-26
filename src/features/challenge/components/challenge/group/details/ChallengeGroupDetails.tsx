@@ -154,12 +154,6 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
           openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
           router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
         },
-        // 실패
-        onError(error, variables, context) {
-          if (error.status !== 401) {
-            openToast(ToastType.Error, error.message)
-          }
-        },
       },
     )
   }

@@ -123,9 +123,6 @@ const SignupPage = () => {
           /** ✅ 주의 : UserStore 정보를 받아오지 않는 이유는 AT+RT 받기를 성공했으면 언젠가는 데이터를 불러올 수 있기 때문이다! */
           router.replace(URL.CHALLENGE.INDEX.value) // 회원가입 후 챌린지 메인으로 이동
         },
-        onError: () => {
-          openToast(ToastType.Error, '회원가입 중 오류가 발생했습니다.')
-        },
       },
     )
   }
