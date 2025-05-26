@@ -103,7 +103,6 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId),
     queryFn: () => getPersonalChallengeDetails(challengeId),
-    refetchOnMount: true,
     ...QUERY_OPTIONS.CHALLENGE.PERSONAL.DETAILS,
   })
 
