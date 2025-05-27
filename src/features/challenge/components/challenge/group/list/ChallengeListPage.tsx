@@ -99,14 +99,7 @@ const ChallengeListPage = () => {
 
   return (
     <Container>
-      <BannerSection bannerUrl={bannerUrl}>
-        <BannerText>
-          <SubTitle>사진 한 장, 지구를 위한 따듯한 걸음</SubTitle>
-          <Title>
-            친환경 챌린지 <strong>Leafresh</strong>
-          </Title>
-        </BannerText>
-      </BannerSection>
+      <BannerSection bannerUrl={bannerUrl}></BannerSection>
 
       <ContentWrapper>
         <Section>
@@ -218,11 +211,6 @@ const ContentWrapper = styled.div`
 const Title = styled.h1`
   font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.bold};
-`
-
-const SubTitle = styled.h2`
-  font-size: ${theme.fontSize.base};
-  margin-bottom: 8px;
 `
 
 const Header = styled.header`
