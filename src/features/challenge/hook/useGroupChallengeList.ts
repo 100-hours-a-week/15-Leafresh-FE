@@ -20,7 +20,7 @@ export const useInfiniteGroupChallenges = (category: string, input: string) =>
     // 에러 타입
     Error,
     // 최종 Data 타입: FetchGroupChallengesResponse 그대로 사용
-    InfiniteData<FetchGroupChallengesResponse>,
+    InfiniteData<ApiResponse<FetchGroupChallengesResponse>>,
     // Query Key 타입
     readonly [...ReturnType<typeof QUERY_KEYS.CHALLENGE.GROUP.LIST>]
   >({
