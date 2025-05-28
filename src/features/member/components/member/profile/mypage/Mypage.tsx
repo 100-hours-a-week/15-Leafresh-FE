@@ -61,7 +61,7 @@ const Mypage = () => {
   //   },
   // ]
 
-  const { data: profileData } = useQuery<ApiResponse<Profile>>({
+  const { data: profileData, isError } = useQuery<ApiResponse<Profile>>({
     queryKey: QUERY_KEYS.MEMBER.DETAILS,
     queryFn: getMemberProfile,
     ...QUERY_OPTIONS.MEMBER.DETAILS,
@@ -89,7 +89,6 @@ const Mypage = () => {
     setShowProfileCard(true)
   }
 
-  console.log(profileCard)
   return (
     <Container>
       <ProfileSection>
@@ -103,7 +102,7 @@ const Mypage = () => {
         <FeedbackBox>
           <FeedbackText>나의 친환경 활동 점수는?</FeedbackText>
           <FeedbackButton onClick={startFeedbackStream}>
-            {isStreaming ? '피드백 받는 중...' : '피드백 받기'}
+            {isStreaming ? 'AI 피드백 받는 중...' : 'AI 피드백 받기'}
           </FeedbackButton>
           {messages.length > 0 && (
             <ul style={{ marginTop: '10px', fontSize: '14px', color: 'black' }}>
@@ -127,7 +126,7 @@ const Mypage = () => {
             <ChevronIcon>〉</ChevronIcon>
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.BADGE.value)}>
-            <MenuText>나의 참여 배지</MenuText>
+            <MenuText>나의 활동 배지</MenuText>
             <ChevronIcon>〉</ChevronIcon>
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.STORE.PURCHASED.value)}>
@@ -191,7 +190,7 @@ const FeedbackText = styled.p`
 
 const FeedbackButton = styled.button`
   /* width: 70%; */
-  padding: 10px 80px;
+  padding: 5px 80px;
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
@@ -249,8 +248,8 @@ const MenuItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
-  border-bottom: 1px solid ${theme.colors.lfGreenInactive.base};
+  padding: 8px 20px;
+  /* border-bottom: 1px solid ${theme.colors.lfGreenInactive.base}; */
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.semiBold};
   cursor: pointer;
@@ -270,7 +269,7 @@ const MenuItem = styled.div`
 `
 
 const MenuText = styled.span`
-  font-size: ${theme.fontSize.md};
+  font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
 `
