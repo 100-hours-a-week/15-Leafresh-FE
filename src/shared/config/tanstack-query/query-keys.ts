@@ -54,9 +54,13 @@ const MEMBER_QUERY_KEYS = {
 
   // 회원 정보
   PROFILE_CARD: ['member', 'profileCard'], // 프로필 카드 조회
-  BADGES: ['member', 'badges'], // 뱃지 조회
   LEAVES: ['member', 'leaves'], // 나뭇잎 개수 조회
   FEEDBACK: ['member', 'feedback'], // 챌린지 피드백 조회
+
+  BADGES: {
+    LIST: ['member', 'badges', 'list'], // 뱃지 조회
+    RECENT: (count: number) => ['member', 'badges', 'recent', count], //최근 획득 뱃지 조회
+  },
 
   // 알림
   NOTIFICATION: {

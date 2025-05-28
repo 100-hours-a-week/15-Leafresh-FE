@@ -29,6 +29,21 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
   onSuccess(data, variables, context) {
     const { challengeId } = variables
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId) }) // 개인 챌린지 상세 조회
+
+    //뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
+    })
+
+    //최근 획득 뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.RECENT,
+    })
+
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
   },
 })
 
@@ -119,6 +134,21 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
     //알림 목록
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
+    })
+
+    //뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
+    })
+
+    //최근 획득 뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.RECENT,
+    })
+
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
     })
   },
 })
