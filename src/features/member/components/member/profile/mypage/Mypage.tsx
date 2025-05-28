@@ -17,7 +17,7 @@ import { getMemberProfileCard, ProfileCardData } from '@features/member/api/get-
 
 import ProfileBox from './ProfileBox'
 import RecentBadgeBox from './RecentBadgeBox'
-import { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
+import { ApiResponse } from '@shared/lib/api/fetcher/type'
 import ProfileCard from './ProfileCard'
 
 import { useFeedbackSSE } from '@features/member/hooks/useFeedbackSSE'
