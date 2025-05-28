@@ -1,4 +1,4 @@
-import Mypage from '@features/member/components/member/mypage/Mypage'
+import Mypage from '@features/member/components/member/profile/mypage/Mypage'
 
 const Page = () => {
   return <Mypage />
