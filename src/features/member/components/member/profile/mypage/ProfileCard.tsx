@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from 'react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
+import { theme } from '@shared/styles/theme'
+
+import { treeLevelMap } from './ProfileBox'
 
 interface Badge {
   id: number
@@ -147,49 +150,88 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
         <Card style={{ transform: `rotateY(${displayRotation}deg)` }}>
           {/* 앞면 */}
           <CardFace className='front'>
-            <ProfileImageWrapper>
-              <Image src={data.profileImageUrl} alt='프로필 이미지' width={80} height={80} />
-            </ProfileImageWrapper>
-            <Nickname>{data.nickname}</Nickname>
-            <Stats>
-              <span>인증 성공</span>
-              <strong>{data.totalSuccessfulVerifications}회</strong>
-              <span>완료 챌린지</span>
-              <strong>{data.completedGroupChallengesCount}회</strong>
-            </Stats>
-            <ProgressBox>
-              <LevelImages>
-                <Image src={data.treeImageUrl} alt='현재 레벨' width={40} height={40} />
-                <Image src={data.nextTreeImageUrl} alt='다음 레벨' width={40} height={40} />
-              </LevelImages>
-              <ProgressText>
-                누적 나뭇잎 {data.totalLeafPoints} / 남은 {data.leafPointsToNextLevel}
-              </ProgressText>
-              <ProgressBar>
-                <Progress
-                  style={{
-                    width: `${(data.totalLeafPoints / (data.totalLeafPoints + data.leafPointsToNextLevel)) * 100}%`,
-                  }}
-                />
-              </ProgressBar>
-            </ProgressBox>
-            <Badges>
+            {/* 상단 프로필 영역 */}
+            <TopSection>
+              <ProfileImageWrapper>
+                <Image src={data.profileImageUrl} alt='프로필 이미지' width={60} height={60} />
+              </ProfileImageWrapper>
+              <ProfileInfo>
+                <Nickname>{data.nickname}</Nickname>
+                <CompactStats>
+                  <StatItem>
+                    <StatLabel>인증 성공</StatLabel>
+                    <StatValue>{data.totalSuccessfulVerifications}회</StatValue>
+                  </StatItem>
+                  <StatItem>
+                    <StatLabel>완료 챌린지</StatLabel>
+                    <StatValue>{data.completedGroupChallengesCount}회</StatValue>
+                  </StatItem>
+                </CompactStats>
+              </ProfileInfo>
+            </TopSection>
+
+            {/* 나뭇잎 진행 상황 */}
+            <ProgressSection>
+              <LeafValueWrapper>
+                <LeafStatWrapper>
+                  <ProgressTitle>누적 나뭇잎</ProgressTitle>
+                  <LeavesStat>{data.totalLeafPoints}</LeavesStat>
+                </LeafStatWrapper>
+                <LeafIcon src='/icon/leaf.png' alt='leaf' width={20} height={20} />
+                <LeafStatWrapper>
+                  <ProgressTitle>남은 나뭇잎</ProgressTitle>
+                  <LeavesStat>{data.leafPointsToNextLevel}</LeavesStat>
+                </LeafStatWrapper>
+              </LeafValueWrapper>
+
+              <ProgressValues>
+                <ProgressItem>
+                  <TreeIcon>
+                    <Image src={data.treeImageUrl} alt='현재 레벨' width={24} height={24} />
+                  </TreeIcon>
+                </ProgressItem>
+                <ProgressItem>
+                  <TreeIcon>
+                    <Image src={data.nextTreeImageUrl} alt='다음 레벨' width={24} height={24} />
+                  </TreeIcon>
+                </ProgressItem>
+              </ProgressValues>
+
+              <ProgressBarSection>
+                <CurrentLabel>{treeLevelMap[data.treeLevelId] ?? `${data.treeLevelId}`}</CurrentLabel>
+                <ProgressBar>
+                  <Progress
+                    style={{
+                      width: `${(data.totalLeafPoints / (data.totalLeafPoints + data.leafPointsToNextLevel)) * 100}%`,
+                    }}
+                  />
+                </ProgressBar>
+                <NextLabel>{treeLevelMap[data.treeLevelId + 1] ?? `${data.treeLevelId + 1}`}</NextLabel>
+              </ProgressBarSection>
+            </ProgressSection>
+
+            {/* 뱃지 영역 */}
+            <BadgeSection>
               {data.badges.length > 0 ? (
-                data.badges.map(badge => (
-                  <BadgeItem key={badge.id}>
-                    <Image src={badge.imageUrl} alt={badge.name} width={50} height={50} />
-                    <span>{badge.name}</span>
-                  </BadgeItem>
-                ))
+                <BadgeGrid>
+                  {data.badges.map(badge => (
+                    <BadgeItem key={badge.id}>
+                      <BadgeImage>
+                        <Image src={badge.imageUrl} alt={badge.name} width={60} height={60} />
+                      </BadgeImage>
+                      <BadgeName>{badge.name}</BadgeName>
+                    </BadgeItem>
+                  ))}
+                </BadgeGrid>
               ) : (
                 <NoBadgeMessage>획득한 뱃지가 아직 없어요!</NoBadgeMessage>
               )}
-            </Badges>
+            </BadgeSection>
           </CardFace>
           <CardEdge />
           {/* 뒷면 */}
           <CardFace className='back'>
-            <Image src='/image/chatbot.png' alt='supy' width={160} height={160} />
+            <Image src='/image/main-icon.svg' alt='supy2' width={160} height={160} />
           </CardFace>
         </Card>
       </CardContainer>
@@ -277,16 +319,190 @@ const CardEdge = styled.div`
   backface-visibility: hidden;
 `
 
+/* 상단 프로필 영역 */
+const TopSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 30px 0;
+`
+
 const ProfileImageWrapper = styled.div`
-  border: 2px solid #ccc;
+  border: 2px solid #ddd;
   border-radius: 50%;
-  padding: 4px;
-  margin-bottom: 12px;
+  padding: 2px;
+  flex-shrink: 0;
+`
+
+const ProfileInfo = styled.div`
+  flex: 1;
 `
 
 const Nickname = styled.h2`
   font-size: 20px;
   margin-bottom: 10px;
+`
+
+const CompactStats = styled.div`
+  display: flex;
+  gap: 16px;
+`
+
+const StatItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const StatLabel = styled.span`
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 2px;
+`
+
+const StatValue = styled.span`
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+`
+
+/* 진행 상황 영역 */
+const ProgressSection = styled.div`
+  background: white;
+  width: 95%;
+  border-radius: 16px;
+  padding: 30px 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+`
+
+const LeafValueWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+`
+
+const ProgressItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+`
+
+const TreeIcon = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const LeafIcon = styled(Image)`
+  width: 20px;
+  height: 20px;
+
+  object-fit: cover;
+`
+const ProgressTitle = styled.span`
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+`
+
+const ProgressValues = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+`
+
+const LeafStatWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+`
+
+const LeavesStat = styled.span`
+  font-size: 12px;
+  font-weight: ${theme.fontWeight.bold};
+  color: #4caf50;
+`
+
+const ProgressBarSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+const CurrentLabel = styled.span`
+  font-size: 12px;
+  color: #666;
+  min-width: 24px;
+`
+
+const ProgressBar = styled.div`
+  flex: 1;
+  height: 12px;
+  background: #e8f5e8;
+  border-radius: 6px;
+  overflow: hidden;
+`
+
+const Progress = styled.div`
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  transition: width 0.3s ease;
+  border-radius: 6px;
+`
+
+const NextLabel = styled.span`
+  font-size: 12px;
+  color: #666;
+  min-width: 24px;
+  text-align: right;
+`
+
+/* 뱃지 영역 */
+const BadgeSection = styled.div`
+  flex: 1;
+  margin-top: 20px;
+`
+
+const BadgeGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  justify-items: center;
+`
+
+const BadgeItem = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const BadgeImage = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`
+
+const BadgeName = styled.span`
+  font-size: 10px;
+  color: #666;
+  text-align: center;
+  line-height: 1.2;
+`
+
+const NoBadgeMessage = styled.p`
+  font-size: ${theme.fontSize.sm};
+  color: #888;
+  text-align: center;
 `
 
 const Stats = styled.div`
@@ -319,33 +535,9 @@ const ProgressText = styled.p`
   margin-bottom: 4px;
 `
 
-const ProgressBar = styled.div`
-  height: 10px;
-  background: #d1eacd;
-  border-radius: 5px;
-  overflow: hidden;
-`
-
-const Progress = styled.div`
-  height: 100%;
-  background: #73b572;
-  transition: width 0.3s ease;
-`
-
 const Badges = styled.div`
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-bottom: 12px;
-`
-
-const BadgeItem = styled.div`
-  text-align: center;
-  font-size: 12px;
-`
-
-const NoBadgeMessage = styled.p`
-  font-size: 13px;
-  color: #888;
-  text-align: center;
 `
