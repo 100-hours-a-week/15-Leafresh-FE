@@ -1,9 +1,9 @@
 import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
+import { ApiResponse } from '@shared/lib/api/fetcher/type'
 
-import type { ChallengeResponse } from '../api/participate/group-participant'
+import type { ParticipantChallengeResponse } from '../api/participate/group-participant'
 import {
   type ChallengeStatus,
   fetchGroupParticipations,
@@ -12,9 +12,9 @@ import {
 
 export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
   useInfiniteQuery<
-    ApiResponse<ChallengeResponse>, // queryFn 반환 타입
+    ApiResponse<ParticipantChallengeResponse>, // queryFn 반환 타입
     Error, // 에러 타입
-    InfiniteData<ChallengeResponse>, // data 타입
+    InfiniteData<ParticipantChallengeResponse>, // data 타입
     readonly [...typeof QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS, ChallengeStatus]
   >({
     queryKey: [...QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS, status] as const,

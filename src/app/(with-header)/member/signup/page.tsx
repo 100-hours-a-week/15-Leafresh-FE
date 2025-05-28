@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { OAuthType } from '@entities/member/type'
 import { NicknameDuplicate } from '@features/member/api/nickname-duplicate'
-import { SignUpBody, SignUpResponseType, SignUpVariables } from '@features/member/api/signup'
+import { SignUpBody, SignUpResponse, SignUpVariables } from '@features/member/api/signup'
 import { SignupFormType, signupSchema } from '@features/member/signup/schema'
 import ErrorText from '@shared/components/errortext'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
@@ -19,7 +19,7 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
-import { ToastType } from '@shared/context/Toast/type'
+import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { theme } from '@shared/styles/theme'
 
@@ -51,7 +51,7 @@ const SignupPage = () => {
     ...QUERY_OPTIONS.MEMBER.DUPLICATE_NICKNAME,
   })
 
-  const { mutate: SignUpMutate } = useMutationStore<SignUpResponseType, SignUpVariables>(MUTATION_KEYS.MEMBER.SIGNUP)
+  const { mutate: SignUpMutate } = useMutationStore<SignUpResponse, SignUpVariables>(MUTATION_KEYS.MEMBER.SIGNUP)
 
   useEffect(() => {
     /** 이미 회원가입한 유저일 경우 */

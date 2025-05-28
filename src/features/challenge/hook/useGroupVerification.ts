@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ApiResponse } from '@shared/lib/api/fetcher/fetcher'
+import { ApiResponse } from '@shared/lib/api/fetcher/type'
 
 import {
   getGroupVerificationResult,

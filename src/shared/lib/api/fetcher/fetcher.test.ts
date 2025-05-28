@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest'
 
 import type { EndpointType } from '../../../constants/endpoint/endpoint'
 import { HttpMethod, HttpStatusCode } from '../../../constants/http'
-import { ApiResponse, ErrorResponse, fetchRequest } from './fetcher'
+import { fetchRequest } from './fetcher'
+import { ApiResponse, ErrorResponse } from './type'
 
 describe('fetchRequest 유틸', () => {
   let fetchMock: MockedFunction<typeof fetch>

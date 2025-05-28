@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
 import { useInfiniteGroupChallengeVerifications } from '@features/challenge/hook/useInfiniteGroupChallengeVerifications'
-import BackButton from '@shared/components/Button/BackButton'
+import BackButton from '@shared/components/button/BackButton'
 import { theme } from '@shared/styles/theme'
 
 interface ChallengeGroupParticipateListProps {

@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useEffect } from 'react'
 import styled from '@emotion/styled'
 
-import { useToastStore } from '@shared/context/Toast/ToastStore'
-import { ToastType } from '@shared/context/Toast/type'
+import { useToastStore } from '@shared/context/toast/ToastStore'
+import { ToastType } from '@shared/context/toast/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
@@ -82,6 +82,7 @@ const Message = styled.span`
   flex: 1;
   text-align: center;
   white-space: pre-line;
+  line-height: 1.3;
 `
 
 const CloseIcon = styled.div`
