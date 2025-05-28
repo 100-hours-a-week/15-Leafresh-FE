@@ -132,6 +132,7 @@ const MEMBER_ENDPOINTS = {
 
   // 회원 정보
   PROFILE_CARD: { method: HttpMethod.GET, path: '/api/members/profilecard' }, // 프로필 카드 조회
+  RECENT_BADGES: { method: HttpMethod.GET, path: '/api/members/badges/recent' }, //최근 획득 뱃지 조회
   BADGES: { method: HttpMethod.GET, path: '/api/members/badges' }, // 뱃지 조회
   LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves' }, // 나뭇잎 개수 조회
   FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
