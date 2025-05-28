@@ -33,6 +33,10 @@ const MEMBER_URL = {
       name: '프로필 수정',
       value: '/member/profile/modify',
     },
+    BADGE: {
+      name: '뱃지 조회',
+      value: '/member/proile/badge',
+    },
   },
   ALARM: {
     name: '알림 확인',
