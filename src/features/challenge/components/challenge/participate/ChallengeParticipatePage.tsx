@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { useEffect, useRef, useState } from 'react'
@@ -13,7 +14,6 @@ import Chatbot from '@shared/components/chatbot/Chatbot'
 import SwitchTap from '@shared/components/switchtap/SwitchTap'
 import { URL } from '@shared/constants/route/route'
 import { theme } from '@shared/styles/theme'
-import Image from 'next/image'
 
 const statusMap: Record<number, ChallengeStatus> = {
   0: 'not_started',

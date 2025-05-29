@@ -1,42 +1,11 @@
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { ENDPOINTS, EndpointType } from '@shared/constants/endpoint/endpoint'
+import { handleAuthError } from '@shared/config/tanstack-query/utils'
+import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
+import { refreshAccessToken } from './reissue'
 import { ApiResponse, ErrorResponse, OptionsType } from './type'
 
 //TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
 const BASE_URL = 'https://leafresh.app'
-
-let isRefreshing = false
-let refreshPromise: Promise<void> | null = null
-
-async function refreshAccessToken(): Promise<void> {
-  if (isRefreshing) return refreshPromise ?? Promise.resolve()
-
-  isRefreshing = true
-
-  refreshPromise = (async () => {
-    try {
-      const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE}`, {
-        method: 'POST',
-        credentials: 'include', // 쿠키 포함
-      })
-
-      if (!response.ok) {
-        throw new Error('Refresh failed')
-      }
-
-      isRefreshing = false
-    } catch (error) {
-      // 로그인 정보 초기화
-      useOAuthUserStore.getState().clearUserInfo()
-
-      isRefreshing = false
-      throw error
-    }
-  })()
-
-  return refreshPromise
-}
 
 export async function fetchRequest<T>(
   endpoint: EndpointType,
@@ -84,9 +53,11 @@ export async function fetchRequest<T>(
       } catch (refreshError) {
         const error: ErrorResponse = {
           status: 401,
-          message: '세션이 만료되었습니다. 다시 로그인해주세요.',
+          message: '세션이 만료되었습니다. 다시 로그인해주세요',
           data: null,
         }
+        /** 미인증 유저에게는 토스트로 알림 */
+        handleAuthError(error)
         throw error
       }
     }

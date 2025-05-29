@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { URL } from '@shared/constants/route/route'
 import { useDrawerStore } from '@shared/context/slide-drawer/DrawerStore'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LogoImage from '@public/image/logo.svg'
@@ -21,8 +21,7 @@ interface HeaderProps {
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
   const { open: openDrawer } = useDrawerStore()
-  const { userInfo } = useOAuthUserStore()
-  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
+  const { isLoggedIn } = useAuth()
 
   return (
     <HeaderContainer height={height}>
