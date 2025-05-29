@@ -45,7 +45,6 @@ next-env.d.ts
 
 *.zip*
 
-
 # Playwright
 node_modules/
 /test-results/

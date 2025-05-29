@@ -87,21 +87,19 @@ const ChallengeListPage = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   // API 데이터 뽑아오기
-  const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(p => p.groupChallenges || []).filter(Boolean) ?? []
+
+  console.log(data)
+
+  const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(page => page.data.groupChallenges ?? []) ?? []
+
+  console.log(groupChallenges)
 
   if (isLoading) return <Spinner size='lg' style={{ marginTop: '100px' }} />
   if (error) return <Message>Error: {error.message}</Message>
 
   return (
     <Container>
-      <BannerSection bannerUrl={bannerUrl}>
-        <BannerText>
-          <SubTitle>사진 한 장, 지구를 위한 따듯한 걸음</SubTitle>
-          <Title>
-            친환경 챌린지 <strong>Leafresh</strong>
-          </Title>
-        </BannerText>
-      </BannerSection>
+      <BannerSection bannerUrl={bannerUrl}></BannerSection>
 
       <ContentWrapper>
         <Section>
@@ -213,11 +211,6 @@ const ContentWrapper = styled.div`
 const Title = styled.h1`
   font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.bold};
-`
-
-const SubTitle = styled.h2`
-  font-size: ${theme.fontSize.base};
-  margin-bottom: 8px;
 `
 
 const Header = styled.header`
