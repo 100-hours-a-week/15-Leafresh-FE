@@ -7,7 +7,6 @@ import GlobalStyle from '@shared/styles/GlobalStyle'
 import { theme } from '@shared/styles/theme'
 
 import { ChakraUseProvider } from './ChakraProvider'
-import { EmotionCacheProvider } from './EmotionCacheProvider'
 import TanstackQueryProvider from './QueryClientProvider'
 
 /**
@@ -19,9 +18,7 @@ export function Providers({ children }: { children: ReactNode }) {
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <TanstackQueryProvider>
-        <EmotionCacheProvider>
-          <ChakraUseProvider>{children}</ChakraUseProvider>
-        </EmotionCacheProvider>
+        <ChakraUseProvider>{children}</ChakraUseProvider>
       </TanstackQueryProvider>
     </ThemeProvider>
   )

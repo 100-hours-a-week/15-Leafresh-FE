@@ -22,7 +22,6 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
 
 const ChallengeMainPage = (): ReactNode => {
   const router = useRouter()
@@ -189,7 +188,7 @@ const BannerSection = styled.section`
 
   display: flex;
   align-items: flex-end;
-  color: ${theme.colors.lfWhite.base};
+  color: ${({ theme }) => theme.colors.lfWhite.base};
 `
 
 const BannerText = styled.div`
@@ -201,12 +200,12 @@ const BannerText = styled.div`
 `
 
 const Title = styled.h1`
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.bold};
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `
 
 const SubTitle = styled.h2`
-  font-size: ${theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize.base};
   margin-bottom: 8px;
 `
 
@@ -225,14 +224,14 @@ const SectionHeader = styled.div`
 const SectionTitle = styled.h2`
   position: relative;
 
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 
 const SubDescription = styled.p`
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfDarkGray.base};
+  font-size: ${({ theme }) => theme.fontSize.base};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  color: ${({ theme }) => theme.colors.lfDarkGray.base};
 `
 const CategoryGrid = styled.div`
   margin-top: 20px;
@@ -243,7 +242,7 @@ const CategoryGrid = styled.div`
 
 const CategoryItem = styled.div`
   aspect-ratio: 1/1;
-  border-radius: ${theme.radius.lg};
+  border-radius: ${({ theme }) => theme.radius.lg};
 
   display: flex;
   flex-direction: column;
@@ -251,8 +250,8 @@ const CategoryItem = styled.div`
   align-items: center;
 
   gap: 8px;
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfDarkGray.base};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.lfDarkGray.base};
 
   cursor: pointer;
 
@@ -262,8 +261,8 @@ const CategoryItem = styled.div`
 `
 
 const CategoryLabel = styled.span`
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 
 const CarouselWrapper = styled.div`
@@ -287,8 +286,8 @@ const EventCard = styled.div`
   flex: 0 0 100%;
   height: 100%;
 
-  background: ${theme.colors.lfInputBackground.base};
-  border-radius: ${theme.radius.base};
+  background: ${({ theme }) => theme.colors.lfInputBackground.base};
+  border-radius: ${({ theme }) => theme.radius.base};
   display: flex;
   flex-direction: row;
   position: relative;
@@ -304,14 +303,14 @@ const EventImage = styled(Image)`
   top: 0;
   object-fit: cover;
   object-position: center center;
-  border-radius: ${theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.base};
 `
 const EventGradientOverlay = styled.div`
   position: absolute;
   inset: 0;
   z-index: 1;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.8) 100%);
-  border-radius: ${theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.base};
 `
 
 const EventTitleOverlay = styled.div`
@@ -322,9 +321,9 @@ const EventTitleOverlay = styled.div`
   align-items: center;
   justify-content: center;
   padding-bottom: 16px;
-  color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.lfWhite.base};
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   text-align: center;
   pointer-events: none;
 `
@@ -343,10 +342,10 @@ const DailyCardWrapper = styled.div`
 
 const DailyCard = styled.div`
   width: 100%;
-  background: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
+  background: ${({ theme }) => theme.colors.lfWhite.base};
+  border-radius: ${({ theme }) => theme.radius.base};
 
-  box-shadow: ${theme.shadow.lfInput};
+  box-shadow: ${({ theme }) => theme.shadow.lfInput};
 `
 
 const CardTop = styled.div`
@@ -366,13 +365,13 @@ const LeafWrapper = styled.p`
   display: flex;
   align-items: center;
   gap: 4px;
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 
 const LeafImage = styled(Image)``
 
 const LeafLabel = styled.span`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.sm};
 `
 const DailyImageArea = styled.div`
   width: 100%;
@@ -383,8 +382,8 @@ const DailyImageArea = styled.div`
   justify-content: center;
   align-items: center;
 
-  border-top-left-radius: ${theme.radius.base};
-  border-top-right-radius: ${theme.radius.base};
+  border-top-left-radius: ${({ theme }) => theme.radius.base};
+  border-top-right-radius: ${({ theme }) => theme.radius.base};
   overflow: hidden;
 `
 
@@ -396,16 +395,16 @@ const JoinButton = styled.button`
   width: 100%;
   margin: 12px 0;
   padding: 16px 0;
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.semiBold};
-  box-shadow: ${theme.shadow.lfInput};
+  background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
+  color: ${({ theme }) => theme.colors.lfWhite.base};
+  border-radius: ${({ theme }) => theme.radius.base};
+  font-size: ${({ theme }) => theme.fontSize.base};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  box-shadow: ${({ theme }) => theme.shadow.lfInput};
   cursor: pointer;
 
   &:hover {
-    background-color: ${theme.colors.lfGreenMain.hover};
+    background-color: ${({ theme }) => theme.colors.lfGreenMain.hover};
   }
 `
 const DailyCardDescriptions = styled.div`
@@ -421,13 +420,13 @@ const DailyCardDescriptions = styled.div`
 `
 const CardTitle = styled.h3`
   margin: 4px 0px;
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 
 const CardDescription = styled.p`
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfBlack.base};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.lfBlack.base};
   white-space: pre-wrap;
 `
 
@@ -438,11 +437,11 @@ const NoneContent = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-weight: ${theme.fontWeight.semiBold};
-  font-size: ${theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.fontSize.lg};
 
   ${media.mobile} {
-    font-size: ${theme.fontSize.sm};
+    font-size: ${({ theme }) => theme.fontSize.sm};
   }
 `
 
@@ -452,12 +451,12 @@ const CarouselIndicator = styled.div`
   right: 12px;
 
   background-color: rgba(0, 0, 0, 0.5);
-  color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
+  color: ${({ theme }) => theme.colors.lfWhite.base};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 
   padding: 4px 8px;
-  border-radius: ${theme.radius.sm};
+  border-radius: ${({ theme }) => theme.radius.sm};
 `
 
 // const dummyEventChallenges: EventChallenge[] = [
