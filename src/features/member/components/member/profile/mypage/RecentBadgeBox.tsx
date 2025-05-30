@@ -69,6 +69,10 @@ const Title = styled.p`
 const BadgeWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+
+  @media (max-width: 390px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `
 
 const BadgeCard = styled.div`

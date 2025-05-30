@@ -14,7 +14,6 @@ import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/
 import { Badge, getRecentBadges } from '@features/member/api/profile/get-recent-badge'
 import { getMemberProfileCard, ProfileCardResponse } from '@features/member/api/profile/get-member-profilecard'
 import { getFeedback, FeedbackResponse } from '@features/member/api/profile/get-member-feedback'
-import { RequestFeedback } from '@features/member/api/profile/post-member-feedback'
 import { pollFeedbackResult } from '@features/member/api/profile/get-member-feedback-result'
 
 import ProfileBox from './ProfileBox'
@@ -31,11 +30,35 @@ const Mypage = () => {
   const [pollError, setPollError] = useState<string | null>(null)
   const [showProfileCard, setShowProfileCard] = useState(false)
 
+  const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK)
+
   const isMountedRef = useRef(true) //페이지 언마운트 시, 상태 변경(set... 호출) 방지
 
   useEffect(() => {
     return () => {
       isMountedRef.current = false
+    }
+  }, [])
+
+  //기기의 너비가 390 이하라면 최근 획득 뱃지 6개만 get
+  useEffect(() => {
+    const updateCountByWidth = () => {
+      if (window.innerWidth <= 390) {
+        setCount(6)
+      } else {
+        setCount(8)
+      }
+    }
+
+    // 최초 1회 실행
+    updateCountByWidth()
+
+    // 리사이즈
+    window.addEventListener('resize', updateCountByWidth)
+
+    // 클린업
+    return () => {
+      window.removeEventListener('resize', updateCountByWidth)
     }
   }, [])
 
@@ -73,8 +96,6 @@ const Mypage = () => {
   function handleProfileCardOpen() {
     setShowProfileCard(true)
   }
-
-  const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK)
 
   const handleRequestFeedback = () => {
     requestFeedback(undefined, {
@@ -145,7 +166,7 @@ const Mypage = () => {
             <ChevronIcon>〉</ChevronIcon>
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.BADGE.value)}>
-            <MenuText>나의 활동 배지</MenuText>
+            <MenuText>나의 활동 뱃지</MenuText>
             <ChevronIcon>〉</ChevronIcon>
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.STORE.PURCHASED.value)}>
