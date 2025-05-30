@@ -13,7 +13,9 @@ interface RecentBadgeBoxProps {
 const RecentBadgeBox = ({ className, badges }: RecentBadgeBoxProps): ReactNode => {
   return (
     <Container>
-      <Title>나의 뱃지</Title>
+      <TitleWrapper>
+        <Title>나의 뱃지</Title>
+      </TitleWrapper>
       {badges.length > 0 ? (
         <BadgeWrapper>
           {badges.map((badge, index) => (
@@ -33,18 +35,36 @@ const RecentBadgeBox = ({ className, badges }: RecentBadgeBoxProps): ReactNode =
 export default RecentBadgeBox
 
 const Container = styled.div`
-  width: 322px;
+  width: 100%;
   display: flex;
   align-self: center;
   justify-self: center;
   flex-direction: column;
 
+  width: 100%;
+  background-color: ${theme.colors.lfWhite.base};
+  border-radius: ${theme.radius.base};
+  box-shadow: ${theme.shadow.lfPrime};
+  overflow: hidden;
+
   margin: 20px 0;
-  padding: 15px;
-  background-color: #eff9e8;
+  /* padding: 15px; */
   border-radius: ${theme.radius.base};
 `
-const Title = styled.p``
+
+const TitleWrapper = styled.div`
+  height: 45px;
+  background-color: ${theme.colors.lfGreenMain.base};
+  color: ${theme.colors.lfWhite.base};
+  display: flex;
+  align-items: center;
+`
+const Title = styled.p`
+  font-size: ${theme.fontSize.md};
+  font-weight: ${theme.fontWeight.semiBold};
+  padding: 0 0 0 20px;
+  margin: 0;
+`
 
 const BadgeWrapper = styled.div`
   display: grid;

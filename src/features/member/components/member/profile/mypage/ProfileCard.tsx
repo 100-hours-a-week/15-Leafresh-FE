@@ -5,7 +5,9 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import { theme } from '@shared/styles/theme'
 
-import { treeLevelMap } from './ProfileBox'
+import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import GuideOverlay from './GuideOverlay'
+import { treeLevelMap } from '@entities/member/constant'
 
 interface Badge {
   id: number
@@ -51,7 +53,16 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
   const [displayRotation, setDisplayRotation] = useState(0)
   const [displayOffsetY, setDisplayOffsetY] = useState(0)
 
+  const [guideVisible, setGuideVisible] = useState(true)
+
+  // 카드 등장 후 자동 제거 타이머
+  useEffect(() => {
+    const timer = setTimeout(() => setGuideVisible(false), 5000)
+    return () => clearTimeout(timer)
+  }, [])
+
   const onStart = (x: number, y: number) => {
+    setGuideVisible(false)
     startX.current = x
     startY.current = y
     lastX.current = x
@@ -136,8 +147,11 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
     onMove(touch.clientX, touch.clientY)
   }
 
+  useScrollLock(isVisible)
+
   return (
     <Wrapper visible={isVisible} hidden={!isVisible}>
+      <GuideOverlay visible={guideVisible} />
       <CardContainer
         ref={cardRef}
         onMouseDown={onMouseDown}
@@ -187,12 +201,12 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
               <ProgressValues>
                 <ProgressItem>
                   <TreeIcon>
-                    <Image src={data.treeImageUrl} alt='현재 레벨' width={24} height={24} />
+                    <Image src={data.treeImageUrl} alt='현재 레벨' width={30} height={30} />
                   </TreeIcon>
                 </ProgressItem>
                 <ProgressItem>
                   <TreeIcon>
-                    <Image src={data.nextTreeImageUrl} alt='다음 레벨' width={24} height={24} />
+                    <Image src={data.nextTreeImageUrl} alt='다음 레벨' width={30} height={30} />
                   </TreeIcon>
                 </ProgressItem>
               </ProgressValues>
@@ -206,7 +220,7 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
                     }}
                   />
                 </ProgressBar>
-                <NextLabel>{treeLevelMap[data.treeLevelId + 1] ?? `${data.treeLevelId + 1}`}</NextLabel>
+                <NextLabel>{treeLevelMap[data.treeLevelId + 2] ?? `${data.treeLevelId + 2}`}</NextLabel>
               </ProgressBarSection>
             </ProgressSection>
 
@@ -228,7 +242,6 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
               )}
             </BadgeSection>
           </CardFace>
-          <CardEdge />
           {/* 뒷면 */}
           <CardFace className='back'>
             <Image src='/image/main-icon.svg' alt='supy2' width={160} height={160} />
@@ -305,18 +318,6 @@ const CardFace = styled.div`
     cursor: grab;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   }
-`
-const CardEdge = styled.div`
-  position: absolute;
-  top: 0;
-  left: 100%;
-  width: 10px;
-  height: 100%;
-  background: linear-gradient(to bottom, #e3f4de, #d0e8cb);
-  transform-origin: left;
-  transform: rotateY(90deg);
-  border-radius: 0 10px 10px 0;
-  backface-visibility: hidden;
 `
 
 /* 상단 프로필 영역 */
@@ -503,36 +504,6 @@ const NoBadgeMessage = styled.p`
   font-size: ${theme.fontSize.sm};
   color: #888;
   text-align: center;
-`
-
-const Stats = styled.div`
-  font-size: 14px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 16px;
-`
-
-const ProgressBox = styled.div`
-  width: 100%;
-  background: #fff;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
-`
-
-const LevelImages = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 6px;
-`
-
-const ProgressText = styled.p`
-  font-size: 13px;
-  text-align: center;
-  margin-bottom: 4px;
 `
 
 const Badges = styled.div`

@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import { theme } from '@shared/styles/theme'
+import { treeLevelMap } from '@entities/member/constant'
 
 interface ProfileBoxProps {
   className?: string
@@ -11,14 +12,6 @@ interface ProfileBoxProps {
   level: number
   treeImageUrl: string
   onClick?: () => void
-}
-
-export const treeLevelMap: Record<number, string> = {
-  1: '새싹',
-  2: '묘목',
-  3: '관목',
-  4: '중교목',
-  5: '거목',
 }
 
 const ProfileBox = ({
@@ -47,7 +40,7 @@ const ProfileBox = ({
 export default ProfileBox
 
 const Container = styled.div`
-  width: 322px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   background-color: #eff9e8;
@@ -80,17 +73,18 @@ const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* gap: 5px; */
+  min-width: 0;
 `
 
 const Name = styled.p`
   font-size: ${theme.fontSize.md};
-
+  /* flex: 1; */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  max-width: 180px;
+  flex-grow: 1;
+  min-width: 0; /* 말줄임 처리를 위해 꼭 필요 */
 `
 
 const LevelWrapper = styled.div`
