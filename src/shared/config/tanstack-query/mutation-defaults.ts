@@ -10,6 +10,7 @@ import { Logout } from '@features/member/api/logout'
 import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
+import { RequestFeedback } from '@features/member/api/profile/post-member-feedback'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
@@ -219,6 +220,15 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
   onSuccess() {
     const MEMBER_QUERIES = ['member']
     queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
+  },
+})
+
+queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.FEEDBACK, {
+  mutationFn: RequestFeedback,
+  onSuccess() {
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK,
+    })
   },
 })
 
