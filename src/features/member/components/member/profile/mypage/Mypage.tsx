@@ -10,14 +10,19 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 
-import { getMemberProfile, ProfileResponse } from '@features/member/api/get-member-profile'
-import { Badge, getRecentBadges } from '@features/member/api/get-recent-badge'
-import { getMemberProfileCard, ProfileCardResponse } from '@features/member/api/get-member-profilecard'
+import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
+import { Badge, getRecentBadges } from '@features/member/api/profile/get-recent-badge'
+import { getMemberProfileCard, ProfileCardResponse } from '@features/member/api/profile/get-member-profilecard'
+import { getFeedback, FeedbackResponse } from '@features/member/api/profile/get-member-feedback'
+import { RequestFeedback } from '@features/member/api/profile/post-member-feedback'
+import { pollFeedbackResult } from '@features/member/api/profile/get-member-feedback-result'
 
 import ProfileBox from './ProfileBox'
 import RecentBadgeBox from './RecentBadgeBox'
 import ProfileCard from './ProfileCard'
 import { slideRotateIn } from '@entities/member/style'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 
 const Mypage = () => {
   const router = useRouter()
@@ -42,14 +47,33 @@ const Mypage = () => {
     ...QUERY_OPTIONS.MEMBER.PROFILE_CARD,
   })
 
+  const { data: feedbackData } = useQuery({
+    queryKey: QUERY_KEYS.MEMBER.FEEDBACK,
+    queryFn: getFeedback,
+    ...QUERY_OPTIONS.MEMBER.FEEDBACK,
+  })
+
   if (!profileData) return null //로딩, fallback 처리
 
   const profile: ProfileResponse = profileData.data ?? ({} as ProfileResponse)
   const profileCard: ProfileCardResponse = profileCardData?.data ?? ({} as ProfileCardResponse)
   const recentbadges: Badge[] = recentBadgesData?.data.badges ?? []
+  const feedback: FeedbackResponse | null = feedbackData?.data ?? null
 
   function handleProfileCardOpen() {
     setShowProfileCard(true)
+  }
+
+  const { mutate: requestFeedback, isPending: isFeedbackLoad } = useMutationStore<null, void>(
+    MUTATION_KEYS.MEMBER.FEEDBACK,
+  )
+
+  const handleRequestFeedback = () => {
+    requestFeedback(undefined, {
+      onSuccess: () => {
+        pollFeedbackResult()
+      },
+    })
   }
 
   return (
@@ -64,7 +88,13 @@ const Mypage = () => {
         />
         <FeedbackBox>
           <FeedbackText>나의 친환경 활동 점수는?</FeedbackText>
-          <FeedbackButton>AI 피드백 받기</FeedbackButton>
+          {feedback === null ? (
+            <FeedbackButton onClick={handleRequestFeedback} disabled={isFeedbackLoad}>
+              {isFeedbackLoad ? '피드백 생성 중...' : 'AI 피드백 받기'}
+            </FeedbackButton>
+          ) : (
+            <Feedback>{feedback.content}</Feedback>
+          )}
         </FeedbackBox>
       </ProfileSection>
 
@@ -140,6 +170,10 @@ const FeedbackText = styled.p`
   font-size: ${theme.fontSize.sm};
   padding-left: 20px;
   align-self: flex-start;
+`
+const Feedback = styled.p`
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.medium};
 `
 
 const FeedbackButton = styled.button`
