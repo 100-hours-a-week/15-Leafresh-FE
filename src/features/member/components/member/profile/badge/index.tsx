@@ -2,7 +2,6 @@
 
 import React from 'react'
 import styled from '@emotion/styled'
-import { ChevronLeft } from 'lucide-react'
 import BadgeTabs from './BadgeTab'
 import { badgeCategory } from '@entities/member/constant'
 import { getBadgeList, BadgeListResponse, BadgeData } from '@features/member/api/profile/get-badge'
