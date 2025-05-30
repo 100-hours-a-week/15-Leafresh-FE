@@ -1,8 +1,8 @@
-import { ApiResponse, fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { HttpMethod } from '@shared/constants/http'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 
-export interface ProfileCardData {
+export interface ProfileCardResponse {
   nickname: string
   profileImageUrl: string
   treeLevelId: number
@@ -25,5 +25,5 @@ export interface CardBadge {
 
 // GET /api/members/profilecard
 export const getMemberProfileCard = () => {
-  return fetchRequest<ProfileCardData>(ENDPOINTS.MEMBERS.PROFILE_CARD)
+  return fetchRequest<ProfileCardResponse>(ENDPOINTS.MEMBERS.PROFILE_CARD)
 }

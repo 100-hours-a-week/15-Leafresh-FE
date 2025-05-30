@@ -9,7 +9,7 @@ export interface Badge {
   imageUrl: string
 }
 
-export interface RecentBadgesData {
+export interface RecentBadgesResponse {
   badges: Badge[]
 }
 
@@ -19,7 +19,7 @@ type RecentBadgesQuery = {
 
 // GET /api/members/badges/recent
 export const getRecentBadges = (query: RecentBadgesQuery) => {
-  return fetchRequest<RecentBadgesData>(ENDPOINTS.MEMBERS.RECENT_BADGES, {
+  return fetchRequest<RecentBadgesResponse>(ENDPOINTS.MEMBERS.BADGES.RECENT, {
     query,
   })
 }
