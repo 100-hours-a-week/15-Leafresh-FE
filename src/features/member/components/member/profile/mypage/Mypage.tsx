@@ -1,5 +1,5 @@
 'use client'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
@@ -27,7 +27,17 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 const Mypage = () => {
   const router = useRouter()
   const [count, setCount] = useState(8)
+  const [isPolling, setIsPolling] = useState(false)
+  const [pollError, setPollError] = useState<string | null>(null)
   const [showProfileCard, setShowProfileCard] = useState(false)
+
+  const isMountedRef = useRef(true) //페이지 언마운트 시, 상태 변경(set... 호출) 방지
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
   const { data: profileData } = useQuery({
     queryKey: QUERY_KEYS.MEMBER.DETAILS,
@@ -64,14 +74,31 @@ const Mypage = () => {
     setShowProfileCard(true)
   }
 
-  const { mutate: requestFeedback, isPending: isFeedbackLoad } = useMutationStore<null, void>(
-    MUTATION_KEYS.MEMBER.FEEDBACK,
-  )
+  const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK)
 
   const handleRequestFeedback = () => {
     requestFeedback(undefined, {
-      onSuccess: () => {
-        pollFeedbackResult()
+      onSuccess: async () => {
+        if (isMountedRef.current) {
+          setIsPolling(true)
+          setPollError(null) // 초기화
+        }
+
+        try {
+          await pollFeedbackResult()
+        } catch (err) {
+          if (isMountedRef.current) {
+            setPollError('피드백을 가져오는 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.')
+          }
+        } finally {
+          if (isMountedRef.current) setIsPolling(false)
+        }
+      },
+      onError: err => {
+        if (isMountedRef.current) {
+          console.log(err)
+          setPollError('피드백 요청에 실패했어요.')
+        }
       },
     })
   }
@@ -89,11 +116,19 @@ const Mypage = () => {
         <FeedbackBox>
           <FeedbackText>나의 친환경 활동 점수는?</FeedbackText>
           {feedback === null ? (
-            <FeedbackButton onClick={handleRequestFeedback} disabled={isFeedbackLoad}>
-              {isFeedbackLoad ? '피드백 생성 중...' : 'AI 피드백 받기'}
+            <FeedbackButton onClick={handleRequestFeedback} disabled={isPolling}>
+              {isPolling ? '피드백 생성 중...' : 'AI 피드백 받기'}
             </FeedbackButton>
           ) : (
             <Feedback>{feedback.content}</Feedback>
+          )}
+          {pollError && (
+            <>
+              <FeedbackButton onClick={handleRequestFeedback}>
+                {isPolling ? '피드백 생성 중...' : '다시 시도'}
+              </FeedbackButton>
+              <ErrorMessage>{pollError}</ErrorMessage>
+            </>
           )}
         </FeedbackBox>
       </ProfileSection>
@@ -264,4 +299,10 @@ const ChevronIcon = styled.span`
   font-size: ${theme.fontSize.lg};
   color: ${theme.colors.lfGray.base};
   font-weight: ${theme.fontWeight.light};
+`
+
+const ErrorMessage = styled.div`
+  color: ${theme.colors.lfRed.base};
+  font-size: ${theme.fontSize.sm};
+  padding: 4px 0;
 `
