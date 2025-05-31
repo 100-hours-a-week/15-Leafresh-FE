@@ -1,13 +1,14 @@
 'use client'
 
-import React from 'react'
 import styled from '@emotion/styled'
-import BadgeTabs from './BadgeTab'
-import { badgeCategory } from '@entities/member/constant'
-import { getBadgeList, BadgeListResponse, BadgeData } from '@features/member/api/profile/get-badge'
 import { useQuery } from '@tanstack/react-query'
+
+import { badgeCategory } from '@entities/member/constant'
+import { BadgeData, getBadgeList } from '@features/member/api/profile/get-badge'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { theme } from '@shared/styles/theme'
+
+import BadgeTabs from './BadgeTab'
 
 const BadgePage = () => {
   const {
@@ -56,7 +57,7 @@ const Header = styled.header`
   justify-content: center;
   padding: 12px 20px;
   background: ${theme.colors.lfWhite.base};
-  border-bottom: 1px solid ${theme.colors.lfLightGray.base};
+  /*  */
 `
 
 const Title = styled.h1`
@@ -74,7 +75,7 @@ const fallbackData: BadgeData = {
     imageUrl: 'https://storage.googleapis.com/leafresh-images/example2.png',
     isLocked: i % 2 === 0,
   })),
-  personal: Array.from({ length: 2 }, (_, i) => ({
+  personal: Array.from({ length: 10 }, (_, i) => ({
     id: i + 10,
     name: `개인 뱃지 ${i + 1}`,
     condition: `개인 챌린지 ${i + 1}일 연속 인증`,
