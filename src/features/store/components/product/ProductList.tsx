@@ -6,8 +6,8 @@ import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
 
-import { Product } from '../api/get-products'
-import { useInfiniteProducts } from '../hook/useInfiniteProducts'
+import { Product } from '../../api/get-products'
+import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'
 
 // const dummyProducts: Product[] = [
