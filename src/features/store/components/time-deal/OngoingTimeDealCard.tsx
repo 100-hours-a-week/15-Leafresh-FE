@@ -1,10 +1,19 @@
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
+import { OrderTimeDealProductResponse, OrderTimeDealProductVariables } from '@features/store/api/order-timedeal'
 import useRemainingTime from '@features/store/hook/useRemainingTime'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { URL } from '@shared/constants/route/route'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { ToastType } from '@shared/context/toast/type'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
@@ -15,7 +24,72 @@ interface OngoingTimeDealCardProps {
 }
 
 const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): ReactNode => {
+  const router = useRouter()
+  const openToast = useToast()
+  const { isLoggedIn } = useAuth()
+  const { openConfirmModal } = useConfirmModalStore()
+
   const remaining = useRemainingTime({ target: data?.dealEndTime ?? '' })
+
+  /** 특가 상품 구매 이력 생성 */
+  const { mutate: PurchaseMutate, isPending: isPurchasing } = useMutationStore<
+    OrderTimeDealProductResponse,
+    OrderTimeDealProductVariables
+  >(MUTATION_KEYS.STORE.TIME_DEAL.ORDER)
+
+  /** 이벤트 핸들러 */
+  const handlePurchase = (dealId: number) => {
+    // #0. 로그인 상태가 아닐 때
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
+      return
+    }
+
+    if (!data) return
+
+    /** #1. 에러 케이스 */
+    // 재고 업음
+    if (data.stock <= 0) {
+      openToast(ToastType.Error, '품절된 상품입니다.')
+      return
+    }
+
+    // 진행중이지 않음
+    if (data.timeDealStatus !== 'ONGOING') {
+      openToast(ToastType.Error, '특가 진행 중인 상품이 아닙니다.')
+      return
+    }
+
+    // 특가 시간 아님
+    const now = new Date().getTime()
+    const start = new Date(data.dealStartTime).getTime()
+    const end = new Date(data.dealEndTime).getTime()
+
+    if (now < start || now > end) {
+      openToast(ToastType.Error, '현재는 특가 구매 가능한 시간이 아닙니다.')
+      return
+    }
+    openConfirmModal({
+      title: `${data.title}를 구매하시겠습니까?`,
+      description: `할인된 가격은 나뭇잎 ${data.discountedPrice}개 입니다`,
+      onConfirm: () =>
+        PurchaseMutate(
+          { productId: dealId },
+          {
+            onSuccess: () => {
+              openToast(ToastType.Success, '구매가 완료되었습니다')
+            },
+            onError: () => {
+              openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
+            },
+          },
+        ),
+    })
+  }
 
   let content
   /** 진행중인 타임딜 상품이 없는 경우 */
@@ -40,6 +114,7 @@ const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): Rea
       discountedPrice,
       defaultPrice,
       stock,
+      productId,
     } = data
 
     content = (
@@ -65,7 +140,9 @@ const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): Rea
               </Left>
               <Stock>남은 재고 {stock}개</Stock>
             </PriceBox>
-            <BuyButton type='button'>구매하기</BuyButton>
+            <BuyButton type='button' onClick={() => handlePurchase(productId)}>
+              구매하기
+            </BuyButton>
           </DescriptionSection>
         </InfoCard>
       </OngoingCard>
@@ -89,7 +166,6 @@ const EmptySection = styled.div`
   align-items: center;
   margin-top: 40px;
 `
-
 const EmptyTitle = styled.div`
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.semiBold};

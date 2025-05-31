@@ -5,9 +5,13 @@ export type OrderTimeDealProductResponse = {
   remainingLeaf: number
 }
 
+export type OrderTimeDealProductVariables = {
+  productId: number
+}
+
 /**
  * 일반 상품 구매
  */
-export const OrderTimeDealProduct = (productId: number) => {
+export const OrderTimeDealProduct = ({ productId }: OrderTimeDealProductVariables) => {
   return fetchRequest<OrderTimeDealProductResponse>(ENDPOINTS.STORE.TIME_DEAL.ORDER(productId))
 }
