@@ -2,7 +2,7 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ISOFormatString } from '@shared/types/date'
 
-type TimeDealStatus = 'UPCOMING' | 'ONGOING'
+export type TimeDealStatus = 'UPCOMING' | 'ONGOING'
 
 export type TimeDealProduct = {
   dealId: number
@@ -24,6 +24,6 @@ type TimeDealProductsResponse = {
   timeDeals: TimeDealProduct[]
 }
 
-export const getTimeDeals = () => {
+export const getTimeDealProducts = () => {
   return fetchRequest<TimeDealProductsResponse>(ENDPOINTS.STORE.TIME_DEAL.LIST)
 }
