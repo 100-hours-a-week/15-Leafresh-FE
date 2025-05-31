@@ -13,6 +13,7 @@ type TabState = 'time-deal' | 'product'
 
 const StorePage = () => {
   const [tab, setTab] = useState<TabState>('time-deal')
+  const tabIndex = tab === 'time-deal' ? 0 : 1
 
   return (
     <Container>
@@ -23,6 +24,7 @@ const StorePage = () => {
         <TabItem active={tab === 'product'} onClick={() => setTab('product')}>
           일반 상품
         </TabItem>
+        <Underline $index={tabIndex} />
       </TabMenu>
 
       {tab === 'time-deal' ? <TimeDealList /> : <ProductList />}
@@ -39,6 +41,7 @@ const Container = styled.div`
 `
 
 const TabMenu = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   border-bottom: 1px solid #ccc;
@@ -51,9 +54,22 @@ const TabItem = styled.button<{ active: boolean }>`
   font-weight: ${theme.fontWeight.semiBold};
   font-size: ${theme.fontSize.base};
   color: ${({ active }) => (active ? theme.colors.lfBlack.base : theme.colors.lfDarkGray.base)};
-  border-bottom: 2px solid ${({ active }) => (active ? theme.colors.lfGreenMain.base : 'transparent')};
+  background: none;
+  border: none;
+  cursor: pointer;
 
   ${media.afterMobile} {
     font-size: ${theme.fontSize.md};
   }
+`
+
+const Underline = styled.div<{ $index: number }>`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 2px;
+  background-color: ${theme.colors.lfGreenMain.base};
+  transform: translateX(${({ $index }) => $index * 100}%);
+  transition: transform 0.2s ease;
 `

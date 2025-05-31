@@ -151,7 +151,7 @@ const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): Rea
 
   return (
     <OngoingCard>
-      <OngoingTitle>🔥 특가 상품</OngoingTitle>
+      <OngoingTitle>🔥 지금만 이 가격</OngoingTitle>
       <SubText>세상은 1등만 기억해!</SubText>
       {content}
     </OngoingCard>

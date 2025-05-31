@@ -116,7 +116,6 @@ const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
 export default TimeDealList
 
 const Container = styled.div`
-  padding-top: 20px;
   padding-bottom: 40px;
 
   display: flex;

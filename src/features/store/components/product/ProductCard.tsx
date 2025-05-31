@@ -86,11 +86,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <TextContent>
         <Title>{title}</Title>
         <Description>{description}</Description>
+        <StockNotice>남은 재고 {stock}개</StockNotice>
         <PriceRow>
           <LeafIcon src='/icon/leaf.png' alt='leaf' width={16} height={16} />
           <Price>{price.toLocaleString()}</Price>
         </PriceRow>
-        <StockNotice>남은 재고 {stock}개</StockNotice>
       </TextContent>
     </Card>
   )
@@ -102,6 +102,8 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  cursor: pointer;
 `
 
 const ThumbnailWrapper = styled.div`
@@ -118,6 +120,8 @@ const Thumbnail = styled(Image)`
 
 const TextContent = styled.div`
   padding: 10px 0;
+  display: flex;
+  flex-direction: column;
 `
 
 const Title = styled.h3`
@@ -139,11 +143,6 @@ const PriceRow = styled.div`
   margin: 10px 0 8px 0;
 `
 
-const Discount = styled.span`
-  color: ${theme.colors.lfRed.base};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
 const Price = styled.span`
   font-weight: ${theme.fontWeight.semiBold};
   color: ${theme.colors.lfBlack.base};
@@ -157,7 +156,7 @@ const LeafIcon = styled(Image)`
 const StockNotice = styled.div`
   font-size: ${theme.fontSize.xs};
   color: ${theme.colors.lfDarkGray.base};
-  margin-top: 4px;
+  margin-top: 8px;
 `
 
 const BuyButton = styled.button`

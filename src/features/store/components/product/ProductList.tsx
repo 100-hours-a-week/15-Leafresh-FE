@@ -165,7 +165,7 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
 export default ProductList
 
 const Content = styled.div`
-  padding: 20px;
+  padding: 20px 0;
 `
 
 const EmptySection = styled.div`
@@ -196,7 +196,7 @@ const ProductGrid = styled.div`
 `
 
 const SearchBar = styled.form`
-  padding: 10px 0px;
+  padding-bottom: 10px;
 `
 
 const SearchInput = styled.input`
