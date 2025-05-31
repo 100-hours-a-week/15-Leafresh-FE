@@ -10,6 +10,7 @@ import { Logout } from '@features/member/api/logout'
 import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
+import { RequestFeedback } from '@features/member/api/profile/post-member-feedback'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
@@ -32,6 +33,21 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
   onSuccess(data, variables, context) {
     const { challengeId } = variables
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId) }) // 개인 챌린지 상세 조회
+
+    //뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
+    })
+
+    //최근 획득 뱃지 목록
+    queryClient.invalidateQueries({
+      predicate: query => JSON.stringify(query.queryKey)?.startsWith(`["member","badges","recent"`),
+    })
+
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -162,6 +178,20 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
     })
+
+    //뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
+    })
+
+    queryClient.invalidateQueries({
+      predicate: query => JSON.stringify(query.queryKey)?.startsWith(`["member","badges","recent"`),
+    })
+
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
   },
 
   onError(error: ErrorResponse, variables, context) {
@@ -225,6 +255,15 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
+  },
+})
+
+queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.FEEDBACK, {
+  mutationFn: RequestFeedback,
+  onSuccess() {
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK,
+    })
   },
 })
 
