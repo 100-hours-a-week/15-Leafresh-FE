@@ -163,15 +163,9 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
               {/* <MenuItem disabled={false} onClick={() => handleRoute(URL.STORE.INDEX.value)}>
                 포스팅
               </MenuItem> */}
-              <MenuItem
-                disabled={false}
-                onClick={() => openInfoModal({ title: '추가 예정입니다!', description: 'V2를 기대해주세요!' })}
-              >
+              <MenuItem disabled={false} onClick={() => handleRoute(URL.STORE.INDEX.value)}>
                 나뭇잎 상점
               </MenuItem>
-              {/* <MenuItem disabled={false} onClick={() => handleRoute(URL.STORE.INDEX.value)}>
-                나뭇잎 상점
-              </MenuItem> */}
               <MenuItem disabled={!isLoggedIn} onClick={handleLogout}>
                 로그아웃
               </MenuItem>
