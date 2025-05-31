@@ -1,9 +1,10 @@
-import { ReactNode } from 'react'
-
-import styled from '@emotion/styled'
 import Image from 'next/image'
-import { theme } from '@shared/styles/theme'
+
+import { ReactNode } from 'react'
+import styled from '@emotion/styled'
+
 import { treeLevelMap } from '@entities/member/constant'
+import { theme } from '@shared/styles/theme'
 
 interface ProfileBoxProps {
   className?: string
@@ -72,6 +73,7 @@ const ProfileImage = styled(Image)`
 const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 8px;
   flex: 1;
   min-width: 0;
 `

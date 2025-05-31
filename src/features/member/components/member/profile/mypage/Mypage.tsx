@@ -1,27 +1,27 @@
 'use client'
-import { ReactNode, useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { theme } from '@shared/styles/theme'
-
 import { useQuery } from '@tanstack/react-query'
+
+import { slideRotateIn } from '@entities/member/style'
+import { FeedbackResponse, getFeedback } from '@features/member/api/profile/get-member-feedback'
+import { pollFeedbackResult } from '@features/member/api/profile/get-member-feedback-result'
+import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
+import { getMemberProfileCard, ProfileCardResponse } from '@features/member/api/profile/get-member-profilecard'
+import { Badge, getRecentBadges } from '@features/member/api/profile/get-recent-badge'
+import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
-
-import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
-import { Badge, getRecentBadges } from '@features/member/api/profile/get-recent-badge'
-import { getMemberProfileCard, ProfileCardResponse } from '@features/member/api/profile/get-member-profilecard'
-import { getFeedback, FeedbackResponse } from '@features/member/api/profile/get-member-feedback'
-import { pollFeedbackResult } from '@features/member/api/profile/get-member-feedback-result'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { theme } from '@shared/styles/theme'
 
 import ProfileBox from './ProfileBox'
-import RecentBadgeBox from './RecentBadgeBox'
 import ProfileCard from './ProfileCard'
-import { slideRotateIn } from '@entities/member/style'
-import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
-import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import RecentBadgeBox from './RecentBadgeBox'
 
 const Mypage = () => {
   const router = useRouter()
@@ -163,15 +163,15 @@ const Mypage = () => {
         <MenuList>
           <MenuItem onClick={() => router.push(URL.MEMBER.CHALLENGES.CREATED.value)}>
             <MenuText>생성한 챌린지</MenuText>
-            <ChevronIcon>〉</ChevronIcon>
+            <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.BADGE.value)}>
             <MenuText>나의 활동 뱃지</MenuText>
-            <ChevronIcon>〉</ChevronIcon>
+            <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.STORE.PURCHASED.value)}>
             <MenuText>나의 상점 구매 목록</MenuText>
-            <ChevronIcon>〉</ChevronIcon>
+            <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
         </MenuList>
       </RouteSection>
@@ -180,7 +180,7 @@ const Mypage = () => {
         <MenuList>
           <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.MODIFY.value)}>
             <MenuText>프로필 수정</MenuText>
-            <ChevronIcon>〉</ChevronIcon>
+            <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
         </MenuList>
       </RouteSection>
@@ -198,6 +198,8 @@ export default Mypage
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+
+  gap: 20px;
 `
 
 const ProfileSection = styled.div`
@@ -212,7 +214,7 @@ const FeedbackBox = styled.div`
   flex-direction: column;
   background-color: #eff9e8;
 
-  gap: 10px;
+  gap: 16px;
   align-items: center;
   justify-self: center;
   text-align: start;
@@ -234,14 +236,14 @@ const Feedback = styled.p`
 
 const FeedbackButton = styled.button`
   width: 80%;
-  height: 30px;
-  /* padding: 5px 80px; */
+  height: 40px;
+
   background-color: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
 
   font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${theme.fontWeight.medium};
 
   cursor: pointer;
 
@@ -266,7 +268,6 @@ const AnimatedCardWrapper = styled.div`
   z-index: 1000;
 `
 const RouteSection = styled.div`
-  margin-top: 20px;
   align-self: center;
   width: 100%;
   background-color: ${theme.colors.lfWhite.base};
@@ -277,7 +278,7 @@ const RouteSection = styled.div`
 
 const SectionTitle = styled.h3`
   font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfWhite.base};
   padding: 11px 20px;
   margin: 0;
@@ -293,12 +294,12 @@ const MenuItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 20px;
+  padding: 12px 20px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #eff9e8;
+    background-color: ${theme.colors.lfInputBackground.base};
   }
 
   &:active {
@@ -311,15 +312,9 @@ const MenuItem = styled.div`
 `
 
 const MenuText = styled.span`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
-`
-
-const ChevronIcon = styled.span`
-  font-size: ${theme.fontSize.lg};
-  color: ${theme.colors.lfGray.base};
-  font-weight: ${theme.fontWeight.light};
 `
 
 const ErrorMessage = styled.div`

@@ -1,8 +1,9 @@
+import Image from 'next/image'
+
 import { ReactNode } from 'react'
+import styled from '@emotion/styled'
 
 import { Badge } from '@features/member/api/profile/get-recent-badge'
-import styled from '@emotion/styled'
-import Image from 'next/image'
 import { theme } from '@shared/styles/theme'
 
 interface RecentBadgeBoxProps {
@@ -26,7 +27,7 @@ const RecentBadgeBox = ({ className, badges }: RecentBadgeBoxProps): ReactNode =
           ))}
         </BadgeWrapper>
       ) : (
-        <NoContentWrapper>획득한 뱃지가 없습니다!</NoContentWrapper>
+        <NoContentWrapper>아직 획득한 뱃지가 없습니다</NoContentWrapper>
       )}
     </Container>
   )
@@ -47,7 +48,6 @@ const Container = styled.div`
   box-shadow: ${theme.shadow.lfPrime};
   overflow: hidden;
 
-  margin: 20px 0;
   /* padding: 15px; */
   border-radius: ${theme.radius.base};
 `
@@ -61,7 +61,7 @@ const TitleWrapper = styled.div`
 `
 const Title = styled.p`
   font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${theme.fontWeight.medium};
   padding: 0 0 0 20px;
   margin: 0;
 `
@@ -94,10 +94,12 @@ const BadgeName = styled.p`
 `
 
 const NoContentWrapper = styled.div`
-  margin-top: 10px;
-  text-align: center;
-  height: 50px;
+  height: 80px;
 
   font-size: ${theme.fontSize.md};
   font-weight: ${theme.fontWeight.semiBold};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
