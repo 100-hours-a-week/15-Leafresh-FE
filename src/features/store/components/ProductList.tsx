@@ -1,104 +1,156 @@
 'use client'
 import Image from 'next/image'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { theme } from '@shared/styles/theme'
 
-import { getProducts, Product } from '../api/get-products'
+import { Product } from '../api/get-products'
+import { useInfiniteProducts } from '../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'
 
-const dummyProducts: Product[] = [
-  {
-    id: 1,
-    title: '친환경 텀블러',
-    description: '언제 어디서나 사용 가능한 그린 텀블러',
-    imageUrl: '/image/Main_1.png',
-    price: 4000,
-    stock: 12,
-  },
-  {
-    id: 2,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 3,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 4,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 5,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-]
+// const dummyProducts: Product[] = [
+//   {
+//     id: 1,
+//     title: '친환경 텀블러',
+//     description: '언제 어디서나 사용 가능한 그린 텀블러',
+//     imageUrl: '/image/Main_1.png',
+//     price: 4000,
+//     stock: 12,
+//   },
+//   {
+//     id: 2,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 3,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 4,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 5,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 6,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 7,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 8,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 9,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+// ]
+const dummyProducts: Product[] = []
 
 interface ProductListProps {
   className?: string
 }
 
 const ProductList = ({ className }: ProductListProps): ReactNode => {
-  const [input, setInput] = useState<string>('')
+  const [input, setInput] = useState<string>('') // 트래킹 용
+  const [search, setSearch] = useState<string>('') // API 제출 용
+
+  const observerRef = useRef<HTMLDivElement>(null)
 
   // 일반 상품 목록 조회
-  const { data: productData } = useQuery({
-    queryKey: QUERY_KEYS.STORE.PRODUCTS.LIST(''),
-    queryFn: getProducts,
-    ...QUERY_OPTIONS.STORE.PRODUCTS.LIST,
-    enabled: false, // TODO: API 추가하면서 삭제 필요
-  })
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteProducts(search)
 
-  // const products: Product[] = productData?.data.products ?? []
+  // TODO: API 추가하면서 삭제 필요
+  // const products = data?.pages.flatMap(page => page?.data?.products || []) ?? []
   const products: Product[] = dummyProducts
 
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          fetchNextPage()
+        }
+      },
+      { rootMargin: '100px' },
+    )
+
+    if (observerRef.current) observer.observe(observerRef.current)
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
   /** 이벤트 핸들러 */
-  const handleSearchSubmit = () => {}
+  const handleSearchSubmit = () => {
+    setSearch(input)
+  }
 
   return (
     <Content>
-      <SearchBar onSubmit={handleSearchSubmit}>
-        <SearchInput
-          type='text'
-          inputMode='search'
-          placeholder='무엇을 찾아드릴까요?'
-          value={input}
-          onChange={e => setInput(e.target.value)}
-        />
-      </SearchBar>
       {products.length === 0 ? (
         <EmptySection>
-          <Image src='/image/earth_sad.png' alt='empty' width={140} height={140} />
-          <EmptyTitle>진행 중인 일반 상품이 없습니다</EmptyTitle>
-          <EmptyDescription>빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다. 감사합니다.</EmptyDescription>
+          <Image src='/image/apologize_character.svg' alt='사죄 이미지' width={140} height={140} />
+          <EmptyTitle>준비된 일반 상품이 없습니다</EmptyTitle>
+          <EmptyDescription>빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다</EmptyDescription>
+          <EmptyDescription>감사합니다.</EmptyDescription>
         </EmptySection>
       ) : (
-        <ProductGrid>
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </ProductGrid>
+        <>
+          <SearchBar onSubmit={handleSearchSubmit}>
+            <SearchInput
+              type='text'
+              inputMode='search'
+              placeholder='무엇을 찾아드릴까요?'
+              value={input}
+              onChange={e => setInput(e.target.value)}
+            />
+          </SearchBar>
+          <ProductGrid>
+            {products.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+            {hasNextPage && <ObserverTrigger ref={observerRef} />}
+          </ProductGrid>
+        </>
       )}
     </Content>
   )
@@ -120,7 +172,7 @@ const EmptySection = styled.div`
 const EmptyTitle = styled.div`
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.semiBold};
-  margin-top: 16px;
+  margin: 16px 0 16px 0;
 `
 
 const EmptyDescription = styled.p`
@@ -133,7 +185,7 @@ const EmptyDescription = styled.p`
 const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 24px;
   margin-top: 8px;
 `
 
@@ -153,4 +205,8 @@ const SearchInput = styled.input`
   background-repeat: no-repeat;
   background-position: 12px center;
   background-size: 16px;
+`
+
+const ObserverTrigger = styled.div`
+  height: 1px;
 `
