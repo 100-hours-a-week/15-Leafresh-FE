@@ -5,8 +5,8 @@ import { ISOFormatString } from '@shared/types/date'
 export type TimeDealStatus = 'UPCOMING' | 'ONGOING'
 
 export type TimeDealProduct = {
-  dealId: number
-  productId: number
+  dealId: number // 특가 상품 번호
+  productId: number // 상품 번호
   title: string
   description: string
   defaultPrice: number

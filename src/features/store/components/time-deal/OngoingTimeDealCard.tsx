@@ -51,8 +51,8 @@ const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): Rea
 
     if (!data) return
 
-    /** #1. 에러 케이스 */
-    // 재고 업음
+    // #1. 에러 케이스
+    // 재고 없음
     if (data.stock <= 0) {
       openToast(ToastType.Error, '품절된 상품입니다.')
       return

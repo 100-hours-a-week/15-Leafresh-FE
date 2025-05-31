@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
+import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 
 import ProductList from './components/product/ProductList'
@@ -24,7 +25,7 @@ const StorePage = () => {
         </TabItem>
       </TabMenu>
 
-      {tab === 'product' ? <ProductList /> : <TimeDealList />}
+      {tab === 'time-deal' ? <TimeDealList /> : <ProductList />}
     </Container>
   )
 }
@@ -47,8 +48,12 @@ const TabItem = styled.button<{ active: boolean }>`
   flex: 1;
   padding: 16px;
   text-align: center;
-  font-weight: ${theme.fontWeight.bold};
-  font-size: ${theme.fontSize.md};
+  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${theme.fontSize.base};
   color: ${({ active }) => (active ? theme.colors.lfBlack.base : theme.colors.lfDarkGray.base)};
   border-bottom: 2px solid ${({ active }) => (active ? theme.colors.lfGreenMain.base : 'transparent')};
+
+  ${media.afterMobile} {
+    font-size: ${theme.fontSize.md};
+  }
 `

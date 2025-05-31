@@ -10,81 +10,81 @@ import { Product } from '../../api/get-products'
 import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'
 
-// const dummyProducts: Product[] = [
-//   {
-//     id: 1,
-//     title: '친환경 텀블러',
-//     description: '언제 어디서나 사용 가능한 그린 텀블러',
-//     imageUrl: '/image/Main_1.png',
-//     price: 4000,
-//     stock: 12,
-//   },
-//   {
-//     id: 2,
-//     title: '대나무 칫솔',
-//     description: '지구를 생각한 생분해 칫솔',
-//     imageUrl: '/image/Main_1.png',
-//     price: 3000,
-//     stock: 5,
-//   },
-//   {
-//     id: 3,
-//     title: '대나무 칫솔',
-//     description: '지구를 생각한 생분해 칫솔',
-//     imageUrl: '/image/Main_1.png',
-//     price: 3000,
-//     stock: 5,
-//   },
-//   {
-//     id: 4,
-//     title: '대나무 칫솔',
-//     description: '지구를 생각한 생분해 칫솔',
-//     imageUrl: '/image/Main_1.png',
-//     price: 3000,
-//     stock: 5,
-//   },
-//   {
-//     id: 5,
-//     title: '대나무 칫솔',
-//     description: '지구를 생각한 생분해 칫솔',
-//     imageUrl: '/image/Main_1.png',
-//     price: 3000,
-//     stock: 5,
-//   },
-//   {
-//     id: 6,
-//     title: '대나무 칫솔',
-//     description: '지구를 생각한 생분해 칫솔',
-//     imageUrl: '/image/Main_1.png',
-//     price: 3000,
-//     stock: 5,
-//   },
-//   {
-//     id: 7,
-//     title: '대나무 칫솔',
-//     description: '지구를 생각한 생분해 칫솔',
-//     imageUrl: '/image/Main_1.png',
-//     price: 3000,
-//     stock: 5,
-//   },
-//   {
-//     id: 8,
-//     title: '대나무 칫솔',
-//     description: '지구를 생각한 생분해 칫솔',
-//     imageUrl: '/image/Main_1.png',
-//     price: 3000,
-//     stock: 5,
-//   },
-//   {
-//     id: 9,
-//     title: '대나무 칫솔',
-//     description: '지구를 생각한 생분해 칫솔',
-//     imageUrl: '/image/Main_1.png',
-//     price: 3000,
-//     stock: 5,
-//   },
-// ]
-const dummyProducts: Product[] = []
+const dummyProducts: Product[] = [
+  {
+    id: 1,
+    title: '친환경 텀블러',
+    description: '언제 어디서나 사용 가능한 그린 텀블러',
+    imageUrl: '/image/Main_1.png',
+    price: 4000,
+    stock: 12,
+  },
+  {
+    id: 2,
+    title: '대나무 칫솔',
+    description: '지구를 생각한 생분해 칫솔',
+    imageUrl: '/image/Main_1.png',
+    price: 3000,
+    stock: 5,
+  },
+  {
+    id: 3,
+    title: '대나무 칫솔',
+    description: '지구를 생각한 생분해 칫솔',
+    imageUrl: '/image/Main_1.png',
+    price: 3000,
+    stock: 5,
+  },
+  {
+    id: 4,
+    title: '대나무 칫솔',
+    description: '지구를 생각한 생분해 칫솔',
+    imageUrl: '/image/Main_1.png',
+    price: 3000,
+    stock: 5,
+  },
+  {
+    id: 5,
+    title: '대나무 칫솔',
+    description: '지구를 생각한 생분해 칫솔',
+    imageUrl: '/image/Main_1.png',
+    price: 3000,
+    stock: 5,
+  },
+  {
+    id: 6,
+    title: '대나무 칫솔',
+    description: '지구를 생각한 생분해 칫솔',
+    imageUrl: '/image/Main_1.png',
+    price: 3000,
+    stock: 5,
+  },
+  {
+    id: 7,
+    title: '대나무 칫솔',
+    description: '지구를 생각한 생분해 칫솔',
+    imageUrl: '/image/Main_1.png',
+    price: 3000,
+    stock: 5,
+  },
+  {
+    id: 8,
+    title: '대나무 칫솔',
+    description: '지구를 생각한 생분해 칫솔',
+    imageUrl: '/image/Main_1.png',
+    price: 3000,
+    stock: 5,
+  },
+  {
+    id: 9,
+    title: '대나무 칫솔',
+    description: '지구를 생각한 생분해 칫솔',
+    imageUrl: '/image/Main_1.png',
+    price: 3000,
+    stock: 5,
+  },
+]
+// const dummyProducts: Product[] = []
 
 interface ProductListProps {
   className?: string
@@ -124,36 +124,42 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
     setSearch(input)
   }
 
-  return (
-    <Content>
-      {products.length === 0 ? (
-        <EmptySection>
-          <Image src='/image/apologize_character.svg' alt='사죄 이미지' width={140} height={140} />
-          <EmptyTitle>준비된 일반 상품이 없습니다</EmptyTitle>
-          <EmptyDescription>빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다</EmptyDescription>
-          <EmptyDescription>감사합니다.</EmptyDescription>
-        </EmptySection>
-      ) : (
-        <>
-          <SearchBar onSubmit={handleSearchSubmit}>
-            <SearchInput
-              type='text'
-              inputMode='search'
-              placeholder='무엇을 찾아드릴까요?'
-              value={input}
-              onChange={e => setInput(e.target.value)}
-            />
-          </SearchBar>
-          <ProductGrid>
-            {products.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-            {hasNextPage && <ObserverTrigger ref={observerRef} />}
-          </ProductGrid>
-        </>
-      )}
-    </Content>
-  )
+  /** 상품 리스트 */
+  let contents
+  /** 일반 상품이 없는 경우 */
+  if (products.length === 0) {
+    contents = (
+      <EmptySection>
+        <Image src='/image/apologize_character.svg' alt='사죄 이미지' width={140} height={140} />
+        <EmptyTitle>준비된 일반 상품이 없습니다</EmptyTitle>
+        <EmptyDescription>빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다</EmptyDescription>
+        <EmptyDescription>감사합니다.</EmptyDescription>
+      </EmptySection>
+    )
+  } else {
+    /** 일반 상품이 있는 경우 */
+    contents = (
+      <>
+        <SearchBar onSubmit={handleSearchSubmit}>
+          <SearchInput
+            type='text'
+            inputMode='search'
+            placeholder='무엇을 찾아드릴까요?'
+            value={input}
+            onChange={e => setInput(e.target.value)}
+          />
+        </SearchBar>
+        <ProductGrid>
+          {products.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+          {hasNextPage && <ObserverTrigger ref={observerRef} />}
+        </ProductGrid>
+      </>
+    )
+  }
+
+  return <Content>{contents}</Content>
 }
 
 export default ProductList
