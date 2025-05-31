@@ -35,7 +35,7 @@ const MEMBER_URL = {
     },
     BADGE: {
       name: '뱃지 조회',
-      value: '/member/proile/badge',
+      value: '/member/profile/badge',
     },
   },
   ALARM: {
