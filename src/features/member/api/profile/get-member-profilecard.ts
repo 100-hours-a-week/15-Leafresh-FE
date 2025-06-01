@@ -2,7 +2,7 @@ import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { HttpMethod } from '@shared/constants/http'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 
-export interface CardBadge {
+export type CardBadge = {
   id: number
   name: string
   imageUrl: string

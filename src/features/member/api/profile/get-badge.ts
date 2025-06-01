@@ -1,7 +1,7 @@
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 
-export interface Badge {
+export type Badge = {
   id: number
   name: string
   condition: string
@@ -17,5 +17,5 @@ export interface BadgeListResponse {
 
 // GET /api/members/badges
 export const getBadgeList = () => {
-  return fetchRequest<BadgeListResponse>(ENDPOINTS.MEMBERS.BADGES)
+  return fetchRequest<BadgeListResponse>(ENDPOINTS.MEMBERS.BADGES.LIST)
 }
