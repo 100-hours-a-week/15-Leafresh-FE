@@ -38,11 +38,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
       queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
     })
 
-    //최근 획득 뱃지 목록
-    queryClient.invalidateQueries({
-      predicate: query => JSON.stringify(query.queryKey)?.startsWith(`["member","badges","recent"`),
-    })
-
     //프로필 카드
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
@@ -166,10 +161,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
     //뱃지 목록
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
-    })
-
-    queryClient.invalidateQueries({
-      predicate: query => JSON.stringify(query.queryKey)?.startsWith(`["member","badges","recent"`),
     })
 
     //프로필 카드
