@@ -3,15 +3,17 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
 import { PurchaseProduct } from '@features/member/api/store/get-order-list'
 import { useInfiniteMemberStoreOrderList } from '@features/member/hooks/useInfiniteMemberStoreOrderList'
+import NoContent from '@shared/components/no-content/no-content'
 import { URL } from '@shared/constants/route/route'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
+import LeafIcon from '@public/icon/leaf.png'
 
 /** 더미 데이터 */
 const dummyMemberStoreOrderList: PurchaseProduct[] = [
@@ -36,7 +38,7 @@ const dummyMemberStoreOrderList: PurchaseProduct[] = [
     },
     quantity: 1,
     price: 500,
-    purchasedAt: new Date(Date.now() - 30 * 1000 * 60 * 60 * 24 * 2).toISOString() as ISOFormatString, // 2일 전
+    purchasedAt: new Date(Date.now() - 30 * 1000 * 60 * 60 * 24 * 2).toISOString() as ISOFormatString,
   },
   {
     id: 3,
@@ -47,7 +49,7 @@ const dummyMemberStoreOrderList: PurchaseProduct[] = [
     },
     quantity: 1,
     price: 500,
-    purchasedAt: new Date(Date.now() - 990 * 60 * 60 * 24 * 1).toISOString() as ISOFormatString, // 1일 전
+    purchasedAt: new Date(Date.now() - 990 * 60 * 60 * 24 * 1).toISOString() as ISOFormatString,
   },
   {
     id: 4,
@@ -61,8 +63,9 @@ const dummyMemberStoreOrderList: PurchaseProduct[] = [
     purchasedAt: new Date().toISOString() as ISOFormatString, // 오늘
   },
 ]
+// const dummyMemberStoreOrderList: PurchaseProduct[] = []
 
-const MemberOrderListPage = () => {
+const MemberOrderListPage = (): ReactNode => {
   const router = useRouter()
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberStoreOrderList()
 
@@ -88,6 +91,22 @@ const MemberOrderListPage = () => {
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
+  let contents
+  // 데이터가 없는 경우
+  const isEmpty = !products || products.length === 0
+  if (isEmpty) {
+    contents = (
+      <NoContent
+        title='구매내역이 없습니다'
+        buttonText='구매하러 가기'
+        clickHandler={() => {
+          router.push(URL.STORE.INDEX.value)
+        }}
+      />
+    )
+  } else {
+    contents = products.map(product => <ProductCard data={product} key={product.id} />)
+  }
   return (
     <Container>
       <Header>
@@ -101,29 +120,38 @@ const MemberOrderListPage = () => {
           상점 가기
         </LinkButton>
       </Header>
-      <Grid>
-        {products.map(product => (
-          <Card key={product.id}>
-            <ThumbnailWrapper>
-              <Image src={product.product.imageUrl} alt={product.product.title} fill style={{ objectFit: 'cover' }} />
-            </ThumbnailWrapper>
-            <ProductTitle>{product.product.title}</ProductTitle>
-            <InfoRow>
-              <PriceRow>
-                <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} />
-                <Price>{product.price}</Price>
-              </PriceRow>
-              <TimeAgo>{getTimeDiff(product.purchasedAt)}</TimeAgo>
-            </InfoRow>
-          </Card>
-        ))}
-      </Grid>
+      <Grid isEmpty={isEmpty}>{contents}</Grid>
       {hasNextPage && <Observer ref={observerRef} />}
     </Container>
   )
 }
 
 export default MemberOrderListPage
+
+interface ProductCardProps {
+  data: PurchaseProduct
+  className?: string
+}
+
+const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
+  const { id: orderId, price, product, purchasedAt, quantity } = data
+  const { id: productId, imageUrl, title } = product
+  return (
+    <Card key={orderId}>
+      <ThumbnailWrapper>
+        <Image src={imageUrl} alt={title} fill style={{ objectFit: 'cover' }} />
+      </ThumbnailWrapper>
+      <ProductTitle>{title}</ProductTitle>
+      <InfoRow>
+        <PriceRow>
+          <Image src={LeafIcon} alt='leaf' width={24} height={24} />
+          <Price>{price}</Price>
+        </PriceRow>
+        <TimeAgo>{getTimeDiff(purchasedAt)}</TimeAgo>
+      </InfoRow>
+    </Card>
+  )
+}
 
 const Container = styled.div`
   padding-bottom: 40px;
@@ -158,11 +186,20 @@ const LinkButton = styled.button`
   cursor: pointer;
 `
 
-const Grid = styled.div`
+const Grid = styled.div<{ isEmpty?: boolean }>`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  row-gap: 16px;
-  column-gap: 20px;
+  ${({ isEmpty }) =>
+    isEmpty
+      ? `
+    grid-template-columns: 1fr;
+    place-items: center;
+    min-height: 40vh;
+  `
+      : `
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 16px;
+    column-gap: 20px;
+  `}
 `
 
 const Card = styled.div`
@@ -215,9 +252,4 @@ const Price = styled.span`
 
 const Observer = styled.div`
   height: 1px;
-`
-
-const LeafIcon = styled(Image)`
-  width: 24px;
-  aspect-ratio: 1/1;
 `
