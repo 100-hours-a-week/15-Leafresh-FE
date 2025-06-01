@@ -73,5 +73,6 @@ export const getTimeDiff = (dateString: ISOFormatString): string => {
     return `${diffHour}시간 전`
   }
 
+  // 외
   return `${diffDay}일 전`
 }
