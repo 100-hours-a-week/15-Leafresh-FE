@@ -55,7 +55,10 @@ const MEMBER_QUERY_KEYS = {
   // 회원 정보
   PROFILE_CARD: ['member', 'profileCard'], // 프로필 카드 조회
   LEAVES: ['member', 'leaves'], // 나뭇잎 개수 조회
-  FEEDBACK: ['member', 'feedback'], // 챌린지 피드백 조회
+  FEEDBACK: {
+    GET_FEEDBACK: ['member', 'feedback'], // 챌린지 피드백 조회
+    RESULT: ['member', 'feedback', 'result'],
+  },
 
   BADGES: {
     LIST: ['member', 'badges', 'list'], // 뱃지 조회

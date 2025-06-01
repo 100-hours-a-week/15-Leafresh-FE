@@ -6,5 +6,5 @@ export interface FeedbackRequest {
 }
 
 export const RequestFeedback = (body: FeedbackRequest) => {
-  return fetchRequest<null>(ENDPOINTS.MEMBERS.FEEDBACK.POST, { body })
+  return fetchRequest<null>(ENDPOINTS.MEMBERS.FEEDBACK.POST_FEEDBACK, { body })
 }

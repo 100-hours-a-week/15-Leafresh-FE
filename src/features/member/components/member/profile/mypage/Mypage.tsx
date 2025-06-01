@@ -31,7 +31,7 @@ const Mypage = () => {
   const [pollError, setPollError] = useState<string | null>(null)
   const [showProfileCard, setShowProfileCard] = useState(false)
 
-  const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK)
+  const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK)
 
   const isMountedRef = useRef(true) //페이지 언마운트 시, 상태 변경(set... 호출) 방지
 
@@ -82,7 +82,7 @@ const Mypage = () => {
   })
 
   const { data: feedbackData } = useQuery({
-    queryKey: QUERY_KEYS.MEMBER.FEEDBACK,
+    queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK,
     queryFn: getFeedback,
     ...QUERY_OPTIONS.MEMBER.FEEDBACK,
   })

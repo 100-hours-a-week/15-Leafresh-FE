@@ -214,11 +214,18 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
   },
 })
 
-queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.FEEDBACK, {
+//피드백 생성 요청
+queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK, {
   mutationFn: RequestFeedback,
   onSuccess() {
+    //사용자 피드백
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.MEMBER.FEEDBACK,
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK,
+    })
+
+    //피드백 요청 결과
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK.RESULT,
     })
   },
 })

@@ -135,17 +135,15 @@ const MEMBER_ENDPOINTS = {
   LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves' }, // 나뭇잎 개수 조회
 
   FEEDBACK: {
-    GET: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
-    POST: { method: HttpMethod.POST, path: '/api/members/feedback' }, //피드백 생성 요청
+    GET_FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
+    POST_FEEDBACK: { method: HttpMethod.POST, path: '/api/members/feedback' }, //피드백 생성 요청
     RESULT: { method: HttpMethod.GET, path: '/api/members/feedback/result' }, //피드백 결과 조회(롱폴링)
   },
 
-  BADGES: Object.assign(
-    { method: HttpMethod.GET, path: '/api/members/badges' }, // 뱃지 조회
-    {
-      RECENT: { method: HttpMethod.GET, path: '/api/members/badges/recent' }, //최근 획득 뱃지 조회
-    },
-  ),
+  BADGES: {
+    LIST: { method: HttpMethod.GET, path: '/api/members/badges' }, // 뱃지 조회
+    RECENT: { method: HttpMethod.GET, path: '/api/members/badges/recent' }, //최근 획득 뱃지 조회
+  },
 
   // 알림
   NOTIFICATION: {
