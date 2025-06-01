@@ -15,7 +15,7 @@ export type PurchaseProduct = {
     title: string
     imageUrl: string
   }
-  quantity: number
+  quantity: number // 구매 개수
   price: number
   purchasedAt: ISOFormatString
 }

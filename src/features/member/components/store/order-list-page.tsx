@@ -19,7 +19,8 @@ const dummyMemberStoreOrderList: PurchaseProduct[] = [
     id: 1,
     product: {
       id: 101,
-      title: '맛있는 나뭇잎 상점 구매 품목',
+      title:
+        '맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목',
       imageUrl: '/image/Main_1.png',
     },
     quantity: 1,
@@ -90,7 +91,7 @@ const MemberOrderListPage = () => {
   return (
     <Container>
       <Header>
-        <Title>나뭇잎 상점 구매 목록</Title>
+        <Title>나뭇잎 상점 구매내역</Title>
         <LinkButton
           onClick={() => {
             router.push(URL.STORE.INDEX.value)
@@ -136,6 +137,7 @@ const Header = styled.div`
 
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `
@@ -146,9 +148,9 @@ const Title = styled.h1`
 `
 
 const LinkButton = styled.button`
-  position: absolute;
-  right: 0;
+  margin: 6px 0;
 
+  align-self: flex-end;
   font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfBlue.base};
   font-weight: ${theme.fontWeight.medium};
@@ -180,6 +182,13 @@ const ProductTitle = styled.div`
   margin: 12px 0 6px 0;
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.semiBold};
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // 최대 줄 수
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 `
 
 const InfoRow = styled.div`
