@@ -46,11 +46,6 @@ const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
             <Item key={badge.id} onClick={() => handleBadgeClick(badge.name, badge.condition)}>
               <BadgeImageWrapper>
                 <BadgeImage src={badge.imageUrl} alt={badge.name} width={120} height={120} />
-                {badge.isLocked && (
-                  <LockOverlay>
-                    <LucideIcon name='LockKeyhole' color='lfGray' size={24} />
-                  </LockOverlay>
-                )}
               </BadgeImageWrapper>
               <Name isLocked={badge.isLocked}>{badge.name}</Name>
             </Item>
@@ -154,15 +149,6 @@ const BadgeImage = styled(Image)`
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 8px;
-`
-
-const LockOverlay = styled.div`
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const Name = styled.span<{ isLocked: boolean }>`
