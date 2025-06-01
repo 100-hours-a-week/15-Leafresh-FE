@@ -2,6 +2,11 @@ import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { HttpMethod } from '@shared/constants/http'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 
+export interface CardBadge {
+  id: number
+  name: string
+  imageUrl: string
+}
 export interface ProfileCardResponse {
   nickname: string
   profileImageUrl: string
@@ -15,12 +20,6 @@ export interface ProfileCardResponse {
   totalSuccessfulVerifications: number
   completedGroupChallengesCount: number
   badges: CardBadge[]
-}
-
-export interface CardBadge {
-  id: number
-  name: string
-  imageUrl: string
 }
 
 // GET /api/members/profilecard

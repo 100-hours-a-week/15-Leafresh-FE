@@ -7,5 +7,5 @@ export interface FeedbackResponse {
 }
 
 export const getFeedback = () => {
-  return fetchRequest<FeedbackResponse>(ENDPOINTS.MEMBERS.FEEDBACK)
+  return fetchRequest<FeedbackResponse>(ENDPOINTS.MEMBERS.FEEDBACK.GET_FEEDBACK)
 }
