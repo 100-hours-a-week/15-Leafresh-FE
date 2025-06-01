@@ -169,6 +169,9 @@ const SlideDrawer = ({ height, padding }: SlideDrawerProps) => {
               >
                 나뭇잎 상점
               </MenuItem>
+              <MenuItem disabled={!isLoggedIn} onClick={() => handleRoute(URL.MEMBER.PROFILE.MYPAGE.value)}>
+                마이페이지
+              </MenuItem>
               {/* <MenuItem disabled={false} onClick={() => handleRoute(URL.STORE.INDEX.value)}>
                 나뭇잎 상점
               </MenuItem> */}
