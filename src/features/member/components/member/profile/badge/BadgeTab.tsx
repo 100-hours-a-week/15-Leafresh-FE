@@ -1,6 +1,6 @@
 'use client'
-import Image from 'next/image'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
@@ -18,7 +18,7 @@ interface BadgeTabProps {
 const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const selectedCategory = categories[selectedIndex]?.key ?? ''
-  const { openInfoModal, isOpen: isInfoModalOpen } = useInfoModalStore()
+  const { openInfoModal } = useInfoModalStore()
 
   function handleBadgeClick(name: string, condition: string) {
     openInfoModal({
@@ -41,28 +41,21 @@ const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
       </TabBar>
 
       <GridWrapper>
-        {categories.map(category => (
-          <Grid key={category.key} isVisible={selectedCategory === category.key}>
-            {badgeData[category.key]?.map(badge => (
-              // <Item key={badge.id} onClick={() => handleBadgeClick(badge.name, badge.condition, badge.isLocked)}>
-              //   <BadgeImage src={badge.imageUrl} alt={badge.name} width={120} height={120} />
-              //   <Name isLocked={badge.isLocked}>{badge.name}</Name>
-              //   {/* {badge.isLocked && <Lock>🔒</Lock>} */}
-              // </Item>
-              <Item key={badge.id} onClick={() => handleBadgeClick(badge.name, badge.condition)}>
-                <BadgeImageWrapper>
-                  <BadgeImage src={badge.imageUrl} alt={badge.name} width={120} height={120} />
-                  {badge.isLocked && (
-                    <LockOverlay>
-                      <LucideIcon name='LockKeyhole' color='lfGray' size={24} />
-                    </LockOverlay>
-                  )}
-                </BadgeImageWrapper>
-                <Name isLocked={badge.isLocked}>{badge.name}</Name>
-              </Item>
-            ))}
-          </Grid>
-        ))}
+        <FadeGrid key={selectedCategory}>
+          {badgeData[selectedCategory]?.map(badge => (
+            <Item key={badge.id} onClick={() => handleBadgeClick(badge.name, badge.condition)}>
+              <BadgeImageWrapper>
+                <BadgeImage src={badge.imageUrl} alt={badge.name} width={120} height={120} />
+                {badge.isLocked && (
+                  <LockOverlay>
+                    <LucideIcon name='LockKeyhole' color='lfGray' size={24} />
+                  </LockOverlay>
+                )}
+              </BadgeImageWrapper>
+              <Name isLocked={badge.isLocked}>{badge.name}</Name>
+            </Item>
+          ))}
+        </FadeGrid>
       </GridWrapper>
     </Container>
   )
@@ -79,7 +72,6 @@ const TabBar = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
-  /* padding: 0 20px; */
   background: white;
   border-bottom: 1px solid ${theme.colors.lfLightGray.base};
 `
@@ -89,9 +81,8 @@ const TabButton = styled.button<{ isActive: boolean }>`
   border: none;
   flex: 1;
   height: 40px;
-  padding: 0 20px;
   font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${({ isActive }) => (isActive ? theme.fontWeight.semiBold : theme.fontWeight.regular)};
   color: ${({ isActive }) => (isActive ? theme.colors.lfGreenMain.base : theme.colors.lfBlack.base)};
   cursor: pointer;
   display: flex;
@@ -104,15 +95,13 @@ const TabButton = styled.button<{ isActive: boolean }>`
 const UnderlineWrapper = styled.div<{ tabCount: number }>`
   position: absolute;
   bottom: 0;
-  /* left: 20px; */
-  /* width: calc(100% - 40px); // 양쪽 padding 제외 */
   width: 100%;
   display: flex;
 `
 
 const Underline = styled.div<{ $index: number }>`
   width: 100%;
-  max-width: calc(100% / 5); // 탭 개수만큼 나누기
+  max-width: calc(100% / 5);
   height: 2px;
   background-color: ${theme.colors.lfGreenMain.base};
   transform: translateX(${({ $index }) => $index * 100}%);
@@ -123,30 +112,31 @@ const GridWrapper = styled.div`
   position: relative;
 `
 
-const Grid = styled.div<{ isVisible: boolean }>`
+const FadeGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 24px;
   row-gap: 24px;
-  padding: 24px 0px;
+  padding: 24px 0;
 
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  animation: fadeIn 0.5s ease;
 
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  pointer-events: ${({ isVisible }) => (isVisible ? 'auto' : 'none')};
-  transition: opacity 0.3s ease;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `
 
 const Item = styled.div`
-  width: 100%;
+  width: 100%; // 중요!
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-
   position: relative;
   cursor: pointer;
 `
@@ -159,6 +149,13 @@ const BadgeImageWrapper = styled.div`
   overflow: hidden;
 `
 
+const BadgeImage = styled(Image)`
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+`
+
 const LockOverlay = styled.div`
   position: absolute;
   inset: 0;
@@ -166,18 +163,6 @@ const LockOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
-
-const LockIcon = styled.span`
-  font-size: 24px;
-  color: white;
-`
-
-const BadgeImage = styled(Image)`
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 8px;
 `
 
 const Name = styled.span<{ isLocked: boolean }>`
@@ -188,20 +173,4 @@ const Name = styled.span<{ isLocked: boolean }>`
   text-align: center;
   max-width: 80px;
   line-height: 1.3;
-`
-
-const Lock = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translate(25%, -25%);
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
 `
