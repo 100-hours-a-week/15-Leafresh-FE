@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
 import { OrderTimeDealProductResponse, OrderTimeDealProductVariables } from '@features/store/api/order-timedeal'
 import useRemainingTime from '@features/store/hook/useRemainingTime'
+import ApologizeContent from '@shared/components/apologize/apologize'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
@@ -95,12 +96,10 @@ const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): Rea
   /** 진행중인 타임딜 상품이 없는 경우 */
   if (!data) {
     content = (
-      <EmptySection>
-        <Image src='/image/apologize_character.svg' alt='사죄 이미지' width={140} height={140} />
-        <EmptyTitle>진행 중인 특가 상품이 없습니다</EmptyTitle>
-        <EmptyDescription>빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다</EmptyDescription>
-        <EmptyDescription>감사합니다.</EmptyDescription>
-      </EmptySection>
+      <ApologizeContent
+        title='진행 중인 특가 상품이 없습니다'
+        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+      />
     )
   } else {
     /** 진행중인 타임딜 상품이 있는 경우 */

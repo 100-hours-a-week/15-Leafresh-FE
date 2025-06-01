@@ -7,6 +7,7 @@ import { ReactNode, useRef } from 'react'
 import styled from '@emotion/styled'
 
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
+import ApologizeContent from '@shared/components/apologize/apologize'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 
@@ -23,12 +24,7 @@ const UpcomingTimeDealCard = ({ data, className }: UpcomingTimeDealCardProps): R
   /** 다가오는 특가 상품이 없는 경우 */
   if (data.length === 0) {
     content = (
-      <EmptySection>
-        <Image src='/image/apologize_character.svg' alt='사죄 이미지' width={140} height={140} />
-        <EmptyTitle>예정된 특가 상품이 없습니다</EmptyTitle>
-        <EmptyDescription>빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다</EmptyDescription>
-        <EmptyDescription>감사합니다.</EmptyDescription>
-      </EmptySection>
+      <ApologizeContent title='예정된 특가 상품이 없습니다' description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다' />
     )
   } else {
     /** 다가오는 특가 상품이 있는 경우 */
@@ -70,26 +66,6 @@ const UpcomingTimeDealCard = ({ data, className }: UpcomingTimeDealCardProps): R
   )
 }
 export default UpcomingTimeDealCard
-
-const EmptySection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 40px;
-`
-
-const EmptyTitle = styled.div`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
-  margin: 16px 0 16px 0;
-`
-
-const EmptyDescription = styled.p`
-  font-size: ${theme.fontSize.base};
-  color: ${theme.colors.lfDarkGray.base};
-  margin-top: 6px;
-  text-align: center;
-`
 
 const UpcomingSection = styled.section`
   margin-top: 24px;

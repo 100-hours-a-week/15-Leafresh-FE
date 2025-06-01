@@ -1,9 +1,9 @@
 'use client'
-import Image from 'next/image'
 
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
+import ApologizeContent from '@shared/components/apologize/apologize'
 import { theme } from '@shared/styles/theme'
 
 import { Product } from '../../api/get-products'
@@ -13,11 +13,13 @@ import ProductCard from './ProductCard'
 const dummyProducts: Product[] = [
   {
     id: 1,
-    title: '친환경 텀블러',
-    description: '언제 어디서나 사용 가능한 그린 텀블러',
+    title:
+      '친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 ',
+    description:
+      '언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 ',
     imageUrl: '/image/Main_1.png',
     price: 4000,
-    stock: 12,
+    stock: 0,
   },
   {
     id: 2,
@@ -129,12 +131,7 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   /** 일반 상품이 없는 경우 */
   if (products.length === 0) {
     contents = (
-      <EmptySection>
-        <Image src='/image/apologize_character.svg' alt='사죄 이미지' width={140} height={140} />
-        <EmptyTitle>준비된 일반 상품이 없습니다</EmptyTitle>
-        <EmptyDescription>빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다</EmptyDescription>
-        <EmptyDescription>감사합니다.</EmptyDescription>
-      </EmptySection>
+      <ApologizeContent title='준비된 일반 상품이 없습니다' description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다' />
     )
   } else {
     /** 일반 상품이 있는 경우 */
