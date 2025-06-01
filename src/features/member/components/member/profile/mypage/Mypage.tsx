@@ -22,6 +22,7 @@ import { theme } from '@shared/styles/theme'
 import ProfileBox from './ProfileBox'
 import ProfileCard from './ProfileCard'
 import RecentBadgeBox from './RecentBadgeBox'
+import Loading from '@shared/components/loading'
 
 const Mypage = () => {
   const router = useRouter()
@@ -136,18 +137,20 @@ const Mypage = () => {
         />
         <FeedbackBox>
           <FeedbackText>나의 친환경 활동 점수는?</FeedbackText>
-          {feedback === null ? (
-            <FeedbackButton onClick={handleRequestFeedback} disabled={isPolling}>
-              {isPolling ? '피드백 생성 중...' : 'AI 피드백 받기'}
-            </FeedbackButton>
-          ) : (
-            <Feedback>{feedback.content}</Feedback>
+          {isPolling && <Loading />}
+
+          {/* 피드백 텍스트 */}
+          {feedback !== null && !isPolling && <Feedback>{feedback.content}</Feedback>}
+
+          {/* 피드백 요청 버튼 조건 분기 */}
+          {feedback === null && !isPolling && !pollError && (
+            <FeedbackButton onClick={handleRequestFeedback}>AI 피드백 받기</FeedbackButton>
           )}
-          {pollError && (
+
+          {/* 에러 발생 시 다시 시도 버튼만 표시 */}
+          {pollError && !isPolling && (
             <>
-              <FeedbackButton onClick={handleRequestFeedback}>
-                {isPolling ? '피드백 생성 중...' : '다시 시도'}
-              </FeedbackButton>
+              <FeedbackButton onClick={handleRequestFeedback}>다시 시도</FeedbackButton>
               <ErrorMessage>{pollError}</ErrorMessage>
             </>
           )}
