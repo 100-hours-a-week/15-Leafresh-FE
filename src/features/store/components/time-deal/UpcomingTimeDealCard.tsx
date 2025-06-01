@@ -213,7 +213,7 @@ const CarouselInner = styled.div`
 `
 
 const CarouselSlide = styled.div`
-  flex: 0 0 60%;
+  flex: 0 0 65%;
   margin-right: 16px;
 
   cursor: pointer;
