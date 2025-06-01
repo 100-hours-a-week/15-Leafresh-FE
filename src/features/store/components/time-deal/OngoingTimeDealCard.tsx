@@ -117,6 +117,8 @@ const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): Rea
       productId,
     } = data
 
+    const isSoldOut: boolean = stock <= 0
+
     content = (
       <OngoingCard>
         <Timer>
@@ -138,7 +140,7 @@ const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): Rea
                 </Price>
                 <Origin>{defaultPrice}</Origin>
               </Left>
-              <Stock>남은 재고 {stock}개</Stock>
+              <Stock isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</Stock>
             </PriceBox>
             <BuyButton type='button' onClick={() => handlePurchase(productId)}>
               구매하기
@@ -279,8 +281,9 @@ const Origin = styled.del`
   color: ${theme.colors.lfGray.base};
 `
 
-const Stock = styled.span`
+const Stock = styled.span<{ isSoldOut: boolean }>`
   font-size: ${theme.fontSize.sm};
+  color: ${({ isSoldOut }) => (isSoldOut ? theme.colors.lfRed.base : theme.colors.lfDarkGray.base)};
 `
 
 const BuyButton = styled.button`

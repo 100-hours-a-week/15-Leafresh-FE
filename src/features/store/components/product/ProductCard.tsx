@@ -29,6 +29,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const { id, description, imageUrl, price, stock, title } = product
 
+  const isSoldOut: boolean = stock <= 0
+
   /** 일반 상품 구매 이력 생성 */
   const { mutate: PurchaseMutate, isPending: isPurchasing } = useMutationStore<
     OrderProductResponse,
@@ -51,7 +53,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
     // #1. 에러 케이스
     // 재고 없음
-    if (stock <= 0) {
+    if (isSoldOut) {
       openToast(ToastType.Error, '품절된 상품입니다.')
       return
     }
@@ -86,9 +88,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <TextContent>
         <Title>{title}</Title>
         <Description>{description}</Description>
-        <StockNotice>남은 재고 {stock}개</StockNotice>
+        <StockNotice isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</StockNotice>
         <PriceRow>
-          <LeafIcon src='/icon/leaf.png' alt='leaf' width={16} height={16} />
+          <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} />
           <Price>{price.toLocaleString()}</Price>
         </PriceRow>
       </TextContent>
@@ -126,12 +128,12 @@ const TextContent = styled.div`
 
 const Title = styled.h3`
   margin: 12px 0 6px 0;
-  font-size: ${theme.fontSize.base};
+  font-size: ${theme.fontSize.md};
   font-weight: ${theme.fontWeight.semiBold};
 `
 
 const Description = styled.p`
-  font-size: ${theme.fontSize.xs};
+  font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfBlack.base};
   margin-top: 4px;
 `
@@ -149,13 +151,14 @@ const Price = styled.span`
 `
 
 const LeafIcon = styled(Image)`
-  width: 16px;
+  width: 24px;
   aspect-ratio: 1/1;
 `
 
-const StockNotice = styled.div`
+const StockNotice = styled.div<{ isSoldOut: boolean }>`
   font-size: ${theme.fontSize.xs};
-  color: ${theme.colors.lfDarkGray.base};
+  color: ${({ isSoldOut }) => (isSoldOut ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
+
   margin-top: 8px;
 `
 
