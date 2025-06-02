@@ -18,13 +18,14 @@ import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { DateFormatString } from '@shared/types/date'
 
 export type GroupChallenge = {
   id: number
   name: string
   description: string
-  startDate: string
-  endDate: string
+  startDate: DateFormatString // YYYY-mm-dd
+  endDate: DateFormatString
   imageUrl: string
   currentParticipantCount: number
   category: ChallengeCategoryType
