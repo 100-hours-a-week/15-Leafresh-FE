@@ -152,9 +152,6 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
           const challengeId: number = response.data.id
           router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
         },
-        onError(error) {
-          openToast(ToastType.Error, error.message)
-        },
       },
     )
   }
@@ -234,9 +231,6 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
           // 단체 챌린지 상세 페이지로 이동
           openToast(ToastType.Success, '챌린지 수정 성공')
           router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
-        },
-        onError(error) {
-          openToast(ToastType.Error, error.message)
         },
       },
     )

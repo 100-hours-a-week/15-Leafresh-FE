@@ -7,7 +7,6 @@ import { ReactNode, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import {
   DeleteGroupChallengeResponse,
   DeleteGroupChallengeVariables,
@@ -18,6 +17,7 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
@@ -25,16 +25,13 @@ import LogoCharacterImage from '@public/image/main-icon.svg'
 
 const MemberChallengeCreationsPage = (): ReactNode => {
   const router = useRouter()
-  const { userInfo } = useOAuthUserStore()
+  const { userInfo, isLoggedIn } = useAuth()
   const openToast = useToast()
 
   const { openConfirmModal } = useConfirmModalStore()
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
     useInfiniteMemberGroupChallengeCreations()
   const triggerRef = useRef<HTMLDivElement>(null)
-
-  // 지역변수
-  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage || !triggerRef.current) return
@@ -125,11 +122,6 @@ const MemberChallengeCreationsPage = (): ReactNode => {
               // 리로드
               refetch()
               openToast(ToastType.Success, '챌린지가 삭제되었습니다')
-            },
-            // 실패
-            onError(error, variables, context) {
-              const { message } = error
-              openToast(ToastType.Error, message)
             },
           },
         ),

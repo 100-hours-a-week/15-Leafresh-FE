@@ -8,7 +8,6 @@ import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import {
   ParticipateGroupChallengeResponse,
@@ -27,8 +26,8 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { ErrorResponse } from '@shared/lib/api/fetcher/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
@@ -54,10 +53,8 @@ interface ChallengeGroupDetailsProps {
 }
 
 const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
-  const { userInfo } = useOAuthUserStore()
+  const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
-
-  const isLoggedIn: boolean = userInfo && userInfo.isMember ? true : false
 
   const router = useRouter()
   const openToast = useToast()
@@ -156,9 +153,6 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
         onSuccess: () => {
           openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
           router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
-        },
-        onError: (error: ErrorResponse) => {
-          openToast(ToastType.Error, error.message)
         },
       },
     )
