@@ -93,12 +93,14 @@ const Mypage = () => {
   const profileCard: ProfileCardResponse = profileCardData?.data ?? ({} as ProfileCardResponse)
   const recentbadges: Badge[] = recentBadgesData?.data.badges ?? []
   const feedback: FeedbackResponse | null = feedbackData?.data ?? null
+  console.log(feedback?.content)
 
   function handleProfileCardOpen() {
     setShowProfileCard(true)
   }
 
   const handleRequestFeedback = () => {
+    // const body = { reason: 'WEEKLY_FEEDBACK' }
     requestFeedback(undefined, {
       onSuccess: async () => {
         if (isMountedRef.current) {
@@ -139,11 +141,11 @@ const Mypage = () => {
           <FeedbackText>나의 친환경 활동 점수는?</FeedbackText>
           {isPolling && <Loading />}
 
-          {/* 피드백 텍스트 */}
-          {feedback !== null && !isPolling && <Feedback>{feedback.content}</Feedback>}
+          {/* 피드백 */}
+          {feedback?.content && !isPolling && <Feedback>{feedback.content}</Feedback>}
 
           {/* 피드백 요청 버튼 조건 분기 */}
-          {feedback === null && !isPolling && !pollError && (
+          {feedback?.content === null && !isPolling && !pollError && (
             <FeedbackButton onClick={handleRequestFeedback}>AI 피드백 받기</FeedbackButton>
           )}
 
