@@ -2,7 +2,7 @@ import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 
 //뱃지 타입
-export interface Badge {
+export type Badge = {
   id: number
   name: string
   condition: string
