@@ -123,7 +123,11 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
 
       <CategoryGrid>
         {categories.map(cat => (
-          <CategoryItem key={cat.category} onClick={() => handleCategoryRoute(cat.category)}>
+          <CategoryItem
+            key={cat.category}
+            isActive={cat.category === category}
+            onClick={() => handleCategoryRoute(cat.category)}
+          >
             <Image src={cat.imageUrl} alt={cat.label} width={30} height={30} />
             <CategoryLabel>{cat.label}</CategoryLabel>
           </CategoryItem>
@@ -169,9 +173,10 @@ const SearchInput = styled.input`
 `
 
 const CategoryGrid = styled.div`
-  padding: 0 10px;
+  padding: 0 20px;
   margin-top: 8px;
   display: grid;
+  gap: 4px;
   grid-template-columns: repeat(8, 1fr);
   overflow-x: auto;
 
@@ -182,7 +187,7 @@ const CategoryGrid = styled.div`
   scrollbar-width: none;
 `
 
-const CategoryItem = styled.div`
+const CategoryItem = styled.div<{ isActive: boolean }>`
   aspect-ratio: 1/1;
   border-radius: ${({ theme }) => theme.radius.lg};
   display: flex;
@@ -192,6 +197,8 @@ const CategoryItem = styled.div`
   gap: 12px;
   font-size: ${({ theme }) => theme.fontSize.sm};
   cursor: pointer;
+
+  background-color: ${({ isActive }) => (isActive ? '#f5eee4' : 'transparent')};
 
   &:hover {
     background-color: #f5eee4;
