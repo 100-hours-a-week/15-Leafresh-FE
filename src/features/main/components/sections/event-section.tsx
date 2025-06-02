@@ -1,0 +1,187 @@
+'use client'
+
+import Autoplay from 'embla-carousel-autoplay'
+import useEmblaCarousel from 'embla-carousel-react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+
+import { ReactNode, useEffect, useState } from 'react'
+import styled from '@emotion/styled'
+
+import { EventChallenge } from '@features/challenge/api/get-event-challenge-list'
+import { URL } from '@shared/constants/route/route'
+import { media } from '@shared/styles/emotion/media'
+
+interface EventSectionProps {
+  eventChallenges: EventChallenge[]
+  className?: string
+}
+
+export const EventSection = ({ eventChallenges, className }: EventSectionProps): ReactNode => {
+  const router = useRouter()
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+    },
+    [Autoplay({ delay: 4000, stopOnInteraction: false })],
+  )
+
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
+
+  useEffect(() => {
+    if (!emblaApi) return
+
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap())
+    }
+
+    emblaApi.on('select', onSelect)
+    onSelect()
+  }, [emblaApi])
+  return (
+    <Section>
+      <SectionHeader>
+        <SectionTitle>이벤트 챌린지</SectionTitle>
+        <SubDescription>기간 한정! 이벤트에 참여해보세요!</SubDescription>
+      </SectionHeader>
+      <CarouselWrapper ref={emblaRef}>
+        <CarouselInner>
+          {eventChallenges.length !== 0 ? (
+            eventChallenges.map(ch => (
+              <EventCard key={ch.id} onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))}>
+                <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                <EventGradientOverlay />
+                <EventTitleOverlay>{ch.title}</EventTitleOverlay>
+              </EventCard>
+            ))
+          ) : (
+            <NoneContent>진행중인 이벤트 챌린지가 없습니다 !</NoneContent>
+          )}
+        </CarouselInner>
+
+        {eventChallenges.length > 0 && (
+          <CarouselIndicator>
+            {selectedIndex + 1} / {eventChallenges.length}
+          </CarouselIndicator>
+        )}
+      </CarouselWrapper>
+    </Section>
+  )
+}
+
+const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+`
+
+const SectionHeader = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`
+
+const SectionTitle = styled.h2`
+  position: relative;
+
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+`
+
+const SubDescription = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.base};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  color: ${({ theme }) => theme.colors.lfDarkGray.base};
+`
+
+const CarouselWrapper = styled.div`
+  width: 100%;
+  /* height: 160px; */
+  aspect-ratio: 5/3;
+
+  position: relative;
+  overflow: hidden;
+  margin-top: 16px;
+`
+
+const CarouselInner = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+`
+const EventCard = styled.div`
+  margin-right: 8px;
+  flex: 0 0 100%;
+  height: 100%;
+
+  background: ${({ theme }) => theme.colors.lfInputBackground.base};
+  border-radius: ${({ theme }) => theme.radius.base};
+  display: flex;
+  flex-direction: row;
+  position: relative;
+
+  overflow: hidden;
+  gap: 12px;
+
+  cursor: pointer;
+`
+
+const EventImage = styled(Image)`
+  position: absolute;
+  top: 0;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: ${({ theme }) => theme.radius.base};
+`
+const EventGradientOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.8) 100%);
+  border-radius: ${({ theme }) => theme.radius.base};
+`
+
+const EventTitleOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 16px;
+  color: ${({ theme }) => theme.colors.lfWhite.base};
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  text-align: center;
+  pointer-events: none;
+`
+
+const NoneContent = styled.div`
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+
+  ${media.afterMobile} {
+    font-size: ${({ theme }) => theme.fontSize.lg};
+  }
+`
+
+const CarouselIndicator = styled.div`
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  color: ${({ theme }) => theme.colors.lfWhite.base};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+
+  padding: 4px 8px;
+  border-radius: ${({ theme }) => theme.radius.sm};
+`

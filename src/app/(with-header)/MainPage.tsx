@@ -1,40 +1,24 @@
 'use client'
 
-import Autoplay from 'embla-carousel-autoplay'
-import useEmblaCarousel from 'embla-carousel-react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import { ChallengeCategoryType, DayType } from '@entities/challenge/type'
+import { DayType } from '@entities/challenge/type'
 import { EventChallenge, getEventChallengeList } from '@features/challenge/api/get-event-challenge-list'
 import {
   getGroupChallengeCategoryList,
   GroupChallengeCategory,
 } from '@features/challenge/api/get-group-challenge-categories'
 import { getPersonalChallengeList, PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
+import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@features/main/components'
 import Chatbot from '@shared/components/chatbot/Chatbot'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { URL } from '@shared/constants/route/route'
 import { getDayOfWeek } from '@shared/lib/date/utils'
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
 
 const MainPage = (): ReactNode => {
-  const router = useRouter()
-
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-    },
-    [Autoplay({ delay: 4000, stopOnInteraction: false })], // ✅ 자동 넘김
-  )
-  const [selectedIndex, setSelectedIndex] = useState<number>(0)
-
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
 
   const { data: categoriesData } = useQuery({
@@ -59,102 +43,11 @@ const MainPage = (): ReactNode => {
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
-  /** 카테고리 리스트로 이동 */
-  const handleCategoryRoute = (category: ChallengeCategoryType) => {
-    router.push(URL.CHALLENGE.GROUP.LIST.value(category))
-  }
-  useEffect(() => {
-    if (!emblaApi) return
-
-    const onSelect = () => {
-      setSelectedIndex(emblaApi.selectedScrollSnap())
-    }
-
-    emblaApi.on('select', onSelect)
-    onSelect()
-  }, [emblaApi])
-
   return (
     <Container>
-      <BannerSection>
-        <BannerText>
-          <SubTitle>사진 한 장, 지구를 위한 따듯한 걸음</SubTitle>
-          <Title>
-            친환경 챌린지 <strong>Leafresh</strong>
-          </Title>
-        </BannerText>
-      </BannerSection>
-
-      <Section>
-        <SectionTitle>
-          <span>챌린지 카테고리</span>
-        </SectionTitle>
-        <CategoryGrid>
-          {categories.map(cat => (
-            <CategoryItem key={cat.category} onClick={() => handleCategoryRoute(cat.category)}>
-              <Image src={cat.imageUrl} alt={cat.label} width={48} height={48} />
-              <CategoryLabel>{cat.label}</CategoryLabel>
-            </CategoryItem>
-          ))}
-        </CategoryGrid>
-      </Section>
-
-      <Section>
-        <SectionHeader>
-          <SectionTitle>이벤트 챌린지</SectionTitle>
-          <SubDescription>기간 한정! 이벤트 챌린지에 참여해보세요!</SubDescription>
-        </SectionHeader>
-        <CarouselWrapper ref={emblaRef}>
-          <CarouselInner>
-            {eventChallenges.length !== 0 ? (
-              eventChallenges.map(ch => (
-                <EventCard key={ch.id} onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))}>
-                  <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
-                  <EventGradientOverlay />
-                  <EventTitleOverlay>{ch.title}</EventTitleOverlay>
-                </EventCard>
-              ))
-            ) : (
-              <NoneContent>진행중인 이벤트 챌린지가 없습니다 !</NoneContent>
-            )}
-          </CarouselInner>
-
-          {eventChallenges.length > 0 && (
-            <CarouselIndicator>
-              {selectedIndex + 1} / {eventChallenges.length}
-            </CarouselIndicator>
-          )}
-        </CarouselWrapper>
-      </Section>
-
-      <Section>
-        <SectionHeader>
-          <SectionTitle>일일 챌린지</SectionTitle>
-          <SubDescription>혼자서도 충분해요. 오늘 하루 도전해보세요!</SubDescription>
-        </SectionHeader>
-        <DailyCardWrapper>
-          {personalChallenges.map(ch => (
-            <DailyCard key={ch.id}>
-              <CardTop>
-                {/* <LeafWrapper>
-                <LeafImage src={LeafIcon} alt='나뭇잎 아이콘' />
-                <LeafLabel>{ch.leafReward}</LeafLabel>
-              </LeafWrapper> */}
-                <DailyImageArea>
-                  <DailyImage src={ch.thumbnailUrl} alt={ch.description} fill />
-                </DailyImageArea>
-              </CardTop>
-              <DailyCardDescriptions>
-                <CardTitle>{ch.title}</CardTitle>
-                <CardDescription>{ch.description}</CardDescription>
-                <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
-                  자세히 보기
-                </JoinButton>
-              </DailyCardDescriptions>
-            </DailyCard>
-          ))}
-        </DailyCardWrapper>
-      </Section>
+      <EventSection eventChallenges={eventChallenges} />
+      <PersonalChallengeSection personalChallenges={personalChallenges} />
+      <GroupChallengeSections categories={categories} />
       <Chatbot />
     </Container>
   )
@@ -165,299 +58,12 @@ export default MainPage
 // === Styles ===
 
 const Container = styled.div`
-  padding-top: 250px;
+  /* padding-top: 250px; */
   padding-bottom: 80px;
 
   display: flex;
   flex-direction: column;
   gap: 54px;
-`
-
-const BannerSection = styled.section`
-  min-width: 320px;
-  max-width: 500px;
-  width: 100vw;
-  height: 240px;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  background-image: url('/image/banner.png');
-  background-size: cover;
-  background-position: center;
-
-  display: flex;
-  align-items: flex-end;
-  color: ${theme.colors.lfWhite.base};
-`
-
-const BannerText = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-left: 20px;
-  margin-bottom: 40px;
-`
-
-const Title = styled.h1`
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.bold};
-`
-
-const SubTitle = styled.h2`
-  font-size: ${theme.fontSize.base};
-  margin-bottom: 8px;
-`
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-`
-
-const SectionHeader = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const SectionTitle = styled.h2`
-  position: relative;
-
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const SubDescription = styled.p`
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfDarkGray.base};
-`
-const CategoryGrid = styled.div`
-  margin-top: 20px;
-
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-`
-
-const CategoryItem = styled.div`
-  aspect-ratio: 1/1;
-  border-radius: ${theme.radius.lg};
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  gap: 8px;
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfDarkGray.base};
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f5eee4;
-  }
-`
-
-const CategoryLabel = styled.span`
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const CarouselWrapper = styled.div`
-  width: 100%;
-  /* height: 160px; */
-  aspect-ratio: 5/3;
-
-  position: relative;
-  overflow: hidden;
-  margin-top: 16px;
-`
-
-const CarouselInner = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-`
-const EventCard = styled.div`
-  margin-right: 8px;
-  flex: 0 0 100%;
-  height: 100%;
-
-  background: ${theme.colors.lfInputBackground.base};
-  border-radius: ${theme.radius.base};
-  display: flex;
-  flex-direction: row;
-  position: relative;
-
-  overflow: hidden;
-  gap: 12px;
-
-  cursor: pointer;
-`
-
-const EventImage = styled(Image)`
-  position: absolute;
-  top: 0;
-  object-fit: cover;
-  object-position: center center;
-  border-radius: ${theme.radius.base};
-`
-const EventGradientOverlay = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.8) 100%);
-  border-radius: ${theme.radius.base};
-`
-
-const EventTitleOverlay = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 16px;
-  color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-  text-align: center;
-  pointer-events: none;
-`
-
-const DailyCardWrapper = styled.div`
-  width: 100%;
-  margin-top: 20px;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
-`
-
-const DailyCard = styled.div`
-  width: 100%;
-  background: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-
-  box-shadow: ${theme.shadow.lfInput};
-`
-
-const CardTop = styled.div`
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
-const LeafWrapper = styled.p`
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 20;
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const LeafImage = styled(Image)``
-
-const LeafLabel = styled.span`
-  font-size: ${theme.fontSize.sm};
-`
-const DailyImageArea = styled.div`
-  width: 100%;
-  aspect-ratio: 16/9;
-
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-top-left-radius: ${theme.radius.base};
-  border-top-right-radius: ${theme.radius.base};
-  overflow: hidden;
-`
-
-const DailyImage = styled(Image)`
-  object-fit: cover;
-`
-
-const JoinButton = styled.button`
-  width: 100%;
-  margin: 12px 0;
-  padding: 16px 0;
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.semiBold};
-  box-shadow: ${theme.shadow.lfInput};
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${theme.colors.lfGreenMain.hover};
-  }
-`
-const DailyCardDescriptions = styled.div`
-  padding: 0 16px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-
-  transition: all 0.3s ease; // optional: hover 부드럽게
-`
-const CardTitle = styled.h3`
-  margin: 4px 0px;
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const CardDescription = styled.p`
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfBlack.base};
-  white-space: pre-wrap;
-`
-
-const NoneContent = styled.div`
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: ${theme.fontWeight.semiBold};
-  font-size: ${theme.fontSize.lg};
-
-  ${media.mobile} {
-    font-size: ${theme.fontSize.sm};
-  }
-`
-
-const CarouselIndicator = styled.div`
-  position: absolute;
-  bottom: 8px;
-  right: 12px;
-
-  background-color: rgba(0, 0, 0, 0.5);
-  color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  padding: 4px 8px;
-  border-radius: ${theme.radius.sm};
 `
 
 // const dummyEventChallenges: EventChallenge[] = [
