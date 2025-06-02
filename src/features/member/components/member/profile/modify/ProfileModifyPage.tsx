@@ -3,23 +3,24 @@
 import { ReactNode, useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { Camera } from 'lucide-react'
+import { theme } from '@shared/styles/theme'
 import { z } from 'zod'
 
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
 import { MemberInfoRequest, MemberInfoResponse } from '@features/member/api/profile/patch-member-info'
+import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
+import { useUserStore } from '@entities/member/context/UserStore'
 
 import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { useRouter } from 'next/navigation'
 import { URL } from '@shared/constants/route/route'
-import { theme } from '@shared/styles/theme'
-import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
 interface ProfileModifyPageProps {
   className?: string
@@ -37,6 +38,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
   const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
   const [imageUrl, setImageUrl] = useState('')
   const { uploadFile, loading: uploading } = useImageUpload()
+  const updateUserInfo = useUserStore(state => state.updateUserInfo)
 
   const { data: profileData } = useQuery({
     queryKey: QUERY_KEYS.MEMBER.DETAILS,
@@ -116,8 +118,11 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     }
 
     patchMemberInfo(body, {
-      onSuccess: () => {
-        // updateUserInfo(res.data)
+      onSuccess: res => {
+        updateUserInfo({
+          nickname: res.data.nickname,
+          imageUrl: res.data.imageUrl,
+        })
         openToast(ToastType.Success, '프로필이 성공적으로 수정되었습니다.')
         //수정 후 1.5초 뒤 마이페이지로 이동
         setTimeout(() => {
