@@ -66,7 +66,8 @@ const CHALLENGE_URL = {
   GROUP: {
     LIST: {
       name: '단체 챌린지 목록',
-      value: (category: ChallengeCategoryType) => `/challenge/group/list?category=${category}`,
+      value: (category?: ChallengeCategoryType) =>
+        category ? `/challenge/group/list?category=${category}` : '/challenge/group/list',
       isProtected: false,
     },
     CREATE: {
