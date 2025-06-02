@@ -1,13 +1,11 @@
 'use client'
 
-import { Menu } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
 import { URL } from '@shared/constants/route/route'
-import { useDrawerStore } from '@shared/context/slide-drawer/DrawerStore'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
@@ -20,7 +18,6 @@ interface HeaderProps {
 
 const Header = ({ height, padding }: HeaderProps) => {
   const router = useRouter()
-  const { open: openDrawer } = useDrawerStore()
   const { isLoggedIn } = useAuth()
 
   return (
@@ -31,7 +28,6 @@ const Header = ({ height, padding }: HeaderProps) => {
         </LogoWrapper>
         <MenuButtons>
           {isLoggedIn && <AlarmButton name='Bell' size={24} onClick={() => router.push(URL.MEMBER.ALARM.value)} />}
-          <Menu size={24} strokeWidth={2.5} onClick={openDrawer} />
         </MenuButtons>
       </CustomWidthWrapper>
     </HeaderContainer>
