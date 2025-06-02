@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { ReactNode, useEffect, useRef } from 'react'
@@ -11,12 +10,12 @@ import {
   GroupChallengeCard,
 } from '@features/challenge/components/common/group-challenge-card/GroupChallengeCard'
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/hooks/useInfiniteMemberChallengeCreationsList'
+import NoContent from '@shared/components/no-content/no-content'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { theme } from '@shared/styles/theme'
-import LogoCharacterImage from '@public/image/main-icon.svg'
 
 const MemberChallengeCreationsPage = (): ReactNode => {
   const router = useRouter()
@@ -56,11 +55,11 @@ const MemberChallengeCreationsPage = (): ReactNode => {
     contents = null
   } else if (groupChallenges.length === 0) {
     contents = (
-      <EmptyWrapper>
-        <Image src={LogoCharacterImage} alt='로고 캐릭터' />
-        <NoChallengeMessage>생성한 챌린지가 없습니다!</NoChallengeMessage>
-        <CreateButton onClick={handleCreateChallenge}>챌린지 생성하러 가기</CreateButton>
-      </EmptyWrapper>
+      <NoContent
+        title='생성한 챌린지가 없습니다!'
+        buttonText='챌린지 생성하러 가기'
+        clickHandler={handleCreateChallenge}
+      />
     )
   } else {
     contents = (
@@ -117,161 +116,8 @@ const ChallengeList = styled.div`
   gap: 18px;
 `
 
-const ChallengeCard = styled.div`
-  background: ${theme.colors.lfWhite.base};
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: ${theme.shadow.lfInput};
-  cursor: pointer;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    .badge {
-      opacity: 1;
-    }
-  }
-`
-
-const TopImageWrapper = styled.div`
-  background: #d9d9d9;
-  width: 100%;
-  aspect-ratio: 3/2;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
-`
-
-const ChallengeImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.35s ease;
-
-  ${ChallengeCard}:hover & {
-    transform: scale(1.05); // ✅ 1.1배 확대
-  }
-`
-
-const Badge = styled.div`
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  padding: 12px 12px;
-  background: ${theme.colors.lfGreenMain.base};
-  opacity: 0.7;
-  color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.medium};
-  border-radius: ${theme.radius.full};
-  transition: opacity 0.3s ease;
-`
-
-const CardBody = styled.div`
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`
-
-const TopRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
-const ChallengeName = styled.div`
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const ActionButtons = styled.div`
-  display: flex;
-  font-size: ${theme.fontSize.sm};
-  gap: 8px;
-`
-
-const ModifyButton = styled.button`
-  color: ${theme.colors.lfBlack.base};
-  background: none;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    color: ${theme.colors.lfBlue.base};
-  }
-`
-
-const DeleteButton = styled.button`
-  color: ${theme.colors.lfRed.base};
-  background: none;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    color: ${theme.colors.lfRed.hover};
-  }
-`
-
-const ChallengeDesc = styled.div`
-  margin: 10px 0 27px 0;
-  font-size: ${theme.fontSize.base};
-  color: ${theme.colors.lfBlack.base};
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
-
-const ParticipantCount = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfBlue.base};
-`
-
 const Observer = styled.div`
   height: 1px;
-`
-
-const EmptyWrapper = styled.div`
-  width: 100%;
-  flex: 1; // height 대신 부모 기준으로 확장
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-`
-
-const NoChallengeMessage = styled.div`
-  margin-top: 10px;
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfBlack.base};
-`
-
-const CreateButton = styled.button`
-  width: 70%;
-  max-width: 320px;
-  padding: 20px 32px;
-
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.semiBold};
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-
-  border: none;
-  border-radius: ${theme.radius.base};
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${theme.colors.lfGreenMain.hover};
-  }
 `
 
 // const dummyMemberGroupChallenge: GroupChallengeResponse[] = [

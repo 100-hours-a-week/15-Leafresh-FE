@@ -107,7 +107,7 @@ const CHALLENGE_URL = {
 const STORE_URL = {
   INDEX: {
     name: '나뭇잎 상점',
-    value: `store`,
+    value: `/store`,
     isProtected: false,
   },
 }

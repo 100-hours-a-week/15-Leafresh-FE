@@ -64,8 +64,10 @@ const MEMBER_QUERY_KEYS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: ['member', 'products'], // 구매 내역
+  STORE: {
+    ORDERS: {
+      LIST: ['member', 'store', 'orders'], // 구매 내역
+    },
   },
 
   /** 챌린지 */
