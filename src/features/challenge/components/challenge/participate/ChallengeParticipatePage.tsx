@@ -98,7 +98,7 @@ export default function ChallengeParticipatePage() {
               <EmptyState>참여 중인 챌린지가 없습니다.</EmptyState>
               <EmptyButton
                 onClick={() => {
-                  router.push(URL.CHALLENGE.INDEX.value)
+                  router.push(URL.MAIN.INDEX.value)
                 }}
               >
                 챌린지 참여하러 가기

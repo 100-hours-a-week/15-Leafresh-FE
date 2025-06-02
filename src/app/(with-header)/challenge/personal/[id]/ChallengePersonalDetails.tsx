@@ -20,7 +20,6 @@ import {
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
-import BackButton from '@shared/components/button/BackButton'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
@@ -217,7 +216,6 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
       {
         onSuccess: () => {
           openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
-          router.replace(URL.CHALLENGE.INDEX.value) // 챌린지 목록 페이지로 이동
         },
       },
     )
@@ -226,7 +224,6 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   return (
     <Wrapper className={className}>
       <DescriptionSection>
-        <StyledBackButton onClick={() => router.push(URL.CHALLENGE.INDEX.value)} />
         <Thumbnail src={thumbnailUrl} alt='썸네일' width={500} height={200} />
 
         <Descriptions>
@@ -416,10 +413,6 @@ const Warning = styled.div<{ isWarning: boolean }>`
 
   font-weight: ${theme.fontWeight.medium};
   color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-`
-
-const StyledBackButton = styled(BackButton)`
-  position: absolute;
 `
 
 // export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {

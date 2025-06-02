@@ -130,7 +130,7 @@ const MainPage = (): ReactNode => {
       <Section>
         <SectionHeader>
           <SectionTitle>일일 챌린지</SectionTitle>
-          <SubDescription>다양한 사람들과 함께 챌린지에 참여해보세요!</SubDescription>
+          <SubDescription>혼자서도 충분해요. 오늘 하루 도전해보세요!</SubDescription>
         </SectionHeader>
         <DailyCardWrapper>
           {personalChallenges.map(ch => (
