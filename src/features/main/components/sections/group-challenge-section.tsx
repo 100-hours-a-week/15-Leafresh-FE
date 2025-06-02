@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import { GroupChallengeCategory } from '@features/challenge/api/get-group-challenge-categories'
 import { URL } from '@shared/constants/route/route'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 interface GroupChallengeSectionsProps {
   categories: GroupChallengeCategory[]
@@ -44,6 +45,8 @@ const Section = styled.section`
 `
 
 const SectionTitle = styled.h2`
+  ${responsiveHorizontalPadding};
+
   position: relative;
 
   font-size: ${({ theme }) => theme.fontSize.xl};

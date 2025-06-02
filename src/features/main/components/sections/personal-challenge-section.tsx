@@ -37,7 +37,7 @@ export const PersonalChallengeSection = ({
   }, [emblaApi])
 
   return (
-    <Section>
+    <Section className={className}>
       <SectionHeader>
         <SectionTitle>오늘의 챌린지</SectionTitle>
         <SubDescription>혼자서도 충분해요. 오늘 하루 도전해보세요!</SubDescription>
