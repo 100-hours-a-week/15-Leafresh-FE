@@ -57,7 +57,7 @@ const CategoryGrid = styled.div`
   margin-top: 20px;
 
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(8, 1fr);
 `
 
 const CategoryItem = styled.div`

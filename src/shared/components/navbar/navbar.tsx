@@ -5,7 +5,6 @@ import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
-import { URL } from '@shared/constants/route/route'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
@@ -20,20 +19,31 @@ export const Navbar = (): ReactNode => {
 
   // 현재 경로가 어떤 탭인지 판단
   const isCurrentTab = (label: string) => {
-    if (label === '홈') return pathname === URL.MAIN.INDEX.value
-    if (label === '챌린지') return pathname.startsWith('/challenge') && !pathname.startsWith('/challenge/participate')
+    // 메인(/) 또는 /challenge로 시작하면서 /challenge/participate가 아닌 경우
+    if (label === '챌린지')
+      return pathname === '/' || (pathname.startsWith('/challenge') && !pathname.startsWith('/challenge/participate'))
+
     if (label === '인증') return pathname.startsWith('/challenge/participate')
+    // TODO: 피드 기능 추가시 클릭 이벤트 리스너 핸들
+    // if (label === '피드') return pathname.startsWith('/feed')
+
+    if (label === '피드') return false
     if (label === '상점') return pathname.startsWith('/store')
     if (label === '마이페이지') return pathname.startsWith('/member')
     return false
   }
 
+  // TODO: 피드 기능 추가시 클릭 이벤트 리스너 핸들
+  const navHandler = (label: string, href: string) => {
+    if (label !== '피드') return
+    router.push(href)
+  }
   return (
     <NavbarWrapper>
       {NAVBAR_TABS.map(({ label, icon, href }) => {
         const isActive: boolean = isCurrentTab(label)
         return (
-          <NavButton key={label} onClick={() => router.push(href)}>
+          <NavButton key={label} onClick={() => navHandler(label, href)}>
             <LucideIcon
               name={icon}
               size={24}
@@ -59,9 +69,8 @@ const NavbarWrapper = styled.nav`
   transform: translateX(-50%);
   right: 0;
 
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
 
   height: 72px;
   background-color: ${theme.colors.lfWhite.base};
