@@ -11,6 +11,7 @@ import styled from '@emotion/styled'
 import { EventChallenge } from '@features/challenge/api/get-event-challenge-list'
 import { URL } from '@shared/constants/route/route'
 import { media } from '@shared/styles/emotion/media'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 interface EventSectionProps {
   eventChallenges: EventChallenge[]
@@ -67,7 +68,11 @@ export const EventSection = ({ eventChallenges, className }: EventSectionProps):
   )
 }
 
+// === Styles ===
+
 const Section = styled.section`
+  ${responsiveHorizontalPadding};
+
   display: flex;
   flex-direction: column;
 

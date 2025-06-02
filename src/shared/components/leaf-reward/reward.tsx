@@ -12,7 +12,7 @@ interface LeafRewardProps {
 
 export const LeafReward = ({ reward, className }: LeafRewardProps): ReactNode => {
   return (
-    <LeafWrapper>
+    <LeafWrapper className={className}>
       <Image src={LeafIcon} alt='나뭇잎 아이콘' width={24} height={24} />
       <LeafLabel>{reward}</LeafLabel>
     </LeafWrapper>
@@ -21,8 +21,6 @@ export const LeafReward = ({ reward, className }: LeafRewardProps): ReactNode =>
 
 const LeafWrapper = styled.p`
   position: absolute;
-  left: 0;
-  top: 0;
   z-index: 20;
 
   display: flex;
@@ -32,5 +30,6 @@ const LeafWrapper = styled.p`
 `
 
 const LeafLabel = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.base};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `

@@ -1,11 +1,15 @@
+import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
+import { LeafReward } from '@shared/components'
 import { URL } from '@shared/constants/route/route'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 interface PersonalChallengeSectionProps {
   personalChallenges: PersonalChallengeType[]
@@ -17,92 +21,152 @@ export const PersonalChallengeSection = ({
   className,
 }: PersonalChallengeSectionProps): ReactNode => {
   const router = useRouter()
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, startIndex: 1 })
+  const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false)
+  const [canScrollNext, setCanScrollNext] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (!emblaApi) return
+    const updateButtons = () => {
+      setCanScrollPrev(emblaApi.canScrollPrev())
+      setCanScrollNext(emblaApi.canScrollNext())
+    }
+
+    emblaApi.on('select', updateButtons)
+    updateButtons()
+  }, [emblaApi])
 
   return (
     <Section>
       <SectionHeader>
-        <SectionTitle>일일 챌린지</SectionTitle>
+        <SectionTitle>오늘의 챌린지</SectionTitle>
         <SubDescription>혼자서도 충분해요. 오늘 하루 도전해보세요!</SubDescription>
       </SectionHeader>
-      <DailyCardWrapper>
-        {personalChallenges.map(ch => (
-          <DailyCard key={ch.id}>
-            <CardTop>
-              <DailyImageArea>
-                <DailyImage src={ch.thumbnailUrl} alt={ch.description} fill />
-              </DailyImageArea>
-            </CardTop>
-            <DailyCardDescriptions>
-              <CardTitle>{ch.title}</CardTitle>
-              <CardDescription>{ch.description}</CardDescription>
-              <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
-                자세히 보기
-              </JoinButton>
-            </DailyCardDescriptions>
-          </DailyCard>
-        ))}
-      </DailyCardWrapper>
+
+      <CarouselWrapper>
+        <EmblaContainer ref={emblaRef}>
+          <EmblaSlideContainer>
+            {personalChallenges.map(ch => (
+              <EmblaSlide key={ch.id}>
+                <DailyCard>
+                  <DailyImageArea>
+                    <DailyImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                  </DailyImageArea>
+                  <DailyCardDescriptions>
+                    <CardTitle>{ch.title}</CardTitle>
+                    <CardDescription>{ch.description}</CardDescription>
+                    <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
+                      자세히 보기
+                    </JoinButton>
+                  </DailyCardDescriptions>
+                </DailyCard>
+
+                <StyledLeafReward reward={ch.leafReward} />
+              </EmblaSlide>
+            ))}
+          </EmblaSlideContainer>
+        </EmblaContainer>
+        {canScrollPrev && (
+          <LeftIconWrapper onClick={() => emblaApi?.scrollPrev()}>
+            <ScrollIcon name='ChevronLeft' size={24} />
+          </LeftIconWrapper>
+        )}
+
+        {canScrollNext && (
+          <RightIconWrapper onClick={() => emblaApi?.scrollNext()}>
+            <ScrollIcon name='ChevronRight' size={24} />
+          </RightIconWrapper>
+        )}
+      </CarouselWrapper>
     </Section>
   )
 }
-
 const Section = styled.section`
   display: flex;
   flex-direction: column;
 `
 
 const SectionHeader = styled.div`
-  position: relative;
+  ${responsiveHorizontalPadding};
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 `
 
 const SectionTitle = styled.h2`
-  position: relative;
-
-  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 
 const SubDescription = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.base};
+  font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.lfDarkGray.base};
+`
+
+const CarouselWrapper = styled.div`
+  position: relative;
+  margin-top: 12px;
+  width: 100%;
+  overflow: hidden;
+`
+
+const EmblaContainer = styled.div`
+  width: 100%;
+  overflow: hidden;
+`
+
+const EmblaSlideContainer = styled.div`
+  width: 100%;
+  position: relative;
+  display: flex;
+`
+
+const EmblaSlide = styled.div`
+  position: relative;
+  flex: 0 0 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
 `
 
 const DailyCard = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.colors.lfWhite.base};
   border-radius: ${({ theme }) => theme.radius.base};
-
   box-shadow: ${({ theme }) => theme.shadow.lfInput};
-`
-
-const CardTop = styled.div`
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `
 
 const DailyImageArea = styled.div`
   width: 100%;
   aspect-ratio: 16/9;
-
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
+  overflow: hidden;
   border-top-left-radius: ${({ theme }) => theme.radius.base};
   border-top-right-radius: ${({ theme }) => theme.radius.base};
-  overflow: hidden;
 `
 
 const DailyImage = styled(Image)`
   object-fit: cover;
+`
+
+const DailyCardDescriptions = styled.div`
+  padding: 0 16px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+const CardTitle = styled.h3`
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+`
+
+const CardDescription = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.lfBlack.base};
 `
 
 const JoinButton = styled.button`
@@ -121,37 +185,58 @@ const JoinButton = styled.button`
     background-color: ${({ theme }) => theme.colors.lfGreenMain.hover};
   }
 `
-const DailyCardDescriptions = styled.div`
-  padding: 0 16px;
-  margin-top: 8px;
-  margin-bottom: 8px;
 
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+const ArrowButton = styled.button<{ direction: 'prev' | 'next' }>`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  ${({ direction }) => (direction === 'prev' ? 'left: 8px;' : 'right: 8px;')}
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  box-shadow: ${({ theme }) => theme.shadow.lfInput};
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
 
-  transition: all 0.3s ease; // optional: hover 부드럽게
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
 `
-const CardTitle = styled.h3`
-  margin: 4px 0px;
-  font-size: ${({ theme }) => theme.fontSize.lg};
-  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+
+const IconWrapper = styled.div`
+  width: 40px;
+  aspect-ratio: 1/1;
+  padding: 10;
+  position: absolute;
+  top: 50%;
+
+  background: ${({ theme }) => theme.colors.lfWhite.base};
+  border-radius: ${({ theme }) => theme.radius.full};
+  box-shadow: ${({ theme }) => theme.shadow.lfInput};
+
+  cursor: pointer;
 `
 
-const CardDescription = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.lfBlack.base};
-  white-space: pre-wrap;
+const LeftIconWrapper = styled(IconWrapper)`
+  left: 0;
+  transform: translateY(-50%);
 `
 
-const DailyCardWrapper = styled.div`
+const RightIconWrapper = styled(IconWrapper)`
+  right: 0;
+  transform: translateY(-50%);
+`
+
+const ScrollIcon = styled(LucideIcon)`
   width: 100%;
-  margin-top: 20px;
+  height: 100%;
+`
 
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
+const StyledLeafReward = styled(LeafReward)`
+  top: 4%;
+  right: 9%;
 `
