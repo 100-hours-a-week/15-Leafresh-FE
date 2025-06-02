@@ -15,6 +15,7 @@ export interface OAuthUserInfo {
 interface OAuthUserState {
   userInfo: OAuthUserInfo | null
   setUserInfo: (info: OAuthUserInfo) => void
+  updateUserInfo: (info: Partial<OAuthUserInfo>) => void // 부분 업데이트
   clearUserInfo: () => void
 }
 
@@ -23,6 +24,10 @@ export const useOAuthUserStore = create<OAuthUserState>()(
     set => ({
       userInfo: null,
       setUserInfo: info => set({ userInfo: info }),
+      updateUserInfo: info =>
+        set(state => ({
+          userInfo: state.userInfo ? { ...state.userInfo, ...info } : null,
+        })),
       clearUserInfo: () => set({ userInfo: null }),
     }),
     {
