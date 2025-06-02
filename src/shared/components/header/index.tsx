@@ -12,16 +12,15 @@ import { theme } from '@shared/styles/theme'
 import LogoImage from '@public/image/logo.svg'
 
 interface HeaderProps {
-  height: number
   padding: number
 }
 
-const Header = ({ height, padding }: HeaderProps) => {
+const Header = ({ padding }: HeaderProps) => {
   const router = useRouter()
   const { isLoggedIn } = useAuth()
 
   return (
-    <HeaderContainer height={height}>
+    <HeaderContainer>
       <CustomWidthWrapper padding={padding}>
         <LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
           <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
@@ -36,22 +35,17 @@ const Header = ({ height, padding }: HeaderProps) => {
 
 export default Header
 
-const HeaderContainer = styled.header<{ height: number }>`
-  min-width: 320px;
-  max-width: 500px;
+const HeaderContainer = styled.header`
   width: 100%;
-  height: ${({ height }) => `${height}px`};
+  height: 60px;
+  flex-shrink: 0;
 
-  position: fixed;
-  top: 0; /* 반드시 명시해야 함 */
-  /* left: 0; 명시해도 문제 없음 */
+  position: relative;
 
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: ${theme.colors.lfWhite.base};
-
-  z-index: 100;
 `
 
 const CustomWidthWrapper = styled.div<{ padding: number }>`

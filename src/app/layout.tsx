@@ -25,9 +25,9 @@ const RootLayout = ({
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
         <Providers>
-          <LayoutWrapper>
-            <AuthGuard>{children}</AuthGuard>
-          </LayoutWrapper>
+          <AuthGuard>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </AuthGuard>
           <ModalProvider />
           <ImageZoomModal />
           <Toast />
