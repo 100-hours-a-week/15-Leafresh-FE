@@ -1,7 +1,6 @@
 'use client'
 import styled from '@emotion/styled'
 
-import Footer from '@shared/components/footer'
 import Header from '@shared/components/header'
 import { theme } from '@shared/styles/theme'
 
@@ -17,7 +16,6 @@ const WithHeaderLayout = ({
     <>
       <Header height={HEADER_HEIGHT} padding={WIDTH_PADDING} />
       <Main marginTop={HEADER_HEIGHT}>{children}</Main>
-      <Footer padding={WIDTH_PADDING} />
     </>
   )
 }
