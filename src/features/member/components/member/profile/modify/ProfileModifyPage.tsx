@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { Camera } from 'lucide-react'
 import { z } from 'zod'
 
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 
@@ -18,23 +18,18 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { useRouter } from 'next/navigation'
 import { URL } from '@shared/constants/route/route'
 import { theme } from '@shared/styles/theme'
-import { taintObjectReference } from 'next/dist/server/app-render/entry-base'
-import { ProfileCardResponse } from '@features/member/api/profile/get-member-profilecard'
+import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
 interface ProfileModifyPageProps {
   className?: string
 }
 
-const nicknameSchema = z
-  .string()
-  .min(1, '닉네임을 입력해주세요.')
-  .max(20, '닉네임은 최대 20자까지 입력 가능합니다.')
-  .optional()
+const nicknameSchema = z.string().max(20, '닉네임은 최대 20자까지 입력 가능합니다.').optional()
 
 const maxLength = 20
 
 const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => {
-  const queryClient = useQueryClient()
   const router = useRouter()
   const openToast = useToast()
 
@@ -43,8 +38,11 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
   const [imageUrl, setImageUrl] = useState('')
   const { uploadFile, loading: uploading } = useImageUpload()
 
-  const profile = queryClient.getQueryData<ProfileCardResponse>(QUERY_KEYS.MEMBER.DETAILS)
-  console.log(profile)
+  const { data: profileData } = useQuery({
+    queryKey: QUERY_KEYS.MEMBER.DETAILS,
+    queryFn: getMemberProfile,
+    ...QUERY_OPTIONS.MEMBER.DETAILS,
+  })
 
   const { mutate: patchMemberInfo } = useMutationStore<MemberInfoResponse, MemberInfoRequest>(
     MUTATION_KEYS.MEMBER.MODIFY,
@@ -118,8 +116,8 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     }
 
     patchMemberInfo(body, {
-      onSuccess: res => {
-        updateUserInfo(res.data)
+      onSuccess: () => {
+        // updateUserInfo(res.data)
         openToast(ToastType.Success, '프로필이 성공적으로 수정되었습니다.')
         //수정 후 1.5초 뒤 마이페이지로 이동
         setTimeout(() => {
@@ -132,8 +130,15 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     })
   }
 
+  if (!profileData) return null //로딩, fallback 처리
+
+  const profile: ProfileResponse = profileData.data ?? ({} as ProfileResponse)
+
   const currentImage = profile?.profileImageUrl
   const currentNickname = nickname
+
+  //이미지 업로드 시 변경
+  const backgroundImage = imageUrl || currentImage
 
   return (
     <Container className={className}>
@@ -143,7 +148,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
 
       <ProfileWrapper>
         <UploadImageButton htmlFor='profile-image' $hasImage={!!currentImage}>
-          {currentImage && <ProfileImage src={currentImage} alt='프로필 이미지' />}
+          {currentImage && <ProfileImage src={backgroundImage} alt='프로필 이미지' />}
           {!currentImage && <CameraIcon />}
           <CameraWrapper>
             <CameraIcon />
@@ -164,7 +169,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
           type='text'
           value={currentNickname}
           onChange={handleNicknameChange}
-          placeholder={profile?.nickname || userInfo?.nickname || '나의 닉네임'}
+          placeholder={profile?.nickname || '나의 닉네임'}
         />
         <InputMeta>
           <ErrorText>{nicknameError}</ErrorText>
@@ -174,7 +179,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
         </InputMeta>
       </InputSection>
 
-      <SubmitButton onClick={handleSubmit} disabled={currentNickname.length === 0 || !!nicknameError || uploading}>
+      <SubmitButton onClick={handleSubmit} disabled={!!nicknameError || uploading}>
         {uploading ? '업로드 중...' : '완료'}
       </SubmitButton>
     </Container>
