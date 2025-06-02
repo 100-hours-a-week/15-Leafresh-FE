@@ -16,6 +16,7 @@ import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
+import { PatchMemberInfo } from '@features/member/api/profile/patch-member-info'
 
 const queryClient = getQueryClient()
 
@@ -168,6 +169,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
       queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
     })
 
+    //최근 획득 뱃지 목록
     queryClient.invalidateQueries({
       predicate: query => JSON.stringify(query.queryKey)?.startsWith(`["member","badges","recent"`),
     })
@@ -207,9 +209,18 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.SIGNUP, {
 
 // 회원정보 수정
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.MODIFY, {
-  // TODO: 수정 API 연결
+  mutationFn: PatchMemberInfo,
   onSuccess() {
-    // TODO: 수정 후 무효화 로직
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
+
+    //회원 정보
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.DETAILS,
+    })
+
     return {} as ApiResponse<unknown>
   },
 })
