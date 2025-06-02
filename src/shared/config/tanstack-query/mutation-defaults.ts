@@ -17,6 +17,7 @@ import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
 import { PatchMemberInfo } from '@features/member/api/profile/patch-member-info'
+import { handleError } from './utils'
 
 const queryClient = getQueryClient()
 
@@ -39,15 +40,13 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
       queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
     })
 
-    //최근 획득 뱃지 목록
-    queryClient.invalidateQueries({
-      predicate: query => JSON.stringify(query.queryKey)?.startsWith(`["member","badges","recent"`),
-    })
-
     //프로필 카드
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
     })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
   },
 })
 
@@ -63,6 +62,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.CREATE, {
     })
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.CREATIONS }) // 생성한 단체 챌린지 목록 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT }) // 참여한 단체 챌린지 카운트 조회 (인증페이지)
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
   },
 })
 
@@ -87,6 +89,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.MODIFY, {
     // 참여한 단체 챌린지 카운트 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT })
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
 })
 
 // 삭제
@@ -110,6 +115,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.DELETE, {
     // 참여한 단체 챌린지 카운트 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT })
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
 })
 
 // 참여
@@ -120,6 +128,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
 
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId) }) // 단체 챌린지 상세 조회
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS }) // member - 참여한 단체 챌린지 목록 조회
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
   },
 })
 
@@ -179,6 +190,10 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
       queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
     })
   },
+
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
 })
 
 /** 멤버 도메인 */
@@ -189,6 +204,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.LOGOUT, {
     const MEMBER_QUERIES = ['member']
     queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
 })
 
 // 토큰 재발급
@@ -197,6 +215,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.RE_ISSUE, {
   onSuccess() {
     // TODO: 무효화 로직
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
 })
 
 // 회원가입
@@ -204,6 +225,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.SIGNUP, {
   mutationFn: SignUp,
   onSuccess() {
     // 무효화 로직 없음
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
   },
 })
 
@@ -223,6 +247,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.MODIFY, {
 
     return {} as ApiResponse<unknown>
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
 })
 
 // 회원탈퇴
@@ -232,13 +259,23 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
     const MEMBER_QUERIES = ['member']
     queryClient.invalidateQueries({ queryKey: MEMBER_QUERIES }) // 유저에 종속되는 모든 멤버키 무효화
   },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
 })
 
-queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.FEEDBACK, {
+//피드백 생성 요청
+queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK, {
   mutationFn: RequestFeedback,
   onSuccess() {
+    //사용자 피드백
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.MEMBER.FEEDBACK,
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK,
+    })
+
+    //피드백 요청 결과
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK.RESULT,
     })
   },
 })
@@ -248,6 +285,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
   mutationFn: readAllAlarms,
   onSuccess() {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
   },
 })
 

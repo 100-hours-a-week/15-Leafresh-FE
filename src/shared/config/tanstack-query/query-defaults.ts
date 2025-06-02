@@ -69,16 +69,26 @@ const MEMBER_QUERY_DEFAULTS = {
     CALLBACK: NO_CACHE,
   },
   DUPLICATE_NICKNAME: NO_CACHE,
-  DETAILS: DEFAULT,
 
   // 회원 정보
+  DETAILS: DEFAULT,
   PROFILE_CARD: DEFAULT,
   LEAVES: DEFAULT,
-  FEEDBACK: DEFAULT,
+  FEEDBACK: {
+    GET_FEEDBACK: {
+      staleTime: getHour(24),
+      gcTime: getHour(24),
+    },
+    RESULT: {
+      staleTime: getHour(24),
+      gcTime: getHour(24),
+    },
+  },
 
+  //뱃지 리스트
   BADGES: {
-    LIST: DEFAULT,
-    RECENT: DEFAULT,
+    LIST: NO_CACHE,
+    RECENT: NO_CACHE,
   },
 
   // 알림

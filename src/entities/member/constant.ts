@@ -10,3 +10,17 @@ export const treeLevelMap: Record<number, string> = {
   5: '큰 나무',
   6: '???',
 }
+
+// 뱃지 카테고리 상수
+export interface Category {
+  key: string
+  name: string
+}
+
+export const badgeCategory: Category[] = [
+  { key: 'group', name: '그룹' },
+  { key: 'personal', name: '개인' },
+  { key: 'total', name: '총합' },
+  { key: 'special', name: '특별' },
+  { key: 'event', name: '이벤트' },
+]

@@ -13,26 +13,22 @@ export interface OAuthUserInfo {
 }
 
 interface OAuthUserState {
-  userInfo: OAuthUserInfo | null
-  setUserInfo: (info: OAuthUserInfo) => void
-  updateUserInfo: (info: Partial<OAuthUserInfo>) => void // 부분 업데이트
-  clearUserInfo: () => void
+  OAuthUserInfo: OAuthUserInfo | null
+  setOAuthUserInfo: (info: OAuthUserInfo) => void
+  clearOAuthUserInfo: () => void
 }
 
+/** 유저 OAuth 정보를 저장하는 전역 상태 (로그인 과정의 임시 데이터) */
 export const useOAuthUserStore = create<OAuthUserState>()(
   persist(
     set => ({
-      userInfo: null,
-      setUserInfo: info => set({ userInfo: info }),
-      updateUserInfo: info =>
-        set(state => ({
-          userInfo: state.userInfo ? { ...state.userInfo, ...info } : null,
-        })),
-      clearUserInfo: () => set({ userInfo: null }),
+      OAuthUserInfo: null,
+      setOAuthUserInfo: info => set({ OAuthUserInfo: info }),
+      clearOAuthUserInfo: () => set({ OAuthUserInfo: null }),
     }),
     {
       name: 'oauth-user-info', // localStorage key
-      partialize: state => ({ userInfo: state.userInfo }), // 선택적 저장
+      partialize: state => ({ userInfo: state.OAuthUserInfo }), // 선택적 저장
     },
   ),
 )

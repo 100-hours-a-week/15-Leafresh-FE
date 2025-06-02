@@ -57,7 +57,6 @@ const ChallengeMainPage = (): ReactNode => {
 
   const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
-
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
   /** 카테고리 리스트로 이동 */

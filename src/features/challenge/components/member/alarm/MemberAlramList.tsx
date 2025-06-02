@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 import { useInfiniteMemberAlarmList } from '@features/member/hooks/useInfiniteMemberAlarmList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
 
@@ -32,14 +33,15 @@ export function formatRelativeTime(target: Date): string {
 }
 
 const MemberAlarmList = () => {
+  const openToast = useToast()
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
-  const { mutate: alarmAllRead } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
+  const { mutate: ReadAlarmMutate } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
 
   const alarms = data?.pages.flatMap(page => page?.data?.notifications || []) ?? []
   const triggerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    alarmAllRead()
+    ReadAlarmMutate()
   }, [])
 
   useEffect(() => {
@@ -81,8 +83,6 @@ const MemberAlarmList = () => {
 }
 
 export default MemberAlarmList
-
-// === 스타일 ===
 
 const Wrapper = styled.div`
   padding: 24px 0;

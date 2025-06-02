@@ -1,8 +1,9 @@
 'use client'
 
 import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -19,6 +20,8 @@ import LogoImage from '@public/image/logo.svg'
 
 const LoginPage = () => {
   const openToast = useToast()
+  const searchParams = useSearchParams()
+  const isExpired = searchParams.get('expired') === 'true'
 
   const providerRef = useRef<LowercaseOAuthType>('kakao')
 
@@ -43,6 +46,12 @@ const LoginPage = () => {
       openToast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
     }
   }
+
+  useEffect(() => {
+    if (isExpired) {
+      openToast(ToastType.Error, '세션이 만료되었습니다\n다시 로그인해주세요')
+    }
+  }, [isExpired])
 
   return (
     <Container>

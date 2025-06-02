@@ -16,6 +16,7 @@ import { theme } from '@shared/styles/theme'
 
 export default function GroupVerificationPage({ participateId }: { participateId: string }) {
   const challengeId = Number(participateId)
+
   const { data, isLoading, error } = useGroupVerifications(challengeId)
   const postMutation = useMutationStore<
     PostGroupVerificationResponse,
