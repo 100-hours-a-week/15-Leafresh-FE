@@ -9,8 +9,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { MemberInfoRequest, MemberInfoResponse, PatchMemberInfo } from '@features/member/api/profile/patch-member-info'
+import { MemberInfoRequest, MemberInfoResponse } from '@features/member/api/profile/patch-member-info'
 
 import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
 import { ToastType } from '@shared/context/toast/type'
@@ -20,6 +19,7 @@ import { useRouter } from 'next/navigation'
 import { URL } from '@shared/constants/route/route'
 import { theme } from '@shared/styles/theme'
 import { taintObjectReference } from 'next/dist/server/app-render/entry-base'
+import { ProfileCardResponse } from '@features/member/api/profile/get-member-profilecard'
 
 interface ProfileModifyPageProps {
   className?: string
@@ -38,13 +38,13 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
   const router = useRouter()
   const openToast = useToast()
 
-  const { userInfo, updateUserInfo } = useOAuthUserStore()
   const [nickname, setNickname] = useState('')
   const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
   const [imageUrl, setImageUrl] = useState('')
   const { uploadFile, loading: uploading } = useImageUpload()
 
-  const profile = queryClient.getQueryData<any>(QUERY_KEYS.MEMBER.DETAILS)?.data
+  const profile = queryClient.getQueryData<ProfileCardResponse>(QUERY_KEYS.MEMBER.DETAILS)
+  console.log(profile)
 
   const { mutate: patchMemberInfo } = useMutationStore<MemberInfoResponse, MemberInfoRequest>(
     MUTATION_KEYS.MEMBER.MODIFY,
@@ -110,7 +110,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     const body: MemberInfoRequest = {}
 
     if (nickname && nickname !== profile?.nickname) body.nickname = nickname
-    if (imageUrl && imageUrl !== profile?.imageUrl) body.imageUrl = imageUrl
+    if (imageUrl && imageUrl !== profile?.profileImageUrl) body.imageUrl = imageUrl
 
     if (Object.keys(body).length === 0) {
       openToast(ToastType.Error, '변경된 정보가 없습니다.')
@@ -121,6 +121,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
       onSuccess: res => {
         updateUserInfo(res.data)
         openToast(ToastType.Success, '프로필이 성공적으로 수정되었습니다.')
+        //수정 후 1.5초 뒤 마이페이지로 이동
         setTimeout(() => {
           router.push(URL.MEMBER.PROFILE.MYPAGE.value)
         }, 1500)
@@ -143,7 +144,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
       <ProfileWrapper>
         <UploadImageButton htmlFor='profile-image' $hasImage={!!currentImage}>
           {currentImage && <ProfileImage src={currentImage} alt='프로필 이미지' />}
-          {/* {!currentImage && <PlaceholderIcon />} */}
+          {!currentImage && <CameraIcon />}
           <CameraWrapper>
             <CameraIcon />
           </CameraWrapper>
@@ -173,11 +174,9 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
         </InputMeta>
       </InputSection>
 
-      <SubmitWrapper>
-        <SubmitButton onClick={handleSubmit} disabled={currentNickname.length === 0 || !!nicknameError || uploading}>
-          {uploading ? '업로드 중...' : '완료'}
-        </SubmitButton>
-      </SubmitWrapper>
+      <SubmitButton onClick={handleSubmit} disabled={currentNickname.length === 0 || !!nicknameError || uploading}>
+        {uploading ? '업로드 중...' : '완료'}
+      </SubmitButton>
     </Container>
   )
 }
@@ -229,16 +228,6 @@ const ProfileImage = styled.img`
   border-radius: 50%;
 `
 
-// const PlaceholderIcon = styled.div`
-//   width: 2rem;
-//   height: 2rem;
-//   background-color: #d1d5db;
-//   border-radius: 4px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `
-
 const CameraWrapper = styled.div`
   position: absolute;
   bottom: 0;
@@ -263,7 +252,8 @@ const HiddenInput = styled.input`
 `
 
 const InputSection = styled.div`
-  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
 `
 
 const Label = styled.label`
@@ -300,31 +290,30 @@ const InputMeta = styled.div`
 `
 
 const ErrorText = styled.span`
-  color: #ef4444;
+  color: ${theme.colors.lfRed.base};
+  font-size: ${theme.fontSize.xs};
 `
 
 const CountText = styled.span`
-  color: #9ca3af;
-`
-
-const SubmitWrapper = styled.div`
-  display: flex;
-  padding: 1rem 1.5rem;
+  color: ${theme.colors.lfBlack.base};
+  font-size: ${theme.fontSize.sm};
 `
 
 const SubmitButton = styled.button<{ disabled: boolean }>`
+  margin-top: 20px;
   width: 100%;
-  padding: 1rem;
-  background-color: ${({ disabled }) => (disabled ? '#9ca3af' : '#000')};
-  color: white;
+  padding: 10px 0;
+  background-color: ${({ disabled }) =>
+    disabled ? `${theme.colors.lfGreenInactive.base}` : `${theme.colors.lfGreenMain.base}`};
+  color: ${theme.colors.lfWhite.base};
   text-align: center;
-  font-weight: 500;
-  border-radius: 0.5rem;
+  font-weight: ${theme.fontWeight.semiBold};
+  border-radius: ${theme.radius.lg};
+  box-shadow: ${theme.shadow.lfPrime};
   border: none;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  transition: background-color 0.2s ease;
 
   &:hover:not(:disabled) {
-    background-color: #1f2937;
+    scale: 1.02;
   }
 `
