@@ -26,7 +26,7 @@ const Header = ({ padding }: HeaderProps) => {
           <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
         </LogoWrapper>
         <MenuButtons>
-          {isLoggedIn && <AlarmButton name='Bell' size={24} onClick={() => router.push(URL.MEMBER.ALARM.value)} />}
+          <AlarmButton name='Bell' size={24} strokeWidth={2.5} onClick={() => router.push(URL.MEMBER.ALARM.value)} />
         </MenuButtons>
       </CustomWidthWrapper>
     </HeaderContainer>

@@ -1,6 +1,5 @@
 'use client'
 
-
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
@@ -17,6 +16,7 @@ import Chatbot from '@shared/components/chatbot/Chatbot'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getDayOfWeek } from '@shared/lib/date/utils'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 const MainPage = (): ReactNode => {
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
@@ -58,7 +58,8 @@ export default MainPage
 // === Styles ===
 
 const Container = styled.div`
-  /* padding-top: 250px; */
+  ${responsiveHorizontalPadding};
+
   padding-bottom: 80px;
 
   display: flex;

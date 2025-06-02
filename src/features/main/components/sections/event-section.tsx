@@ -19,14 +19,14 @@ interface EventSectionProps {
 
 export const EventSection = ({ eventChallenges, className }: EventSectionProps): ReactNode => {
   const router = useRouter()
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
+
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
     },
     [Autoplay({ delay: 4000, stopOnInteraction: false })],
   )
-
-  const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
   useEffect(() => {
     if (!emblaApi) return
@@ -38,12 +38,9 @@ export const EventSection = ({ eventChallenges, className }: EventSectionProps):
     emblaApi.on('select', onSelect)
     onSelect()
   }, [emblaApi])
+
   return (
     <Section>
-      <SectionHeader>
-        <SectionTitle>이벤트 챌린지</SectionTitle>
-        <SubDescription>기간 한정! 이벤트에 참여해보세요!</SubDescription>
-      </SectionHeader>
       <CarouselWrapper ref={emblaRef}>
         <CarouselInner>
           {eventChallenges.length !== 0 ? (
@@ -52,6 +49,7 @@ export const EventSection = ({ eventChallenges, className }: EventSectionProps):
                 <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
                 <EventGradientOverlay />
                 <EventTitleOverlay>{ch.title}</EventTitleOverlay>
+                <Badge className='badge'>이벤트 챌린지</Badge>
               </EventCard>
             ))
           ) : (
@@ -72,26 +70,28 @@ export const EventSection = ({ eventChallenges, className }: EventSectionProps):
 const Section = styled.section`
   display: flex;
   flex-direction: column;
+
+  &:hover {
+    .badge {
+      opacity: 1;
+    }
+  }
 `
 
-const SectionHeader = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const SectionTitle = styled.h2`
-  position: relative;
-
-  font-size: ${({ theme }) => theme.fontSize.xl};
-  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
-`
-
-const SubDescription = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.base};
+const Badge = styled.div`
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  padding: 12px 12px;
+  background: ${({ theme }) => theme.colors.lfGreenMain.base};
+  opacity: 0.7;
+  color: ${({ theme }) => theme.colors.lfWhite.base};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme }) => theme.colors.lfDarkGray.base};
+  border-radius: ${({ theme }) => theme.radius.full};
+  transition: opacity 0.3s ease;
+
+  z-index: 10;
 `
 
 const CarouselWrapper = styled.div`

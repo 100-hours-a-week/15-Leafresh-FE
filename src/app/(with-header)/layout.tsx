@@ -29,5 +29,5 @@ const Main = styled.main`
 
   position: relative;
   background-color: ${theme.colors.lfWhite.base};
-  padding: 23px ${WIDTH_PADDING}px;
+  /* padding: 23px 0px; */
 `
