@@ -74,7 +74,7 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
   const router = useRouter()
   const openToast = useToast()
 
-  const [step, setStep] = useState<1 | 2>(2)
+  const [step, setStep] = useState<1 | 2>(1)
 
   const categoryFromQuery = searchParams.get('category') ?? ''
   const categoryKor: string = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(categoryFromQuery) ?? ''

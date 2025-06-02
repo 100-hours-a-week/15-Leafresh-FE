@@ -72,7 +72,8 @@ const CHALLENGE_URL = {
     },
     CREATE: {
       name: '단체 챌린지 생성',
-      value: '/challenge/group/create',
+      value: (category?: ChallengeCategoryType) =>
+        category ? `/challenge/group/create?category=${category}` : `/challenge/group/create`,
       isProtected: true,
     },
     MODIFY: {

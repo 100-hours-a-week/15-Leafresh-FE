@@ -38,7 +38,7 @@ interface GroupChallengeCardProps {
 
   isAuth: boolean // 본인의 챌린지인지 여부
 
-  deleteCallback: () => void // 삭제 후 실행 콜백
+  deleteCallback?: () => void // 삭제 후 실행 콜백
 
   className?: string
 }
@@ -132,7 +132,7 @@ export const GroupChallengeCard = ({
           {
             // 성공
             onSuccess(data, variables, context) {
-              deleteCallback()
+              if (deleteCallback) deleteCallback()
               openToast(ToastType.Success, '챌린지가 삭제되었습니다')
             },
           },

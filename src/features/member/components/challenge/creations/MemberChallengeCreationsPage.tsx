@@ -43,7 +43,7 @@ const MemberChallengeCreationsPage = (): ReactNode => {
 
   /** 단체 챌린지 생성하러 가기 */
   const handleCreateChallenge = () => {
-    router.push(URL.CHALLENGE.GROUP.CREATE.value)
+    router.push(URL.CHALLENGE.GROUP.CREATE.value())
   }
 
   const groupChallenges = data?.pages.flatMap(page => page?.data.groupChallenges || []) ?? []

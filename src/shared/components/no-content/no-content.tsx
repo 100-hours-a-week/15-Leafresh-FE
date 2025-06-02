@@ -15,7 +15,7 @@ interface NoContentProps {
 
 const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProps): ReactNode => {
   return (
-    <EmptyWrapper>
+    <EmptyWrapper className={className}>
       <Image src={LogoCharacterImage} alt='로고 캐릭터' />
       <NoChallengeMessage>{title}</NoChallengeMessage>
       <CreateButton onClick={clickHandler}>{buttonText}</CreateButton>
@@ -32,7 +32,7 @@ const EmptyWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 `
 
 const NoChallengeMessage = styled.div`

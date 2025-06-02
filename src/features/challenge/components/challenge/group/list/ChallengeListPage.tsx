@@ -109,7 +109,7 @@ const ChallengeListPage = () => {
               onClick={() => {
                 const params = new URLSearchParams()
                 if (category) params.set('category', category)
-                router.push(`${URL.CHALLENGE.GROUP.CREATE.value}?${params.toString()}`)
+                router.push(`${URL.CHALLENGE.GROUP.CREATE.value(params.toString())}`)
               }}
               aria-label='추가'
             >
