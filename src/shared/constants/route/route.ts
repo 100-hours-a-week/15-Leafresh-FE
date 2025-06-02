@@ -56,11 +56,6 @@ const MEMBER_URL = {
 }
 
 const CHALLENGE_URL = {
-  INDEX: {
-    name: '챌린지 목록',
-    value: '/challenge',
-    isProtected: false,
-  },
   PERSONAL: {
     DETAILS: {
       name: '개인 챌린지 상세',

@@ -24,7 +24,7 @@ import { getDayOfWeek } from '@shared/lib/date/utils'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 
-const ChallengeMainPage = (): ReactNode => {
+const MainPage = (): ReactNode => {
   const router = useRouter()
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -160,7 +160,7 @@ const ChallengeMainPage = (): ReactNode => {
   )
 }
 
-export default ChallengeMainPage
+export default MainPage
 
 // === Styles ===
 
