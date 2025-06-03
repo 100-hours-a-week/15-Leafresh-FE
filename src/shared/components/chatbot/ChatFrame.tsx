@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import {
@@ -21,6 +21,8 @@ import HorizontalCards from './HorizontalCards'
 
 import { RecommendationResponse } from '@features/chatbot/chatbot-base-info'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { useChatHistory } from '../../../features/chatbot/hooks/useChatHistory'
+import { formatChallengeResponse } from '@features/chatbot/hooks/formatChallengeResponse'
 
 export interface ChatFrameProps {
   step: FrameStep
@@ -32,7 +34,6 @@ export type FrameStep = 1 | 2 | 3
 
 export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [inputText, setInputText] = useState('')
-  const [chatHistory, setChatHistory] = useState<ChatHistoryItem[]>([])
   const [loading, setLoading] = useState(false)
   const [visibleCardIndex, setVisibleCardIndex] = useState(0)
 
@@ -42,23 +43,37 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [liveImage] = useState(() => getRandomLiveImage())
   const [workImage] = useState(() => getRandomWorkImage())
 
+  const { history: chatHistory, addItem: addChatItem } = useChatHistory()
+  //dev 모드에서 소개 2번 렌더링 방지
+  const hasInitializedRef = useRef(false)
+
   const sessionId = useChatSession()
   const messagesEndRef = useScrollToBottom(chatHistory)
 
-  //마운트 시 소개
+  // mount 시 초기 메시지
   useEffect(() => {
-    if (chatHistory.length === 0) {
-      setChatHistory([
-        {
-          type: 'message',
-          role: 'bot',
-          text: '안녕하세요! 저는 Leafresh의 챗봇 수피입니다.\n저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
-        },
-        { type: 'horizontal-cards' },
-      ])
+    if (!hasInitializedRef.current) {
+      addChatItem({
+        type: 'message',
+        role: 'bot',
+        text:
+          '안녕하세요! 저는 Leafresh의 챗봇 수피입니다.\n' +
+          '저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n' +
+          '먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
+      })
+      addChatItem({ type: 'horizontal-cards' })
+
+      // 한 번만 실행되도록 플래그를 true로 바꾼다.
+      hasInitializedRef.current = true
     }
   }, [])
 
+  // chatSelections가 바뀔 때마다 세션 스토리지에 저장
+  useEffect(() => {
+    saveSelectionsToSession(chatSelections)
+  }, [chatSelections])
+
+  // chatSelections 업데이트 헬퍼
   const updateChatSelections = (updates: Partial<typeof chatSelections>) => {
     setChatSelections(prev => {
       const next = { ...prev, ...updates }
@@ -67,13 +82,14 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     })
   }
 
+  // 거주 지역∙직장 형태 카드 렌더링
   const renderHorizontalCards = (): React.ReactNode[] => {
     const locationCard = (
       <ChatSelection
         selectionType='location'
         title='거주 지역 선택'
         subtitle='* 자신의 생활환경을 위해 선택해주세요.'
-        imageUrl={liveImage} // util 함수 호출
+        imageUrl={liveImage}
         onSelect={handleLocationSelect}
       />
     )
@@ -82,7 +98,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         selectionType='workType'
         title='직장 형태 선택'
         subtitle='* 자신의 직업환경을 위해 선택해주세요.'
-        imageUrl={workImage} // util 함수 호출
+        imageUrl={workImage}
         onSelect={handleWorkTypeSelect}
       />
     )
@@ -95,18 +111,24 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       const locLabel = getDisplayLabel(selectedLocation)
       const workLabel = getDisplayLabel(selectedWorkType)
 
-      addChatItem('message', 'user', `${locLabel}, ${workLabel}`)
+      // 사용자 메시지 추가
+      addChatItem({ type: 'message', role: 'user', text: `${locLabel}, ${workLabel}` })
+
       setTimeout(() => {
-        addChatItem('message', 'bot', '참여하고 싶은 챌린지 유형을 선택해주세요!')
-        addChatItem('selection', undefined, undefined, {
-          title: '챌린지 선택',
-          subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
-          imageUrl: '/image/chatbot/chatbotcategory.png',
-          options: challengeOptions,
-          selectionType: 'challenge',
-          buttonText: '카테고리 설명',
-          onExplainClick: handleExplainCategory,
-          onSelect: handleChallengeSelect,
+        // 챌린지 카테고리 선택 요청
+        addChatItem({ type: 'message', role: 'bot', text: '참여하고 싶은 챌린지 유형을 선택해주세요!' })
+        addChatItem({
+          type: 'selection',
+          selectionProps: {
+            title: '챌린지 선택',
+            subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
+            imageUrl: '/image/chatbot/chatbotcategory.png',
+            options: challengeOptions,
+            selectionType: 'challenge',
+            buttonText: '카테고리 설명',
+            onExplainClick: handleExplainCategory,
+            onSelect: handleChallengeSelect,
+          },
         })
       }, 300)
 
@@ -118,23 +140,26 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     }
   }, [selectedLocation, selectedWorkType])
 
+  // 지역 선택 핸들러
   const handleLocationSelect = (value: string) => {
     setSelectedLocation(value)
     updateChatSelections({ location: value })
-    setVisibleCardIndex(1)
+    setVisibleCardIndex(1) // 두 번째 카드로 넘기기
   }
 
+  // 직장 형태 선택 핸들러
   const handleWorkTypeSelect = (value: string) => {
     setSelectedWorkType(value)
     updateChatSelections({ workType: value })
   }
 
+  // 챌린지 카테고리 선택 핸들러
   const handleChallengeSelect = async (value: string) => {
     if (loading) return
     setLoading(true)
 
-    // 사용자 메시지로 선택값 표시
-    addChatItem('message', 'user', getDisplayLabel(value))
+    // 사용자 메시지 추가
+    addChatItem({ type: 'message', role: 'user', text: getDisplayLabel(value) })
     updateChatSelections({ category: value })
 
     try {
@@ -144,33 +169,20 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         workType: chatSelections.workType || '',
         category: value,
       })
-
       const data = response.data as RecommendationResponse
       const { recommend, challenges } = data
 
-      const responseMessage = [
-        recommend,
-        <br key='r1' />,
-        <br key='r2' />,
-        ...challenges.flatMap((ch: { title: string; description: string }, idx: number) => [
-          `${idx + 1}. ${ch.title}`,
-          <br key={`title-${idx}`} />,
-          `\u00a0\u00a0${ch.description}`,
-          <br key={`desc-${idx}`} />,
-          <br key={`gap-${idx}`} />,
-        ]),
-      ]
+      const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
 
-      addChatItem(
-        'message',
-        'bot',
-        responseMessage,
-        undefined,
-        '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n 챌린지를 언급해주세요!',
-        '카테고리 재선택',
-        true,
-        handleRetry,
-      )
+      addChatItem({
+        type: 'message',
+        role: 'bot',
+        text: responseMessage,
+        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
+        buttonText: '카테고리 재선택',
+        isAnswer: true,
+        onClick: handleRetry,
+      })
 
       onSelect(value, 2)
     } catch (err) {
@@ -178,14 +190,22 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         err && typeof err === 'object' && 'message' in err
           ? String((err as { message: string }).message)
           : '추천 중 오류가 발생했습니다. 다시 시도해주세요.'
-      addChatItem('message', 'bot', `죄송합니다. ${msg}`, undefined, undefined, '다시 시도', true, handleRetry)
+      addChatItem({
+        type: 'message',
+        role: 'bot',
+        text: `죄송합니다. ${msg}`,
+        buttonText: '다시 시도',
+        isAnswer: true,
+        onClick: handleRetry,
+      })
     } finally {
       setLoading(false)
     }
   }
 
+  // 카테고리 설명 핸들러
   const handleExplainCategory = () => {
-    addChatItem('message', 'user', '카테고리 설명해줘')
+    addChatItem({ type: 'message', role: 'user', text: '카테고리 설명해줘' })
     const descs = categoryDescriptions.flatMap((pair: [string, string], idx: number) => [
       pair[0],
       <br key={`title-${idx}`} />,
@@ -194,10 +214,37 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       <br key={`gap-${idx}`} />,
     ])
 
-    setTimeout(() => addChatItem('message', 'bot', descs), 300)
+    setTimeout(() => addChatItem({ type: 'message', role: 'bot', text: descs }), 300)
 
     setTimeout(() => {
-      addChatItem('selection', undefined, undefined, {
+      addChatItem({
+        type: 'selection',
+        selectionProps: {
+          title: '챌린지 선택',
+          subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
+          imageUrl: '/image/chatbot/chatbotcategory.png',
+          options: challengeOptions,
+          selectionType: 'challenge',
+          buttonText: '카테고리 설명',
+          onExplainClick: handleExplainCategory,
+          onSelect: handleChallengeSelect,
+        },
+      })
+    }, 2000)
+
+    onRetry()
+  }
+
+  // 재선택 핸들러
+  const handleRetry = () => {
+    if (loading) {
+      setTimeout(() => handleRetry(), 1000)
+      return
+    }
+    addChatItem({ type: 'message', role: 'bot', text: '참여하고 싶은 챌린지 유형을 선택해주세요!' })
+    addChatItem({
+      type: 'selection',
+      selectionProps: {
         title: '챌린지 선택',
         subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
         imageUrl: '/image/chatbot/chatbotcategory.png',
@@ -206,35 +253,16 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         buttonText: '카테고리 설명',
         onExplainClick: handleExplainCategory,
         onSelect: handleChallengeSelect,
-      })
-    }, 2000)
-
-    onRetry()
-  }
-
-  const handleRetry = () => {
-    if (loading) {
-      setTimeout(() => handleRetry(), 1000)
-      return
-    }
-    addChatItem('message', 'bot', '참여하고 싶은 챌린지 유형을 선택해주세요!')
-    addChatItem('selection', undefined, undefined, {
-      title: '챌린지 선택',
-      subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
-      imageUrl: '/image/chatbot/chatbotcategory.png',
-      options: challengeOptions,
-      selectionType: 'challenge',
-      buttonText: '카테고리 설명',
-      onExplainClick: handleExplainCategory,
-      onSelect: handleChallengeSelect,
+      },
     })
     onRetry()
   }
 
+  // 자유 텍스트 전송 핸들러
   const handleSendMessage = async (txt: string) => {
     if (!txt.trim() || loading) return
     setLoading(true)
-    addChatItem('message', 'user', txt)
+    addChatItem({ type: 'message', role: 'user', text: txt })
 
     const formatMultilineText = (t: string): React.ReactNode[] =>
       t.split('\n').flatMap((line: string, i: number) => [line, <br key={`line-${i}`} />])
@@ -246,32 +274,20 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         workType: chatSelections.workType || '',
         message: txt,
       })
-
       const data = response.data as RecommendationResponse
       const { recommend, challenges } = data
 
-      const responseMessage = [
-        ...formatMultilineText(recommend),
-        <br key='r2' />,
-        ...challenges.flatMap((ch: { title: string; description: string }, idx: number) => [
-          `${idx + 1}. ${ch.title}`,
-          <br key={`title-${idx}`} />,
-          `\u00a0\u00a0${ch.description}`,
-          <br key={`desc-${idx}`} />,
-          <br key={`gap-${idx}`} />,
-        ]),
-      ]
+      const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
 
-      addChatItem(
-        'message',
-        'bot',
-        responseMessage,
-        undefined,
-        '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n 챌린지를 언급해주세요!',
-        '카테고리 재선택',
-        true,
-        handleRetry,
-      )
+      addChatItem({
+        type: 'message',
+        role: 'bot',
+        text: responseMessage,
+        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
+        buttonText: '카테고리 재선택',
+        isAnswer: true,
+        onClick: handleRetry,
+      })
     } catch (err) {
       let errorMessage = '오류가 발생했습니다. 다시 시도해주세요.'
       if (err && typeof err === 'object' && 'status' in err) {
@@ -281,36 +297,19 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         else if (status === 502) errorMessage = 'AI 서버 연결에 실패했습니다.'
         else if (status === 500) errorMessage = '서버 오류가 발생했습니다.'
       }
-      addChatItem(
-        'message',
-        'bot',
-        `죄송합니다. ${errorMessage}`,
-        undefined,
-        '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n 챌린지를 언급해주세요!',
-        '카테고리 재선택',
-        true,
-        handleRetry,
-      )
+      addChatItem({
+        type: 'message',
+        role: 'bot',
+        text: `죄송합니다. ${errorMessage}`,
+        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
+        buttonText: '카테고리 재선택',
+        isAnswer: true,
+        onClick: handleRetry,
+      })
     } finally {
       setLoading(false)
       setInputText('')
     }
-  }
-
-  const addChatItem = (
-    type: ChatHistoryItem['type'],
-    role?: ChatHistoryItem['role'],
-    text?: React.ReactNode,
-    selectionProps?: ChatHistoryItem['selectionProps'],
-    subDescription?: string,
-    buttonText?: string,
-    isAnswer?: boolean,
-    onClick?: () => void,
-  ) => {
-    setChatHistory(prev => [
-      ...prev,
-      { type, role, text, selectionProps, subDescription, buttonText, isAnswer, onClick },
-    ])
   }
 
   return (
