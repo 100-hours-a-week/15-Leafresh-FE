@@ -7,37 +7,24 @@ export const CATEGORY_RECOMMENDATION_ENDPOINT = {
   path: '/api/chatbot/recommendation/base-info',
 }
 
-/**
- * 카테고리 기반 챌린지 추천 요청 DTO
- */
-export interface CategoryRecommendationRequestDTO {
+export interface CategoryRecommendationRequest {
   sessionId: string
-  /** 위치 정보 (필수) */
   location: string
-  /** 업무 타입 (필수) */
   workType: string
-  /** 카테고리 (필수) */
   category: string
 }
 
-/**
- * 챌린지 정보 타입
- */
-export interface ChallengeDTO {
+export type Challenge = {
   /** 챌린지 제목 */
   title: string
   /** 챌린지 설명 */
   description: string
 }
-
-/**
- * 챌린지 추천 응답 데이터 타입
- */
-export interface RecommendationResponseDataDTO {
+export interface RecommendationResponse {
   /** 추천 설명 */
   recommend: string
   /** 추천된 챌린지 목록 */
-  challenges: ChallengeDTO[]
+  challenges: Challenge[]
 }
 
 /**
@@ -50,6 +37,6 @@ export interface RecommendationResponseDataDTO {
  * @throws 500 - 서버 내부 오류 ("서버 내부 오류로 추천에 실패했습니다.")
  * @throws 502 - AI 서버 연결 실패 ("AI 서버로부터 추천 결과를 받아오는 데 실패했습니다.")
  */
-export const requestCategoryBasedRecommendation = (body: CategoryRecommendationRequestDTO) => {
+export const requestCategoryBasedRecommendation = (body: CategoryRecommendationRequest) => {
   return fetchRequest(CATEGORY_RECOMMENDATION_ENDPOINT, { body })
 }
