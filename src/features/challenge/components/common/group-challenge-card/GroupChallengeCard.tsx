@@ -276,7 +276,7 @@ const DeleteButton = styled.button`
 `
 
 const ChallengeDesc = styled.div`
-  margin: 10px 0 27px 0;
+  margin: 10px 0 16px 0;
   font-size: ${({ theme }) => theme.fontSize.base};
   color: ${({ theme }) => theme.colors.lfBlack.base};
   line-height: 1.4;

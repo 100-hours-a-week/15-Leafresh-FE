@@ -13,6 +13,7 @@ import {
   GroupChallengeCard,
 } from '@features/challenge/components/common/group-challenge-card/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
+import Loading from '@shared/components/loading'
 import NoContent from '@shared/components/no-content/no-content'
 import { URL } from '@shared/constants/route/route'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
@@ -25,12 +26,16 @@ interface GroupChallengeSectionsProps {
 export const GroupChallengeSections = ({ categories, className }: GroupChallengeSectionsProps): ReactNode => {
   const router = useRouter()
 
+  // TODO: 챌린지 카테고리 종류가 추가되면, 전체 카테고리로 초기값 설정
   const [category, setCategory] = useState<ChallengeCategoryType>(categories[0].category) // 영어
-  const [searchKeyword, setSearchKeyword] = useState('') // 유저의 검색값
+  const [input, setInput] = useState('') // 유저의 검색값
 
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteGroupChallenges(category, searchKeyword)
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useInfiniteGroupChallenges(
+    category,
+    input,
+  )
 
   const observerRef = useRef<HTMLDivElement | null>(null)
 
@@ -61,7 +66,7 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
   /** 카테고리 전환 */
   const handleCategoryRoute = (newCategory: ChallengeCategoryType) => {
     setCategory(newCategory)
-    setSearchKeyword('')
+    setInput('') // 검색값 초기화
     if (searchInputRef.current) searchInputRef.current.value = ''
   }
 
@@ -69,14 +74,16 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
   const handleSearchEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       const keyword = searchInputRef.current?.value.trim() || ''
-      setSearchKeyword(keyword)
+      setInput(keyword)
     }
   }
 
   let contents
   const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(page => page.data.groupChallenges ?? []) ?? []
-  /** 검색값이 없는 경우 */
-  if (!groupChallenges || groupChallenges.length === 0) {
+  if (isLoading) {
+    contents = <Loading />
+  } else if (!groupChallenges || groupChallenges.length === 0) {
+    /** 검색값이 없는 경우 */
     contents = (
       <StyledNoContent
         title='검색 결과가 없습니다'
@@ -86,8 +93,8 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
     )
   } else {
     /** 검색값이 있는 경우 */
-    const testGroupChallenges = [...groupChallenges, ...groupChallenges, ...groupChallenges, ...groupChallenges]
-    contents = testGroupChallenges.map(challenge => {
+    // const testGroupChallenges = [...groupChallenges, ...groupChallenges, ...groupChallenges, ...groupChallenges]
+    contents = groupChallenges.map(challenge => {
       const { id, title, leafReward, currentParticipantCount, endDate, startDate, remainingDay, thumbnailUrl } =
         challenge
       const data: GroupChallenge = {
@@ -136,6 +143,10 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
 
       <ChallengeList>
         {contents}
+        {isFetchingNextPage && <Loading />}
+        {!hasNextPage && !isLoading && groupChallenges.length > 0 && (
+          <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>
+        )}
         <ObserverTrigger ref={observerRef} />
       </ChallengeList>
     </Section>
@@ -153,7 +164,7 @@ const SectionTitle = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 
-const SearchBar = styled.form`
+const SearchBar = styled.div`
   padding: 10px 0;
 `
 
@@ -225,4 +236,12 @@ const ObserverTrigger = styled.div`
 
 const StyledNoContent = styled(NoContent)`
   margin: 60px 0;
+`
+
+const EndMessage = styled.div`
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.lfDarkGray.base};
 `
