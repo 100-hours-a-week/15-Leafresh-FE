@@ -106,7 +106,6 @@ const CarouselWrapper = styled.div`
 
   position: relative;
   overflow: hidden;
-  margin-top: 16px;
 `
 
 const CarouselInner = styled.div`

@@ -225,7 +225,7 @@ const CategoryLabel = styled.span`
 const ChallengeList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   padding: 0 16px;
   margin-top: 24px;
 `
@@ -239,8 +239,6 @@ const StyledNoContent = styled(NoContent)`
 `
 
 const EndMessage = styled.div`
-  margin-top: 20px;
-  margin-bottom: 10px;
   text-align: center;
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.lfDarkGray.base};
