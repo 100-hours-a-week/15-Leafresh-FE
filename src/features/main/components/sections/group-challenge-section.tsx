@@ -223,6 +223,7 @@ const CategoryLabel = styled.span`
 `
 
 const ChallengeList = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -231,6 +232,10 @@ const ChallengeList = styled.div`
 `
 
 const ObserverTrigger = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 1px;
 `
 

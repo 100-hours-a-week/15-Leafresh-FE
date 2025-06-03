@@ -15,6 +15,7 @@ import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 const MemberChallengeCreationsPage = (): ReactNode => {
@@ -95,12 +96,15 @@ const MemberChallengeCreationsPage = (): ReactNode => {
 export default MemberChallengeCreationsPage
 
 const Wrapper = styled.div`
+  ${responsiveHorizontalPadding};
+
   min-height: calc(100dvh - 60px);
+
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; // ✔️ 여기서 중앙 배치로 전환
-  padding: 24px 0;
 `
 
 const Title = styled.h1`
@@ -117,6 +121,10 @@ const ChallengeList = styled.div`
 `
 
 const Observer = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 1px;
 `
 

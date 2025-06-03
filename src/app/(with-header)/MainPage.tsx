@@ -59,9 +59,6 @@ export default MainPage
 // === Styles ===
 
 const Container = styled.div`
-  margin-top: 24px;
-  padding-bottom: 80px;
-
   position: relative;
   display: flex;
   flex-direction: column;

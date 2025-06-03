@@ -14,6 +14,7 @@ import Chatbot from '@shared/components/chatbot/Chatbot'
 import GridBox from '@shared/components/wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 const ChallengeListPage = () => {
@@ -168,6 +169,8 @@ const ChallengeListPage = () => {
 export default ChallengeListPage
 
 const Container = styled.div`
+  ${responsiveHorizontalPadding};
+
   max-width: 800px;
   min-height: 800px;
   display: flex;

@@ -32,6 +32,7 @@ import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
@@ -294,10 +295,11 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
 export default ChallengePersonalDetails
 
 const Wrapper = styled.div`
+  ${responsiveHorizontalPadding};
+
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 20px 0px;
 `
 
 const DescriptionSection = styled.section`

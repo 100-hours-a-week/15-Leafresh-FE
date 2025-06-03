@@ -35,7 +35,7 @@ export const Navbar = (): ReactNode => {
 
   // TODO: 피드 기능 추가시 클릭 이벤트 리스너 핸들
   const navHandler = (label: string, href: string) => {
-    if (label !== '피드') return
+    if (label === '피드') return
     router.push(href)
   }
   return (

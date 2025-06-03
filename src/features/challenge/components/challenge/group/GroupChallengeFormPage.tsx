@@ -30,6 +30,7 @@ import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { formatDateToDateFormatString } from '@shared/lib/date/utils'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
 
@@ -261,8 +262,9 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
 export default GroupChallengeFormPage
 
 const PageWrapper = styled.div`
+  ${responsiveHorizontalPadding};
+
   width: 100%;
-  padding: 20px 0px;
   display: flex;
   flex-direction: column;
   gap: 24px;

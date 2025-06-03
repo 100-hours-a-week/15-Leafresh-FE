@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
+import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
 interface ChallengeProps {
@@ -40,7 +41,9 @@ const GroupChallengeParticipantCard = ({
       <RightSection>
         <TitleSection>
           <Title>{title}</Title>
-          <ArrowIcon onClick={onClick}>&gt;</ArrowIcon>
+          <ArrowIcon onClick={onClick} name='ChevronRight' size={18}>
+            &gt;
+          </ArrowIcon>
         </TitleSection>
         <DateRange>
           {formatDate(startDate)} ~ {formatDate(endDate)}
@@ -68,7 +71,7 @@ const GroupChallengeParticipantCard = ({
 export default GroupChallengeParticipantCard
 
 const CardContainer = styled.div`
-  width: 322px;
+  width: 100%;
   height: 130px;
   border-radius: 15px;
   background-color: ${theme.colors.lfWhite.base};
@@ -125,9 +128,8 @@ const Title = styled.h3`
   color: #333;
 `
 
-const ArrowIcon = styled.span`
+const ArrowIcon = styled(LucideIcon)`
   color: #999;
-  font-size: 18px;
 `
 
 const DateRange = styled.div`

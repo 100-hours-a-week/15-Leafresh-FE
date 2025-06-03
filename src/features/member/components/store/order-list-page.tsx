@@ -11,6 +11,7 @@ import { useInfiniteMemberStoreOrderList } from '@features/member/hooks/useInfin
 import NoContent from '@shared/components/no-content/no-content'
 import { URL } from '@shared/constants/route/route'
 import { getTimeDiff } from '@shared/lib/date/utils'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
@@ -154,14 +155,15 @@ const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
 }
 
 const Container = styled.div`
-  padding-bottom: 40px;
+  ${responsiveHorizontalPadding};
+
   display: flex;
   flex-direction: column;
   gap: 16px;
 `
 
 const Header = styled.div`
-  padding: 16px;
+  /* padding: 16px; */
 
   position: relative;
   display: flex;

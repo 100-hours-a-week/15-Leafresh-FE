@@ -25,9 +25,11 @@ export default WithHeaderLayout
 
 const Main = styled.main`
   width: 100%;
+  margin-top: 24px;
+  padding-bottom: 24px;
+  margin-bottom: 72px;
   flex: 1;
 
   position: relative;
   background-color: ${theme.colors.lfWhite.base};
-  /* padding: 23px 0px; */
 `
