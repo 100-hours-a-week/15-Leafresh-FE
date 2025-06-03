@@ -12,7 +12,7 @@ import {
   getRandomLiveImage,
   getRandomWorkImage,
 } from '../../../entities/chatbot/utils'
-import { ChatHistoryItem, challengeOptions, categoryDescriptions } from '../../../entities/chatbot/type'
+import { challengeOptions, categoryDescriptions } from '../../../entities/chatbot/type'
 import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
 
 import ChatBubble from './ChatBubble'
@@ -22,7 +22,7 @@ import HorizontalCards from './HorizontalCards'
 import { RecommendationResponse } from '@features/chatbot/chatbot-base-info'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { useChatHistory } from '../../../features/chatbot/hooks/useChatHistory'
-import { formatChallengeResponse } from '@features/chatbot/hooks/formatChallengeResponse'
+import { formatChallengeResponse } from '@shared/components/chatbot/formatChallengeResponse'
 
 export interface ChatFrameProps {
   step: FrameStep
