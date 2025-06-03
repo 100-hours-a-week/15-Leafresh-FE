@@ -2,7 +2,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import { PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
@@ -21,20 +21,7 @@ export const PersonalChallengeSection = ({
   className,
 }: PersonalChallengeSectionProps): ReactNode => {
   const router = useRouter()
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, startIndex: 1 })
-  const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false)
-  const [canScrollNext, setCanScrollNext] = useState<boolean>(true)
-
-  useEffect(() => {
-    if (!emblaApi) return
-    const updateButtons = () => {
-      setCanScrollPrev(emblaApi.canScrollPrev())
-      setCanScrollNext(emblaApi.canScrollNext())
-    }
-
-    emblaApi.on('select', updateButtons)
-    updateButtons()
-  }, [emblaApi])
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: 0 })
 
   return (
     <Section className={className}>
@@ -66,17 +53,14 @@ export const PersonalChallengeSection = ({
             ))}
           </EmblaSlideContainer>
         </EmblaContainer>
-        {canScrollPrev && (
-          <LeftIconWrapper onClick={() => emblaApi?.scrollPrev()}>
-            <ScrollIcon name='ChevronLeft' size={24} />
-          </LeftIconWrapper>
-        )}
 
-        {canScrollNext && (
-          <RightIconWrapper onClick={() => emblaApi?.scrollNext()}>
-            <ScrollIcon name='ChevronRight' size={24} />
-          </RightIconWrapper>
-        )}
+        <LeftIconWrapper onClick={() => emblaApi?.scrollPrev()}>
+          <ScrollIcon name='ChevronLeft' size={24} />
+        </LeftIconWrapper>
+
+        <RightIconWrapper onClick={() => emblaApi?.scrollNext()}>
+          <ScrollIcon name='ChevronRight' size={24} />
+        </RightIconWrapper>
       </CarouselWrapper>
     </Section>
   )
