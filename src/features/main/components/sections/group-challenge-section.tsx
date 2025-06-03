@@ -160,7 +160,7 @@ const Section = styled.section`
 
 const SectionTitle = styled.h2`
   ${responsiveHorizontalPadding};
-  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 
