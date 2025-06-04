@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
 
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
@@ -41,10 +42,15 @@ const Chatbot = () => {
   }
 
   useScrollLock(isOpen)
+
+  const handleClickLauncher = () => {
+    sendGAEvent('event', 'chatbot', { value: 'chatbot-entered' }) // GA: 로그 수집
+    setOpen(true)
+  }
   return (
     <>
       {!isOpen && (
-        <Launcher onClick={() => setOpen(true)}>
+        <Launcher onClick={handleClickLauncher}>
           <Image src='/image/chatbot/chatbot.svg' alt='Leafresh 챗봇' width={48} height={48} />
         </Launcher>
       )}

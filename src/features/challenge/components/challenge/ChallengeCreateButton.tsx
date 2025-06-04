@@ -3,13 +3,17 @@
 import Link from 'next/link'
 
 import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
 
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 const ChallengeCreateButton = () => {
+  const handleCreateChallenge = () => {
+    sendGAEvent('event', 'group-create-step-1', { value: 'Step1: 챌린지 생성 버튼' }) // GA: 로그 수집
+  }
   return (
     <Container>
-      <Link href='/challenge/group/create' passHref>
+      <Link href='/challenge/group/create' passHref onClick={handleCreateChallenge}>
         <Button name='Plus' color='lfWhite' size={24} />
       </Link>
     </Container>

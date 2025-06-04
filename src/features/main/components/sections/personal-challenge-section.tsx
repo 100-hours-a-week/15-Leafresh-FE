@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
 
 import { PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
 import { LeafReward } from '@shared/components'
@@ -22,6 +23,12 @@ export const PersonalChallengeSection = ({
 }: PersonalChallengeSectionProps): ReactNode => {
   const router = useRouter()
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: 0 })
+
+  const handleClickCard = (ch: PersonalChallengeType) => {
+    sendGAEvent('event', 'personal-card', { challengeId: ch.id }) // GA: 로그 수집
+
+    router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))
+  }
 
   return (
     <Section className={className}>
@@ -42,9 +49,7 @@ export const PersonalChallengeSection = ({
                   <DailyCardDescriptions>
                     <CardTitle>{ch.title}</CardTitle>
                     <CardDescription>{ch.description}</CardDescription>
-                    <JoinButton onClick={() => router.push(URL.CHALLENGE.PERSONAL.DETAILS.value(ch.id))}>
-                      자세히 보기
-                    </JoinButton>
+                    <JoinButton onClick={() => handleClickCard(ch)}>자세히 보기</JoinButton>
                   </DailyCardDescriptions>
                 </DailyCard>
 

@@ -23,7 +23,6 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode
 }>) => {
-  const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS
   return (
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
@@ -36,7 +35,7 @@ const RootLayout = ({
           <Toast />
         </Providers>
       </body>
-      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
     </html>
   )
 }
