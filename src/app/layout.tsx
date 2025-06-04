@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import ModalProvider from '@shared/components/modal/ModalProvider'
 import Toast from '@shared/components/toast/Toast'
 import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
@@ -15,6 +17,8 @@ export const metadata: Metadata = {
     icon: '/icon/favicon.ico',
   },
 }
+
+const GOOGLE_ANALYTICS_ID = 'G-2BKG11WDXZ'
 
 const RootLayout = ({
   children,
@@ -33,6 +37,7 @@ const RootLayout = ({
           <Toast />
         </Providers>
       </body>
+      <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
     </html>
   )
 }
