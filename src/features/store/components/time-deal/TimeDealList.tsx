@@ -24,7 +24,7 @@ const dummyTimeDealProducts: TimeDealProduct[] = [
     discountedPercentage: 30,
     stock: 10,
     dealStartTime: new Date().toISOString() as ISOFormatString,
-    dealEndTime: new Date(Date.now() + 1000 * 2).toISOString() as ISOFormatString,
+    dealEndTime: new Date(Date.now() + 1000 * 12).toISOString() as ISOFormatString,
     timeDealStatus: 'ONGOING',
   },
   {
