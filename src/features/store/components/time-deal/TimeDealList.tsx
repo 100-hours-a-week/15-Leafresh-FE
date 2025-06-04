@@ -6,99 +6,12 @@ import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ISOFormatString } from '@shared/types/date'
 
 import { getTimeDealProducts, TimeDealProduct } from '../../api/get-timedeals'
 import OngoingTimeDealCard from './OngoingTimeDealCard'
 import UpcomingTimeDealCard from './UpcomingTimeDealCard'
 
-const dummyTimeDealProducts: TimeDealProduct[] = [
-  {
-    dealId: 99,
-    productId: 100,
-    title: '특가 텀블러1',
-    description: '지금만 이 가격! 텀블러 특가전',
-    imageUrl: '/image/Main_1.png',
-    defaultPrice: 6000,
-    discountedPrice: 4000,
-    discountedPercentage: 30,
-    stock: 10,
-    dealStartTime: new Date().toISOString() as ISOFormatString,
-    dealEndTime: new Date(Date.now() + 1000 * 12).toISOString() as ISOFormatString,
-    timeDealStatus: 'ONGOING',
-  },
-  {
-    dealId: 100,
-    productId: 1,
-    title: '특가 텀블러2',
-    description: '지금만 이 가격! 텀블러 특가전',
-    imageUrl: '/image/Main_1.png',
-    defaultPrice: 6000,
-    discountedPrice: 4000,
-    discountedPercentage: 30,
-    stock: 10,
-    dealStartTime: new Date().toISOString() as ISOFormatString,
-    dealEndTime: new Date(Date.now() + 1000 * 60 * 60).toISOString() as ISOFormatString,
-    timeDealStatus: 'ONGOING',
-  },
-
-  {
-    dealId: 101,
-    productId: 2,
-    title: '특가 텀블러',
-    description: '지금만 이 가격! 텀블러 특가전',
-    imageUrl: '/image/Main_1.png',
-    defaultPrice: 6000,
-    discountedPrice: 4000,
-    discountedPercentage: 30,
-    stock: 10,
-    dealStartTime: new Date().toISOString() as ISOFormatString,
-    dealEndTime: new Date(Date.now() + 1000 * 60 * 60).toISOString() as ISOFormatString,
-    timeDealStatus: 'UPCOMING',
-  },
-  {
-    dealId: 102,
-    productId: 3,
-    title: '특가 텀블러',
-    description: '지금만 이 가격! 텀블러 특가전',
-    imageUrl: '/image/Main_1.png',
-    defaultPrice: 6000,
-    discountedPrice: 4000,
-    discountedPercentage: 30,
-    stock: 10,
-    dealStartTime: new Date().toISOString() as ISOFormatString,
-    dealEndTime: new Date(Date.now() + 1000 * 60 * 60).toISOString() as ISOFormatString,
-    timeDealStatus: 'UPCOMING',
-  },
-  {
-    dealId: 103,
-    productId: 4,
-    title: '특가 텀블러',
-    description: '지금만 이 가격! 텀블러 특가전',
-    imageUrl: '/image/Main_1.png',
-    defaultPrice: 6000,
-    discountedPrice: 4000,
-    discountedPercentage: 30,
-    stock: 10,
-    dealStartTime: new Date().toISOString() as ISOFormatString,
-    dealEndTime: new Date(Date.now() + 1000 * 60 * 60).toISOString() as ISOFormatString,
-    timeDealStatus: 'UPCOMING',
-  },
-  {
-    dealId: 104,
-    productId: 5,
-    title: '특가 텀블러',
-    description: '지금만 이 가격! 텀블러 특가전',
-    imageUrl: '/image/Main_1.png',
-    defaultPrice: 6000,
-    discountedPrice: 4000,
-    discountedPercentage: 30,
-    stock: 10,
-    dealStartTime: new Date().toISOString() as ISOFormatString,
-    dealEndTime: new Date(Date.now() + 1000 * 60 * 60).toISOString() as ISOFormatString,
-    timeDealStatus: 'UPCOMING',
-  },
-]
+const dummyTimeDealProducts: TimeDealProduct[] = []
 
 interface TimeDealListProps {
   className?: string

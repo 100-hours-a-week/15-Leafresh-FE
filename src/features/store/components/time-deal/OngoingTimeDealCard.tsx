@@ -101,17 +101,15 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
     MUTATION_KEYS.STORE.TIME_DEAL.ORDER,
   )
 
+  let timeDealContents
+  /** 예외: 타임딜 상품이 없는 경우 */
   if (!data || data.length === 0) {
-    return <ApologizeContent title='진행 중인 특가 상품이 없습니다' description='빠른 시일 내로 찾아뵙겠습니다' />
-  }
-
-  return (
-    <Container className={className}>
-      <TitleBox>
-        <SectionTitle>🔥 지금만 이 가격</SectionTitle>
-        <SubText>세상은 1등만 기억해!</SubText>
-      </TitleBox>
-
+    timeDealContents = (
+      <ApologizeContent title='진행 중인 특가 상품이 없습니다' description='빠른 시일 내로 찾아뵙겠습니다' />
+    )
+  } else {
+    /** 타임딜 상품이 있는 경우 */
+    timeDealContents = (
       <CarouselWrapper>
         {canScrollPrev && (
           <LeftButton onClick={() => emblaApi?.scrollPrev()}>
@@ -167,6 +165,15 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
           </RightButton>
         )}
       </CarouselWrapper>
+    )
+  }
+  return (
+    <Container className={className}>
+      <TitleBox>
+        <SectionTitle>🔥 지금만 이 가격</SectionTitle>
+        <SubText>세상은 1등만 기억해!</SubText>
+      </TitleBox>
+      {timeDealContents}
     </Container>
   )
 }
