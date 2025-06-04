@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useUserStore } from '@entities/member/context/UserStore'
 import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
 import { MemberInfoRequest, MemberInfoResponse } from '@features/member/api/profile/patch-member-info'
+import ErrorText from '@shared/components/errortext'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
@@ -190,16 +191,16 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
       <InputSection>
         <Label>닉네임</Label>
         <TextInput type='text' {...register('nickname')} placeholder={profile?.nickname || '나의 닉네임'} />
-        <InputMeta>
-          <ErrorText>{errors.nickname?.message}</ErrorText>
-          <CountText>
+        <InputMeta hasError={!!errors.nickname}>
+          <StyledErrorText message={errors.nickname?.message} />
+          <CountText hasError={!!errors.nickname}>
             {watch('nickname')?.length || 0}/{maxLength}
           </CountText>
         </InputMeta>
       </InputSection>
 
       <SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || uploading}>
-        {uploading ? '업로드 중...' : '완료'}
+        {uploading ? '업로드 중...' : '수정하기'}
       </SubmitButton>
     </Container>
   )
@@ -305,21 +306,17 @@ const TextInput = styled.input`
   }
 `
 
-const InputMeta = styled.div`
+const InputMeta = styled.div<{ hasError: boolean }>`
   display: flex;
-  justify-content: space-between;
+
+  justify-content: ${({ hasError }) => (hasError ? 'space-between' : 'flex-end')};
   align-items: center;
   margin-top: 0.25rem;
   font-size: 0.875rem;
 `
 
-const ErrorText = styled.span`
-  color: ${theme.colors.lfRed.base};
-  font-size: ${theme.fontSize.xs};
-`
-
-const CountText = styled.span`
-  color: ${theme.colors.lfBlack.base};
+const CountText = styled.span<{ hasError: boolean }>`
+  color: ${({ hasError }) => (hasError ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
   font-size: ${theme.fontSize.sm};
 `
 
@@ -331,7 +328,7 @@ const SubmitButton = styled.button<{ disabled: boolean }>`
     disabled ? `${theme.colors.lfGreenInactive.base}` : `${theme.colors.lfGreenMain.base}`};
   color: ${theme.colors.lfWhite.base};
   text-align: center;
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${theme.fontWeight.medium};
   border-radius: ${theme.radius.sm};
   box-shadow: ${theme.shadow.lfPrime};
   border: none;
@@ -340,4 +337,8 @@ const SubmitButton = styled.button<{ disabled: boolean }>`
   :hover:not(:disabled) {
     background-color: ${theme.colors.lfGreenMain.hover};
   }
+`
+
+const StyledErrorText = styled(ErrorText)`
+  margin: 0;
 `
