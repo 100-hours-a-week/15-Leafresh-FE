@@ -15,6 +15,7 @@ import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
+import { formatSecondToTime } from '@shared/lib/date/utils'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
@@ -31,22 +32,19 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
   const { openConfirmModal } = useConfirmModalStore()
 
   /** 각 재고의 남은 시간 트래킹 */
-  const [remainingTimes, setRemainingTimes] = useState<string[]>([])
+  const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위
   useEffect(() => {
     const updateTimes = () => {
-      const now = new Date().getTime()
+      const now = Date.now()
       const updated = data.map(deal => {
         const end = new Date(deal.dealEndTime).getTime()
-        const diff = Math.max(0, end - now)
-        const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0')
-        const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0')
-        const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0')
-        return `${hours}:${minutes}:${seconds}`
+        const diffInSec = Math.max(0, Math.floor((end - now) / 1000)) // 초 단위
+        return diffInSec
       })
       setRemainingTimes(updated)
     }
 
-    updateTimes() // 초기값 설정
+    updateTimes()
     const interval = setInterval(updateTimes, 1000)
     return () => clearInterval(interval)
   }, [data])
@@ -124,13 +122,20 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
         <Embla ref={emblaRef}>
           <EmblaTrack>
             {data.map((deal, index) => {
-              // const remaining = useRemainingTime({ target: deal.dealEndTime })
-              const remaining = remainingTimes[index] || '00:00:00'
+              const remainingSec = remainingTimes[index] ?? 0
+              const formatted = remainingSec !== 0 ? formatSecondToTime(remainingSec) : '마감되었습니다!' // 00:00:00 형식
+              const isRunningOut = remainingSec <= 300
               const isSoldOut = deal.stock <= 0
               return (
                 <EmblaSlide key={deal.productId}>
-                  <Timer>
-                    <LucideIcon name='Hourglass' size={18} strokeWidth={2.5} /> {remaining}
+                  <Timer isRunningOut={isRunningOut}>
+                    <LucideIcon
+                      name='Hourglass'
+                      size={18}
+                      strokeWidth={2.5}
+                      color={isRunningOut ? 'lfRed' : 'lfBlack'}
+                    />
+                    {formatted}
                   </Timer>
                   <Card>
                     <ImageBox>
@@ -217,10 +222,11 @@ const Card = styled.div`
   overflow: hidden;
 `
 
-const Timer = styled.div`
+const Timer = styled.div<{ isRunningOut: boolean }>`
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.semiBold};
   margin: 4px 0;
+  color: ${({ isRunningOut }) => (isRunningOut ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
 
   display: flex;
   align-items: center;
@@ -297,10 +303,10 @@ const BuyButton = styled.button`
 
   cursor: pointer;
 `
-const LeftButton = styled.button`
+
+const MoveButton = styled.button`
   position: absolute;
   top: 50%;
-  left: 0;
   transform: translateY(-50%);
   background: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.full};
@@ -308,6 +314,16 @@ const LeftButton = styled.button`
   width: 36px;
   height: 36px;
   z-index: 10;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${theme.colors.lfInputBackground.base};
+  }
+`
+
+const LeftButton = styled(MoveButton)`
+  left: 0;
 `
 const RightButton = styled(LeftButton)`
   left: auto;
