@@ -4,23 +4,16 @@ import type { RecommendationResponseDataDTO } from '@features/chatbot'
 import type React from 'react'
 import { ChatSelectionProps } from '../../shared/components/chatbot/ChatSelection'
 
-export interface ChatOption {
+export type ChatOption = {
   label: string
   value: string
 }
 
-export interface ChatSelections {
+export type ChatSelections = {
   location?: string
   workType?: string
   category?: string
 }
-
-export interface ChatSelections {
-  location?: string
-  workType?: string
-  category?: string
-}
-
 export type ChatHistoryItem = {
   type: 'message' | 'selection' | 'horizontal-cards'
   role?: 'bot' | 'user'
@@ -33,8 +26,6 @@ export type ChatHistoryItem = {
   isAnswer?: boolean
   onClick?: () => void
 }
-
-export type RecommendationResponse = RecommendationResponseDataDTO
 
 export const locationOptions: ChatOption[] = [
   { label: '도시', value: 'city' },
