@@ -3,6 +3,7 @@ import { ChallengeCategoryType } from '@entities/challenge/type'
 /**
  * FE라우트 엔드포인트 입니다
  */
+// 레이아웃 체크 ✅  TODO: 나뭇잎 상점 (/store), 구매한 물품 목록 페이지 (/member/store), 뱃지 목록 페이지
 const MAIN_URL = {
   INDEX: {
     name: '메인',
@@ -56,11 +57,6 @@ const MEMBER_URL = {
 }
 
 const CHALLENGE_URL = {
-  INDEX: {
-    name: '챌린지 목록',
-    value: '/challenge',
-    isProtected: false,
-  },
   PERSONAL: {
     DETAILS: {
       name: '개인 챌린지 상세',
@@ -71,12 +67,14 @@ const CHALLENGE_URL = {
   GROUP: {
     LIST: {
       name: '단체 챌린지 목록',
-      value: (category: ChallengeCategoryType) => `/challenge/group/list?category=${category}`,
+      value: (category?: ChallengeCategoryType) =>
+        category ? `/challenge/group/list?category=${category}` : '/challenge/group/list',
       isProtected: false,
     },
     CREATE: {
       name: '단체 챌린지 생성',
-      value: '/challenge/group/create',
+      value: (category?: ChallengeCategoryType) =>
+        category ? `/challenge/group/create?category=${category}` : `/challenge/group/create`,
       isProtected: true,
     },
     MODIFY: {
