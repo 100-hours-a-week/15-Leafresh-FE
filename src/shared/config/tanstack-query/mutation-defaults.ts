@@ -244,8 +244,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.MODIFY, {
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.MEMBER.DETAILS,
     })
-
-    return {} as ApiResponse<unknown>
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
