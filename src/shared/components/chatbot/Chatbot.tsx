@@ -6,7 +6,6 @@ import styled from '@emotion/styled'
 
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
-import { theme } from '@shared/styles/theme'
 
 import ChatWindow from './ChatWindow'
 
@@ -17,7 +16,7 @@ const Chatbot = () => {
   useEffect(() => {
     const updatePosition = () => {
       const windowWidth = window.innerWidth
-      const contentWidth = 500 // 컨텐츠의 최대 너비
+      const contentWidth = 430 // 컨텐츠의 최대 너비
 
       // 윈도우 너비가 컨텐츠 너비보다 클 때
       if (windowWidth > contentWidth) {
@@ -46,18 +45,7 @@ const Chatbot = () => {
     <>
       {!isOpen && (
         <Launcher onClick={() => setOpen(true)}>
-          <Image
-            src='/image/chatbot/chatbot.png'
-            alt='Leafresh 챗봇'
-            width={48}
-            height={48}
-            style={{
-              backgroundColor: `${theme.colors.lfWhite.base}`,
-              borderRadius: '9999px',
-            }}
-          />
-
-          <Name>챗봇 수피</Name>
+          <Image src='/image/chatbot/chatbot.svg' alt='Leafresh 챗봇' width={48} height={48} />
         </Launcher>
       )}
       {isOpen && <Backdrop onClick={handleCloseAndReset} />}
@@ -70,7 +58,7 @@ export default Chatbot
 const Launcher = styled.button`
   position: fixed;
   flex-direction: column;
-  bottom: 24px;
+  bottom: 90px;
   right: var(--launcher-right, 24px);
   width: 48px;
   height: 48px;
@@ -90,14 +78,10 @@ const Launcher = styled.button`
     transform: scale(0.95);
   }
 `
-const Name = styled.p`
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
-`
 
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.4); // 반투명
-  z-index: 999; // ChatWindow보다 아래, Launcher보다 위
+  z-index: 1000; // ChatWindow보다 아래, Launcher보다 위
 `

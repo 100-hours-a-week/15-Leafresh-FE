@@ -6,17 +6,16 @@ import styled from '@emotion/styled'
 import { theme } from './theme'
 
 const LayoutWrapper = ({ children }: { children: ReactNode }) => {
-  return <Container>{children}</Container>
+  return <WrapperContainer>{children}</WrapperContainer>
 }
 
 export default LayoutWrapper
 
-const Container = styled.div`
-  min-width: 320px;
-  max-width: 500px;
+const WrapperContainer = styled.div`
+  min-width: 300px;
+  max-width: 430px;
   width: 100%;
-  height: 100%;
-  min-height: 100dvh;
+  height: 100dvh;
   background-color: ${theme.colors.lfWhite.base};
 
   position: relative;
@@ -24,4 +23,5 @@ const Container = styled.div`
   flex-direction: column;
 
   overflow-x: hidden;
+  overflow-y: auto;
 `

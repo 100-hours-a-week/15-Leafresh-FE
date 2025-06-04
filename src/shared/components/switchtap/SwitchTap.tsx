@@ -40,7 +40,7 @@ export default SwitchTap
 // ===== Styles =====
 const Container = styled.div<{ tabsCount: number; currentIndex: number }>`
   display: inline-flex;
-  width: 317px;
+  width: 100%;
   height: 47px;
   border: 1px solid #ccc;
   border-radius: 24px;
