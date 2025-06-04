@@ -1,29 +1,28 @@
 'use client'
 
-import { ReactNode, useState, useEffect } from 'react'
-import styled from '@emotion/styled'
-import { theme } from '@shared/styles/theme'
+import { useRouter } from 'next/navigation'
 import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 
+import { ReactNode, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import styled from '@emotion/styled'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
+
+import { useUserStore } from '@entities/member/context/UserStore'
+import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
+import { MemberInfoRequest, MemberInfoResponse } from '@features/member/api/profile/patch-member-info'
+import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-
-import { MemberInfoRequest, MemberInfoResponse } from '@features/member/api/profile/patch-member-info'
-import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
-import { useUserStore } from '@entities/member/context/UserStore'
-
-import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
-import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/useToast/useToast'
-import { useRouter } from 'next/navigation'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
-import { LucidePencil } from 'lucide-react'
-import Loading from '@shared/components/loading'
+import { ToastType } from '@shared/context/toast/type'
+import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
+import { useToast } from '@shared/hooks/useToast/useToast'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { theme } from '@shared/styles/theme'
 
 interface ProfileModifyPageProps {
   className?: string
@@ -115,10 +114,10 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
 
         const uploadedUrl = await uploadFile(file)
         setImageUrl(uploadedUrl)
-        openToast(ToastType.Success, '이미지가 성공적으로 업로드되었습니다.')
+        openToast(ToastType.Success, '이미지가 성공적으로 업로드되었습니다')
       }, 'image/jpeg')
     } catch (err) {
-      openToast(ToastType.Error, '이미지 업로드에 실패했습니다.')
+      openToast(ToastType.Error, '이미지 업로드에 실패했습니다')
     }
   }
 
@@ -134,7 +133,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     }
 
     if (Object.keys(body).length === 0) {
-      openToast(ToastType.Error, '변경된 정보가 없습니다.')
+      openToast(ToastType.Error, '변경된 정보가 없습니다')
       return
     }
 
@@ -175,7 +174,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
         <UploadImageButton htmlFor='profile-image' $hasImage={!!currentImage}>
           {currentImage && <ProfileImage src={backgroundImage} alt='프로필 이미지' />}
           <CameraWrapper>
-            <ModifyIcon />
+            <LucideIcon size={14} name='Pencil' color='lfBlack' />
             수정
           </CameraWrapper>
           <HiddenInput
@@ -260,22 +259,16 @@ const CameraWrapper = styled.div`
   gap: 3px;
   padding: 5px 5px;
 
-  background-color: ${theme.colors.lfBlack.base};
-  color: ${theme.colors.lfWhite.base};
+  background-color: ${theme.colors.lfWhite.base};
+  color: ${theme.colors.lfBlack.base};
   border-radius: ${theme.radius.sm};
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.semiBold};
   border: 1px solid #3d444d;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
-`
-
-const ModifyIcon = styled(LucidePencil)`
-  width: 15px;
-  height: 15px;
-  color: ${theme.colors.lfWhite.base};
 `
 
 const HiddenInput = styled.input`
