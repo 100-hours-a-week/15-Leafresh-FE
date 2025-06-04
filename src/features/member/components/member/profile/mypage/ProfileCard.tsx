@@ -336,7 +336,7 @@ const TopSection = styled.div`
 
 const ProfileImageWrapper = styled.div`
   border-radius: ${theme.radius.full};
-  overflow: hidden;
+  /* overflow: hidden; */
   width: 60px;
   height: 60px;
   padding: 2px;
@@ -345,6 +345,7 @@ const ProfileImageWrapper = styled.div`
 
 const ProfileImg = styled(Image)`
   object-fit: cover;
+  border-radius: ${theme.radius.full};
   width: 60px;
   height: 60px;
 `
