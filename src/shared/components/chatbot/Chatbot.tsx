@@ -6,7 +6,6 @@ import styled from '@emotion/styled'
 
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
-import { theme } from '@shared/styles/theme'
 
 import ChatWindow from './ChatWindow'
 
@@ -46,18 +45,7 @@ const Chatbot = () => {
     <>
       {!isOpen && (
         <Launcher onClick={() => setOpen(true)}>
-          <Image
-            src='/image/chatbot/chatbot.png'
-            alt='Leafresh 챗봇'
-            width={48}
-            height={48}
-            style={{
-              backgroundColor: `${theme.colors.lfWhite.base}`,
-              borderRadius: '9999px',
-            }}
-          />
-
-          <Name>챗봇 수피</Name>
+          <Image src='/image/chatbot/chatbot.svg' alt='Leafresh 챗봇' width={48} height={48} />
         </Launcher>
       )}
       {isOpen && <Backdrop onClick={handleCloseAndReset} />}
@@ -89,10 +77,6 @@ const Launcher = styled.button`
   &:active {
     transform: scale(0.95);
   }
-`
-const Name = styled.p`
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
 `
 
 const Backdrop = styled.div`
