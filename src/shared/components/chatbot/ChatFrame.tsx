@@ -12,7 +12,7 @@ import {
   getRandomLiveImage,
   getRandomWorkImage,
 } from '../../../entities/chatbot/utils'
-import { challengeOptions, categoryDescriptions } from '../../../entities/chatbot/type'
+import { CHAT_CHALLENGE_OPTIONS, categoryDescriptions } from '../../../entities/chatbot/type'
 import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
 
 import ChatBubble from './ChatBubble'
@@ -123,7 +123,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             title: '챌린지 선택',
             subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
             imageUrl: '/image/chatbot/chatbotcategory.png',
-            options: challengeOptions,
+            options: CHAT_CHALLENGE_OPTIONS,
             selectionType: 'challenge',
             buttonText: '카테고리 설명',
             onExplainClick: handleExplainCategory,
@@ -223,7 +223,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           title: '챌린지 선택',
           subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
           imageUrl: '/image/chatbot/chatbotcategory.png',
-          options: challengeOptions,
+          options: CHAT_CHALLENGE_OPTIONS,
           selectionType: 'challenge',
           buttonText: '카테고리 설명',
           onExplainClick: handleExplainCategory,
@@ -248,7 +248,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         title: '챌린지 선택',
         subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
         imageUrl: '/image/chatbot/chatbotcategory.png',
-        options: challengeOptions,
+        options: CHAT_CHALLENGE_OPTIONS,
         selectionType: 'challenge',
         buttonText: '카테고리 설명',
         onExplainClick: handleExplainCategory,

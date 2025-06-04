@@ -11,42 +11,41 @@ export type ChatSelections = {
   workType?: string
   category?: string
 }
+
 export type ChatHistoryItem = {
   type: 'message' | 'selection' | 'horizontal-cards'
   role?: 'bot' | 'user'
   text?: React.ReactNode
-
   selectionProps?: ChatSelectionProps
-
   subDescription?: string
   buttonText?: string
   isAnswer?: boolean
   onClick?: () => void
 }
 
-export const locationOptions: ChatOption[] = [
+export const LOCATION_OPSIONS: ChatOption[] = [
   { label: '도시', value: 'city' },
   { label: '바닷가', value: 'beach' },
   { label: '산', value: 'mountain' },
   { label: '농촌', value: 'rural' },
 ]
 
-export const workTypeOptions: ChatOption[] = [
+export const WORKTYPE_OPTIONS: ChatOption[] = [
   { label: '사무직', value: 'office' },
   { label: '현장직', value: 'field' },
   { label: '영업직', value: 'sales' },
   { label: '재택근무', value: 'remote' },
 ]
 
-export const challengeOptions: ChatOption[] = [
-  { label: '제로웨이스트', value: 'zero' },
-  { label: '플로깅', value: 'plogging' },
-  { label: '탄소발자국', value: 'carbon' },
-  { label: '에너지 절약', value: 'energy' },
-  { label: '업사이클', value: 'secondhand' },
-  { label: '문화 공유', value: 'media' },
-  { label: '디지털 탄소', value: 'digital' },
-  { label: '비건', value: 'vegan' },
+export const CHAT_CHALLENGE_OPTIONS: ChatOption[] = [
+  { label: '제로웨이스트', value: 'ZERO_WASTE' },
+  { label: '플로깅', value: 'PLOGGING' },
+  { label: '탄소발자국', value: 'CATBON_FOOTPRINT' },
+  { label: '에너지 절약', value: 'ENERGY_SAVING' },
+  { label: '업사이클', value: 'UPCYCLE' },
+  { label: '문화 공유', value: 'MEDIA' },
+  { label: '디지털 탄소', value: 'DIGITAL_CARBON' },
+  { label: '비건', value: 'VEGAN' },
 ]
 
 export const categoryDescriptions: [string, string][] = [

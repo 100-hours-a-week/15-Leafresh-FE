@@ -6,13 +6,18 @@ import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
-import { challengeOptions, locationOptions, workTypeOptions, type ChatOption } from '../../../entities/chatbot/type'
+import {
+  CHAT_CHALLENGE_OPTIONS,
+  LOCATION_OPSIONS,
+  WORKTYPE_OPTIONS,
+  type ChatOption,
+} from '../../../entities/chatbot/type'
 
 export interface ChatSelectionProps {
   selectionType: 'location' | 'workType' | 'challenge' | 'retry'
   title: string
   subtitle?: string
-  imageUrl?: string // 챌린지 타입에서만 사용
+  imageUrl?: string
   options?: ChatOption[]
   buttonText?: string
   onExplainClick?: () => void
@@ -23,16 +28,16 @@ function ChatSelection({
   selectionType,
   title,
   subtitle,
-  imageUrl, // 챌린지일 때만 직접 넘겨줄 수도 있고, 나머지는 내부에서 useMemo
+  imageUrl,
   buttonText,
   onExplainClick,
   onSelect,
 }: ChatSelectionProps) {
   const options: ChatOption[] = useMemo(() => {
-    if (selectionType === 'location') return locationOptions
-    if (selectionType === 'workType') return workTypeOptions
+    if (selectionType === 'location') return LOCATION_OPSIONS
+    if (selectionType === 'workType') return WORKTYPE_OPTIONS
     // 'challenge'나 그 외 타입일 때
-    return challengeOptions
+    return CHAT_CHALLENGE_OPTIONS
   }, [selectionType])
 
   return (
@@ -141,12 +146,6 @@ const CardSubtitle = styled.p`
   align-self: flex-start;
   font-size: 10px;
   color: ${theme.colors.lfGreenMain.base};
-`
-
-const DescWrapper = styled.div`
-  display: flex;
-  color: black;
-  font-size: 10px;
 `
 
 const OptionsGrid = styled.div`
