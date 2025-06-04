@@ -14,9 +14,9 @@ import UpcomingTimeDealCard from './UpcomingTimeDealCard'
 
 const dummyTimeDealProducts: TimeDealProduct[] = [
   {
-    dealId: 100,
-    productId: 1,
-    title: '특가 텀블러',
+    dealId: 99,
+    productId: 100,
+    title: '특가 텀블러1',
     description: '지금만 이 가격! 텀블러 특가전',
     imageUrl: '/image/Main_1.png',
     defaultPrice: 6000,
@@ -27,6 +27,21 @@ const dummyTimeDealProducts: TimeDealProduct[] = [
     dealEndTime: new Date(Date.now() + 1000 * 60 * 60).toISOString() as ISOFormatString,
     timeDealStatus: 'ONGOING',
   },
+  {
+    dealId: 100,
+    productId: 1,
+    title: '특가 텀블러2',
+    description: '지금만 이 가격! 텀블러 특가전',
+    imageUrl: '/image/Main_1.png',
+    defaultPrice: 6000,
+    discountedPrice: 4000,
+    discountedPercentage: 30,
+    stock: 10,
+    dealStartTime: new Date().toISOString() as ISOFormatString,
+    dealEndTime: new Date(Date.now() + 1000 * 60 * 60).toISOString() as ISOFormatString,
+    timeDealStatus: 'ONGOING',
+  },
+
   {
     dealId: 101,
     productId: 2,
@@ -102,7 +117,7 @@ const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
   // const timeDealProducts: TimeDealProduct[] = timeDealData?.data?.timeDeals ?? []
   const timeDealProducts: TimeDealProduct[] = dummyTimeDealProducts
 
-  const ongoing = timeDealProducts.find(item => item.timeDealStatus === 'ONGOING') /** 현재 타임딜 진행중인 상품 */
+  const ongoing = timeDealProducts.filter(item => item.timeDealStatus === 'ONGOING') /** 현재 타임딜 진행중인 상품 */
   const upcoming = timeDealProducts.filter(item => item.timeDealStatus === 'UPCOMING') /** 다가오는 타임딜 상품 */
 
   return (

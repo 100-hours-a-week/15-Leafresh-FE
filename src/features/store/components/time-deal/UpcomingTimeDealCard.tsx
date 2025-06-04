@@ -40,15 +40,13 @@ const UpcomingTimeDealCard = ({ data, className }: UpcomingTimeDealCardProps): R
               <DescriptionSection>
                 <Title>{item.title}</Title>
                 <Description>{item.description}</Description>
-                <PriceBox>
-                  <Left>
-                    <Discount>{item.discountedPercentage}%</Discount>
-                    <Price>
-                      <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} /> {item.discountedPrice}
-                    </Price>
-                    <Origin>{item.defaultPrice}</Origin>
-                  </Left>
-                </PriceBox>
+                <PriceRow>
+                  <Discount>{item.discountedPercentage}%</Discount>
+                  <Price>
+                    <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} /> {item.discountedPrice}
+                  </Price>
+                  <Origin>{item.defaultPrice}</Origin>
+                </PriceRow>
               </DescriptionSection>
             </CarouselSlide>
           ))}
@@ -67,8 +65,18 @@ const UpcomingTimeDealCard = ({ data, className }: UpcomingTimeDealCardProps): R
 }
 export default UpcomingTimeDealCard
 
+const CarouselWrapper = styled.div`
+  overflow: hidden;
+  margin-top: 16px;
+`
+
 const UpcomingSection = styled.section`
   margin-top: 24px;
+`
+
+const SectionTitle = styled.h2`
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.bold};
 `
 
 const SubText = styled.p`
@@ -142,16 +150,10 @@ const Description = styled.p`
   }
 `
 
-const PriceBox = styled.div`
+const PriceRow = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-top: 16px;
-`
-
-const Left = styled.div`
-  display: flex;
-  align-items: center;
   gap: 12px;
 `
 
@@ -172,16 +174,6 @@ const Price = styled.span`
 const Origin = styled.del`
   font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfGray.base};
-`
-
-const SectionTitle = styled.h2`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-`
-
-const CarouselWrapper = styled.div`
-  overflow: hidden;
-  margin-top: 16px;
 `
 
 const CarouselInner = styled.div`

@@ -1,12 +1,12 @@
+import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
 import { OrderTimeDealProductResponse, OrderTimeDealProductVariables } from '@features/store/api/order-timedeal'
-import useRemainingTime from '@features/store/hook/useRemainingTime'
 import ApologizeContent from '@shared/components/apologize/apologize'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
@@ -19,28 +19,52 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 
-interface OngoingTimeDealCardProps {
-  data: TimeDealProduct | undefined
+interface Props {
+  data: TimeDealProduct[]
   className?: string
 }
 
-const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): ReactNode => {
+const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
   const router = useRouter()
   const openToast = useToast()
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
 
-  const remaining = useRemainingTime({ target: data?.dealEndTime ?? '' })
+  /** 각 재고의 남은 시간 트래킹 */
+  const [remainingTimes, setRemainingTimes] = useState<string[]>([])
+  useEffect(() => {
+    const updateTimes = () => {
+      const now = new Date().getTime()
+      const updated = data.map(deal => {
+        const end = new Date(deal.dealEndTime).getTime()
+        const diff = Math.max(0, end - now)
+        const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0')
+        const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0')
+        const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0')
+        return `${hours}:${minutes}:${seconds}`
+      })
+      setRemainingTimes(updated)
+    }
 
-  /** 특가 상품 구매 이력 생성 */
-  const { mutate: PurchaseMutate, isPending: isPurchasing } = useMutationStore<
-    OrderTimeDealProductResponse,
-    OrderTimeDealProductVariables
-  >(MUTATION_KEYS.STORE.TIME_DEAL.ORDER)
+    updateTimes() // 초기값 설정
+    const interval = setInterval(updateTimes, 1000)
+    return () => clearInterval(interval)
+  }, [data])
 
-  /** 이벤트 핸들러 */
-  const handlePurchase = (dealId: number) => {
-    // #0. 로그인 상태가 아닐 때
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
+  const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false)
+  const [canScrollNext, setCanScrollNext] = useState<boolean>(false)
+  useEffect(() => {
+    if (!emblaApi) return
+    const onSelect = () => {
+      setCanScrollPrev(emblaApi.canScrollPrev())
+      setCanScrollNext(emblaApi.canScrollNext())
+    }
+    emblaApi.on('select', onSelect)
+    onSelect()
+  }, [emblaApi])
+
+  const handlePurchase = (deal: TimeDealProduct) => {
     if (!isLoggedIn) {
       openConfirmModal({
         title: '로그인이 필요합니다.',
@@ -50,142 +74,113 @@ const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): Rea
       return
     }
 
-    if (!data) return
-
-    // #1. 에러 케이스
-    // 재고 없음
-    if (data.stock <= 0) {
+    if (deal.stock <= 0) {
       openToast(ToastType.Error, '품절된 상품입니다.')
       return
     }
 
-    // 진행중이지 않음
-    if (data.timeDealStatus !== 'ONGOING') {
-      openToast(ToastType.Error, '특가 진행 중인 상품이 아닙니다.')
-      return
-    }
-
-    // 특가 시간 아님
     const now = new Date().getTime()
-    const start = new Date(data.dealStartTime).getTime()
-    const end = new Date(data.dealEndTime).getTime()
+    const start = new Date(deal.dealStartTime).getTime()
+    const end = new Date(deal.dealEndTime).getTime()
 
     if (now < start || now > end) {
       openToast(ToastType.Error, '현재는 특가 구매 가능한 시간이 아닙니다.')
       return
     }
+
     openConfirmModal({
-      title: `${data.title}를 구매하시겠습니까?`,
-      description: `할인된 가격은 나뭇잎 ${data.discountedPrice}개 입니다`,
+      title: `${deal.title}를 구매하시겠습니까?`,
+      description: `할인된 가격은 나뭇잎 ${deal.discountedPrice}개 입니다.`,
       onConfirm: () =>
         PurchaseMutate(
-          { productId: dealId },
-          {
-            onSuccess: () => {
-              openToast(ToastType.Success, '구매가 완료되었습니다')
-            },
-            onError: () => {
-              openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
-            },
-          },
+          { productId: deal.productId },
+          { onSuccess: () => openToast(ToastType.Success, '구매가 완료되었습니다') },
         ),
     })
   }
 
-  let content
-  /** 진행중인 타임딜 상품이 없는 경우 */
-  if (!data) {
-    content = (
-      <ApologizeContent
-        title='진행 중인 특가 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
-      />
-    )
-  } else {
-    /** 진행중인 타임딜 상품이 있는 경우 */
-    const {
-      dealEndTime,
-      imageUrl,
-      title,
-      timeDealStatus,
-      description,
-      discountedPercentage,
-      discountedPrice,
-      defaultPrice,
-      stock,
-      productId,
-    } = data
+  const { mutate: PurchaseMutate } = useMutationStore<OrderTimeDealProductResponse, OrderTimeDealProductVariables>(
+    MUTATION_KEYS.STORE.TIME_DEAL.ORDER,
+  )
 
-    const isSoldOut: boolean = stock <= 0
-
-    content = (
-      <OngoingCard>
-        <Timer>
-          <LucideIcon name='Hourglass' size={24} />
-          {data ? remaining : ''}
-        </Timer>
-        <InfoCard>
-          <OngoingImageBox>
-            <Image src={imageUrl} alt={title} fill style={{ objectFit: 'cover' }} />
-          </OngoingImageBox>
-          <DescriptionSection>
-            <Title>{title}</Title>
-            <Description>{description}</Description>
-            <PriceBox>
-              <Left>
-                <Discount>{discountedPercentage}%</Discount>
-                <Price>
-                  <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} /> {discountedPrice}
-                </Price>
-                <Origin>{defaultPrice}</Origin>
-              </Left>
-              <Stock isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</Stock>
-            </PriceBox>
-            <BuyButton type='button' onClick={() => handlePurchase(productId)}>
-              구매하기
-            </BuyButton>
-          </DescriptionSection>
-        </InfoCard>
-      </OngoingCard>
-    )
+  if (!data || data.length === 0) {
+    return <ApologizeContent title='진행 중인 특가 상품이 없습니다' description='빠른 시일 내로 찾아뵙겠습니다' />
   }
 
   return (
-    <OngoingCard>
-      <OngoingTitle>🔥 지금만 이 가격</OngoingTitle>
-      <SubText>세상은 1등만 기억해!</SubText>
-      {content}
-    </OngoingCard>
+    <Container className={className}>
+      <TitleBox>
+        <SectionTitle>🔥 지금만 이 가격</SectionTitle>
+        <SubText>세상은 1등만 기억해!</SubText>
+      </TitleBox>
+
+      <CarouselWrapper>
+        {canScrollPrev && (
+          <LeftButton onClick={() => emblaApi?.scrollPrev()}>
+            <LucideIcon name='ChevronLeft' size={24} />
+          </LeftButton>
+        )}
+
+        <Embla ref={emblaRef}>
+          <EmblaTrack>
+            {data.map((deal, index) => {
+              // const remaining = useRemainingTime({ target: deal.dealEndTime })
+              const remaining = remainingTimes[index] || '00:00:00'
+              const isSoldOut = deal.stock <= 0
+              return (
+                <EmblaSlide key={deal.productId}>
+                  <Timer>
+                    <LucideIcon name='Hourglass' size={18} strokeWidth={2.5} /> {remaining}
+                  </Timer>
+                  <Card>
+                    <ImageBox>
+                      <Image src={deal.imageUrl} alt={deal.title} fill style={{ objectFit: 'cover' }} />
+                    </ImageBox>
+                    <DescriptionSection>
+                      <Title>{deal.title}</Title>
+                      <Description>{deal.description}</Description>
+                      <PriceRow>
+                        <Discount>{deal.discountedPercentage}%</Discount>
+                        <Price>
+                          <Image src='/icon/leaf.png' alt='leaf' width={18} height={18} /> {deal.discountedPrice}
+                        </Price>
+                        <Origin>{deal.defaultPrice}</Origin>
+                      </PriceRow>
+                      <Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${deal.stock}개`}</Stock>
+                      <BuyButton onClick={() => handlePurchase(deal)}>구매하기</BuyButton>
+                    </DescriptionSection>
+                  </Card>
+                </EmblaSlide>
+              )
+            })}
+          </EmblaTrack>
+        </Embla>
+
+        {canScrollNext && (
+          <RightButton onClick={() => emblaApi?.scrollNext()}>
+            <LucideIcon name='ChevronRight' size={24} />
+          </RightButton>
+        )}
+      </CarouselWrapper>
+    </Container>
   )
 }
 
 export default OngoingTimeDealCard
 
-const EmptySection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 40px;
-`
-const EmptyTitle = styled.div`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
-  margin: 16px 0 16px 0;
-`
-
-const EmptyDescription = styled.p`
-  font-size: ${theme.fontSize.base};
-  color: ${theme.colors.lfDarkGray.base};
-  margin-top: 6px;
-  text-align: center;
-`
-
-const OngoingCard = styled.div`
+const Container = styled.section`
   margin: 20px 0;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
 `
-const OngoingTitle = styled.h2`
+const TitleBox = styled.div`
+  margin-bottom: 12px;
+`
+
+const SectionTitle = styled.h2`
   font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-weight: ${theme.fontWeight.bold};
 `
 
 const SubText = styled.p`
@@ -197,33 +192,44 @@ const SubText = styled.p`
     font-size: ${theme.fontSize.base};
   }
 `
+
+const CarouselWrapper = styled.div`
+  width: 100%;
+
+  position: relative;
+`
+const Embla = styled.div`
+  padding: 6px 0;
+  overflow: hidden;
+`
+const EmblaTrack = styled.div`
+  display: flex;
+`
+const EmblaSlide = styled.div`
+  flex: 0 0 100%;
+  padding: 0 12px;
+  box-sizing: border-box;
+`
+const Card = styled.div`
+  background: ${theme.colors.lfWhite.base};
+  border-radius: ${theme.radius.base};
+  box-shadow: ${theme.shadow.lfInput};
+  overflow: hidden;
+`
+
 const Timer = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  margin: 16px 0;
+  font-size: ${theme.fontSize.lg};
+  font-weight: ${theme.fontWeight.semiBold};
+  margin: 4px 0;
 
   display: flex;
   align-items: center;
   gap: 4px;
 `
-
-const InfoCard = styled.div`
-  box-shadow: ${theme.shadow.lfInput};
-  border-radius: ${theme.radius.sm};
-
-  cursor: pointer;
-`
-
-const OngoingImageBox = styled.div`
-  width: 100%;
-
+const ImageBox = styled.div`
   position: relative;
-  border-top-right-radius: ${theme.radius.md};
-  border-top-left-radius: ${theme.radius.md};
-  overflow: hidden;
   aspect-ratio: 2/1;
 `
-
 const DescriptionSection = styled.div`
   padding: 10px 14px;
 `
@@ -248,16 +254,10 @@ const Description = styled.p`
   }
 `
 
-const PriceBox = styled.div`
+const PriceRow = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-top: 16px;
-`
-
-const Left = styled.div`
-  display: flex;
-  align-items: center;
   gap: 12px;
 `
 
@@ -280,11 +280,11 @@ const Origin = styled.del`
   color: ${theme.colors.lfGray.base};
 `
 
-const Stock = styled.span<{ isSoldOut: boolean }>`
+const Stock = styled.div<{ soldout: boolean }>`
+  margin: 8px 0;
   font-size: ${theme.fontSize.sm};
-  color: ${({ isSoldOut }) => (isSoldOut ? theme.colors.lfRed.base : theme.colors.lfDarkGray.base)};
+  color: ${({ soldout }) => (soldout ? theme.colors.lfRed.base : theme.colors.lfDarkGray.base)};
 `
-
 const BuyButton = styled.button`
   margin-top: 12px;
   width: 100%;
@@ -292,16 +292,24 @@ const BuyButton = styled.button`
   background: ${theme.colors.lfGreenMain.base};
   color: ${theme.colors.lfWhite.base};
   border-radius: ${theme.radius.base};
+  font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.medium};
-  font-size: ${theme.fontSize.sm};
+
   cursor: pointer;
-
-  ${media.afterMobile} {
-    font-size: ${theme.fontSize.base};
-  }
 `
-
-const LeafIcon = styled(Image)`
-  width: 24px;
-  aspect-ratio: 1/1;
+const LeftButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  background: ${theme.colors.lfWhite.base};
+  border-radius: ${theme.radius.full};
+  box-shadow: ${theme.shadow.lfInput};
+  width: 36px;
+  height: 36px;
+  z-index: 10;
+`
+const RightButton = styled(LeftButton)`
+  left: auto;
+  right: 0;
 `
