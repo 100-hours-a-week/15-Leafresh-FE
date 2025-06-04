@@ -83,5 +83,5 @@ const Backdrop = styled.div`
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.4); // 반투명
-  z-index: 999; // ChatWindow보다 아래, Launcher보다 위
+  z-index: 1000; // ChatWindow보다 아래, Launcher보다 위
 `
