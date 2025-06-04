@@ -86,8 +86,8 @@ export const GroupChallengeCard = ({
       return
     }
     // 2. 참여자 여부 확인 (없어야 함)
-    if (!currentParticipantCount) {
-      openToast(ToastType.Error, '참여자가 있어, 수정할 수 없습니다!')
+    if (currentParticipantCount) {
+      openToast(ToastType.Error, `이미 참여자가 있는 챌린지는\n수정할 수 없습니다!`)
       return
     }
 
@@ -115,8 +115,8 @@ export const GroupChallengeCard = ({
       return
     }
     // 2. 참여자 여부 확인 (없어야 함)
-    if (!currentParticipantCount) {
-      openToast(ToastType.Error, '참여자가 있어, 삭제할 수 없습니다!')
+    if (currentParticipantCount) {
+      openToast(ToastType.Error, `이미 참여자가 있는 챌린지는\n삭제할 수 없습니다!`)
       return
     }
 
