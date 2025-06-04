@@ -17,7 +17,7 @@ const Chatbot = () => {
   useEffect(() => {
     const updatePosition = () => {
       const windowWidth = window.innerWidth
-      const contentWidth = 500 // 컨텐츠의 최대 너비
+      const contentWidth = 430 // 컨텐츠의 최대 너비
 
       // 윈도우 너비가 컨텐츠 너비보다 클 때
       if (windowWidth > contentWidth) {
@@ -70,7 +70,7 @@ export default Chatbot
 const Launcher = styled.button`
   position: fixed;
   flex-direction: column;
-  bottom: 24px;
+  bottom: 90px;
   right: var(--launcher-right, 24px);
   width: 48px;
   height: 48px;
