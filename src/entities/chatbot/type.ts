@@ -1,6 +1,3 @@
-// src/shared/components/chatbot/ChatFrame/type.ts
-
-import type { RecommendationResponseDataDTO } from '@features/chatbot'
 import type React from 'react'
 import { ChatSelectionProps } from '../../shared/components/chatbot/ChatSelection'
 
