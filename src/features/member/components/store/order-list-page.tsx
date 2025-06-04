@@ -12,69 +12,13 @@ import NoContent from '@shared/components/no-content/no-content'
 import { URL } from '@shared/constants/route/route'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
-import { ISOFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
-
-/** 더미 데이터 */
-const dummyMemberStoreOrderList: PurchaseProduct[] = [
-  {
-    id: 1,
-    product: {
-      id: 101,
-      title:
-        '맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목',
-      imageUrl: '/image/Main_1.png',
-    },
-    quantity: 1,
-    price: 500,
-    purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString() as ISOFormatString, // 3일 전
-  },
-  {
-    id: 2,
-    product: {
-      id: 102,
-      title: '맛있는 나뭇잎 상점 구매 품목',
-      imageUrl: '/image/Main_1.png',
-    },
-    quantity: 1,
-    price: 500,
-    purchasedAt: new Date(Date.now() - 30 * 1000 * 60 * 60 * 24 * 2).toISOString() as ISOFormatString,
-  },
-  {
-    id: 3,
-    product: {
-      id: 103,
-      title: '맛있는 나뭇잎 상점 구매 품목',
-      imageUrl: '/image/Main_1.png',
-    },
-    quantity: 1,
-    price: 500,
-    purchasedAt: new Date(Date.now() - 990 * 60 * 60 * 24 * 1).toISOString() as ISOFormatString,
-  },
-  {
-    id: 4,
-    product: {
-      id: 104,
-      title: '맛있는 나뭇잎 상점 구매 품목',
-      imageUrl: '/image/Main_1.png',
-    },
-    quantity: 1,
-    price: 500,
-    purchasedAt: new Date().toISOString() as ISOFormatString, // 오늘
-  },
-]
-// const dummyMemberStoreOrderList: PurchaseProduct[] = []
 
 const MemberOrderListPage = (): ReactNode => {
   const router = useRouter()
+
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberStoreOrderList()
-
   const observerRef = useRef<HTMLDivElement>(null)
-
-  // TODO: API 연결 확인 후 실제 데이터로 바꾸기
-  // const products = data?.pages.flatMap(page => page.data.purchases) ?? []
-  const products = dummyMemberStoreOrderList
-
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return
 
@@ -91,14 +35,16 @@ const MemberOrderListPage = (): ReactNode => {
     return () => observer.disconnect()
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
+  const products = data?.pages.flatMap(page => page.data.purchases || []) ?? []
+
   let contents
-  // 데이터가 없는 경우
   const isEmpty = !products || products.length === 0
+  // 1. 데이터가 없는 경우
   if (isEmpty) {
     contents = (
       <NoContent
-        title='구매내역이 없습니다'
-        buttonText='구매하러 가기'
+        title='상품 구매내역이 없습니다'
+        buttonText='나뭇잎 상점가기'
         clickHandler={() => {
           router.push(URL.STORE.INDEX.value)
         }}
@@ -253,3 +199,54 @@ const Price = styled.span`
 const Observer = styled.div`
   height: 1px;
 `
+
+/** 더미 데이터 */
+// const dummyMemberStoreOrderList: PurchaseProduct[] = [
+//   {
+//     id: 1,
+//     product: {
+//       id: 101,
+//       title:
+//         '맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목',
+//       imageUrl: '/image/Main_1.png',
+//     },
+//     quantity: 1,
+//     price: 500,
+//     purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString() as ISOFormatString, // 3일 전
+//   },
+//   {
+//     id: 2,
+//     product: {
+//       id: 102,
+//       title: '맛있는 나뭇잎 상점 구매 품목',
+//       imageUrl: '/image/Main_1.png',
+//     },
+//     quantity: 1,
+//     price: 500,
+//     purchasedAt: new Date(Date.now() - 30 * 1000 * 60 * 60 * 24 * 2).toISOString() as ISOFormatString,
+//   },
+//   {
+//     id: 3,
+//     product: {
+//       id: 103,
+//       title: '맛있는 나뭇잎 상점 구매 품목',
+//       imageUrl: '/image/Main_1.png',
+//     },
+//     quantity: 1,
+//     price: 500,
+//     purchasedAt: new Date(Date.now() - 990 * 60 * 60 * 24 * 1).toISOString() as ISOFormatString,
+//   },
+//   {
+//     id: 4,
+//     product: {
+//       id: 104,
+//       title: '맛있는 나뭇잎 상점 구매 품목',
+//       imageUrl: '/image/Main_1.png',
+//     },
+//     quantity: 1,
+//     price: 500,
+//     purchasedAt: new Date().toISOString() as ISOFormatString, // 오늘
+//   },
+// ]
+
+// const dummyMemberStoreOrderList: PurchaseProduct[] = []
