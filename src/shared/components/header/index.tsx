@@ -46,6 +46,7 @@ const HeaderContainer = styled.header`
   justify-content: center;
   align-items: center;
   background-color: ${theme.colors.lfWhite.base};
+  border-bottom: 1px solid ${theme.colors.lfLightGray.base};
 `
 
 const CustomWidthWrapper = styled.div<{ padding: number }>`
