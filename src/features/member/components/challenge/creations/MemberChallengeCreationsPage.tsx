@@ -98,23 +98,27 @@ export default MemberChallengeCreationsPage
 const Wrapper = styled.div`
   ${responsiveHorizontalPadding};
 
+  width: 100%;
   min-height: calc(100dvh - 60px);
 
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; // ✔️ 여기서 중앙 배치로 전환
+  justify-content: flex-start;
+  gap: 20px;
 `
 
 const Title = styled.h1`
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.bold};
-  margin-bottom: 20px;
   text-align: center;
 `
 
 const ChallengeList = styled.div`
+  width: 100%;
+
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 18px;

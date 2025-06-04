@@ -178,6 +178,7 @@ export const GroupChallengeCard = ({
 /** Styles */
 
 const ChallengeCard = styled.div`
+  width: 100%;
   background: ${({ theme }) => theme.colors.lfWhite.base};
   border-radius: 12px;
   overflow: hidden;
@@ -262,6 +263,7 @@ const ModifyButton = styled.button`
   cursor: pointer;
   &:hover {
     color: ${({ theme }) => theme.colors.lfBlue.base};
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
   }
 `
 
@@ -272,6 +274,7 @@ const DeleteButton = styled.button`
   cursor: pointer;
   &:hover {
     color: ${({ theme }) => theme.colors.lfRed.hover};
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
   }
 `
 
