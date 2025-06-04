@@ -143,8 +143,10 @@ const MEMBER_ENDPOINTS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
+  STORE: {
+    ORDERS: {
+      LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
+    },
   },
 
   /** 챌린지 */

@@ -83,8 +83,10 @@ const MEMBER_QUERY_DEFAULTS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: DEFAULT,
+  STORE: {
+    ORDERS: {
+      LIST: DEFAULT,
+    },
   },
 
   /** 챌린지 */
