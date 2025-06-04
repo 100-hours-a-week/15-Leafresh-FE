@@ -2,9 +2,10 @@
 
 import { ReactNode, useState, useEffect } from 'react'
 import styled from '@emotion/styled'
-import { Camera } from 'lucide-react'
 import { theme } from '@shared/styles/theme'
 import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useQuery } from '@tanstack/react-query'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
@@ -21,12 +22,18 @@ import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { useRouter } from 'next/navigation'
 import { URL } from '@shared/constants/route/route'
+import { LucidePencil } from 'lucide-react'
+import Loading from '@shared/components/loading'
 
 interface ProfileModifyPageProps {
   className?: string
 }
 
-const nicknameSchema = z.string().max(20, '닉네임은 최대 20자까지 입력 가능합니다.').optional()
+const nicknameSchema = z.object({
+  nickname: z.string().max(20, '닉네임은 최대 20자까지 입력 가능합니다.').optional(),
+})
+
+type NicknameForm = z.infer<typeof nicknameSchema>
 
 const maxLength = 20
 
@@ -38,13 +45,35 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
   const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
   const [imageUrl, setImageUrl] = useState('')
   const { uploadFile, loading: uploading } = useImageUpload()
-  const updateUserInfo = useUserStore(state => state.updateUserInfo)
+
+  const { updateUserInfo } = useUserStore()
 
   const { data: profileData } = useQuery({
     queryKey: QUERY_KEYS.MEMBER.DETAILS,
     queryFn: getMemberProfile,
     ...QUERY_OPTIONS.MEMBER.DETAILS,
   })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset,
+  } = useForm<NicknameForm>({
+    resolver: zodResolver(nicknameSchema),
+    defaultValues: {
+      nickname: '', // 초기에는 빈값
+    },
+  })
+
+  // profileData가 들어온 이후 초기화
+  useEffect(() => {
+    if (profileData?.data) {
+      reset({
+        nickname: profileData.data.nickname ?? '',
+      })
+    }
+  }, [profileData, reset])
 
   const { mutate: patchMemberInfo } = useMutationStore<MemberInfoResponse, MemberInfoRequest>(
     MUTATION_KEYS.MEMBER.MODIFY,
@@ -80,10 +109,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
 
       canvas.toBlob(async blob => {
         if (!blob) return
-
-        const uuid = crypto.randomUUID()
-        const timestamp = Date.now()
-        const file = new File([blob], `profile_${uuid}_${timestamp}.jpg`, {
+        const file = new File([blob], `profile.jpg`, {
           type: 'image/jpeg',
         })
 
@@ -96,21 +122,16 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     }
   }
 
-  const handleSubmit = async () => {
-    // 유효성 검사
-    try {
-      if (nickname) nicknameSchema.parse(nickname)
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setNicknameError(err.errors[0].message)
-      }
-      return
-    }
-
+  const onSubmit = (data: NicknameForm) => {
     const body: MemberInfoRequest = {}
 
-    if (nickname && nickname !== profile?.nickname) body.nickname = nickname
-    if (imageUrl && imageUrl !== profile?.profileImageUrl) body.imageUrl = imageUrl
+    const currentNickname = data.nickname
+    if (currentNickname && currentNickname !== profile?.nickname) {
+      body.nickname = currentNickname
+    }
+    if (imageUrl && imageUrl !== profile?.profileImageUrl) {
+      body.imageUrl = imageUrl
+    }
 
     if (Object.keys(body).length === 0) {
       openToast(ToastType.Error, '변경된 정보가 없습니다.')
@@ -123,19 +144,15 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
           nickname: res.data.nickname,
           imageUrl: res.data.imageUrl,
         })
-        openToast(ToastType.Success, '프로필이 성공적으로 수정되었습니다.')
-        //수정 후 1.5초 뒤 마이페이지로 이동
-        setTimeout(() => {
-          router.push(URL.MEMBER.PROFILE.MYPAGE.value)
-        }, 1500)
+        router.push(URL.MEMBER.PROFILE.MYPAGE.value)
       },
       onError: err => {
-        openToast(ToastType.Error, err.message || '프로필 수정에 실패했습니다.')
+        openToast(ToastType.Error, err.message || '프로필 수정에 실패했습니다.\n다시 시도해 주세요!')
       },
     })
   }
 
-  if (!profileData) return null //로딩, fallback 처리
+  if (!profileData) return <Loading />
 
   const profile: ProfileResponse = profileData.data ?? ({} as ProfileResponse)
 
@@ -144,6 +161,9 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
 
   //이미지 업로드 시 변경
   const backgroundImage = imageUrl || currentImage
+
+  const isUnchanged =
+    ((watch('nickname') ?? '') === profile?.nickname && imageUrl === '') || imageUrl === profile?.profileImageUrl
 
   return (
     <Container className={className}>
@@ -154,9 +174,9 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
       <ProfileWrapper>
         <UploadImageButton htmlFor='profile-image' $hasImage={!!currentImage}>
           {currentImage && <ProfileImage src={backgroundImage} alt='프로필 이미지' />}
-          {!currentImage && <CameraIcon />}
           <CameraWrapper>
-            <CameraIcon />
+            <ModifyIcon />
+            수정
           </CameraWrapper>
           <HiddenInput
             id='profile-image'
@@ -170,21 +190,16 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
 
       <InputSection>
         <Label>닉네임</Label>
-        <TextInput
-          type='text'
-          value={currentNickname}
-          onChange={handleNicknameChange}
-          placeholder={profile?.nickname || '나의 닉네임'}
-        />
+        <TextInput type='text' {...register('nickname')} placeholder={profile?.nickname || '나의 닉네임'} />
         <InputMeta>
-          <ErrorText>{nicknameError}</ErrorText>
+          <ErrorText>{errors.nickname?.message}</ErrorText>
           <CountText>
-            {currentNickname.length}/{maxLength}
+            {watch('nickname')?.length || 0}/{maxLength}
           </CountText>
         </InputMeta>
       </InputSection>
 
-      <SubmitButton onClick={handleSubmit} disabled={!!nicknameError || uploading}>
+      <SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || uploading}>
         {uploading ? '업로드 중...' : '완료'}
       </SubmitButton>
     </Container>
@@ -223,12 +238,12 @@ const UploadImageButton = styled.label<{ $hasImage: boolean }>`
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background-color: ${({ $hasImage }) => ($hasImage ? 'transparent' : '#e5e7eb')};
+  background-color: ${({ $hasImage }) => ($hasImage ? 'transparent' : '#fff')};
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #d1d5db;
+  border: 2px solid #fcfcfc;
 `
 
 const ProfileImage = styled.img`
@@ -240,21 +255,27 @@ const ProfileImage = styled.img`
 
 const CameraWrapper = styled.div`
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+  bottom: 10px;
+  right: 0px;
+  gap: 3px;
+  padding: 5px 5px;
+
+  background-color: ${theme.colors.lfBlack.base};
+  color: ${theme.colors.lfWhite.base};
+  border-radius: ${theme.radius.sm};
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.semiBold};
+  border: 1px solid #3d444d;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
 `
 
-const CameraIcon = styled(Camera)`
-  width: 30px;
-  height: 30px;
-  color: ${theme.colors.lfBlack.base};
+const ModifyIcon = styled(LucidePencil)`
+  width: 15px;
+  height: 15px;
+  color: ${theme.colors.lfWhite.base};
 `
 
 const HiddenInput = styled.input`
@@ -318,12 +339,12 @@ const SubmitButton = styled.button<{ disabled: boolean }>`
   color: ${theme.colors.lfWhite.base};
   text-align: center;
   font-weight: ${theme.fontWeight.semiBold};
-  border-radius: ${theme.radius.lg};
+  border-radius: ${theme.radius.sm};
   box-shadow: ${theme.shadow.lfPrime};
   border: none;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
-  &:hover:not(:disabled) {
-    scale: 1.02;
+  :hover:not(:disabled) {
+    background-color: ${theme.colors.lfGreenMain.hover};
   }
 `
