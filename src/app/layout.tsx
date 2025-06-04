@@ -18,13 +18,12 @@ export const metadata: Metadata = {
   },
 }
 
-const GOOGLE_ANALYTICS_ID = 'G-2BKG11WDXZ'
-
 const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) => {
+  const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS
   return (
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
@@ -37,7 +36,7 @@ const RootLayout = ({
           <Toast />
         </Providers>
       </body>
-      <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   )
 }
