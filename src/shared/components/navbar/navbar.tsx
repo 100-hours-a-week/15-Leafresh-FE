@@ -67,7 +67,7 @@ const NavbarWrapper = styled.nav`
   max-width: 430px;
   width: 100%;
 
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);

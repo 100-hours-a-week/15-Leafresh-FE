@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
@@ -14,25 +14,25 @@ const Chatbot = () => {
   const { value: isOpen, setValue: setOpen } = useToggle(false)
   const [resetCount, setResetCount] = useState(0)
 
-  useEffect(() => {
-    const updatePosition = () => {
-      const windowWidth = window.innerWidth
-      const contentWidth = 430 // 컨텐츠의 최대 너비
+  // useEffect(() => {
+  //   const updatePosition = () => {
+  //     const windowWidth = window.innerWidth
+  //     const contentWidth = 430 // 컨텐츠의 최대 너비
 
-      // 윈도우 너비가 컨텐츠 너비보다 클 때
-      if (windowWidth > contentWidth) {
-        // 컨텐츠 영역 안쪽에 위치하도록 계산
-        const rightPosition = (windowWidth - contentWidth) / 2 + 24
-        document.documentElement.style.setProperty('--launcher-right', `${rightPosition}px`)
-      } else {
-        document.documentElement.style.setProperty('--launcher-right', '24px')
-      }
-    }
+  //     // 윈도우 너비가 컨텐츠 너비보다 클 때
+  //     if (windowWidth > contentWidth) {
+  //       // 컨텐츠 영역 안쪽에 위치하도록 계산
+  //       const rightPosition = (windowWidth - contentWidth) / 2 + 24
+  //       document.documentElement.style.setProperty('--launcher-right', `${rightPosition}px`)
+  //     } else {
+  //       document.documentElement.style.setProperty('--launcher-right', '24px')
+  //     }
+  //   }
 
-    updatePosition()
-    window.addEventListener('resize', updatePosition)
-    return () => window.removeEventListener('resize', updatePosition)
-  }, [])
+  //   updatePosition()
+  //   window.addEventListener('resize', updatePosition)
+  //   return () => window.removeEventListener('resize', updatePosition)
+  // }, [])
 
   // 닫을 때 초기화까지 포함
   const handleCloseAndReset = () => {
@@ -50,9 +50,13 @@ const Chatbot = () => {
   return (
     <>
       {!isOpen && (
-        <Launcher onClick={handleClickLauncher}>
-          <Image src='/image/chatbot/chatbot.svg' alt='Leafresh 챗봇' width={48} height={48} />
-        </Launcher>
+        <StyledImage
+          src='/image/chatbot/chatbot.svg'
+          alt='챗봇 아이콘'
+          width={48}
+          height={48}
+          onClick={handleClickLauncher}
+        />
       )}
       {isOpen && <Backdrop onClick={handleCloseAndReset} />}
       <ChatWindow key={resetCount} open={isOpen} onClose={() => setOpen(false)} />
@@ -61,19 +65,22 @@ const Chatbot = () => {
 }
 export default Chatbot
 
-const Launcher = styled.button`
-  position: fixed;
-  flex-direction: column;
+const StyledImage = styled(Image)`
+  position: absolute;
   bottom: 90px;
-  right: var(--launcher-right, 24px);
-  width: 48px;
-  height: 48px;
-  border: none;
-  cursor: pointer;
+  margin-left: auto;
+  right: 16px;
+  /* width: 52px; */
+  /* aspect-ratio: 1/1; */
+  /* border: none; */
+
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  cursor: pointer;
+
   transition: transform 0.3s ease;
 
   &:hover {
@@ -84,6 +91,10 @@ const Launcher = styled.button`
     transform: scale(0.95);
   }
 `
+
+// const Launcher = styled.div`
+
+// `
 
 const Backdrop = styled.div`
   position: fixed;

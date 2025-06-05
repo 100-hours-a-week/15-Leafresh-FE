@@ -1,21 +1,22 @@
 'use client'
 
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
+import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 const ChallengeCreateButton = () => {
+  const router = useRouter()
   const handleCreateChallenge = () => {
     sendGAEvent('event', 'group-create-step-1', { value: 'Step1: 챌린지 생성 버튼' }) // GA: 로그 수집
+    router.push(URL.CHALLENGE.GROUP.CREATE.value())
   }
   return (
     <Container>
-      <Link href='/challenge/group/create' passHref onClick={handleCreateChallenge}>
-        <Button name='Plus' color='lfWhite' size={24} />
-      </Link>
+      <ButtonIcon name='Plus' color='lfWhite' size={24} onClick={handleCreateChallenge} strokeWidth={2.5} />
     </Container>
   )
 }
@@ -25,29 +26,26 @@ export default ChallengeCreateButton
 // === Styles ===
 
 const Container = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: sticky;
+  bottom: 90px;
+  left: 16px;
 
   pointer-events: none;
-  z-index: 20;
+  z-index: 999;
 
   display: flex;
   justify-content: center;
-  max-width: 430px;
-  margin: 0 auto;
+
+  width: 52px;
+  aspect-ratio: 1/1;
 `
 
-const Button = styled(LucideIcon)`
+const ButtonIcon = styled(LucideIcon)`
+  width: 100%;
+  height: 100%;
   pointer-events: auto;
 
-  position: absolute;
-  bottom: 96px;
-  left: 16px;
-
-  width: 48px;
-  height: 48px;
+  position: relative;
 
   background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
   color: ${({ theme }) => theme.colors.lfWhite.base};
