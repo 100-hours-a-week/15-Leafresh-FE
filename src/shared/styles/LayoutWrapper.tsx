@@ -20,11 +20,14 @@ export default LayoutWrapper
 
 const WrapperContainer = styled.div`
   width: 100%;
-
   position: relative;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+
+  @media (max-width: 1000px) {
+    justify-content: center;
+  }
 `
 
 const ContentWrapper = styled.div`
@@ -37,8 +40,5 @@ const ContentWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-
   overflow-x: hidden;
-
-  /* overflow-y: auto; */
 `

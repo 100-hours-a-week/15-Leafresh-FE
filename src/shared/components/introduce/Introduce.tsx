@@ -7,17 +7,17 @@ import styled from '@emotion/styled'
 const Introduce = () => {
   return (
     <Wrapper>
-      <Image src='/image/main/character.svg' alt='친환경 캐릭터' width={300} height={300} />
+      <Image src='/image/main/character.svg' alt='친환경 캐릭터' width={400} height={400} />
       <ItemWrapper>
         <Item>
-          <StyledImage src='/image/main/verification.svg' alt='챌린지 인증' width={50} height={50} />
+          <StyledImage src='/image/main/verification.svg' alt='챌린지 인증' width={100} height={100} />
           <DataWrapper>
             <Count>15,827</Count>
             <Text>인증 수</Text>
           </DataWrapper>
         </Item>
         <Item>
-          <StyledImage src='/image/main/leaf.svg' alt='친환경 인증' width={50} height={50} />
+          <StyledImage src='/image/main/leaf.svg' alt='친환경 인증' width={100} height={100} />
           <DataWrapper>
             <Count>15,827</Count>
             <Text>나뭇잎 수</Text>
@@ -38,13 +38,17 @@ const Wrapper = styled.section`
   align-items: center;
   padding: 24px 20px 0;
   gap: 8px;
+
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `
 const ItemWrapper = styled.div`
   margin-top: 28px;
   padding-bottom: 16px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
 
   border-bottom: 1px solid #03452e;
 `
@@ -61,27 +65,27 @@ const DataWrapper = styled.div`
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 `
 const Count = styled.div`
-  font-size: 28px;
+  font-size: 36px;
 `
 
 const Text = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.base};
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
+  font-size: 20px;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.lfBlack.base};
 `
 
 const StyledImage = styled(Image)`
-  width: 48px;
-  height: 48px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
 `
 
 const IntroduceText = styled.span`
   margin-top: 23px;
-  font-size: 26px;
+  font-size: 28px;
   color: #2a5237;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `
