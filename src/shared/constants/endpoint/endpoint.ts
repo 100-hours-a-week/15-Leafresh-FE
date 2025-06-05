@@ -113,7 +113,7 @@ const CHALLENGE_ENDPOINTS = {
   ETC: {
     COUNT: {
       // 누적 사용자 인증수 조회
-      VERIFICATION: { method: HttpMethod.POST, path: `/api/challenges/verifications/count` },
+      VERIFICATION: { method: HttpMethod.GET, path: `/api/challenges/verifications/count` },
     },
   },
 }
