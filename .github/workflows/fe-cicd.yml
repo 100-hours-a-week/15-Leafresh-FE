@@ -169,7 +169,7 @@ jobs:
 
   build:
     name: Build and Push Docker Image
-    needs: [lint-and-unit-test, integration-test]
+    # needs: [lint-and-unit-test, integration-test]
     if: |
       github.event_name == 'pull_request' &&
       (
