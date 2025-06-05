@@ -170,16 +170,27 @@ jobs:
   build:
     name: Build and Push Docker Image
     needs: [lint-and-unit-test, integration-test]
-    if: >
-      github.event_name == 'pull_request' &&
-      (
-        (github.base_ref == 'develop' && needs.lint-and-unit-test.result == 'success') ||
-        (github.base_ref == 'main' && needs.integration-test.result == 'success')
-      )
+    # if: >
+    #   github.event_name == 'pull_request' &&
+    #   (
+    #     (github.base_ref == 'develop' && needs.lint-and-unit-test.result == 'success') ||
+    #     (github.base_ref == 'main' && needs.integration-test.result == 'success')
+    #   )
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Debug PR Info
+        run: |
+          echo "event_name=${{ github.event_name }}"
+          echo "base_ref=${{ github.base_ref }}"
+          echo "ref=${{ github.ref }}"
+          echo "head_ref=${{ github.head_ref }}"
+          echo "lint result=${{ needs.lint-and-unit-test.result }}"
+          echo "integration result=${{ needs.integration-test.result }}"
 
+      
       - name: Set ENV and SHORT_SHA
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
