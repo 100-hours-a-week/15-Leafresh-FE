@@ -3,7 +3,7 @@
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
-import { Introduce } from '@shared/components'
+import Introduce from '@shared/components/introduce/Introduce'
 
 import { theme } from './theme'
 
