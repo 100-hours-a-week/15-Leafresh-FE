@@ -172,7 +172,10 @@ jobs:
     needs: [lint-and-unit-test, integration-test]
     if: |
       github.event_name == 'pull_request' &&
-      (needs.lint-and-unit-test.result == 'success' || needs.integration-test.result == 'success')
+      (
+        (github.base_ref == 'develop' && needs.lint-and-unit-test.result == 'success') ||
+        (github.base_ref == 'main' && needs.integration-test.result == 'success')
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
