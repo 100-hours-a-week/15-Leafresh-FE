@@ -36,20 +36,16 @@ const Introduce = () => {
     <Wrapper>
       <Image src='/image/main/character.svg' alt='친환경 캐릭터' width={400} height={400} />
       <ItemWrapper>
-        {/* <Item> */}
         <StyledImage src='/image/main/verification.svg' alt='챌린지 인증' width={100} height={100} />
         <DataWrapper>
           <Count>{isVerificationLoading ? '불러오는 중...' : animatedVerificationCount?.toLocaleString()}</Count>
           <Text>인증 수</Text>
         </DataWrapper>
-        {/* </Item> */}
-        {/* <Item> */}
         <StyledImage src='/image/main/leaf.svg' alt='친환경 인증' width={100} height={100} />
         <DataWrapper>
           <Count>{isLeafLoading ? '불러오는 중...' : animatedLeafCount?.toLocaleString()}</Count>
           <Text>나뭇잎 수</Text>
         </DataWrapper>
-        {/* </Item> */}
       </ItemWrapper>
       <IntroduceText>사진 한 장, 지구를 지키는 가장 쉬운 방법</IntroduceText>
     </Wrapper>
@@ -63,10 +59,9 @@ const Wrapper = styled.section`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 20px 0;
   gap: 8px;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1150px) {
     display: none;
   }
 `
@@ -77,19 +72,11 @@ const ItemWrapper = styled.div`
   grid-template-columns: 100px 120px 100px 120px; // 4열 구성
   place-items: center;
 
-  gap: 40px;
+  gap: 15px;
 
   border-bottom: 1px solid #03452e;
 
   align-items: center;
-`
-
-const Item = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
 `
 
 const DataWrapper = styled.div`

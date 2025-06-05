@@ -25,7 +25,7 @@ const WrapperContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1150px) {
     justify-content: center;
   }
 `
@@ -41,4 +41,10 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+
+  margin-right: 150px;
+
+  @media (max-width: 1150px) {
+    margin-right: 0px;
+  }
 `
