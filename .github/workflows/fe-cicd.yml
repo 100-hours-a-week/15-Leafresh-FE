@@ -157,6 +157,7 @@ jobs:
   build-dev:
     name: Build and Push Docker (dev)
     if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+    needs: [ lint-and-unit-test ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -181,6 +182,7 @@ jobs:
   build-prod:
     name: Build and Push Docker (prod)
     if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    needs: [ integration-test ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
