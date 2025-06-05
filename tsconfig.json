@@ -29,7 +29,7 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": [
     "node_modules",
-    "playwright.config.ts", # 추가
-    "tests" # 추가
+    "playwright.config.ts",
+    "tests"
   ]
 }
