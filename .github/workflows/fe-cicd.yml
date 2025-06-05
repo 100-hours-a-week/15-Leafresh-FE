@@ -170,38 +170,26 @@ jobs:
   build:
     name: Build and Push Docker Image
     needs: [lint-and-unit-test, integration-test]
-    # if: >
-    #   github.event_name == 'pull_request' &&
-    #   (
-    #     (github.base_ref == 'develop' && needs.lint-and-unit-test.result == 'success') ||
-    #     (github.base_ref == 'main' && needs.integration-test.result == 'success')
-    #   )
-    if: always()
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Debug PR Info
-        run: |
-          echo "event_name=${{ github.event_name }}"
-          echo "base_ref=${{ github.base_ref }}"
-          echo "ref=${{ github.ref }}"
-          echo "head_ref=${{ github.head_ref }}"
-          echo "lint result=${{ needs.lint-and-unit-test.result }}"
-          echo "integration result=${{ needs.integration-test.result }}"
-
-      
-      - name: Set ENV and SHORT_SHA
+      - name: Set SHORT_SHA and IMAGE_TAG
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
-          if [[ "${{ github.base_ref }}" == "develop" ]]; then
+          if [[ "${{ github.base_ref }}" == "develop" ]] && [[ "${{ needs.lint-and-unit-test.result }}" == "success" ]]; then
             echo "IMAGE_TAG=jchanho99/frontend-develop:$SHORT_SHA" >> $GITHUB_ENV
-          elif [[ "${{ github.base_ref }}" == "main" ]]; then
+          elif [[ "${{ github.base_ref }}" == "main" ]] && [[ "${{ needs.integration-test.result }}" == "success" ]]; then
             echo "IMAGE_TAG=jchanho99/frontend-prod:$SHORT_SHA" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAG=" >> $GITHUB_ENV
+            echo "SKIP_BUILD=true" >> $GITHUB_ENV
           fi
           echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
+
+      - name: Exit if build should be skipped
+        if: env.SKIP_BUILD == 'true'
+        run: |
+          echo "Skipping build because required test did not succeed."
+          exit 0
 
       - name: Docker Login
         uses: docker/login-action@v3
