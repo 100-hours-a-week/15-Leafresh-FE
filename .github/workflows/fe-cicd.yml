@@ -58,6 +58,10 @@ jobs:
         run: echo "Using cached pnpm modules"
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
+      - name: Delete Duplicates
+        run: |
+          pnpm dedupe
+          pnpm install
       - name: Run Lint
         run: pnpm run lint
       - name: Run Unit Test
