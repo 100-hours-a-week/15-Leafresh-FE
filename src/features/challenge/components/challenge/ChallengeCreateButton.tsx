@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
@@ -9,11 +9,16 @@ import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 const ChallengeCreateButton = () => {
+  const pathname = usePathname()
   const router = useRouter()
+
   const handleCreateChallenge = () => {
     sendGAEvent('event', 'group-create-step-1', { value: 'Step1: 챌린지 생성 버튼' }) // GA: 로그 수집
     router.push(URL.CHALLENGE.GROUP.CREATE.value())
   }
+
+  // TODO: 피드 페이지 생성되면 넣기
+  if (pathname !== URL.MAIN.INDEX.value && !pathname.startsWith('/feed')) return null
   return (
     <Container>
       <ButtonIcon name='Plus' color='lfWhite' size={24} onClick={handleCreateChallenge} strokeWidth={2.5} />

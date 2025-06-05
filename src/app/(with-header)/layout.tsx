@@ -30,9 +30,9 @@ const WithHeaderLayout = ({
 export default WithHeaderLayout
 
 const ContentsWrapper = styled.div`
-  padding-bottom: 72px;
   width: 100%;
   height: 100dvh;
+  padding-bottom: 24px;
 
   position: relative;
   display: flex;

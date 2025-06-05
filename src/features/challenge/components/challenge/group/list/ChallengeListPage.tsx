@@ -10,7 +10,6 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/c
 import { GroupChallengeItem } from '@features/challenge/api/get-group-challenge-list'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
-import Chatbot from '@shared/components/chatbot/Chatbot'
 import GridBox from '@shared/components/wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
@@ -161,7 +160,6 @@ const ChallengeListPage = () => {
           </ChallengeWrapper>
         </Section>
       </ContentWrapper>
-      <Chatbot />
     </Container>
   )
 }
