@@ -109,6 +109,13 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/group/${challengeId}/rules`,
     }),
   },
+
+  ETC: {
+    COUNT: {
+      // 누적 사용자 인증수 조회
+      VERIFICATION: { method: HttpMethod.POST, path: `/api/challenges/verifications/count` },
+    },
+  },
 }
 
 const MEMBER_ENDPOINTS = {
@@ -263,6 +270,12 @@ const STORE_ENDPOINTS = {
       method: HttpMethod.POST,
       path: `/api/orders/${productId}`,
     }),
+  },
+  ETC: {
+    COUNT: {
+      // 누적 나뭇잎 수 조회
+      LEAVES: { method: HttpMethod.GET, path: '/api/leaves/count' },
+    },
   },
 }
 

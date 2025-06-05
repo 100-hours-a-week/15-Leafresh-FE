@@ -40,6 +40,13 @@ const CHALLENGE_QUERY_KEYS = {
     // 인증 결과 확인
     VERIFICATION_RESULT: (challengeId: number) => ['challenges', 'group', challengeId, 'verification', 'result'],
   },
+
+  ETC: {
+    // 누적 사용자 인증수 조회
+    COUNT: {
+      VERIFICATION: ['challenge', 'verification', 'count'],
+    },
+  },
 }
 
 const MEMBER_QUERY_KEYS = {
@@ -116,6 +123,12 @@ const STORE_QUERY_KEYS = {
   PRODUCTS: {
     // 일반 상품 목록
     LIST: (input: string) => ['store', 'products', input],
+  },
+  ETC: {
+    COUNT: {
+      // 누적 나뭇잎 수 조회
+      LEAVES: ['store', 'leaves', 'count'],
+    },
   },
 }
 /**
