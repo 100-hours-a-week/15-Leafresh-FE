@@ -115,6 +115,14 @@ const MEMBER_QUERY_DEFAULTS = {
 }
 
 const STORE_QUERY_DEFAULTS = {
+  TIME_DEAL: {
+    // 타임딜 상품 목록
+    LIST: DEFAULT,
+  },
+  PRODUCTS: {
+    // 일반 상품 목록
+    LIST: DEFAULT,
+  },
   ETC: {
     COUNT: {
       // 누적 나뭇잎 수 조회
