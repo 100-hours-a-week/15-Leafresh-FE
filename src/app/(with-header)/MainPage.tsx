@@ -11,9 +11,7 @@ import {
   GroupChallengeCategory,
 } from '@features/challenge/api/get-group-challenge-categories'
 import { getPersonalChallengeList, PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
-import ChallengeCreateButton from '@features/challenge/components/challenge/ChallengeCreateButton'
 import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@features/main/components'
-import Chatbot from '@shared/components/chatbot/Chatbot'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getDayOfWeek } from '@shared/lib/date/utils'
@@ -44,13 +42,13 @@ const MainPage = (): ReactNode => {
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
   return (
-    <Container>
-      <EventSection eventChallenges={eventChallenges} />
-      <PersonalChallengeSection personalChallenges={personalChallenges} />
-      <GroupChallengeSections categories={categories} />
-      <Chatbot />
-      <ChallengeCreateButton />
-    </Container>
+    <>
+      <Container>
+        <EventSection eventChallenges={eventChallenges} />
+        <PersonalChallengeSection personalChallenges={personalChallenges} />
+        <GroupChallengeSections categories={categories} />
+      </Container>
+    </>
   )
 }
 

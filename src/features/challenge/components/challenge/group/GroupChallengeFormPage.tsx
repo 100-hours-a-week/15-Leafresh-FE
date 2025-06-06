@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { sendGAEvent } from '@next/third-parties/google'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
@@ -111,6 +112,8 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
   const isPending: boolean = isCreating || isModifying
   /** 단체 챌린지 생성 */
   const handleCreateSubmit = () => {
+    sendGAEvent('event', 'group-create-step-3', { value: 'Step3: 챌린지 생성하기 버튼' }) // GA: 로그 수집
+
     const data = form.getValues()
 
     const {

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 
 import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
 
 import { EventChallenge } from '@features/challenge/api/get-event-challenge-list'
 import { URL } from '@shared/constants/route/route'
@@ -40,13 +41,19 @@ export const EventSection = ({ eventChallenges, className }: EventSectionProps):
     onSelect()
   }, [emblaApi])
 
+  const handleClickCard = (ch: EventChallenge) => {
+    sendGAEvent('event', 'event-card', { challengeId: ch.id }) // GA: 로그 수집
+
+    router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))
+  }
+
   return (
     <Section>
       <CarouselWrapper ref={emblaRef}>
         <CarouselInner>
           {eventChallenges.length !== 0 ? (
             eventChallenges.map(ch => (
-              <EventCard key={ch.id} onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))}>
+              <EventCard key={ch.id} onClick={() => handleClickCard(ch)}>
                 <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
                 <EventGradientOverlay />
                 <EventTitleOverlay>{ch.title}</EventTitleOverlay>

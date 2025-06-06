@@ -1,52 +1,49 @@
 'use client'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
 
+import { URL } from '@shared/constants/route/route'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 
 import ChatWindow from './ChatWindow'
 
 const Chatbot = () => {
+  const pathname = usePathname()
+
   const { value: isOpen, setValue: setOpen } = useToggle(false)
-  const [resetCount, setResetCount] = useState(0)
+  const [resetCount, setResetCount] = useState<number>(0)
 
-  useEffect(() => {
-    const updatePosition = () => {
-      const windowWidth = window.innerWidth
-      const contentWidth = 430 // 컨텐츠의 최대 너비
-
-      // 윈도우 너비가 컨텐츠 너비보다 클 때
-      if (windowWidth > contentWidth) {
-        // 컨텐츠 영역 안쪽에 위치하도록 계산
-        const rightPosition = (windowWidth - contentWidth) / 2 + 24
-        document.documentElement.style.setProperty('--launcher-right', `${rightPosition}px`)
-      } else {
-        document.documentElement.style.setProperty('--launcher-right', '24px')
-      }
-    }
-
-    updatePosition()
-    window.addEventListener('resize', updatePosition)
-    return () => window.removeEventListener('resize', updatePosition)
-  }, [])
-
-  // 닫을 때 초기화까지 포함
   const handleCloseAndReset = () => {
-    setResetCount(prev => prev + 1) // ChatWindow 내부 ChatFrame을 초기화시키는 키
-    sessionStorage.removeItem('chatSelections') // 혹시 몰라 세션도 지움
+    setResetCount(prev => prev + 1)
+    sessionStorage.removeItem('chatSelections')
     setOpen(false)
   }
 
   useScrollLock(isOpen)
+
+  const handleClickLauncher = () => {
+    sendGAEvent('event', 'chatbot', { value: 'chatbot-entered' })
+    setOpen(true)
+  }
+
+  // TODO: 피드 페이지 생성되면 넣기
+  if (pathname !== URL.MAIN.INDEX.value && !pathname.startsWith('/feed')) return null
+
   return (
     <>
       {!isOpen && (
-        <Launcher onClick={() => setOpen(true)}>
-          <Image src='/image/chatbot/chatbot.svg' alt='Leafresh 챗봇' width={48} height={48} />
-        </Launcher>
+        <StyledImage
+          src='/image/chatbot/chatbot.svg'
+          alt='챗봇 아이콘'
+          width={48}
+          height={48}
+          onClick={handleClickLauncher}
+        />
       )}
       {isOpen && <Backdrop onClick={handleCloseAndReset} />}
       <ChatWindow key={resetCount} open={isOpen} onClose={() => setOpen(false)} />
@@ -55,19 +52,19 @@ const Chatbot = () => {
 }
 export default Chatbot
 
-const Launcher = styled.button`
-  position: fixed;
-  flex-direction: column;
+const StyledImage = styled(Image)`
+  position: absolute;
   bottom: 90px;
-  right: var(--launcher-right, 24px);
-  width: 48px;
-  height: 48px;
-  border: none;
-  cursor: pointer;
+  margin-left: auto;
+  right: 16px;
+
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  cursor: pointer;
+
   transition: transform 0.3s ease;
 
   &:hover {
@@ -82,6 +79,6 @@ const Launcher = styled.button`
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.4); // 반투명
-  z-index: 1000; // ChatWindow보다 아래, Launcher보다 위
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
 `

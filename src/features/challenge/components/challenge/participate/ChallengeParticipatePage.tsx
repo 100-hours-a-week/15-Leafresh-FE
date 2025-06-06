@@ -10,7 +10,6 @@ import ChallengeCard from '@features/challenge/components/challenge/participate/
 import CardList from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCardList'
 import { useGroupParticipationsCount } from '@features/challenge/hook/useGroupParticipationsCount'
 import { useInfiniteGroupParticipations } from '@features/challenge/hook/useInfiniteGroupParticipations'
-import Chatbot from '@shared/components/chatbot/Chatbot'
 import SwitchTap from '@shared/components/switchtap/SwitchTap'
 import { URL } from '@shared/constants/route/route'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
@@ -112,7 +111,6 @@ export default function ChallengeParticipatePage() {
           )}
         </CardList>
       </CardListContainer>
-      <Chatbot />
     </Container>
   )
 }

@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
 
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
@@ -34,16 +35,19 @@ export const Navbar = (): ReactNode => {
   }
 
   // TODO: 피드 기능 추가시 클릭 이벤트 리스너 핸들
-  const navHandler = (label: string, href: string) => {
+  const navHandler = (label: string, href: string, index: number) => {
     if (label === '피드') return
+    sendGAEvent('event', `nav-${index + 1}`, { value: `${label} 내비게이션 항목 클릭` }) // GA: 로그 수집
+
     router.push(href)
   }
+
   return (
     <NavbarWrapper>
-      {NAVBAR_TABS.map(({ label, icon, href }) => {
+      {NAVBAR_TABS.map(({ label, icon, href }, index) => {
         const isActive: boolean = isCurrentTab(label)
         return (
-          <NavButton key={label} onClick={() => navHandler(label, href)}>
+          <NavButton key={label} onClick={() => navHandler(label, href, index)}>
             <LucideIcon
               name={icon}
               size={24}
@@ -63,7 +67,7 @@ const NavbarWrapper = styled.nav`
   max-width: 430px;
   width: 100%;
 
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);

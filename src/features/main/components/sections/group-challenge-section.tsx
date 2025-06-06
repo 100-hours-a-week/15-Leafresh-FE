@@ -93,7 +93,7 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
     )
   } else {
     /** 검색값이 있는 경우 */
-    // const testGroupChallenges = [...groupChallenges, ...groupChallenges, ...groupChallenges, ...groupChallenges]
+    const testGroupChallenges = [...groupChallenges, ...groupChallenges, ...groupChallenges, ...groupChallenges]
     contents = groupChallenges.map(challenge => {
       const { id, title, leafReward, currentParticipantCount, endDate, startDate, remainingDay, thumbnailUrl } =
         challenge
