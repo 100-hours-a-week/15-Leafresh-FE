@@ -111,7 +111,7 @@ const POST_QUERY_KEYS = {
 const STORE_QUERY_KEYS = {
   TIME_DEAL: {
     // 타임딜 상품 목록
-    LIST: ['store', 'products', 'timedeals'],
+    LIST: ['store', 'timedeals'],
   },
   PRODUCTS: {
     // 일반 상품 목록

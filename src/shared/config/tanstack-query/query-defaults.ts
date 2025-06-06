@@ -107,7 +107,19 @@ const MEMBER_QUERY_DEFAULTS = {
   },
 }
 
+const STORE_QUERY_DEFAULTS = {
+  TIME_DEAL: {
+    // 타임딜 상품 목록
+    LIST: DEFAULT,
+  },
+  PRODUCTS: {
+    // 일반 상품 목록
+    LIST: DEFAULT,
+  },
+}
+
 export const QUERY_OPTIONS = {
   CHALLENGE: CHALLENGE_QUERY_DEFAULTS,
   MEMBER: MEMBER_QUERY_DEFAULTS,
+  STORE: STORE_QUERY_DEFAULTS,
 } as const

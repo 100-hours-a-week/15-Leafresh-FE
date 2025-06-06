@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import ModalProvider from '@shared/components/modal/ModalProvider'
 import Toast from '@shared/components/toast/Toast'
 import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
@@ -21,6 +23,7 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode
 }>) => {
+  const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS
   return (
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
@@ -33,6 +36,7 @@ const RootLayout = ({
           <Toast />
         </Providers>
       </body>
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   )
 }
