@@ -29,11 +29,12 @@ interface ProfileModifyPageProps {
   className?: string
 }
 
-const nicknameSchema = z.object({
+const profileSchema = z.object({
   nickname: z.string().max(20, '닉네임은 최대 20자까지 입력 가능합니다.').optional(),
+  imageUrl: z.string().url().optional(),
 })
 
-type NicknameForm = z.infer<typeof nicknameSchema>
+type ProfileForm = z.infer<typeof profileSchema>
 
 const maxLength = 20
 
@@ -59,10 +60,12 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     formState: { errors },
     watch,
     reset,
-  } = useForm<NicknameForm>({
-    resolver: zodResolver(nicknameSchema),
+    setValue,
+  } = useForm<ProfileForm>({
+    resolver: zodResolver(profileSchema),
     defaultValues: {
       nickname: '', // 초기에는 빈값
+      imageUrl: '',
     },
   })
 
@@ -71,6 +74,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     if (profileData?.data) {
       reset({
         nickname: profileData.data.nickname ?? '',
+        imageUrl: profileData.data.profileImageUrl ?? '',
       })
     }
   }, [profileData, reset])
@@ -83,7 +87,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     const value = e.target.value
     setNickname(value)
     try {
-      nicknameSchema.parse(value)
+      profileSchema.parse(value)
       setNicknameError('')
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -114,7 +118,7 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
         })
 
         const uploadedUrl = await uploadFile(file)
-        setImageUrl(uploadedUrl)
+        setValue('imageUrl', uploadedUrl)
         openToast(ToastType.Success, '이미지가 성공적으로 업로드되었습니다')
       }, 'image/jpeg')
     } catch (err) {
@@ -122,15 +126,14 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     }
   }
 
-  const onSubmit = (data: NicknameForm) => {
+  const onSubmit = (data: ProfileForm) => {
     const body: MemberInfoRequest = {}
 
-    const currentNickname = data.nickname
-    if (currentNickname && currentNickname !== profile?.nickname) {
-      body.nickname = currentNickname
+    if (data.nickname && data.nickname !== profile?.nickname) {
+      body.nickname = data.nickname
     }
-    if (imageUrl && imageUrl !== profile?.profileImageUrl) {
-      body.imageUrl = imageUrl
+    if (data.imageUrl && data.imageUrl !== profile?.profileImageUrl) {
+      body.imageUrl = data.imageUrl
     }
 
     if (Object.keys(body).length === 0) {
@@ -156,14 +159,16 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
 
   const profile: ProfileResponse = profileData.data ?? ({} as ProfileResponse)
 
-  const currentImage = profile?.profileImageUrl
-  const currentNickname = nickname
+  const currentImage = watch('imageUrl') || profile?.profileImageUrl
 
   //이미지 업로드 시 변경
   const backgroundImage = imageUrl || currentImage
 
+  const watchedNickname = watch('nickname') ?? ''
+  const watchedImageUrl = watch('imageUrl') ?? ''
+
   const isUnchanged =
-    ((watch('nickname') ?? '') === profile?.nickname && imageUrl === '') || imageUrl === profile?.profileImageUrl
+    watchedNickname === (profile?.nickname ?? '') && watchedImageUrl === (profile?.profileImageUrl ?? '')
 
   return (
     <Container className={className}>
@@ -216,7 +221,6 @@ const Container = styled.div`
 `
 
 const Header = styled.div`
-  /* text-align: center; */
   padding: 10px 0;
   border-bottom: 1px solid ${theme.colors.lfLightGray.base};
 `
