@@ -48,7 +48,7 @@ export default ConfirmModal
 const Overlay = styled.div`
   width: 100%;
 
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 1000;
   background-color: ${theme.colors.lfBackdrop.base};

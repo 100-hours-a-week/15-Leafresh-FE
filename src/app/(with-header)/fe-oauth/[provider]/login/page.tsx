@@ -44,7 +44,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
     } else {
       /** ✅ 주의 : UserStore 정보를 받아오지 않는 이유는 AT+RT 받기를 성공했으면 언젠가는 데이터를 불러올 수 있기 때문이다! */
       openToast(ToastType.Success, '로그인 성공')
-      router.replace(URL.CHALLENGE.INDEX.value)
+      router.replace(URL.MAIN.INDEX.value)
     }
   }, [data, router, openToast, setOAuthUserInfo])
 

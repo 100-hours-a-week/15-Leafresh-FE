@@ -79,7 +79,7 @@ const ImageZoomModal = () => {
 export default ImageZoomModal
 
 const Wrapper = styled.div`
-  position: fixed;
+  position: absolute;
   min-width: 320px;
   max-width: 500px;
   width: 100%;

@@ -47,7 +47,7 @@ export default InfoModal
 // 스타일
 
 const Overlay = styled.div`
-  position: fixed;
+  position: absolute;
   inset: 0;
   background-color: ${theme.colors.lfBackdrop.base};
   display: flex;

@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { sendGAEvent } from '@next/third-parties/google'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
@@ -30,6 +31,7 @@ import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { formatDateToDateFormatString } from '@shared/lib/date/utils'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
 
@@ -110,6 +112,8 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
   const isPending: boolean = isCreating || isModifying
   /** 단체 챌린지 생성 */
   const handleCreateSubmit = () => {
+    sendGAEvent('event', 'group-create-step-3', { value: 'Step3: 챌린지 생성하기 버튼' }) // GA: 로그 수집
+
     const data = form.getValues()
 
     const {
@@ -261,8 +265,9 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
 export default GroupChallengeFormPage
 
 const PageWrapper = styled.div`
+  ${responsiveHorizontalPadding};
+
   width: 100%;
-  padding: 20px 0px;
   display: flex;
   flex-direction: column;
   gap: 24px;

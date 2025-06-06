@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import { useInfiniteMemberAlarmList } from '@features/member/hooks/useInfiniteMemberAlarmList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
 
@@ -33,7 +33,6 @@ export function formatRelativeTime(target: Date): string {
 }
 
 const MemberAlarmList = () => {
-  const openToast = useToast()
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
   const { mutate: ReadAlarmMutate } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
 
@@ -85,7 +84,7 @@ const MemberAlarmList = () => {
 export default MemberAlarmList
 
 const Wrapper = styled.div`
-  padding: 24px 0;
+  ${responsiveHorizontalPadding};
 `
 
 const Title = styled.h1`

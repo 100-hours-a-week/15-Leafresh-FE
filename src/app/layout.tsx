@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import ModalProvider from '@shared/components/modal/ModalProvider'
 import Toast from '@shared/components/toast/Toast'
-import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
 import { pretendard } from '@shared/config/font'
 import AuthGuard from '@shared/config/providers/AuthGaurd'
 import { Providers } from '@shared/config/providers/Providers'
@@ -25,14 +26,16 @@ const RootLayout = ({
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
         <Providers>
-          <LayoutWrapper>
-            <AuthGuard>{children}</AuthGuard>
-          </LayoutWrapper>
-          <ModalProvider />
-          <ImageZoomModal />
-          <Toast />
+          <AuthGuard>
+            <LayoutWrapper>
+              {children}
+              <Toast />
+              <ModalProvider />
+            </LayoutWrapper>
+          </AuthGuard>
         </Providers>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
     </html>
   )
 }

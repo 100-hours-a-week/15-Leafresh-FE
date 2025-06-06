@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 
 import { useInfiniteGroupChallengeVerifications } from '@features/challenge/hook/useInfiniteGroupChallengeVerifications'
 import BackButton from '@shared/components/button/BackButton'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 interface ChallengeGroupParticipateListProps {
@@ -66,6 +67,8 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
 export default ChallengeGroupParticipateList
 
 const Wrapper = styled.div`
+  ${responsiveHorizontalPadding};
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -138,6 +141,10 @@ const Description = styled.div`
 `
 
 const Observer = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 1px;
 `
 

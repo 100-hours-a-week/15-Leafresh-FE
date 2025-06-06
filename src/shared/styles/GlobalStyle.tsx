@@ -1,13 +1,7 @@
 'use client'
 import emotionReset from 'emotion-reset'
 
-import { css, Global, keyframes, Theme, useTheme } from '@emotion/react'
-// import { theme } from '../emotion/theme'
-const gradientAnimation = keyframes`
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`
+import { css, Global, Theme, useTheme } from '@emotion/react'
 
 const GlobalStyle = () => {
   const theme: Theme = useTheme()
@@ -47,41 +41,37 @@ const GlobalStyle = () => {
           justify-content: center;
           align-items: flex-start;
 
-          background: linear-gradient(
-            -45deg,
-            ${theme.colors.lfGreenInactive.base},
-            ${theme.colors.lfInputBackground.base},
-            #d1e8d4,
-            ${theme.colors.lfGreenInactive.base}
-          );
-          background-size: 400% 400%;
-          animation: ${gradientAnimation} 15s ease infinite;
-
           color: ${theme.colors.lfBlack.base};
           overflow-x: hidden;
           box-shadow: 0 0 40px #0000001a;
+
+          background-image: url('/image/background.svg');
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
         }
 
+        /* 스크롤바 전체 영역 */
         ::-webkit-scrollbar {
-          width: 12px;
-          height: 8px;
+          width: 6px; /* 세로 스크롤바 두께 */
+          height: 6px; /* 가로 스크롤바 두께 */
         }
 
+        /* 스크롤바 트랙(배경 영역) */
         ::-webkit-scrollbar-track {
-          border-radius: 5px;
+          background: #f0f0f0; /* 트랙 색상 */
+          border-radius: 4px;
         }
 
+        /* 스크롤바 썸(움직이는 바) */
         ::-webkit-scrollbar-thumb {
-          background: ${theme.colors.lfDarkGray.base};
-          border-radius: 5px;
+          background: #728b5c;
+          border-radius: 4px;
         }
 
+        /* 썸에 호버 효과 추가 */
         ::-webkit-scrollbar-thumb:hover {
-          background-color: ${theme.colors.lfDarkGray.base};
-        }
-        ::-webkit-scrollbar {
-          width: 5px;
-          height: 5px;
+          background: #7d9865;
         }
       `}
     />

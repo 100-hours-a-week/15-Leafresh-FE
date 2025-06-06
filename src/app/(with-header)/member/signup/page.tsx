@@ -56,7 +56,7 @@ const SignupPage = () => {
   useEffect(() => {
     /** 이미 회원가입한 유저일 경우 */
     if (OAuthUserInfo?.isMember) {
-      router.replace(URL.CHALLENGE.INDEX.value)
+      router.replace(URL.MAIN.INDEX.value)
     }
   }, [OAuthUserInfo])
 
@@ -121,7 +121,7 @@ const SignupPage = () => {
       {
         onSuccess: () => {
           /** ✅ 주의 : UserStore 정보를 받아오지 않는 이유는 AT+RT 받기를 성공했으면 언젠가는 데이터를 불러올 수 있기 때문이다! */
-          router.replace(URL.CHALLENGE.INDEX.value) // 회원가입 후 챌린지 메인으로 이동
+          router.replace(URL.MAIN.INDEX.value) // 회원가입 후 메인으로 이동
         },
       },
     )
