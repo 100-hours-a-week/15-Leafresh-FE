@@ -10,6 +10,8 @@ import { Logout } from '@features/member/api/logout'
 import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
+import { OrderProduct } from '@features/store/api/order-proudcts'
+import { OrderTimeDealProduct } from '@features/store/api/order-timedeal'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
@@ -239,9 +241,32 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
   },
 })
 
+/** 나뭇잎 상점 */
+// 타임딜 상품 주문 생성
+queryClient.setMutationDefaults(MUTATION_KEYS.STORE.TIME_DEAL.ORDER, {
+  mutationFn: OrderTimeDealProduct,
+  onSuccess() {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.STORE.TIME_DEAL.LIST }) // 타임딜 상품 목록 조회
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+// 일반 상품 주문 생성
+queryClient.setMutationDefaults(MUTATION_KEYS.STORE.PRODUCTS.ORDER, {
+  mutationFn: OrderProduct,
+  onSuccess() {
+    const PRODUCT_QUERIES = ['store', 'products']
+    queryClient.invalidateQueries({ queryKey: PRODUCT_QUERIES }) // 일반 상품 상품 목록 조회
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
 /**
  * TODO: (V2) 게시판
- * TODO: (V2) 나뭇잎 상점
  */
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
