@@ -31,8 +31,8 @@ export default WithHeaderLayout
 
 const ContentsWrapper = styled.div`
   width: 100%;
-  height: 100dvh;
-  padding-bottom: 24px;
+  height: 100%;
+  /* padding-bottom: 24px; */
 
   position: relative;
   display: flex;

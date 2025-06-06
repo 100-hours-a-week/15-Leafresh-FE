@@ -21,7 +21,7 @@ const ChallengeCreateButton = () => {
   if (pathname !== URL.MAIN.INDEX.value && !pathname.startsWith('/feed')) return null
   return (
     <Container>
-      <ButtonIcon name='Plus' color='lfWhite' size={24} onClick={handleCreateChallenge} strokeWidth={2.5} />
+      <ButtonIcon name='Plus' color='lfWhite' size={24} onClick={handleCreateChallenge} />
     </Container>
   )
 }
@@ -31,7 +31,7 @@ export default ChallengeCreateButton
 // === Styles ===
 
 const Container = styled.div`
-  position: sticky;
+  position: absolute;
   bottom: 90px;
   left: 16px;
 
@@ -41,7 +41,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
 
-  width: 52px;
+  width: 48px;
   aspect-ratio: 1/1;
 `
 
@@ -53,9 +53,6 @@ const ButtonIcon = styled(LucideIcon)`
   position: relative;
 
   background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
-  color: ${({ theme }) => theme.colors.lfWhite.base};
-  font-size: ${({ theme }) => theme.fontSize.xl};
-  font-weight: ${({ theme }) => theme.fontWeight.extraLight};
 
   display: flex;
   align-items: center;

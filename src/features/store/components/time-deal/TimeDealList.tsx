@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 import { getTimeDealProducts, TimeDealProduct } from '../../api/get-timedeals'
 import OngoingTimeDealCard from './OngoingTimeDealCard'
@@ -37,6 +38,7 @@ const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
     <Container>
       <OngoingTimeDealCard data={ongoing} />
       <UpcomingTimeDealCard data={upcoming} />
+      <UpcomingTimeDealCard data={upcoming} />
     </Container>
   )
 }
@@ -44,7 +46,9 @@ const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
 export default TimeDealList
 
 const Container = styled.div`
-  padding-bottom: 40px;
+  ${responsiveHorizontalPadding};
+
+  /* padding-bottom: 40px; */
 
   display: flex;
   flex-direction: column;
