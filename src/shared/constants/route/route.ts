@@ -3,7 +3,7 @@ import { ChallengeCategoryType } from '@entities/challenge/type'
 /**
  * FE라우트 엔드포인트 입니다
  */
-// 레이아웃 체크 ✅  TODO: 나뭇잎 상점 (/store), 구매한 물품 목록 페이지 (/member/store), 뱃지 목록 페이지
+// 레이아웃 체크 필요 ✅  TODO: 뱃지 목록 페이지, 마이페이지, 프로필 수정
 const MAIN_URL = {
   INDEX: {
     name: '메인',

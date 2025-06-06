@@ -9,16 +9,16 @@ import { theme } from './theme'
 
 const LayoutWrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <WrapperContainer>
+    <EntirePageLayout>
       <Introduce />
       <ContentWrapper>{children}</ContentWrapper>
-    </WrapperContainer>
+    </EntirePageLayout>
   )
 }
 
 export default LayoutWrapper
 
-const WrapperContainer = styled.div`
+const EntirePageLayout = styled.div`
   width: 100%;
   position: relative;
   display: flex;
@@ -41,6 +41,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  overflow-y: hidden;
 
   margin-right: 150px;
 

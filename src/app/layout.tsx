@@ -28,11 +28,13 @@ const RootLayout = ({
       <body className={`${pretendard.className}`}>
         <Providers>
           <AuthGuard>
-            <LayoutWrapper>{children}</LayoutWrapper>
+            <LayoutWrapper>
+              {children}
+              <Toast />
+            </LayoutWrapper>
           </AuthGuard>
           <ModalProvider />
           <ImageZoomModal />
-          <Toast />
         </Providers>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
