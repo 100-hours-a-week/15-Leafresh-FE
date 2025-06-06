@@ -35,9 +35,8 @@ const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
   const upcoming = timeDealProducts.filter(item => item.timeDealStatus === 'UPCOMING') /** 다가오는 타임딜 상품 */
 
   return (
-    <Container>
+    <Container className={className}>
       <OngoingTimeDealCard data={ongoing} />
-      <UpcomingTimeDealCard data={upcoming} />
       <UpcomingTimeDealCard data={upcoming} />
     </Container>
   )

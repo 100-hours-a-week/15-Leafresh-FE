@@ -45,6 +45,7 @@ const Main = styled.main`
   width: 100%;
 
   margin-top: 24px;
+  margin-bottom: 72px;
   padding-bottom: 24px;
   flex: 1;
 

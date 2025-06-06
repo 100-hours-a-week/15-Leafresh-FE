@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import ApologizeContent from '@shared/components/apologize/apologize'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 import { Product } from '../../api/get-products'
@@ -156,33 +157,15 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
     )
   }
 
-  return <Content>{contents}</Content>
+  return <ContentWrapper>{contents}</ContentWrapper>
 }
 
 export default ProductList
 
-const Content = styled.div`
-  padding: 20px 0;
-`
+const ContentWrapper = styled.div`
+  ${responsiveHorizontalPadding};
 
-const EmptySection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 40px;
-`
-
-const EmptyTitle = styled.div`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
-  margin: 16px 0 16px 0;
-`
-
-const EmptyDescription = styled.p`
-  font-size: ${theme.fontSize.base};
-  color: ${theme.colors.lfDarkGray.base};
-  margin-top: 6px;
-  text-align: center;
+  margin-top: 20px;
 `
 
 const ProductGrid = styled.div`
