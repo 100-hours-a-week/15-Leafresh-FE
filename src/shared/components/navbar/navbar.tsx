@@ -80,7 +80,7 @@ const NavbarWrapper = styled.nav`
   background-color: ${theme.colors.lfWhite.base};
   border-top: 1px solid ${theme.colors.lfLightGray.base};
 
-  z-index: 999;
+  z-index: 99;
 `
 
 const NavButton = styled.button`

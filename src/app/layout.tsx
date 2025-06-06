@@ -4,7 +4,6 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 import ModalProvider from '@shared/components/modal/ModalProvider'
 import Toast from '@shared/components/toast/Toast'
-import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
 import { pretendard } from '@shared/config/font'
 import AuthGuard from '@shared/config/providers/AuthGaurd'
 import { Providers } from '@shared/config/providers/Providers'
@@ -31,10 +30,9 @@ const RootLayout = ({
             <LayoutWrapper>
               {children}
               <Toast />
+              <ModalProvider />
             </LayoutWrapper>
           </AuthGuard>
-          <ModalProvider />
-          <ImageZoomModal />
         </Providers>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
