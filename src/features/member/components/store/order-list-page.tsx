@@ -13,8 +13,57 @@ import { URL } from '@shared/constants/route/route'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
+import { ISOFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
 
+/** 더미 데이터 */
+const dummyMemberStoreOrderList: PurchaseProduct[] = [
+  {
+    id: 1,
+    product: {
+      id: 101,
+      title:
+        '맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목',
+      imageUrl: '/image/Main_1.png',
+    },
+    quantity: 1,
+    price: 500,
+    purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString() as ISOFormatString, // 3일 전
+  },
+  {
+    id: 2,
+    product: {
+      id: 102,
+      title: '맛있는 나뭇잎 상점 구매 품목',
+      imageUrl: '/image/Main_1.png',
+    },
+    quantity: 1,
+    price: 500,
+    purchasedAt: new Date(Date.now() - 30 * 1000 * 60 * 60 * 24 * 2).toISOString() as ISOFormatString,
+  },
+  {
+    id: 3,
+    product: {
+      id: 103,
+      title: '맛있는 나뭇잎 상점 구매 품목',
+      imageUrl: '/image/Main_1.png',
+    },
+    quantity: 1,
+    price: 500,
+    purchasedAt: new Date(Date.now() - 990 * 60 * 60 * 24 * 1).toISOString() as ISOFormatString,
+  },
+  {
+    id: 4,
+    product: {
+      id: 104,
+      title: '맛있는 나뭇잎 상점 구매 품목',
+      imageUrl: '/image/Main_1.png',
+    },
+    quantity: 1,
+    price: 500,
+    purchasedAt: new Date().toISOString() as ISOFormatString, // 오늘
+  },
+]
 const MemberOrderListPage = (): ReactNode => {
   const router = useRouter()
 
@@ -43,7 +92,7 @@ const MemberOrderListPage = (): ReactNode => {
   // 1. 데이터가 없는 경우
   if (isEmpty) {
     contents = (
-      <NoContent
+      <StyledNoContent
         title='상품 구매내역이 없습니다'
         buttonText='나뭇잎 상점가기'
         clickHandler={() => {
@@ -102,6 +151,7 @@ const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
 
 const Container = styled.div`
   ${responsiveHorizontalPadding};
+  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -136,9 +186,11 @@ const LinkButton = styled.button`
 
 const Grid = styled.div<{ isEmpty?: boolean }>`
   display: grid;
+
   ${({ isEmpty }) =>
     isEmpty
       ? `
+      height: 100%;
     grid-template-columns: 1fr;
     place-items: center;
     min-height: 40vh;
@@ -202,53 +254,8 @@ const Observer = styled.div`
   height: 1px;
 `
 
-/** 더미 데이터 */
-// const dummyMemberStoreOrderList: PurchaseProduct[] = [
-//   {
-//     id: 1,
-//     product: {
-//       id: 101,
-//       title:
-//         '맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목',
-//       imageUrl: '/image/Main_1.png',
-//     },
-//     quantity: 1,
-//     price: 500,
-//     purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString() as ISOFormatString, // 3일 전
-//   },
-//   {
-//     id: 2,
-//     product: {
-//       id: 102,
-//       title: '맛있는 나뭇잎 상점 구매 품목',
-//       imageUrl: '/image/Main_1.png',
-//     },
-//     quantity: 1,
-//     price: 500,
-//     purchasedAt: new Date(Date.now() - 30 * 1000 * 60 * 60 * 24 * 2).toISOString() as ISOFormatString,
-//   },
-//   {
-//     id: 3,
-//     product: {
-//       id: 103,
-//       title: '맛있는 나뭇잎 상점 구매 품목',
-//       imageUrl: '/image/Main_1.png',
-//     },
-//     quantity: 1,
-//     price: 500,
-//     purchasedAt: new Date(Date.now() - 990 * 60 * 60 * 24 * 1).toISOString() as ISOFormatString,
-//   },
-//   {
-//     id: 4,
-//     product: {
-//       id: 104,
-//       title: '맛있는 나뭇잎 상점 구매 품목',
-//       imageUrl: '/image/Main_1.png',
-//     },
-//     quantity: 1,
-//     price: 500,
-//     purchasedAt: new Date().toISOString() as ISOFormatString, // 오늘
-//   },
-// ]
+const StyledNoContent = styled(NoContent)`
+  height: 100%;
+`
 
 // const dummyMemberStoreOrderList: PurchaseProduct[] = []
