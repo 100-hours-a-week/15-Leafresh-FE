@@ -51,26 +51,27 @@ const GlobalStyle = () => {
           background-position: center;
         }
 
+        /* 스크롤바 전체 영역 */
         ::-webkit-scrollbar {
-          width: 12px;
-          height: 8px;
+          width: 6px; /* 세로 스크롤바 두께 */
+          height: 6px; /* 가로 스크롤바 두께 */
         }
 
+        /* 스크롤바 트랙(배경 영역) */
         ::-webkit-scrollbar-track {
-          border-radius: 5px;
+          background: #f0f0f0; /* 트랙 색상 */
+          border-radius: 4px;
         }
 
+        /* 스크롤바 썸(움직이는 바) */
         ::-webkit-scrollbar-thumb {
-          background: ${theme.colors.lfDarkGray.base};
-          border-radius: 5px;
+          background: #728b5c;
+          border-radius: 4px;
         }
 
+        /* 썸에 호버 효과 추가 */
         ::-webkit-scrollbar-thumb:hover {
-          background-color: ${theme.colors.lfDarkGray.base};
-        }
-        ::-webkit-scrollbar {
-          width: 5px;
-          height: 5px;
+          background: #7d9865;
         }
       `}
     />
