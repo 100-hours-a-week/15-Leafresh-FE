@@ -6,5 +6,5 @@ export type FeedbackRequest = {
 }
 
 export const RequestFeedback = (body: FeedbackRequest) => {
-  return fetchRequest<null>(ENDPOINTS.MEMBERS.FEEDBACK.POST_FEEDBACK, { body })
+  return fetchRequest<null>(ENDPOINTS.MEMBERS.FEEDBACK.POST_FEEDBACK, { body: { reason: 'WEEKLY_FEEDBACK' } })
 }

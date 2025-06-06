@@ -169,7 +169,7 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
             {/* 상단 프로필 영역 */}
             <TopSection>
               <ProfileImageWrapper>
-                <Image src={data.profileImageUrl} alt='프로필 이미지' width={60} height={60} />
+                <ProfileImg src={data.profileImageUrl} alt='프로필 이미지' width={60} height={60} />
               </ProfileImageWrapper>
               <ProfileInfo>
                 <Nickname>{data.nickname}</Nickname>
@@ -229,7 +229,13 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
                   {data.badges.map(badge => (
                     <BadgeItem key={badge.id}>
                       <BadgeImage>
-                        <Image src={badge.imageUrl} alt={badge.name} width={60} height={60} />
+                        <Image
+                          src={badge.imageUrl}
+                          alt={badge.name}
+                          width={60}
+                          height={60}
+                          style={{ objectFit: 'cover' }}
+                        />
                       </BadgeImage>
                       <BadgeName>{badge.name}</BadgeName>
                     </BadgeItem>
@@ -329,9 +335,19 @@ const TopSection = styled.div`
 `
 
 const ProfileImageWrapper = styled.div`
-  border-radius: 50%;
+  border-radius: ${theme.radius.full};
+  /* overflow: hidden; */
+  width: 60px;
+  height: 60px;
   padding: 2px;
   flex-shrink: 0;
+`
+
+const ProfileImg = styled(Image)`
+  object-fit: cover;
+  border-radius: ${theme.radius.full};
+  width: 60px;
+  height: 60px;
 `
 
 const ProfileInfo = styled.div`
