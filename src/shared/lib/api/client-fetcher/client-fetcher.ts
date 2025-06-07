@@ -7,7 +7,7 @@ import { ApiResponse, ErrorResponse, OptionsType } from './type'
 //TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
 const BASE_URL = 'https://leafresh.app'
 
-export async function fetchRequest<T>(
+export async function clientFetchRequest<T>(
   endpoint: EndpointType,
   options: OptionsType = {},
   isRetry = false,
@@ -49,7 +49,7 @@ export async function fetchRequest<T>(
     if ((response.status === 401 || response.status === 403) && !isRetry) {
       try {
         await refreshClientAccessToken()
-        return fetchRequest<T>(endpoint, options, true) // 딱 한 번만 재시도
+        return clientFetchRequest<T>(endpoint, options, true) // 딱 한 번만 재시도
       } catch (refreshError) {
         const error: ErrorResponse = {
           status: 401,

@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api'
 import { ISOFormatString } from '@shared/types/date'
 
 export type VerifyGroupChallengeResponse = {
