@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import styled from '@emotion/styled'
 
 import { Product } from '@features/store/api/get-products'
-import { OrderProductResponse, OrderProductVariables } from '@features/store/api/order-proudcts'
+import { OrderProductBody, OrderProductResponse, OrderProductVariables } from '@features/store/api/order-proudcts'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
@@ -62,9 +62,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
     openConfirmModal({
       title: `${title}를 구매하시겠습니까?`,
       description: `가격은 나뭇잎 ${price}개 입니다`,
-      onConfirm: () =>
-        PurchaseMutate(
-          { productId: id },
+      onConfirm: () => {
+        const body: OrderProductBody = {
+          quantity: 1,
+        }
+        return PurchaseMutate(
+          { productId: id, body },
           {
             onSuccess: () => {
               openToast(ToastType.Success, '구매가 완료되었습니다')
@@ -73,7 +76,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
               openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
             },
           },
-        ),
+        )
+      },
     })
   }
 

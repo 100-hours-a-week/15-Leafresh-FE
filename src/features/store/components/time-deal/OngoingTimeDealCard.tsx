@@ -6,7 +6,11 @@ import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
-import { OrderTimeDealProductResponse, OrderTimeDealProductVariables } from '@features/store/api/order-timedeal'
+import {
+  OrderTimeDealProductBody,
+  OrderTimeDealProductResponse,
+  OrderTimeDealProductVariables,
+} from '@features/store/api/order-timedeal'
 import ApologizeContent from '@shared/components/apologize/apologize'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
@@ -89,11 +93,15 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
     openConfirmModal({
       title: `${deal.title}를 구매하시겠습니까?`,
       description: `할인된 가격은 나뭇잎 ${deal.discountedPrice}개 입니다.`,
-      onConfirm: () =>
-        PurchaseMutate(
-          { productId: deal.productId },
+      onConfirm: () => {
+        const body: OrderTimeDealProductBody = {
+          quantity: 1,
+        }
+        return PurchaseMutate(
+          { productId: deal.productId, body },
           { onSuccess: () => openToast(ToastType.Success, '구매가 완료되었습니다') },
-        ),
+        )
+      },
     })
   }
 
