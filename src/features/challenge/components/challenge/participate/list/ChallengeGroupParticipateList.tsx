@@ -13,7 +13,9 @@ import NoContent from '@shared/components/no-content/no-content'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
+import { ISOFormatString } from '@shared/types/date'
 
 import VerificationCard from '../verification/verification-card'
 
@@ -21,55 +23,55 @@ interface ChallengeGroupParticipateListProps {
   challengeId: number
 }
 
-// const verificationsDummy: Verification[] = [
-//   {
-//     id: 1,
-//     nickname: '지호개발자',
-//     profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     verificationImageUrl: '/image/banner.png',
-//     description:
-//       '제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱 제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱 제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱',
-//     category: 'ZERO_WASTE',
-//     counts: {
-//       view: 120,
-//       like: 35,
-//       comment: 12,
-//     },
-//     createdAt: new Date().toISOString() as ISOFormatString,
-//     isLiked: true,
-//   },
-//   {
-//     id: 2,
-//     nickname: '그린라이프',
-//     profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     verificationImageUrl: '/image/banner.png',
-//     description: '재활용 분리수거 철저히 했습니다. 환경 보호는 습관!',
-//     category: 'PLOGGING',
-//     counts: {
-//       view: 89,
-//       like: 22,
-//       comment: 4,
-//     },
-//     createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString() as ISOFormatString, // 5시간 전
-//     isLiked: false,
-//   },
-//   {
-//     id: 3,
-//     nickname: 'eco친구',
-//     profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     verificationImageUrl: '/image/banner.png',
-//     description: '비건 도시락 도전! 채식도 맛있어요 🥗',
-//     category: 'VEGAN',
-//     counts: {
-//       view: 45,
-//       like: 10,
-//       comment: 1,
-//     },
-//     createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString() as ISOFormatString, // 하루 전
-//     isLiked: true,
-//   },
-// ]
-const verificationsDummy: Verification[] = []
+const verificationsDummy: Verification[] = [
+  {
+    id: 1,
+    nickname: '지호개발자',
+    profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    verificationImageUrl: '/image/banner.png',
+    description:
+      '제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱 제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱 제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱',
+    category: 'ZERO_WASTE',
+    counts: {
+      view: 120,
+      like: 35,
+      comment: 12,
+    },
+    createdAt: new Date().toISOString() as ISOFormatString,
+    isLiked: true,
+  },
+  {
+    id: 2,
+    nickname: '그린라이프',
+    profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    verificationImageUrl: '/image/banner.png',
+    description: '재활용 분리수거 철저히 했습니다. 환경 보호는 습관!',
+    category: 'PLOGGING',
+    counts: {
+      view: 89,
+      like: 22,
+      comment: 4,
+    },
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString() as ISOFormatString, // 5시간 전
+    isLiked: false,
+  },
+  {
+    id: 3,
+    nickname: 'eco친구',
+    profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    verificationImageUrl: '/image/banner.png',
+    description: '비건 도시락 도전! 채식도 맛있어요 🥗',
+    category: 'VEGAN',
+    counts: {
+      view: 45,
+      like: 10,
+      comment: 1,
+    },
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString() as ISOFormatString, // 하루 전
+    isLiked: true,
+  },
+]
+// const verificationsDummy: Verification[] = []
 
 const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipateListProps) => {
   const router = useRouter()
@@ -117,9 +119,12 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
 
   return (
     <Wrapper>
-      <TitleWrapper>
+      <ChallengeDataWrapper>
         <Title>{challenge?.title}</Title>
-      </TitleWrapper>
+        <Participant>
+          <LucideIcon name='UsersRound' size={16} color='lfBlue' /> {challenge?.currentParticipantCount}명 참여중
+        </Participant>
+      </ChallengeDataWrapper>
       <ContentsWrapper>
         {verifications.length !== 0 ? (
           verifications.map(data => <VerificationCard key={data.id} data={data} />)
@@ -147,21 +152,37 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-
-  gap: 30px;
+  gap: 24px;
 `
-const TitleWrapper = styled.div`
+const ChallengeDataWrapper = styled.div`
   width: 100%;
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 4px;
+
+  font-size: ${theme.fontSize.lg};
 `
 
 const Title = styled.h1`
   text-align: center;
   font-weight: ${theme.fontWeight.bold};
-  font-size: ${theme.fontSize.lg};
+  border-bottom: 1px solid ${theme.colors.lfDarkGray.base};
+`
+
+const Participant = styled.div`
+  margin-top: 4px;
+  align-self: flex-end;
+
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.medium};
+  color: ${theme.colors.lfBlue.base};
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `
 
 const ContentsWrapper = styled.div`
@@ -169,7 +190,7 @@ const ContentsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 32px;
+  gap: 20px;
 `
 
 const ObserverTrigger = styled.div`

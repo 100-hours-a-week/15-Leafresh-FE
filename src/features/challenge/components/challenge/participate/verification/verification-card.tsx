@@ -48,14 +48,14 @@ const VerificationCard = ({ data, className }: VerificationCardProps): ReactNode
           <InteractionWrapper>
             <Interaction>
               {/* TODO: 좋아요 기능 구현 여부  */}
-              <Image src={ActiveLikeIcon} alt='좋아요' />
+              <LikeImage src={ActiveLikeIcon} alt='좋아요' />
               <InteractionCount>{like}</InteractionCount>
             </Interaction>
             <Interaction>
-              <LucideIcon name='MessageCircle' size={16} />
+              <LucideIcon name='MessageCircle' size={24} strokeWidth={1.8} />
               <InteractionCount>{comment}</InteractionCount>
             </Interaction>
-            <LucideIcon name='SquareArrowOutUpRight' size={16} />
+            <LucideIcon name='SquareArrowOutUpRight' size={24} strokeWidth={1.8} />
             <ViewWrapper>조회수 {view}</ViewWrapper>
           </InteractionWrapper>
         </DescriptionWrapper>
@@ -119,6 +119,7 @@ const VerificationWrapper = styled.div`
   border-radius: ${({ theme }) => theme.radius.md};
 
   overflow: hidden;
+  cursor: pointer;
 
   &:hover {
     .badge {
@@ -176,7 +177,7 @@ const Description = styled.div`
 const InteractionWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   margin-top: 8px;
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.lfBlack.base};
@@ -188,11 +189,16 @@ const Interaction = styled.div`
   gap: 5px;
 `
 const InteractionCount = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.base};
 `
 
 const ViewWrapper = styled.div`
   margin-left: auto;
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.regular};
+`
+
+const LikeImage = styled(Image)`
+  width: 24px;
+  aspect-ratio: 1/1;
 `
