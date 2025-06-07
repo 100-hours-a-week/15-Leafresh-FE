@@ -85,12 +85,6 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/group/${challengeId}/participations`,
     }),
 
-    // 참여한 단체 챌린지 카운트 조회 (인증 페이지)
-    COUNT: {
-      method: HttpMethod.GET,
-      path: `/api/members/challenges/group/participations/count`,
-    },
-
     // 인증 관련
     VERIFICATION: {
       // 특정 단체 챌린지 인증 내역 목록 조회
@@ -98,24 +92,29 @@ const CHALLENGE_ENDPOINTS = {
         method: HttpMethod.GET,
         path: `/api/challenges/group/${challengeId}/verifications`,
       }),
+
       // TODO: 인증 상세 조회
       DETAILS: {},
+
       // 인증 제출 (생성)
       SUBMIT: (challengeId: number) => ({
         method: HttpMethod.POST,
         path: `/api/challenges/group/${challengeId}/verifications`,
       }),
+
       // 인증 결과 조회 (롱폴링)
       RESULT: (challengeId: number) => ({
         method: HttpMethod.GET,
         path: `/api/challenges/group/${challengeId}/verification/result`,
       }),
+
       LIKES: {
         // TODO: 좋아요 생성
         CREATE: {},
         // TODO: 좋아요 삭제
         DELETE: {},
       },
+
       COMMENT: {
         // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
         LIST: {},
@@ -125,7 +124,6 @@ const CHALLENGE_ENDPOINTS = {
         MODIFY: {},
         // TODO: 댓글 삭제 (대댓글 포함)
         DELETE: {},
-
         REPLY: {
           // TODO: 대댓글 생성
           CREATE: {},
@@ -184,6 +182,11 @@ const MEMBER_ENDPOINTS = {
         method: HttpMethod.GET,
         path: `/api/members/challenges/group/participations/${challengeId}/verifications`,
       }),
+      // 참여한 단체 챌린지 카운트 조회 (인증 페이지)
+      COUNT: {
+        method: HttpMethod.GET,
+        path: `/api/members/challenges/group/participations/count`,
+      },
     },
   },
 }

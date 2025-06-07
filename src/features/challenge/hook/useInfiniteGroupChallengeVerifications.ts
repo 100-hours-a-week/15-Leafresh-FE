@@ -10,7 +10,7 @@ import {
 
 export const useInfiniteGroupChallengeVerifications = (challengeId: number) =>
   useInfiniteQuery({
-    queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
+    queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.LIST(challengeId),
     queryFn: async ({ pageParam = {} }) => {
       const { cursorId, cursorTimestamp } = pageParam as GroupChallengeParticipateListParams
       return getGroupChallengeParticipateList({ challengeId, cursorId, cursorTimestamp })
@@ -25,5 +25,5 @@ export const useInfiniteGroupChallengeVerifications = (challengeId: number) =>
         : undefined
     },
     initialPageParam: {},
-    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATIONS,
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.LIST,
   })

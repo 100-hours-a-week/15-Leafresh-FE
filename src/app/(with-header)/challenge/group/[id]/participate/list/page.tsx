@@ -32,14 +32,14 @@ const GroupChallengePage = async ({ params }: GroupChallengePageProps) => {
 
     /** ✅ 2. 챌린지 인증 리스트 prefetch (무한 스크롤) */
     await queryClient.prefetchInfiniteQuery({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS(idNumber),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.LIST(idNumber),
       queryFn: ({ pageParam = {} }) =>
         getGroupChallengeParticipateList({
           challengeId: idNumber,
           ...pageParam,
         }),
       initialPageParam: {},
-      ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATIONS,
+      ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.LIST,
     })
 
     const dehydratedState = dehydrate(queryClient)

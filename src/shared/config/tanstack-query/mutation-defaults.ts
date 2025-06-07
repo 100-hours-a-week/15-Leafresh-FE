@@ -140,12 +140,12 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
 
     //인증 결과
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.RESULT(challengeId),
     })
 
     //인증 내역 목록
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.LIST(challengeId),
     })
 
     //챌린지 일별 인증 기록
