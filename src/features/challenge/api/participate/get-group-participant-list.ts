@@ -37,10 +37,13 @@ export const getGroupChallengeParticipateList = ({
   cursorId,
   cursorTimestamp,
 }: GroupChallengeParticipateListParams) => {
-  return fetchRequest<GetGroupChallengeParticipateListResponse>(ENDPOINTS.CHALLENGE.GROUP.VERIFICATIONS(challengeId), {
-    query: {
-      ...(cursorId !== undefined ? { cursorId } : {}),
-      ...(cursorTimestamp ? { cursorTimestamp } : {}),
+  return fetchRequest<GetGroupChallengeParticipateListResponse>(
+    ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.LIST(challengeId),
+    {
+      query: {
+        ...(cursorId !== undefined ? { cursorId } : {}),
+        ...(cursorTimestamp ? { cursorTimestamp } : {}),
+      },
     },
-  })
+  )
 }

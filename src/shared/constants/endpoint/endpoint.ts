@@ -73,6 +73,12 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/group/${challengeId}`,
     }),
 
+    // 규약
+    RULES: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/group/${challengeId}/rules`,
+    }),
+
     // 참여
     PARTICIPATE: (challengeId: number) => ({
       method: HttpMethod.POST,
@@ -85,29 +91,49 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/members/challenges/group/participations/count`,
     },
 
-    // 특정 단체 챌린지 인증 내역 목록 조회
-    VERIFICATIONS: (challengeId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/challenges/group/${challengeId}/verifications`,
-    }),
+    // 인증 관련
+    VERIFICATION: {
+      // 특정 단체 챌린지 인증 내역 목록 조회
+      LIST: (challengeId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verifications`,
+      }),
+      // TODO: 인증 상세 조회
+      DETAILS: {},
+      // 인증 제출 (생성)
+      SUBMIT: (challengeId: number) => ({
+        method: HttpMethod.POST,
+        path: `/api/challenges/group/${challengeId}/verifications`,
+      }),
+      // 인증 결과 조회 (롱폴링)
+      RESULT: (challengeId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verification/result`,
+      }),
+      LIKES: {
+        // TODO: 좋아요 생성
+        CREATE: {},
+        // TODO: 좋아요 삭제
+        DELETE: {},
+      },
+      COMMENT: {
+        // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
+        LIST: {},
+        // TODO: 댓글 생성
+        CREATE: {},
+        // TODO: 댓글 수정
+        MODIFY: {},
+        // TODO: 댓글 삭제 (대댓글 포함)
+        DELETE: {},
 
-    // 인증 제출 (생성)
-    VERIFY: (challengeId: number) => ({
-      method: HttpMethod.POST,
-      path: `/api/challenges/group/${challengeId}/verifications`,
-    }),
-
-    // 인증 결과 조회 (롱폴링)
-    VERIFICATION_RESULT: (challengeId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/challenges/group/${challengeId}/verification/result`,
-    }),
-
-    // 규약
-    RULES: (challengeId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/challenges/group/${challengeId}/rules`,
-    }),
+        REPLY: {
+          // TODO: 대댓글 생성
+          CREATE: {},
+          // TODO: 대댓글 수정
+          MODIFY: {},
+        },
+      },
+    },
   },
 }
 

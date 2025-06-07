@@ -8,6 +8,7 @@ import { Verification } from '@features/challenge/api/participate/get-group-part
 import { getTimeDiff } from '@shared/lib/date/utils'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import ActiveLikeIcon from '@public/icon/like_active.svg'
+import InActiveLikeIcon from '@public/icon/like_inactive.svg'
 
 interface VerificationCardProps {
   data: Verification
@@ -48,7 +49,7 @@ const VerificationCard = ({ data, className }: VerificationCardProps): ReactNode
           <InteractionWrapper>
             <Interaction>
               {/* TODO: 좋아요 기능 구현 여부  */}
-              <LikeImage src={ActiveLikeIcon} alt='좋아요' />
+              <LikeImage src={isLiked ? ActiveLikeIcon : InActiveLikeIcon} alt='좋아요' />
               <InteractionCount>{like}</InteractionCount>
             </Interaction>
             <Interaction>
