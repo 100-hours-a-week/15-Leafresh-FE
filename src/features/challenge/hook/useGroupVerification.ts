@@ -5,7 +5,7 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/client-fetcher/type'
+import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
 import {
   getGroupVerificationResult,

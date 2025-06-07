@@ -1,8 +1,8 @@
 import { handleAuthError } from '@shared/config/tanstack-query/utils'
 import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
+import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshClientAccessToken } from './client-reissue'
-import { ApiResponse, ErrorResponse, OptionsType } from './type'
 
 //TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
 const BASE_URL = 'https://leafresh.app'

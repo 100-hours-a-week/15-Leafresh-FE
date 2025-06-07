@@ -6,7 +6,7 @@ import {
   type FetchGroupChallengesResponse,
 } from '@features/challenge/api/get-group-challenge-list'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ApiResponse } from '@shared/lib/api/client-fetcher/type'
+import { ApiResponse } from '@shared/lib/api/type'
 
 /**
  * 단체 챌린지 목록 조회를 위한 React Query 훅 (무한 스크롤)
