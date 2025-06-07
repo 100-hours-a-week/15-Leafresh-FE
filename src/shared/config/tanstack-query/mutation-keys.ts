@@ -14,10 +14,8 @@ const CHALLENGE_MUTATION_KEYS = {
     VERIFICATION: {
       SUBMIT: ['challenges', 'group', 'verify'] as const, // 인증 제출
       LIKES: {
-        // TODO: 좋아요 생성
-        CREATE: [],
-        // TODO: 좋아요 삭제
-        DELETE: {},
+        CREATE: ['challenges', 'group', 'verify', 'comment', 'likes', 'create'] as const, // 좋아요 추가
+        DELETE: ['challenges', 'group', 'verify', 'comment', 'likes', 'delete'] as const, // 좋아요 삭제
       },
       COMMENT: {
         // TODO: 댓글 생성
@@ -34,7 +32,6 @@ const CHALLENGE_MUTATION_KEYS = {
         },
       },
     },
-    VERIFY: ['challenges', 'group', 'verify'] as const, // 인증 제출
   },
 }
 

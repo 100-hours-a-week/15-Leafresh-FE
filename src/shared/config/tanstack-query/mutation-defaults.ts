@@ -169,6 +169,30 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMI
   },
 })
 
+/** 인증 도메인 */
+
+// 좋아요 추가
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.CREATE, {
+  // TODO: 좋아요 추가 API 연결
+  // mutationFn:,
+  onSuccess(data, variables, context) {},
+
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+// 좋아요 삭제
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.DELETE, {
+  // TODO: 좋아요 삭제 API 연결
+  // mutationFn:,
+  onSuccess(data, variables, context) {},
+
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
 /** 멤버 도메인 */
 // 로그아웃
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.AUTH.LOGOUT, {

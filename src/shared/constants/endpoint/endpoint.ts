@@ -109,10 +109,16 @@ const CHALLENGE_ENDPOINTS = {
       }),
 
       LIKES: {
-        // TODO: 좋아요 생성
-        CREATE: {},
-        // TODO: 좋아요 삭제
-        DELETE: {},
+        // 좋아요 추가
+        CREATE: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.POST,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/likes`,
+        }),
+        // 좋아요 삭제
+        DELETE: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.DELETE,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/likes`,
+        }),
       },
 
       COMMENT: {
