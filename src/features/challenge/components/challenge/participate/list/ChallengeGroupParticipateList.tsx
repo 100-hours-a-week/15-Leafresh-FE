@@ -18,7 +18,7 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
     useInfiniteGroupChallengeVerifications(challengeId)
 
   const verifications = data?.pages.flatMap(page => page?.data?.items || []) ?? []
-  // const verifications = dummyVerifications
+
   const triggerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

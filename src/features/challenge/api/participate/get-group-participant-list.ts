@@ -1,3 +1,4 @@
+import { ChallengeCategoryType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { InfiniteScrollResponse } from '@shared/types/api'
@@ -15,13 +16,21 @@ export type VerificationType = {
   profileImageUrl: string
   verificationImageUrl: string
   description: string
+  category: ChallengeCategoryType
+  counts: {
+    view: number
+    like: number
+    comment: number
+  }
+  createdAt: ISOFormatString
+  isLiked: boolean
 }
 
 export type GroupChallengeParticipateList = InfiniteScrollResponse<{
   items: VerificationType[]
 }>
 
-type GetGroupChallengeParticipateListResponse = GroupChallengeParticipateList
+export type GetGroupChallengeParticipateListResponse = GroupChallengeParticipateList
 
 export const getGroupChallengeParticipateList = ({
   challengeId,
