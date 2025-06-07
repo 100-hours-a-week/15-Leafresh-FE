@@ -123,7 +123,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
 })
 
 // 인증 제출 (단체)
-queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT, {
   mutationFn: PostGroupVerification,
   onSuccess(data, variables, context) {
     const { challengeId } = variables

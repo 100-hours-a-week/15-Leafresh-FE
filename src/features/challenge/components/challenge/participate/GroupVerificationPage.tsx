@@ -21,7 +21,7 @@ export default function GroupVerificationPage({ participateId }: { participateId
   const postMutation = useMutationStore<
     PostGroupVerificationResponse,
     { challengeId: number; body: PostGroupVerificationBody }
-  >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY)
+  >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT)
   const resultQuery = useGroupVerificationResult(challengeId)
 
   const { open: openCameraModal } = useCameraModalStore()

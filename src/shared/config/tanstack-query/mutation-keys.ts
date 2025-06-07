@@ -10,6 +10,30 @@ const CHALLENGE_MUTATION_KEYS = {
     MODIFY: ['challenges', 'group', 'modify'] as const, // 수정
     DELETE: ['challenges', 'group', 'delete'] as const, // 삭제
     PARTICIPATE: ['challenges', 'group', 'participate'] as const, // 참여
+
+    VERIFICATION: {
+      SUBMIT: ['challenges', 'group', 'verify'] as const, // 인증 제출
+      LIKES: {
+        // TODO: 좋아요 생성
+        CREATE: [],
+        // TODO: 좋아요 삭제
+        DELETE: {},
+      },
+      COMMENT: {
+        // TODO: 댓글 생성
+        CREATE: {},
+        // TODO: 댓글 수정
+        MODIFY: {},
+        // TODO: 댓글 삭제 (대댓글 포함)
+        DELETE: {},
+        REPLY: {
+          // TODO: 대댓글 생성
+          CREATE: {},
+          // TODO: 대댓글 수정
+          MODIFY: {},
+        },
+      },
+    },
     VERIFY: ['challenges', 'group', 'verify'] as const, // 인증 제출
   },
 }
