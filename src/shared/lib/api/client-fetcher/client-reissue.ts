@@ -7,7 +7,7 @@ let refreshPromise: Promise<void> | null = null
 //TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
 const BASE_URL = 'https://leafresh.app'
 
-export async function refreshAccessToken(): Promise<void> {
+export async function refreshClientAccessToken(): Promise<void> {
   const openToast = useToastStore.getState().open
 
   if (isRefreshing) return refreshPromise ?? Promise.resolve()

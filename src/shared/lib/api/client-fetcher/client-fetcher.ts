@@ -1,7 +1,7 @@
 import { handleAuthError } from '@shared/config/tanstack-query/utils'
 import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
-import { refreshAccessToken } from './reissue'
+import { refreshClientAccessToken } from './client-reissue'
 import { ApiResponse, ErrorResponse, OptionsType } from './type'
 
 //TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
@@ -48,7 +48,7 @@ export async function fetchRequest<T>(
     // ✅ Access Token 만료 추정 시 재시도
     if ((response.status === 401 || response.status === 403) && !isRetry) {
       try {
-        await refreshAccessToken()
+        await refreshClientAccessToken()
         return fetchRequest<T>(endpoint, options, true) // 딱 한 번만 재시도
       } catch (refreshError) {
         const error: ErrorResponse = {

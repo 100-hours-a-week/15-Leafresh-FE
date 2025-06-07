@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest'
 
 import type { EndpointType } from '../../../constants/endpoint/endpoint'
 import { HttpMethod, HttpStatusCode } from '../../../constants/http'
-import { fetchRequest } from './fetcher'
+import { fetchRequest } from './client-fetcher'
 import { ApiResponse, ErrorResponse } from './type'
 
 describe('fetchRequest 유틸', () => {
