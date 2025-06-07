@@ -93,10 +93,10 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
   // const verifications = verificationData?.pages.flatMap(page => page?.data?.items || []) ?? []
   const verifications = verificationsDummy
 
-  const triggerRef = useRef<HTMLDivElement>(null)
+  const observerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage || !triggerRef.current) return
+    if (!hasNextPage || isFetchingNextPage || !observerRef.current) return
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !isFetchingNextPage) {
@@ -105,7 +105,7 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
       },
       { rootMargin: '200px' },
     )
-    observer.observe(triggerRef.current)
+    observer.observe(observerRef.current)
     return () => observer.disconnect()
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
@@ -131,7 +131,8 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
           />
         )}
       </ContentsWrapper>
-      <Observer ref={triggerRef}>{isFetchingNextPage ? '불러오는 중...' : ''}</Observer>
+      {!hasNextPage && !isLoading && verifications.length > 0 && <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>}
+      <ObserverTrigger ref={observerRef} />
     </Wrapper>
   )
 }
@@ -171,20 +172,20 @@ const ContentsWrapper = styled.div`
   gap: 32px;
 `
 
-const Observer = styled.div`
+const ObserverTrigger = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 1px;
-`
-
-const NoImageText = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfRed.base};
 `
 
 const StyledNoContent = styled(NoContent)`
   height: 100%;
+`
+
+const EndMessage = styled.div`
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.lfDarkGray.base};
 `
