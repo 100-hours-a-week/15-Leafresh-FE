@@ -4,9 +4,9 @@ import { beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest'
 import type { EndpointType } from '../../../constants/endpoint/endpoint'
 import { HttpMethod, HttpStatusCode } from '../../../constants/http'
 import { ApiResponse, ErrorResponse } from '../type'
-import { fetchRequest } from './client-fetcher'
+import { clientFetchRequest } from './client-fetcher'
 
-describe('fetchRequest 유틸', () => {
+describe('clientFetchRequest 유틸', () => {
   let fetchMock: MockedFunction<typeof fetch>
 
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe('fetchRequest 유틸', () => {
         }) as unknown as Response,
     )
 
-    const res = await fetchRequest<ApiResponse<number[]>>(endpoint)
+    const res = await clientFetchRequest<ApiResponse<number[]>>(endpoint)
     expect(res).toEqual(mockData)
   })
 
@@ -52,7 +52,7 @@ describe('fetchRequest 유틸', () => {
         }) as unknown as Response,
     )
 
-    const res = await fetchRequest<string>(endpoint)
+    const res = await clientFetchRequest<string>(endpoint)
     expect(res).toBe('plain text')
   })
 
@@ -71,7 +71,7 @@ describe('fetchRequest 유틸', () => {
       } as unknown as Response
     })
 
-    await fetchRequest<ErrorResponse>(endpoint, { query: { a: 1, b: 'two' } })
+    await clientFetchRequest<ErrorResponse>(endpoint, { query: { a: 1, b: 'two' } })
     expect(capturedUrl).toContain('/items?a=1&b=two')
   })
 
@@ -91,7 +91,7 @@ describe('fetchRequest 유틸', () => {
     })
 
     const payload = { foo: 'bar' }
-    const res = await fetchRequest<ApiResponse<{ id: number }>>(endpoint, { body: payload })
+    const res = await clientFetchRequest<ApiResponse<{ id: number }>>(endpoint, { body: payload })
 
     expect(capturedInit.method).toBe(HttpMethod.POST)
     expect((capturedInit.headers as Record<string, string>)['Content-Type']).toBe('application/json')
@@ -116,7 +116,7 @@ describe('fetchRequest 유틸', () => {
 
     const fd = new FormData()
     fd.append('file', new Blob([''], { type: 'text/plain' }), 'test.txt')
-    await fetchRequest<object>(endpoint, { body: fd })
+    await clientFetchRequest<object>(endpoint, { body: fd })
 
     expect(capturedInit.headers).not.toHaveProperty('Content-Type')
     expect(capturedInit.body).toBe(fd)
@@ -136,7 +136,7 @@ describe('fetchRequest 유틸', () => {
         }) as unknown as Response,
     )
 
-    await expect(fetchRequest<unknown>(endpoint)).rejects.toMatchObject({
+    await expect(clientFetchRequest<unknown>(endpoint)).rejects.toMatchObject({
       status: HttpStatusCode.BadRequest,
       message: 'bad request',
       data: null,
@@ -159,7 +159,7 @@ describe('fetchRequest 유틸', () => {
         }) as unknown as Response,
     )
 
-    await expect(fetchRequest<unknown>(endpoint)).rejects.toMatchObject({
+    await expect(clientFetchRequest<unknown>(endpoint)).rejects.toMatchObject({
       status: HttpStatusCode.InternalServerError,
       message: 'Unknown error',
       data: null,
