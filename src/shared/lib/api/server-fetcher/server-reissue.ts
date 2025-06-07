@@ -14,16 +14,11 @@ export async function refreshServerAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()
 
   isRefreshing = true
-  console.log('🔥 서버 토큰 재발급 시작')
 
   refreshPromise = (async () => {
     try {
-      console.log('entered isServer')
-
       // ✅ SSR: 쿠키 수동 주입
       const cookieStore = await cookies()
-
-      console.log('Cookies: ', cookieStore)
 
       const cookieHeader = cookieStore
         .getAll()
@@ -37,19 +32,14 @@ export async function refreshServerAccessToken(): Promise<void> {
         },
       })
       if (!response.ok) {
-        console.log('❌ 서버 토큰 재발급 오류')
         throw new Error('Refresh failed')
       }
-
-      console.log('✅ 서버 토큰 재발급 정상 종료됨')
     } catch (error) {
       throw error
     } finally {
       isRefreshing = false
     }
   })()
-
-  console.log('🌿 서버 refresh Promise 끝남')
 
   return refreshPromise
 }
