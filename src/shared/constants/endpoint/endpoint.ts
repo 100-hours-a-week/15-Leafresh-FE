@@ -197,78 +197,6 @@ const S3_ENDPOINTS = {
   // UPLOAD: { method: HttpMethod.PUT, path: '/s3/images' },
 }
 
-/** 게시글 (v2 개발)*/
-// const POST_ENDPOINTS = {
-//   // 목록 조회
-//   LIST: { method: HttpMethod.GET, path: '/api/posts' },
-
-//   // 상세 조회
-//   DETAILS: (postId: number) => ({
-//     method: HttpMethod.GET,
-//     path: `/api/posts/${postId}`,
-//   }),
-
-//   // 작성
-//   CREATE: { method: HttpMethod.POST, path: '/api/posts' },
-
-//   // 수정
-//   UPDATE: (postId: number) => ({
-//     method: HttpMethod.PATCH,
-//     path: `/api/posts/${postId}`,
-//   }),
-
-//   // 삭제
-//   DELETE: (postId: number) => ({
-//     method: HttpMethod.DELETE,
-//     path: `/api/posts/${postId}`,
-//   }),
-
-//   COMMENTS: {
-//     // 댓글 목록 조회
-//     LIST: (postId: number) => ({
-//       method: HttpMethod.GET,
-//       path: `/api/posts/${postId}/comments`,
-//     }),
-
-//     // 댓글 작성
-//     CREATE: (postId: number) => ({
-//       method: HttpMethod.POST,
-//       path: `/api/posts/${postId}/comments`,
-//     }),
-
-//     // 댓글 수정
-//     UPDATE: (postId: number, commentId: number) => ({
-//       method: HttpMethod.PUT,
-//       path: `/api/posts/${postId}/comments/${commentId}`,
-//     }),
-//     // 댓글 삭제
-//     DELETE: (postId: number, commentId: number) => ({
-//       method: HttpMethod.DELETE,
-//       path: `/api/posts/${postId}/comments/${commentId}`,
-//     }),
-
-//     // 대댓글 작성
-//     REPLY: (postId: number, commentId: number) => ({
-//       method: HttpMethod.POST,
-//       path: `/api/posts/${postId}/comments/${commentId}/replies`,
-//     }),
-//   },
-
-//   /** 좋아요 */
-//   LIKES: {
-//     // 생성
-//     CREATE: (postId: number) => ({
-//       method: HttpMethod.POST,
-//       path: `/api/posts/${postId}/likes`,
-//     }),
-//     // 개수
-//     COUNT: (postId: number) => ({
-//       method: HttpMethod.GET,
-//       path: `/api/posts/${postId}/likes/count`,
-//     }),
-//   },
-// }
-
 const STORE_ENDPOINTS = {
   TIME_DEAL: {
     // 타임딜 상품 목록
@@ -361,7 +289,6 @@ const CHATBOT_ENDPOINTS = {
 export const ENDPOINTS = {
   CHALLENGE: CHALLENGE_ENDPOINTS,
   MEMBERS: MEMBER_ENDPOINTS,
-  // POSTS: POST_ENDPOINTS,
   STORE: STORE_ENDPOINTS,
   CHATBOT: CHATBOT_ENDPOINTS,
   S3: S3_ENDPOINTS,
