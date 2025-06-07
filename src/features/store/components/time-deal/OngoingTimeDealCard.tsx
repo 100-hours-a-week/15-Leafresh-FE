@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
 import {
   OrderTimeDealProductBody,
+  OrderTimeDealProductHeaders,
   OrderTimeDealProductResponse,
   OrderTimeDealProductVariables,
 } from '@features/store/api/order-timedeal'
@@ -15,6 +16,7 @@ import ApologizeContent from '@shared/components/apologize/apologize'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
+import { useIdempotencyKeyStore } from '@shared/context'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
@@ -34,6 +36,7 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
   const openToast = useToast()
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
+  const { IdempotencyKey, regenerateIdempotencyKey } = useIdempotencyKeyStore()
 
   /** 각 재고의 남은 시간 트래킹 */
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위
@@ -94,12 +97,21 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
       title: `${deal.title}를 구매하시겠습니까?`,
       description: `할인된 가격은 나뭇잎 ${deal.discountedPrice}개 입니다.`,
       onConfirm: () => {
+        regenerateIdempotencyKey() // 새 멱등키 발급
         const body: OrderTimeDealProductBody = {
           quantity: 1,
         }
+        const headers: OrderTimeDealProductHeaders = {
+          'Idempotency-Key': IdempotencyKey,
+        }
         return PurchaseMutate(
-          { productId: deal.productId, body },
-          { onSuccess: () => openToast(ToastType.Success, '구매가 완료되었습니다') },
+          { productId: deal.productId, headers, body },
+          {
+            onSuccess: () => openToast(ToastType.Success, '구매가 완료되었습니다'),
+            onSettled: () => {
+              regenerateIdempotencyKey() // 멱등키 초기화 (재발급)
+            },
+          },
         )
       },
     })

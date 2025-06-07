@@ -6,10 +6,16 @@ import { useRouter } from 'next/navigation'
 import styled from '@emotion/styled'
 
 import { Product } from '@features/store/api/get-products'
-import { OrderProductBody, OrderProductResponse, OrderProductVariables } from '@features/store/api/order-proudcts'
+import {
+  OrderProductBody,
+  OrderProductHeaders,
+  OrderProductResponse,
+  OrderProductVariables,
+} from '@features/store/api/order-proudcts'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
+import { useIdempotencyKeyStore } from '@shared/context'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
@@ -26,6 +32,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const openToast = useToast()
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
+  const { IdempotencyKey, regenerateIdempotencyKey } = useIdempotencyKeyStore()
 
   const { id, description, imageUrl, price, stock, title } = product
 
@@ -63,17 +70,24 @@ const ProductCard = ({ product }: ProductCardProps) => {
       title: `${title}를 구매하시겠습니까?`,
       description: `가격은 나뭇잎 ${price}개 입니다`,
       onConfirm: () => {
+        regenerateIdempotencyKey() // 새 멱등키 발급
         const body: OrderProductBody = {
           quantity: 1,
         }
+        const headers: OrderProductHeaders = {
+          'Idempotency-Key': IdempotencyKey,
+        }
         return PurchaseMutate(
-          { productId: id, body },
+          { productId: id, headers, body },
           {
             onSuccess: () => {
               openToast(ToastType.Success, '구매가 완료되었습니다')
             },
             onError: () => {
               openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
+            },
+            onSettled: () => {
+              regenerateIdempotencyKey() // 멱등키 초기화 (재발급)
             },
           },
         )
