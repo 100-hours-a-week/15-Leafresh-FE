@@ -5,7 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import VerificationImageCard, { VerificationStatus } from './VerificationCard'
+import VerificationStatusCard, { VerificationStatus } from './VerificationStatusCard'
 
 interface Verification {
   day: number
@@ -85,7 +85,7 @@ const VerificationCarousel = ({ verifications }: Props) => {
             <Slide key={index}>
               <Grid>
                 {group.map(v => (
-                  <VerificationImageCard key={v.day} day={v.day} imageUrl={v.imageUrl} status={v.status} />
+                  <VerificationStatusCard key={v.day} day={v.day} imageUrl={v.imageUrl} status={v.status} />
                 ))}
               </Grid>
             </Slide>

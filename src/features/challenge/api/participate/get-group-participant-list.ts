@@ -10,7 +10,7 @@ export interface GroupChallengeParticipateListParams {
   cursorTimestamp?: ISOFormatString
 }
 
-export type VerificationType = {
+export type Verification = {
   id: number
   nickname: string
   profileImageUrl: string
@@ -27,7 +27,7 @@ export type VerificationType = {
 }
 
 export type GroupChallengeParticipateList = InfiniteScrollResponse<{
-  items: VerificationType[]
+  items: Verification[]
 }>
 
 export type GetGroupChallengeParticipateListResponse = GroupChallengeParticipateList
