@@ -4,9 +4,13 @@ import Image from 'next/image'
 
 import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
+import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import { useInfiniteGroupChallengeVerifications } from '@features/challenge/hook/useInfiniteGroupChallengeVerifications'
 import BackButton from '@shared/components/button/BackButton'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { theme } from '@shared/styles/theme'
 
 interface ChallengeGroupParticipateListProps {
@@ -14,10 +18,23 @@ interface ChallengeGroupParticipateListProps {
 }
 
 const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipateListProps) => {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteGroupChallengeVerifications(challengeId)
+  /** 단체 챌린지 상세 가져오기 */
+  const { data: challengeData } = useQuery({
+    queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
+    queryFn: () => getGroupChallengeDetails(challengeId),
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.DETAILS,
+  })
+  /** 인증 목록 조회 */
+  const {
+    data: verificationData,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteGroupChallengeVerifications(challengeId)
 
-  const verifications = data?.pages.flatMap(page => page?.data?.items || []) ?? []
+  const challenge = challengeData?.data
+  const verifications = verificationData?.pages.flatMap(page => page?.data?.items || []) ?? []
 
   const triggerRef = useRef<HTMLDivElement>(null)
 
