@@ -39,6 +39,8 @@ const CHALLENGE_QUERY_KEYS = {
     RULES: (challengeId: number) => ['challenges', 'group', challengeId, 'rules'],
     // 인증 결과 확인
     VERIFICATION_RESULT: (challengeId: number) => ['challenges', 'group', challengeId, 'verification', 'result'],
+    // 피드
+    FEED: (category: ChallengeCategoryType) => ['challenges', 'group', 'verifications', category],
   },
 
   ETC: {

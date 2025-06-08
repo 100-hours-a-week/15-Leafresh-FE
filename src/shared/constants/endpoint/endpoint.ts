@@ -108,6 +108,12 @@ const CHALLENGE_ENDPOINTS = {
       method: HttpMethod.GET,
       path: `/api/challenges/group/${challengeId}/rules`,
     }),
+
+    // 인증 내역 목록 조회 (피드) - 무작위 챌린지
+    FEED: {
+      method: HttpMethod.GET,
+      path: `/api/challenges/group/verifications`,
+    },
   },
 
   ETC: {

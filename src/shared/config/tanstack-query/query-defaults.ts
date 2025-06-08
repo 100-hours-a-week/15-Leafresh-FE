@@ -60,6 +60,9 @@ const CHALLENGE_QUERY_DEFAULTS = {
     RULES: DEFAULT,
     // 인증 결과 조회 (롱폴링)
     VERIFICATION_RESULT: DEFAULT,
+
+    // 인증 내역 목록 조회 (피드) - 무작위 챌린지
+    FEED: NO_CACHE,
   },
 
   ETC: {
