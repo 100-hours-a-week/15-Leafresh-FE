@@ -14,5 +14,5 @@ export interface GroupParticipationsCount {
  * GET /api/members/challenges/group/participations/count
  */
 export const fetchGroupParticipationsCount = () => {
-  return fetchRequest<GroupParticipationsCount>(ENDPOINTS.CHALLENGE.GROUP.COUNT)
+  return fetchRequest<GroupParticipationsCount>(ENDPOINTS.MEMBERS.CHALLENGE.GROUP.COUNT)
 }

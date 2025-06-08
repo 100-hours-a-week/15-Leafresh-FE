@@ -4,6 +4,8 @@ import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
 import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
+import { CreateVerificationLike } from '@features/challenge/api/participate/verification/likes/create-like'
+import { DeleteVerificationLike } from '@features/challenge/api/participate/verification/likes/delete-like'
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
 import { Logout } from '@features/member/api/logout'
@@ -125,7 +127,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
 })
 
 // 인증 제출 (단체)
-queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT, {
   mutationFn: PostGroupVerification,
   onSuccess(data, variables, context) {
     const { challengeId } = variables
@@ -142,12 +144,12 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
 
     //인증 결과
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.RESULT(challengeId),
     })
 
     //인증 내역 목록
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.LIST(challengeId),
     })
 
     //챌린지 일별 인증 기록
@@ -165,6 +167,28 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
       queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
     })
   },
+
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+/** 인증 도메인 */
+
+// 좋아요 추가
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.CREATE, {
+  mutationFn: CreateVerificationLike,
+  onSuccess(data, variables, context) {},
+
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+// 좋아요 삭제
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.DELETE, {
+  mutationFn: DeleteVerificationLike,
+  onSuccess(data, variables, context) {},
 
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -264,10 +288,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.STORE.PRODUCTS.ORDER, {
     handleError(error)
   },
 })
-
-/**
- * TODO: (V2) 게시판
- */
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
   return useMutation<ApiResponse<TData>, ErrorResponse, TVariables, unknown>({ mutationKey })

@@ -33,20 +33,25 @@ const CHALLENGE_QUERY_KEYS = {
       category,
       input ?? '',
     ],
-    // 인증 내역 목록 조회
-    VERIFICATIONS: (challengeId: number) => ['challenges', 'group', challengeId, 'verifications'],
-    // 규칙
+    // 규약
     RULES: (challengeId: number) => ['challenges', 'group', challengeId, 'rules'],
-    // 인증 결과 확인
-    VERIFICATION_RESULT: (challengeId: number) => ['challenges', 'group', challengeId, 'verification', 'result'],
-    // 피드
-    FEED: (category: ChallengeCategoryType | undefined) => ['challenges', 'group', 'verifications', category ?? ''],
-  },
 
-  ETC: {
-    // 누적 사용자 인증수 조회
-    COUNT: {
-      VERIFICATION: ['challenge', 'verification', 'count'],
+    VERIFICATION: {
+      // 인증 내역 목록 조회
+      LIST: (challengeId: number) => ['challenges', 'group', challengeId, 'verifications'],
+      // 인증 결과 확인
+      RESULT: (challengeId: number) => ['challenges', 'group', challengeId, 'verification', 'result'],
+
+      COMMENT: {
+        // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
+        LIST: {},
+      },
+    },
+    ETC: {
+      // 누적 사용자 인증수 조회
+      COUNT: {
+        VERIFICATION: ['challenge', 'verification', 'count'],
+      },
     },
   },
 }
