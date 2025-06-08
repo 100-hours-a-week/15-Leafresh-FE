@@ -91,6 +91,11 @@ const CHALLENGE_URL = {
       value: (challengeId: number) => `/challenge/group/${challengeId}/participate/list`,
       isProtected: false,
     },
+    FEED: {
+      name: '챌린지 인증 피드',
+      value: `/challenge/group/feed`,
+      isProtected: false,
+    },
   },
   PARTICIPATE: {
     INDEX: {
@@ -103,11 +108,6 @@ const CHALLENGE_URL = {
       value: (participateId: number) => `/challenge/participate/${participateId}`,
       isProtected: true,
     },
-  },
-  FEED: {
-    name: '챌린지 인증 피드',
-    value: `/challenge/group/feed`,
-    isProtected: false,
   },
 }
 
