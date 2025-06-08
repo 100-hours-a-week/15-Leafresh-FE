@@ -40,7 +40,7 @@ const CHALLENGE_QUERY_KEYS = {
     // 인증 결과 확인
     VERIFICATION_RESULT: (challengeId: number) => ['challenges', 'group', challengeId, 'verification', 'result'],
     // 피드
-    FEED: (category: ChallengeCategoryType) => ['challenges', 'group', 'verifications', category],
+    FEED: (category: ChallengeCategoryType | undefined) => ['challenges', 'group', 'verifications', category ?? ''],
   },
 
   ETC: {

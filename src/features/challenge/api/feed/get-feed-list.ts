@@ -10,7 +10,7 @@ export interface GroupChallengeFeedListParams {
   category?: ChallengeCategoryType // 없는 경우 : "전체" 카테고리인 경우
 }
 
-export type VerificationType = {
+export type Verification = {
   id: number
   nickname: string
   profileImageUrl: string
@@ -27,7 +27,7 @@ export type VerificationType = {
 }
 
 export type GroupChallengeFeedList = InfiniteScrollResponse<{
-  verifications: VerificationType[]
+  verifications: Verification[]
 }>
 
 type GetGroupChallengeFeedListResponse = GroupChallengeFeedList
