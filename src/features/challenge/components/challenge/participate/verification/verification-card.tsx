@@ -16,8 +16,8 @@ import {
 } from '@features/challenge/api/participate/verification/likes/delete-like'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { getTimeDiff } from '@shared/lib/date/utils'
@@ -63,32 +63,33 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
   /** 좋아요 핸들러 */
   const toggleLike = () => {
     // #0. 로그인 상태가 아닐 때
-    if (!isLoggedIn) {
-      openConfirmModal({
-        title: '로그인이 필요합니다.',
-        description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
-      })
-      return
-    }
+    // if (!isLoggedIn) {
+    //   openConfirmModal({
+    //     title: '로그인이 필요합니다.',
+    //     description: '로그인 페이지로 이동 하시겠습니까?',
+    //     onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+    //   })
+    //   return
+    // }
+    // 롤백용 현재 상태
+    const prevLiked = isLiked
+    const prevCount = likesCount
 
-    // #1. 좋아요 추가 삭제
-    const commonParams = { challengeId, verificationId }
-    if (isLiked) {
-      unlikeMutate(commonParams, {
-        onSuccess(data, variables, context) {
-          setIsLiked(false)
-          setLikesCount(prev => Math.max(0, prev - 1))
-        },
-      })
-    } else {
-      likeMutate(commonParams, {
-        onSuccess(data, variables, context) {
-          setIsLiked(true)
-          setLikesCount(prev => prev + 1)
-        },
-      })
-    }
+    // 낙관적 업데이트
+    setIsLiked(!prevLiked)
+    setLikesCount(prevLiked ? prevCount - 1 : prevCount + 1)
+
+    const mutationFn = prevLiked ? unlikeMutate : likeMutate
+    const params = { challengeId, verificationId }
+    mutationFn(params, {
+      onError: () => {
+        // 실패하면 rollback
+        setIsLiked(prevLiked)
+        setLikesCount(prevCount)
+
+        openToast(ToastType.Error, '좋아요 처리 중 오류가 발생했습니다.')
+      },
+    })
   }
   return (
     <Wrapper className={className}>
