@@ -10,7 +10,7 @@ import {
   getGroupChallengeCategoryList,
   GroupChallengeCategory,
 } from '@features/challenge/api/get-group-challenge-categories'
-import { FeedList } from '@features/challenge/components/challenge/group/\bfeed/FeedList'
+import { FeedList } from '@features/challenge/components/challenge/group/feed/FeedList'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
@@ -61,6 +61,8 @@ const FeedPage = ({ className }: FeedPageProps): ReactNode => {
 export default FeedPage
 
 const Wrapper = styled.div`
+  height: 100%;
+
   position: relative;
   display: flex;
   flex-direction: column;

@@ -47,11 +47,14 @@ const CHALLENGE_QUERY_KEYS = {
         LIST: {},
       },
     },
-    ETC: {
-      // 누적 사용자 인증수 조회
-      COUNT: {
-        VERIFICATION: ['challenge', 'verification', 'count'],
-      },
+    // 피드
+    FEED: (category: ChallengeCategoryType | undefined) => ['challenges', 'group', 'verifications', category ?? ''],
+  },
+
+  ETC: {
+    // 누적 사용자 인증수 조회
+    COUNT: {
+      VERIFICATION: ['challenge', 'verification', 'count'],
     },
   },
 }

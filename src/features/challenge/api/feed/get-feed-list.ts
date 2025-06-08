@@ -12,6 +12,7 @@ export interface GroupChallengeFeedListParams {
 
 export type Verification = {
   id: number
+  challengeId: number
   nickname: string
   profileImageUrl: string
   verificationImageUrl: string
