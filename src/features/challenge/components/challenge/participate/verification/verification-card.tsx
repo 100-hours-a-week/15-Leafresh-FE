@@ -23,6 +23,7 @@ import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { getTimeDiff } from '@shared/lib/date/utils'
+import { copyToClipboard } from '@shared/lib/ui/copy-clipboard'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import ActiveLikeIcon from '@public/icon/like_active.svg'
 import InActiveLikeIcon from '@public/icon/like_inactive.svg'
@@ -93,6 +94,12 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
       },
     })
   }
+
+  /** 클립보드 복사 */
+  const handleCopyVerificationUrl = () => {
+    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.PARTICIPATE_LIST.value(challengeId)}`
+    copyToClipboard(url)
+  }
   return (
     <Wrapper className={className}>
       <HeaderWrapper>
@@ -132,7 +139,7 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
               <LucideIcon name='MessageCircle' size={24} strokeWidth={1.8} />
               <InteractionCount>{comment}</InteractionCount>
             </Interaction>
-            <LucideIcon name='SquareArrowOutUpRight' size={24} strokeWidth={1.8} />
+            <LucideIcon name='SquareArrowOutUpRight' size={24} strokeWidth={1.8} onClick={handleCopyVerificationUrl} />
             <ViewWrapper>조회수 {view}</ViewWrapper>
           </InteractionWrapper>
         </DescriptionWrapper>
