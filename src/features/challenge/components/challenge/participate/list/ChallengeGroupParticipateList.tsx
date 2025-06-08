@@ -92,6 +92,8 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
   } = useInfiniteGroupChallengeVerifications(challengeId)
 
   const challenge = challengeData?.data
+
+  // TODO: 실제 데이터로 교체하기
   // const verifications = verificationData?.pages.flatMap(page => page?.data?.items || []) ?? []
   const verifications = verificationsDummy
 
@@ -127,7 +129,9 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
       </ChallengeDataWrapper>
       <ContentsWrapper>
         {verifications.length !== 0 ? (
-          verifications.map(data => <VerificationCard key={data.id} data={data} />)
+          verifications.map(verificationData => (
+            <VerificationCard key={verificationData.id} challengeId={challengeId} verificationData={verificationData} />
+          ))
         ) : (
           <StyledNoContent
             title='아직 인증 내역이 없습니다'
@@ -152,7 +156,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 24px;
+  gap: 18px;
 `
 const ChallengeDataWrapper = styled.div`
   width: 100%;
@@ -173,7 +177,7 @@ const Title = styled.h1`
 `
 
 const Participant = styled.div`
-  margin-top: 4px;
+  margin-top: 12px;
   align-self: flex-end;
 
   font-size: ${theme.fontSize.sm};

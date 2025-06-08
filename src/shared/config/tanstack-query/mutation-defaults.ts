@@ -4,6 +4,8 @@ import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
 import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
+import { CreateVerificationLike } from '@features/challenge/api/participate/verification/likes/create-like'
+import { DeleteVerificationLike } from '@features/challenge/api/participate/verification/likes/delete-like'
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
 import { Logout } from '@features/member/api/logout'
@@ -174,7 +176,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMI
 // 좋아요 추가
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.CREATE, {
   // TODO: 좋아요 추가 API 연결
-  // mutationFn:,
+  mutationFn: CreateVerificationLike,
   onSuccess(data, variables, context) {},
 
   onError(error: ErrorResponse, variables, context) {
@@ -185,7 +187,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES
 // 좋아요 삭제
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.DELETE, {
   // TODO: 좋아요 삭제 API 연결
-  // mutationFn:,
+  mutationFn: DeleteVerificationLike,
   onSuccess(data, variables, context) {},
 
   onError(error: ErrorResponse, variables, context) {
@@ -262,11 +264,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
     handleError(error)
   },
 })
-
-/**
- * TODO: (V2) 게시판
- * TODO: (V2) 나뭇잎 상점
- */
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
   return useMutation<ApiResponse<TData>, ErrorResponse, TVariables, unknown>({ mutationKey })
