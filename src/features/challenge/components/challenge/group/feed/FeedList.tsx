@@ -69,7 +69,7 @@ const verificationsDummy: Verification[] = [
     isLiked: true,
   },
 ]
-// const verificationsDummy: Verification[] = []
+// const verificationsDummy: Verification[] = []GIT
 
 export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
   const router = useRouter()
@@ -80,7 +80,7 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
 
   const observerRef = useRef<HTMLDivElement | null>(null)
 
-  /** 무한스크롤 */
+  /** 무한스크롤 데이터 조회 */
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
@@ -134,7 +134,7 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
   }
 
   return (
-    <Wrapper className={className}>
+    <Wrapper className={className} isLoading={isLoading}>
       {contents}
       {!hasNextPage && !isLoading && verifications.length > 0 && <EndMessage>모든 인증을 불러왔습니다</EndMessage>}
       <ObserverTrigger ref={observerRef} />
@@ -142,7 +142,7 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
   )
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled.section<{ isLoading: boolean }>`
   ${responsiveHorizontalPadding};
   margin-top: 24px;
 
@@ -150,6 +150,7 @@ const Wrapper = styled.section`
 
   display: flex;
   flex-direction: column;
+  justify-content: ${({ isLoading }) => (isLoading ? 'center' : 'flex-start')};
   gap: 28px;
 `
 const StyledNoContent = styled(NoContent)`
