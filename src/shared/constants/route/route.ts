@@ -104,6 +104,11 @@ const CHALLENGE_URL = {
       isProtected: true,
     },
   },
+  FEED: {
+    name: '챌린지 인증 피드',
+    value: `/challenge/group/feed`,
+    isProtected: false,
+  },
 }
 
 const STORE_URL = {
