@@ -50,7 +50,7 @@ const Toast = () => {
 export default Toast
 
 const MotionContainer = styled(motion.div)<{ toastType: ToastType }>`
-  position: fixed;
+  position: absolute;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
