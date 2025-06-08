@@ -194,7 +194,7 @@ const ContentsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 20px;
+  gap: 28px;
 `
 
 const ObserverTrigger = styled.div`

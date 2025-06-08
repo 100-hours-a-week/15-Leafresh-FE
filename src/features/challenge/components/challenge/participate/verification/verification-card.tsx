@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -16,6 +17,7 @@ import {
 } from '@features/challenge/api/participate/verification/likes/delete-like'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
@@ -63,14 +65,14 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
   /** 좋아요 핸들러 */
   const toggleLike = () => {
     // #0. 로그인 상태가 아닐 때
-    // if (!isLoggedIn) {
-    //   openConfirmModal({
-    //     title: '로그인이 필요합니다.',
-    //     description: '로그인 페이지로 이동 하시겠습니까?',
-    //     onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
-    //   })
-    //   return
-    // }
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
+      return
+    }
     // 롤백용 현재 상태
     const prevLiked = isLiked
     const prevCount = likesCount
@@ -105,7 +107,7 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
 
       <VerificationWrapper>
         <ImageWrapper>
-          <VerificationImage src={verificationImageUrl} alt='인증 이미지' width={150} height={150} />
+          <VerificationImage src={verificationImageUrl} alt='인증 이미지' fill />
           <Badge className='badge'>{category_kor}</Badge>
         </ImageWrapper>
 
@@ -113,10 +115,19 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
           <Description>{description}</Description>
 
           <InteractionWrapper>
-            <Interaction onClick={toggleLike}>
-              <LikeImage src={isLiked ? ActiveLikeIcon : InActiveLikeIcon} alt='좋아요' />
+            <LikeInteraction isLiked={isLiked} onClick={toggleLike}>
+              <motion.img
+                key={isLiked ? 'liked' : 'unliked'}
+                src={isLiked ? ActiveLikeIcon.src : InActiveLikeIcon.src}
+                alt='좋아요'
+                width={24}
+                height={24}
+                initial={isLiked ? { scale: 1.4 } : false} // 좋아요 추가일 때만 애니메이션
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 100, damping: 20, mass: 0.5 }}
+              />
               <InteractionCount>{likesCount}</InteractionCount>
-            </Interaction>
+            </LikeInteraction>
             <Interaction>
               <LucideIcon name='MessageCircle' size={24} strokeWidth={1.8} />
               <InteractionCount>{comment}</InteractionCount>
@@ -201,7 +212,7 @@ const ImageWrapper = styled.div`
 `
 
 const VerificationImage = styled(Image)`
-  width: 100%;
+  /* width: 100%; */
   object-fit: cover;
   object-position: center;
 `
@@ -254,6 +265,19 @@ const Interaction = styled.div`
   align-items: center;
   gap: 5px;
 `
+
+const LikeInteraction = styled(Interaction)<{ isLiked: boolean }>`
+  cursor: pointer;
+
+  &:hover img {
+    filter: ${({ isLiked }) =>
+      isLiked
+        ? 'brightness(0.9) saturate(150%) hue-rotate(-10deg)' // 삭제를 의미하는 hover (붉은기)
+        : 'brightness(1.4) saturate(180%) hue-rotate(90deg)'}; // 추가를 의미하는 hover (녹색기)
+    transition: filter 0.2s ease;
+  }
+`
+
 const InteractionCount = styled.span`
   font-size: ${({ theme }) => theme.fontSize.base};
 `
