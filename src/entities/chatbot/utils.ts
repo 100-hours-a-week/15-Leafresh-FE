@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { liveImages, workImages, type ChatSelections } from './type'
+import { ChatSelections } from '@entities/chatbot/type'
+import { liveImages, workImages } from '@entities/chatbot/constants'
 
 export function useScrollToBottom(trigger: any) {
   const messagesEndRef = useRef<HTMLDivElement>(null)

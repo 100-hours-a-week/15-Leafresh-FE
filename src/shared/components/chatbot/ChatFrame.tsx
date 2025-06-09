@@ -12,7 +12,7 @@ import {
   getRandomLiveImage,
   getRandomWorkImage,
 } from '../../../entities/chatbot/utils'
-import { CHAT_CHALLENGE_OPTIONS, categoryDescriptions } from '../../../entities/chatbot/type'
+import { CHAT_CHALLENGE_OPTIONS, categoryDescriptions } from '@entities/chatbot/constants'
 import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
 
 import ChatBubble from './ChatBubble'
