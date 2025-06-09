@@ -20,13 +20,17 @@ export const Navbar = (): ReactNode => {
 
   // 현재 경로가 어떤 탭인지 판단
   const isCurrentTab = (label: string) => {
-    // 메인(/) 또는 /challenge로 시작하면서 /challenge/participate가 아닌 경우
+    // 메인(/) 또는 /challenge로 시작하면서 /challenge/participate가 아닌 경우, /challenge/feed가 아닌 경우
     if (label === '챌린지')
-      return pathname === '/' || (pathname.startsWith('/challenge') && !pathname.startsWith('/challenge/participate'))
+      return (
+        pathname === '/' ||
+        (pathname.startsWith('/challenge') &&
+          !pathname.startsWith('/challenge/participate') &&
+          !pathname.startsWith('/challenge/group/feed'))
+      )
 
     if (label === '인증') return pathname.startsWith('/challenge/participate')
-    // TODO: 피드 기능 추가시 클릭 이벤트 리스너 핸들
-    // if (label === '피드') return pathname.startsWith('/feed')
+    if (label === '피드') return pathname.startsWith('/challenge/group/feed')
 
     if (label === '피드') return false
     if (label === '상점') return pathname.startsWith('/store')
@@ -36,7 +40,6 @@ export const Navbar = (): ReactNode => {
 
   // TODO: 피드 기능 추가시 클릭 이벤트 리스너 핸들
   const navHandler = (label: string, href: string, index: number) => {
-    if (label === '피드') return
     sendGAEvent('event', `nav-${index + 1}`, { value: `${label} 내비게이션 항목 클릭` }) // GA: 로그 수집
 
     router.push(href)

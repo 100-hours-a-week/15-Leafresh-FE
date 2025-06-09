@@ -2,7 +2,7 @@ name: Frontend CI/CD
 
 on:
   pull_request:
-    branches: [ "develop", "main" ]
+    branches: ['develop', 'main']
   push:
     tags:
       - 'v*-dev'
@@ -100,18 +100,18 @@ jobs:
         run: pnpm run start &
       - name: Wait for App to Start (Health Check)
         run: |
-            TIMEOUT=30
-            sleep $TIMEOUT;
-            # for i in $(seq 1 $TIMEOUT); do
-            #   if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 >/dev/null 2>&1 && [ "$status" -eq "200" ]; then
-            #     echo "Application is ready"
-            #     exit 0
-            #   fi
-            #   echo "Waiting for application... ($i/$TIMEOUT)"
-            #   sleep 1
-            # done
-            # echo "Application did not start within the timeout"
-            # exit 1
+          TIMEOUT=30
+          sleep $TIMEOUT;
+          # for i in $(seq 1 $TIMEOUT); do
+          #   if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 >/dev/null 2>&1 && [ "$status" -eq "200" ]; then
+          #     echo "Application is ready"
+          #     exit 0
+          #   fi
+          #   echo "Waiting for application... ($i/$TIMEOUT)"
+          #   sleep 1
+          # done
+          # echo "Application did not start within the timeout"
+          # exit 1
       - name: Run Playwright Tests (${{ matrix.browser }})
         run: pnpm exec playwright test --project=chromium
         env:
@@ -120,7 +120,7 @@ jobs:
   build-dev:
     name: Build and Push Docker (dev)
     if: github.event_name == 'pull_request' && github.base_ref == 'develop'
-    needs: [ lint-and-unit-test ]
+    needs: [lint-and-unit-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -145,7 +145,7 @@ jobs:
   build-prod:
     name: Build and Push Docker (prod)
     if: github.event_name == 'pull_request' && github.base_ref == 'main'
-    needs: [ integration-test ]
+    needs: [integration-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -245,7 +245,7 @@ jobs:
 
             echo "🔵 Current active environment: $CURRENT"
             echo "🟢 Next environment to deploy: $NEXT"
-            
+
             echo "🚀 Bringing up $NEXT environment (frontend-$NEXT)..."
             # 만약 docker-compose.yml에서 $NEXT에 해당하는 특정 서비스를 지정해야 한다면,
             # 예: sudo docker compose up -d service-$NEXT
@@ -283,7 +283,7 @@ jobs:
             echo "🛑 Stopping and removing $CURRENT environment (frontend-$CURRENT)..."
             sudo docker stop "frontend-$CURRENT" || true
             sudo docker rm "frontend-$CURRENT" || true
-            
+
             echo "⚠️ Force restarting $NEXT environment as per original script logic (stop, rm, up)..."
             sudo docker stop "frontend-$NEXT" || true
             sudo docker rm "frontend-$NEXT" || true
@@ -300,10 +300,10 @@ jobs:
       - name: Set Status (Prod Failure)
         if: failure() && steps.deploy-step.outcome == 'failure' # deploy-step이 실패했을 때만
         run: echo "status=failure" >> "$GITHUB_OUTPUT"
-  
+
   notify:
     name: Discord Notification
-    needs: [deploy-dev, deploy-prod]  # 명시적으로 종속성 추가
+    needs: [deploy-dev, deploy-prod] # 명시적으로 종속성 추가
     if: |
       (needs.deploy-dev.result != 'skipped') || (needs.deploy-prod.result != 'skipped')
     runs-on: ubuntu-latest

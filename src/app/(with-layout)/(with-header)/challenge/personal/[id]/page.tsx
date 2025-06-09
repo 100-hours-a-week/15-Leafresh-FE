@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import ChallengePersonalDetails from '@app/(with-header)/challenge/personal/[id]/ChallengePersonalDetails'
-import { getServerPersonalChallengeDetails } from '@features/challenge/api/get-personal-challenge-details'
+import { getPersonalChallengeDetails } from '@features/challenge/api/get-personal-challenge-details'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
@@ -23,7 +23,7 @@ const PersonalChallengeDetails = async ({ params }: PersonalChallengeDetailsProp
   try {
     await queryClient.prefetchQuery({
       queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(idNumber),
-      queryFn: () => getServerPersonalChallengeDetails(idNumber),
+      queryFn: () => getPersonalChallengeDetails(idNumber),
       ...QUERY_OPTIONS.CHALLENGE.PERSONAL.DETAILS,
     })
 

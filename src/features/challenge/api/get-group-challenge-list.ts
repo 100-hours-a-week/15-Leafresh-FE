@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
 import { DateFormatString } from '@shared/types/date'
 

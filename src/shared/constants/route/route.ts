@@ -34,6 +34,10 @@ const MEMBER_URL = {
       value: '/member/profile/modify',
       isProtected: true,
     },
+    BADGE: {
+      name: '뱃지 조회',
+      value: '/member/profile/badge',
+    },
   },
   ALARM: {
     name: '알림 확인',
@@ -89,6 +93,11 @@ const CHALLENGE_URL = {
     PARTICIPATE_LIST: {
       name: '이용자 인증 내역 목록',
       value: (challengeId: number) => `/challenge/group/${challengeId}/participate/list`,
+      isProtected: false,
+    },
+    FEED: {
+      name: '챌린지 인증 피드',
+      value: `/challenge/group/feed`,
       isProtected: false,
     },
   },

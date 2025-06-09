@@ -33,12 +33,22 @@ const CHALLENGE_QUERY_KEYS = {
       category,
       input ?? '',
     ],
-    // 인증 내역 목록 조회
-    VERIFICATIONS: (challengeId: number) => ['challenges', 'group', challengeId, 'verifications'],
-    // 규칙
+    // 규약
     RULES: (challengeId: number) => ['challenges', 'group', challengeId, 'rules'],
-    // 인증 결과 확인
-    VERIFICATION_RESULT: (challengeId: number) => ['challenges', 'group', challengeId, 'verification', 'result'],
+
+    VERIFICATION: {
+      // 인증 내역 목록 조회
+      LIST: (challengeId: number) => ['challenges', 'group', challengeId, 'verifications'],
+      // 인증 결과 확인
+      RESULT: (challengeId: number) => ['challenges', 'group', challengeId, 'verification', 'result'],
+
+      COMMENT: {
+        // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
+        LIST: {},
+      },
+    },
+    // 피드
+    FEED: (category: ChallengeCategoryType | undefined) => ['challenges', 'group', 'verifications', category ?? ''],
   },
 
   ETC: {
@@ -57,13 +67,20 @@ const MEMBER_QUERY_KEYS = {
 
   DUPLICATE_NICKNAME: ['member', 'nickname'], // 닉네임 중복 검사
 
-  DETAILS: ['member', 'profile'], // 내 정보 조회
-
   // 회원 정보
+  DETAILS: ['member', 'profile'], // 내 정보 조회
   PROFILE_CARD: ['member', 'profileCard'], // 프로필 카드 조회
-  BADGES: ['member', 'badges'], // 뱃지 조회
   LEAVES: ['member', 'leaves'], // 나뭇잎 개수 조회
-  FEEDBACK: ['member', 'feedback'], // 챌린지 피드백 조회
+
+  FEEDBACK: {
+    GET_FEEDBACK: ['member', 'feedback'], // 챌린지 피드백 조회
+    RESULT: ['member', 'feedback', 'result'],
+  },
+
+  BADGES: {
+    LIST: ['member', 'badges', 'list'], // 뱃지 조회
+    RECENT: (count: number) => ['member', 'badges', 'recent', count], //최근 획득 뱃지 조회
+  },
 
   // 알림
   NOTIFICATION: {

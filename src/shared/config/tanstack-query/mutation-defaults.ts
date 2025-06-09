@@ -4,15 +4,19 @@ import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
 import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
+import { CreateVerificationLike } from '@features/challenge/api/participate/verification/likes/create-like'
+import { DeleteVerificationLike } from '@features/challenge/api/participate/verification/likes/delete-like'
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
 import { Logout } from '@features/member/api/logout'
+import { PatchMemberInfo } from '@features/member/api/profile/patch-member-info'
+import { RequestFeedback } from '@features/member/api/profile/post-member-feedback'
 import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
 import { OrderProduct } from '@features/store/api/order-proudcts'
 import { OrderTimeDealProduct } from '@features/store/api/order-timedeal'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
+import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
@@ -34,6 +38,16 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
   onSuccess(data, variables, context) {
     const { challengeId } = variables
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId) }) // 개인 챌린지 상세 조회
+
+    //뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
+    })
+
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -125,7 +139,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
 })
 
 // 인증 제출 (단체)
-queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT, {
   mutationFn: PostGroupVerification,
   onSuccess(data, variables, context) {
     const { challengeId } = variables
@@ -142,12 +156,12 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
 
     //인증 결과
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.RESULT(challengeId),
     })
 
     //인증 내역 목록
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.LIST(challengeId),
     })
 
     //챌린지 일별 인증 기록
@@ -164,7 +178,44 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
     })
+
+    //뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
+    })
+
+    //최근 획득 뱃지 목록
+    queryClient.invalidateQueries({
+      predicate: query => JSON.stringify(query.queryKey)?.startsWith(`["member","badges","recent"`),
+    })
+
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
   },
+
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+/** 인증 도메인 */
+
+// 좋아요 추가
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.CREATE, {
+  mutationFn: CreateVerificationLike,
+  onSuccess(data, variables, context) {},
+
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+// 좋아요 삭제
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.DELETE, {
+  mutationFn: DeleteVerificationLike,
+  onSuccess(data, variables, context) {},
 
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -208,10 +259,17 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.SIGNUP, {
 
 // 회원정보 수정
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.MODIFY, {
-  // TODO: 수정 API 연결
+  mutationFn: PatchMemberInfo,
   onSuccess() {
-    // TODO: 수정 후 무효화 로직
-    return {} as ApiResponse<unknown>
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
+
+    //회원 정보
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.DETAILS,
+    })
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -227,6 +285,22 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
+  },
+})
+
+//피드백 생성 요청
+queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK, {
+  mutationFn: RequestFeedback,
+  onSuccess() {
+    //사용자 피드백
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK,
+    })
+
+    //피드백 요청 결과
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK.RESULT,
+    })
   },
 })
 
@@ -264,10 +338,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.STORE.PRODUCTS.ORDER, {
     handleError(error)
   },
 })
-
-/**
- * TODO: (V2) 게시판
- */
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
   return useMutation<ApiResponse<TData>, ErrorResponse, TVariables, unknown>({ mutationKey })
