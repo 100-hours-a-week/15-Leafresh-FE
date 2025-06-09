@@ -34,7 +34,6 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
 
   useEffect(() => {
     if (!data) return
-
     const { isMember, email, imageUrl, nickname } = data.data
 
     setOAuthUserInfo({ isMember, email, imageUrl, nickname, provider })
@@ -46,7 +45,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
       openToast(ToastType.Success, '로그인 성공')
       router.replace(URL.MAIN.INDEX.value)
     }
-  }, [data, router, openToast, setOAuthUserInfo])
+  }, [data])
 
   if (isLoading) {
     return (
