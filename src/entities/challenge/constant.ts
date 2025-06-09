@@ -7,6 +7,7 @@ export const CHALLENGE_PARTICIPATION_STATUS = ['NOT_STARTED', 'ONGOING', 'COMPLE
 export const CHALLENGE_VERIFICATION_RESULT = [
   'SUCCESS', // 성공
   'FAILURE', // 실패
+  'PENDING_APPROVE', // 인증 중
 ] as const
 
 /** 인증 상태 */
