@@ -9,10 +9,14 @@ import { DeleteVerificationLike } from '@features/challenge/api/participate/veri
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
 import { Logout } from '@features/member/api/logout'
+import { PatchMemberInfo } from '@features/member/api/profile/patch-member-info'
+import { RequestFeedback } from '@features/member/api/profile/post-member-feedback'
 import { readAllAlarms } from '@features/member/api/read-all-alarms'
 import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
+import { OrderProduct } from '@features/store/api/order-proudcts'
+import { OrderTimeDealProduct } from '@features/store/api/order-timedeal'
+import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
@@ -34,6 +38,16 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
   onSuccess(data, variables, context) {
     const { challengeId } = variables
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.DETAILS(challengeId) }) // 개인 챌린지 상세 조회
+
+    //뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
+    })
+
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -164,6 +178,21 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMI
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
     })
+
+    //뱃지 목록
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
+    })
+
+    //최근 획득 뱃지 목록
+    queryClient.invalidateQueries({
+      predicate: query => JSON.stringify(query.queryKey)?.startsWith(`["member","badges","recent"`),
+    })
+
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
   },
 
   onError(error: ErrorResponse, variables, context) {
@@ -232,10 +261,17 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.SIGNUP, {
 
 // 회원정보 수정
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.MODIFY, {
-  // TODO: 수정 API 연결
+  mutationFn: PatchMemberInfo,
   onSuccess() {
-    // TODO: 수정 후 무효화 로직
-    return {} as ApiResponse<unknown>
+    //프로필 카드
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
+    })
+
+    //회원 정보
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.DETAILS,
+    })
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -254,11 +290,51 @@ queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.UNREGISTER, {
   },
 })
 
+//피드백 생성 요청
+queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK, {
+  mutationFn: RequestFeedback,
+  onSuccess() {
+    //사용자 피드백
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK,
+    })
+
+    //피드백 요청 결과
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.FEEDBACK.RESULT,
+    })
+  },
+})
+
 // 알림 읽음
 queryClient.setMutationDefaults(MUTATION_KEYS.MEMBER.NOTIFICATION.READ, {
   mutationFn: readAllAlarms,
   onSuccess() {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+/** 나뭇잎 상점 */
+// 타임딜 상품 주문 생성
+queryClient.setMutationDefaults(MUTATION_KEYS.STORE.TIME_DEAL.ORDER, {
+  mutationFn: OrderTimeDealProduct,
+  onSuccess() {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.STORE.TIME_DEAL.LIST }) // 타임딜 상품 목록 조회
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+// 일반 상품 주문 생성
+queryClient.setMutationDefaults(MUTATION_KEYS.STORE.PRODUCTS.ORDER, {
+  mutationFn: OrderProduct,
+  onSuccess() {
+    const PRODUCT_QUERIES = ['store', 'products']
+    queryClient.invalidateQueries({ queryKey: PRODUCT_QUERIES }) // 일반 상품 상품 목록 조회
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)

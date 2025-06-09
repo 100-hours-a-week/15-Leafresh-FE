@@ -14,6 +14,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
 
@@ -149,6 +150,8 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
 export default ChallengeGroupParticipateList
 
 const Wrapper = styled.div`
+  ${responsiveHorizontalPadding};
+
   height: 100%;
 
   position: relative;

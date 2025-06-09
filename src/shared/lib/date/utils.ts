@@ -76,3 +76,13 @@ export const getTimeDiff = (dateString: ISOFormatString): string => {
   // 외
   return `${diffDay}일 전`
 }
+
+/**
+ * 초(second) 를 "00:00:00" 형식으로 변환
+ */
+export const formatSecondToTime = (second: number): string => {
+  const hours = String(Math.floor(second / 3600)).padStart(2, '0')
+  const minutes = String(Math.floor((second % 3600) / 60)).padStart(2, '0')
+  const seconds = String(second % 60).padStart(2, '0')
+  return `${hours}:${minutes}:${seconds}`
+}

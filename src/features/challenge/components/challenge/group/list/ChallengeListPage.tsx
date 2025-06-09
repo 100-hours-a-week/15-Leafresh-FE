@@ -10,10 +10,10 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/c
 import { GroupChallengeItem } from '@features/challenge/api/get-group-challenge-list'
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
-import Chatbot from '@shared/components/chatbot/Chatbot'
 import GridBox from '@shared/components/wrapper/GridBox'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 const ChallengeListPage = () => {
@@ -88,11 +88,7 @@ const ChallengeListPage = () => {
 
   // API 데이터 뽑아오기
 
-  console.log(data)
-
   const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(page => page.data.groupChallenges ?? []) ?? []
-
-  console.log(groupChallenges)
 
   if (isLoading) return <Spinner size='lg' style={{ marginTop: '100px' }} />
   if (error) return <Message>Error: {error.message}</Message>
@@ -109,7 +105,7 @@ const ChallengeListPage = () => {
               onClick={() => {
                 const params = new URLSearchParams()
                 if (category) params.set('category', category)
-                router.push(`${URL.CHALLENGE.GROUP.CREATE.value}?${params.toString()}`)
+                router.push(`${URL.CHALLENGE.GROUP.CREATE.value(params.toString())}`)
               }}
               aria-label='추가'
             >
@@ -160,7 +156,6 @@ const ChallengeListPage = () => {
           </ChallengeWrapper>
         </Section>
       </ContentWrapper>
-      <Chatbot />
     </Container>
   )
 }
@@ -168,6 +163,8 @@ const ChallengeListPage = () => {
 export default ChallengeListPage
 
 const Container = styled.div`
+  ${responsiveHorizontalPadding};
+
   max-width: 800px;
   min-height: 800px;
   display: flex;

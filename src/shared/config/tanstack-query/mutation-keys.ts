@@ -45,6 +45,10 @@ const MEMBER_MUTATION_KEYS = {
   MODIFY: ['member', 'info'] as const,
   UNREGISTER: ['member', 'unregister'] as const,
 
+  FEEDBACK: {
+    POST_FEEDBACK: ['member', 'feedback'] as const,
+  },
+
   NOTIFICATION: {
     READ: ['member', 'notifications', 'read'] as const,
   },
@@ -52,7 +56,7 @@ const MEMBER_MUTATION_KEYS = {
 
 const STORE_MUTATION_KEYS = {
   TIME_DEAL: {
-    ORDER: ['store', 'order', 'product', 'timedeal'] as const,
+    ORDER: ['store', 'order', 'timedeal'] as const,
   },
   PRODUCTS: {
     ORDER: ['store', 'order', 'product'] as const,

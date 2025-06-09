@@ -139,6 +139,13 @@ const CHALLENGE_ENDPOINTS = {
       },
     },
   },
+
+  ETC: {
+    COUNT: {
+      // 누적 사용자 인증수 조회
+      VERIFICATION: { method: HttpMethod.GET, path: `/api/challenges/verifications/count` },
+    },
+  },
 }
 
 const MEMBER_ENDPOINTS = {
@@ -162,9 +169,18 @@ const MEMBER_ENDPOINTS = {
 
   // 회원 정보
   PROFILE_CARD: { method: HttpMethod.GET, path: '/api/members/profilecard' }, // 프로필 카드 조회
-  BADGES: { method: HttpMethod.GET, path: '/api/members/badges' }, // 뱃지 조회
   LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves' }, // 나뭇잎 개수 조회
-  FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
+
+  FEEDBACK: {
+    GET_FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
+    POST_FEEDBACK: { method: HttpMethod.POST, path: '/api/members/feedback' }, //피드백 생성 요청
+    RESULT: { method: HttpMethod.GET, path: '/api/members/feedback/result' }, //피드백 결과 조회(롱폴링)
+  },
+
+  BADGES: {
+    LIST: { method: HttpMethod.GET, path: '/api/members/badges' }, // 뱃지 조회
+    RECENT: { method: HttpMethod.GET, path: '/api/members/badges/recent' }, //최근 획득 뱃지 조회
+  },
 
   // 알림
   NOTIFICATION: {
@@ -173,8 +189,10 @@ const MEMBER_ENDPOINTS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
+  STORE: {
+    ORDERS: {
+      LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
+    },
   },
 
   /** 챌린지 */
@@ -224,6 +242,12 @@ const STORE_ENDPOINTS = {
       method: HttpMethod.POST,
       path: `/api/orders/${productId}`,
     }),
+  },
+  ETC: {
+    COUNT: {
+      // 누적 나뭇잎 수 조회
+      LEAVES: { method: HttpMethod.GET, path: '/api/leaves/count' },
+    },
   },
 }
 

@@ -67,6 +67,13 @@ const CHALLENGE_QUERY_DEFAULTS = {
       // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
     },
   },
+
+  ETC: {
+    // 누적 사용자 인증수 조회
+    COUNT: {
+      VERIFICATION: NO_CACHE,
+    },
+  },
 }
 
 const MEMBER_QUERY_DEFAULTS = {
@@ -75,13 +82,27 @@ const MEMBER_QUERY_DEFAULTS = {
     CALLBACK: NO_CACHE,
   },
   DUPLICATE_NICKNAME: NO_CACHE,
-  DETAILS: DEFAULT,
 
   // 회원 정보
+  DETAILS: DEFAULT,
   PROFILE_CARD: DEFAULT,
-  BADGES: DEFAULT,
   LEAVES: DEFAULT,
-  FEEDBACK: DEFAULT,
+  FEEDBACK: {
+    GET_FEEDBACK: {
+      staleTime: getHour(24),
+      gcTime: getHour(24),
+    },
+    RESULT: {
+      staleTime: getHour(24),
+      gcTime: getHour(24),
+    },
+  },
+
+  //뱃지 리스트
+  BADGES: {
+    LIST: NO_CACHE,
+    RECENT: NO_CACHE,
+  },
 
   // 알림
   NOTIFICATION: {
@@ -89,8 +110,10 @@ const MEMBER_QUERY_DEFAULTS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: DEFAULT,
+  STORE: {
+    ORDERS: {
+      LIST: DEFAULT,
+    },
   },
 
   /** 챌린지 */
@@ -111,7 +134,25 @@ const MEMBER_QUERY_DEFAULTS = {
   },
 }
 
+const STORE_QUERY_DEFAULTS = {
+  TIME_DEAL: {
+    // 타임딜 상품 목록
+    LIST: DEFAULT,
+  },
+  PRODUCTS: {
+    // 일반 상품 목록
+    LIST: DEFAULT,
+  },
+  ETC: {
+    COUNT: {
+      // 누적 나뭇잎 수 조회
+      LEAVES: NO_CACHE,
+    },
+  },
+}
+
 export const QUERY_OPTIONS = {
   CHALLENGE: CHALLENGE_QUERY_DEFAULTS,
   MEMBER: MEMBER_QUERY_DEFAULTS,
+  STORE: STORE_QUERY_DEFAULTS,
 } as const

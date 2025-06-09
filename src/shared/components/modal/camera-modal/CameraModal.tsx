@@ -258,7 +258,7 @@ const CameraModal = () => {
 export default CameraModal
 
 const Overlay = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
 

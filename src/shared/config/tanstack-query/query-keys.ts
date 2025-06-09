@@ -48,6 +48,13 @@ const CHALLENGE_QUERY_KEYS = {
       },
     },
   },
+
+  ETC: {
+    // 누적 사용자 인증수 조회
+    COUNT: {
+      VERIFICATION: ['challenge', 'verification', 'count'],
+    },
+  },
 }
 
 const MEMBER_QUERY_KEYS = {
@@ -58,13 +65,20 @@ const MEMBER_QUERY_KEYS = {
 
   DUPLICATE_NICKNAME: ['member', 'nickname'], // 닉네임 중복 검사
 
-  DETAILS: ['member', 'profile'], // 내 정보 조회
-
   // 회원 정보
+  DETAILS: ['member', 'profile'], // 내 정보 조회
   PROFILE_CARD: ['member', 'profileCard'], // 프로필 카드 조회
-  BADGES: ['member', 'badges'], // 뱃지 조회
   LEAVES: ['member', 'leaves'], // 나뭇잎 개수 조회
-  FEEDBACK: ['member', 'feedback'], // 챌린지 피드백 조회
+
+  FEEDBACK: {
+    GET_FEEDBACK: ['member', 'feedback'], // 챌린지 피드백 조회
+    RESULT: ['member', 'feedback', 'result'],
+  },
+
+  BADGES: {
+    LIST: ['member', 'badges', 'list'], // 뱃지 조회
+    RECENT: (count: number) => ['member', 'badges', 'recent', count], //최근 획득 뱃지 조회
+  },
 
   // 알림
   NOTIFICATION: {
@@ -72,8 +86,10 @@ const MEMBER_QUERY_KEYS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: ['member', 'products'], // 구매 내역
+  STORE: {
+    ORDERS: {
+      LIST: ['member', 'store', 'orders'], // 구매 내역
+    },
   },
 
   /** 챌린지 */
@@ -117,11 +133,17 @@ const POST_QUERY_KEYS = {
 const STORE_QUERY_KEYS = {
   TIME_DEAL: {
     // 타임딜 상품 목록
-    LIST: ['store', 'products', 'timedeals'],
+    LIST: ['store', 'timedeals'],
   },
   PRODUCTS: {
     // 일반 상품 목록
     LIST: (input: string) => ['store', 'products', input],
+  },
+  ETC: {
+    COUNT: {
+      // 누적 나뭇잎 수 조회
+      LEAVES: ['store', 'leaves', 'count'],
+    },
   },
 }
 /**
