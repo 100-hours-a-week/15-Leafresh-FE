@@ -5,7 +5,7 @@ import { useUserStore } from '@entities/member/context/UserStore'
 import { URL } from '@shared/constants/route/route'
 import { useToastStore } from '@shared/context/toast/ToastStore'
 import { ToastType } from '@shared/context/toast/type'
-import { ErrorResponse } from '@shared/lib/api/fetcher/type'
+import { ErrorResponse } from '@shared/lib/api/type'
 
 let isHandlingAuth = false
 
