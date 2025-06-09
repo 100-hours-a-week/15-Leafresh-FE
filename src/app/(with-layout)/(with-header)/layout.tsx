@@ -32,6 +32,7 @@ export default WithHeaderLayout
 const ContentsWrapper = styled.div`
   width: 100%;
   height: 100%;
+  margin-bottom: 72px;
   /* padding-bottom: 24px; */
 
   position: relative;
@@ -45,7 +46,7 @@ const Main = styled.main`
   width: 100%;
 
   margin-top: 24px;
-  margin-bottom: 72px;
+
   padding-bottom: 24px;
   flex: 1;
 
