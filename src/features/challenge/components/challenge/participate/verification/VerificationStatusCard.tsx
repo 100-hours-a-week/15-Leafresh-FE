@@ -1,4 +1,4 @@
-// src/shared/components/Verification/VerificationImageCard.tsx
+// src/shared/components/Verification/VerificationStatusCard.tsx
 'use client'
 
 import React from 'react'
@@ -34,13 +34,13 @@ const statusMap: Record<VerificationStatus, StatusConfig> = {
   },
 }
 
-export interface VerificationImageCardProps {
+export interface VerificationStatusCardProps {
   day: number
   imageUrl: string
   status: VerificationStatus
 }
 
-const VerificationImageCard: React.FC<VerificationImageCardProps> = ({ day, imageUrl, status }) => {
+const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({ day, imageUrl, status }) => {
   const { barColor, iconName, iconColorKey } = statusMap[status]
 
   return (
@@ -56,7 +56,7 @@ const VerificationImageCard: React.FC<VerificationImageCardProps> = ({ day, imag
   )
 }
 
-export default VerificationImageCard
+export default VerificationStatusCard
 
 /* ===== Styled ===== */
 const Card = styled.div`

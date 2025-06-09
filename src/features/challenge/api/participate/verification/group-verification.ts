@@ -18,7 +18,7 @@ type PostGroupVerificationVariables = {
 
 /** 단체 챌린지 인증 제출 */
 export const PostGroupVerification = ({ challengeId, body }: PostGroupVerificationVariables) =>
-  fetchRequest<PostGroupVerificationResponse>(ENDPOINTS.CHALLENGE.GROUP.VERIFY(challengeId), { body })
+  fetchRequest<PostGroupVerificationResponse>(ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.SUBMIT(challengeId), { body })
 
 export type GetGroupVerificationResultResponse = {
   verificationId: number
@@ -27,4 +27,4 @@ export type GetGroupVerificationResultResponse = {
 
 /** 인증 결과 조회 (롱폴링) */
 export const getGroupVerificationResult = (challengeId: number) =>
-  fetchRequest<GetGroupVerificationResultResponse>(ENDPOINTS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId))
+  fetchRequest<GetGroupVerificationResultResponse>(ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.RESULT(challengeId))
