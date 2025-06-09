@@ -86,7 +86,7 @@ const AuthGuard = ({ children }: Props) => {
     }
 
     validate()
-  }, [pathname, isProtectedRoute, userInfo, setUserInfo, clearUserInfo, router])
+  }, [pathname, isProtectedRoute])
 
   if (!isVerified) return null
 

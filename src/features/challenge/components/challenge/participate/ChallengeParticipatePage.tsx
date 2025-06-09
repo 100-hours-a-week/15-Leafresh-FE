@@ -10,9 +10,9 @@ import ChallengeCard from '@features/challenge/components/challenge/participate/
 import CardList from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCardList'
 import { useGroupParticipationsCount } from '@features/challenge/hook/useGroupParticipationsCount'
 import { useInfiniteGroupParticipations } from '@features/challenge/hook/useInfiniteGroupParticipations'
-import Chatbot from '@shared/components/chatbot/Chatbot'
 import SwitchTap from '@shared/components/switchtap/SwitchTap'
 import { URL } from '@shared/constants/route/route'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 const statusMap: Record<number, ChallengeStatus> = {
@@ -98,7 +98,7 @@ export default function ChallengeParticipatePage() {
               <EmptyState>참여 중인 챌린지가 없습니다.</EmptyState>
               <EmptyButton
                 onClick={() => {
-                  router.push(URL.CHALLENGE.INDEX.value)
+                  router.push(URL.MAIN.INDEX.value)
                 }}
               >
                 챌린지 참여하러 가기
@@ -111,37 +111,37 @@ export default function ChallengeParticipatePage() {
           )}
         </CardList>
       </CardListContainer>
-      <Chatbot />
     </Container>
   )
 }
 
 // 전체 페이지 컨테이너
 const Container = styled.div`
+  ${responsiveHorizontalPadding};
+
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 100dvh;
-  max-width: 500px;
   margin: 0 auto;
-  padding: 0;
 `
 
 // 상단 탭 컨테이너
 const SwitchTapContainer = styled.div`
-  padding: 20px 20px 16px 20px;
+  width: 100%;
+
   align-self: center;
   flex-shrink: 0; /* 헤더 크기 고정 */
 `
 
 // 카드 리스트 컨테이너
 const CardListContainer = styled.div`
+  width: 100%;
   flex: 1; /* 남은 공간 모두 차지하도록 변경 */
-  margin-left: 8px;
+
   display: flex;
   align-self: center;
   flex-direction: column; /* 세로 방향으로 설정 */
   overflow: hidden; /* 내부 스크롤만 보이도록 설정 */
-  padding: 0 20px;
 `
 
 const ObserverTrigger = styled.div`

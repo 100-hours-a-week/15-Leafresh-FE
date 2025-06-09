@@ -1,6 +1,7 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
+import { DateFormatString } from '@shared/types/date'
 
 /**
  * 요청 파라미터 타입
@@ -20,8 +21,8 @@ export interface GroupChallengeItem {
   title: string
   thumbnailUrl: string
   leafReward: number
-  startDate: string
-  endDate: string
+  startDate: DateFormatString
+  endDate: DateFormatString
   remainingDay: number
   currentParticipantCount: number
 }
