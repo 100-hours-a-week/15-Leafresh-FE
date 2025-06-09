@@ -13,7 +13,7 @@ const MemberAlarmPage = async () => {
   try {
     await queryClient.prefetchInfiniteQuery({
       queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
-      queryFn: ({ pageParam = {} }) => getMemberAlarmList(pageParam),
+      queryFn: ({ pageParam = {} }) => getMemberAlarmList({ ...pageParam }),
       initialPageParam: {},
     })
 

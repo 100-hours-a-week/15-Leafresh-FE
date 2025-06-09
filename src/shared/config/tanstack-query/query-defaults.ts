@@ -61,6 +61,13 @@ const CHALLENGE_QUERY_DEFAULTS = {
     // 인증 결과 조회 (롱폴링)
     VERIFICATION_RESULT: DEFAULT,
   },
+
+  ETC: {
+    // 누적 사용자 인증수 조회
+    COUNT: {
+      VERIFICATION: NO_CACHE,
+    },
+  },
 }
 
 const MEMBER_QUERY_DEFAULTS = {
@@ -97,8 +104,10 @@ const MEMBER_QUERY_DEFAULTS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: DEFAULT,
+  STORE: {
+    ORDERS: {
+      LIST: DEFAULT,
+    },
   },
 
   /** 챌린지 */
@@ -119,7 +128,25 @@ const MEMBER_QUERY_DEFAULTS = {
   },
 }
 
+const STORE_QUERY_DEFAULTS = {
+  TIME_DEAL: {
+    // 타임딜 상품 목록
+    LIST: DEFAULT,
+  },
+  PRODUCTS: {
+    // 일반 상품 목록
+    LIST: DEFAULT,
+  },
+  ETC: {
+    COUNT: {
+      // 누적 나뭇잎 수 조회
+      LEAVES: NO_CACHE,
+    },
+  },
+}
+
 export const QUERY_OPTIONS = {
   CHALLENGE: CHALLENGE_QUERY_DEFAULTS,
   MEMBER: MEMBER_QUERY_DEFAULTS,
+  STORE: STORE_QUERY_DEFAULTS,
 } as const

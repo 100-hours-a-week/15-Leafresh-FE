@@ -109,6 +109,13 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/group/${challengeId}/rules`,
     }),
   },
+
+  ETC: {
+    COUNT: {
+      // 누적 사용자 인증수 조회
+      VERIFICATION: { method: HttpMethod.GET, path: `/api/challenges/verifications/count` },
+    },
+  },
 }
 
 const MEMBER_ENDPOINTS = {
@@ -152,8 +159,10 @@ const MEMBER_ENDPOINTS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
+  STORE: {
+    ORDERS: {
+      LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
+    },
   },
 
   /** 챌린지 */
@@ -270,6 +279,12 @@ const STORE_ENDPOINTS = {
       method: HttpMethod.POST,
       path: `/api/orders/${productId}`,
     }),
+  },
+  ETC: {
+    COUNT: {
+      // 누적 나뭇잎 수 조회
+      LEAVES: { method: HttpMethod.GET, path: '/api/leaves/count' },
+    },
   },
 }
 
