@@ -12,7 +12,7 @@ import { SignUp } from '@features/member/api/signup'
 import { Unregister } from '@features/member/api/unregister'
 import { OrderProduct } from '@features/store/api/order-proudcts'
 import { OrderTimeDealProduct } from '@features/store/api/order-timedeal'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
+import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
@@ -264,10 +264,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.STORE.PRODUCTS.ORDER, {
     handleError(error)
   },
 })
-
-/**
- * TODO: (V2) 게시판
- */
 
 export const useMutationStore = <TData, TVariables>(mutationKey: readonly unknown[]) => {
   return useMutation<ApiResponse<TData>, ErrorResponse, TVariables, unknown>({ mutationKey })
