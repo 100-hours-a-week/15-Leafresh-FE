@@ -7,7 +7,7 @@ import { EndpointType } from '@shared/constants/endpoint/endpoint'
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshServerAccessToken } from './server-reissue'
 
-const BASE_URL = 'https://leafresh.app'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 export async function serverFetchRequest<T>(
   endpoint: EndpointType,

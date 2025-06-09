@@ -5,7 +5,7 @@ let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
 
 //TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
-const BASE_URL = 'https://leafresh.app'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 export async function refreshClientAccessToken(): Promise<void> {
   const openToast = useToastStore.getState().open

@@ -7,8 +7,8 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
 
-//TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
-const BASE_URL = 'https://leafresh.app'
+//환경에 따라 다른 Url
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 export async function refreshServerAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()
