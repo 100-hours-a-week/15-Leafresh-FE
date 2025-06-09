@@ -1,9 +1,12 @@
-import styled from '@emotion/styled'
-import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import Image from 'next/image'
+
 import { useState } from 'react'
-import { formatTimeAgo } from './VerificationDetails'
+import styled from '@emotion/styled'
+
+import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import { theme } from '@shared/styles/theme'
+
+import { formatTimeAgo } from './VerificationDetails'
 
 interface CommentItemProps {
   comment: CommentResponse['comment'][number]

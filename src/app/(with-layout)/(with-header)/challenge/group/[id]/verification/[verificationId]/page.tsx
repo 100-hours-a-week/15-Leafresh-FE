@@ -1,5 +1,6 @@
-import VerificationDetails from '@features/challenge/components/challenge/participate/verification/details/VerificationDetails'
 import { ReactNode } from 'react'
+
+import VerificationDetails from '@features/challenge/components/challenge/participate/verification/details/VerificationDetails'
 
 interface PageProps {
   className?: string

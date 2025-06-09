@@ -1,13 +1,13 @@
 'use client'
 
-import styled from '@emotion/styled'
-import { useState } from 'react'
-
-import { theme } from '@shared/styles/theme'
 import { ChevronDown, ChevronUp, Send } from 'lucide-react'
 
-import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import { useState } from 'react'
+import styled from '@emotion/styled'
+
 import { useUserStore } from '@entities/member/context/UserStore'
+import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import { theme } from '@shared/styles/theme'
 
 import CommentItem from './CommentItem'
 

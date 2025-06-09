@@ -1,6 +1,7 @@
-import { fetchRequest } from '@shared/lib/api/fetcher'
-import { CommentResponse } from './get-verification-comment-list'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { fetchRequest } from '@shared/lib/api/fetcher'
+
+import { CommentResponse } from './get-verification-comment-list'
 
 export type PostCommentBody = {
   comment: string

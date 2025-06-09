@@ -1,33 +1,31 @@
 'use client'
+import Image from 'next/image'
+
 import { ReactNode, useState } from 'react'
-
 import styled from '@emotion/styled'
-
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
-import {
-  getVerificationDetails,
-  VerificationDetailResponse,
-} from '@features/challenge/api/participate/verification/get-verifycation-details'
+import { deleteVerificationComment } from '@features/challenge/api/participate/verification/delete-verification-comment'
 import {
   CommentResponse,
   getVerificationCommemtList,
 } from '@features/challenge/api/participate/verification/get-verification-comment-list'
-
-import Image from 'next/image'
+import {
+  getVerificationDetails,
+  VerificationDetailResponse,
+} from '@features/challenge/api/participate/verification/get-verifycation-details'
+import { postVerificationComment } from '@features/challenge/api/participate/verification/post-verification-comment'
+import { postVerificationReply } from '@features/challenge/api/participate/verification/post-verification-reply'
+import { putVerificationComment } from '@features/challenge/api/participate/verification/put-verification-comment'
+import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { theme } from '@shared/styles/theme'
 import Like from '@public/icon/like.svg'
 import UnLike from '@public/icon/unLike.svg'
 
 import CommentList from './CommentList'
-import { theme } from '@shared/styles/theme'
-import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { postVerificationComment } from '@features/challenge/api/participate/verification/post-verification-comment'
-import { postVerificationReply } from '@features/challenge/api/participate/verification/post-verification-reply'
-import { putVerificationComment } from '@features/challenge/api/participate/verification/put-verification-comment'
-import { deleteVerificationComment } from '@features/challenge/api/participate/verification/delete-verification-comment'
 
 interface VerificationDetailsProps {
   challengeId: number
@@ -54,38 +52,38 @@ export const formatTimeAgo = (dateString: string) => {
 
 const VerificationDetails = ({ challengeId, verificationId, className }: VerificationDetailsProps): ReactNode => {
   const { data: verificationData } = useQuery({
-    queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS.DETAILS(challengeId, verificationId),
+    queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
     queryFn: () => getVerificationDetails(challengeId, verificationId),
-    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATIONS.DETAILS,
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
   })
 
   const { data: commentData } = useQuery({
-    queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS.COMMENT(challengeId, verificationId),
+    queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
     queryFn: () => getVerificationCommemtList(challengeId, verificationId),
-    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATIONS.COMMENT,
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.COMMENT,
   })
 
   // 댓글 작성
   const commentMutation = useMutation({
-    mutationKey: MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.COMMENT.CREATE,
+    mutationKey: MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.CREATE,
     mutationFn: postVerificationComment,
   })
 
   // 대댓글 작성
   const replyMutation = useMutation({
-    mutationKey: MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.COMMENT.REPLY.CREATE,
+    mutationKey: MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.CREATE,
     mutationFn: postVerificationReply,
   })
 
   // 댓글/대댓글 수정
   const updateMutation = useMutation({
-    mutationKey: MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.COMMENT.REPLY.MODIFY,
+    mutationKey: MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.MODIFY,
     mutationFn: putVerificationComment,
   })
 
   // 댓글/대댓글 삭제
   const deleteMutation = useMutation({
-    mutationKey: MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.COMMENT.REPLY.DELETE,
+    mutationKey: MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.DELETE,
     mutationFn: deleteVerificationComment,
   })
 
