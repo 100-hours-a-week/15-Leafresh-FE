@@ -93,9 +93,6 @@ const CHALLENGE_ENDPOINTS = {
         path: `/api/challenges/group/${challengeId}/verifications`,
       }),
 
-      // TODO: 인증 상세 조회
-      DETAILS: {},
-
       // 인증 제출 (생성)
       SUBMIT: (challengeId: number) => ({
         method: HttpMethod.POST,
@@ -121,32 +118,6 @@ const CHALLENGE_ENDPOINTS = {
         }),
       },
 
-      COMMENT: {
-        // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
-        LIST: {},
-        // TODO: 댓글 생성
-        CREATE: {},
-        // TODO: 댓글 수정
-        MODIFY: {},
-        // TODO: 댓글 삭제 (대댓글 포함)
-        DELETE: {},
-        REPLY: {
-          // TODO: 대댓글 생성
-          CREATE: {},
-          // TODO: 대댓글 수정
-          MODIFY: {},
-        },
-      },
-    },
-
-<<<<<<< HEAD
-    // 특정 단체 챌린지 인증 내역 목록 조회
-    VERIFICATIONS: {
-      // 특정 단체 챌린지 인증 내역 목록 조회
-      LIST: (challengeId: number) => ({
-        method: HttpMethod.GET,
-        path: `/api/challenges/group/${challengeId}/verifications`,
-      }),
       //인증 상세 조회
       DETAILS: (challengeId: number, verificationId: number) => ({
         method: HttpMethod.GET,
@@ -181,14 +152,13 @@ const CHALLENGE_ENDPOINTS = {
         }),
       },
     },
-=======
+
     // 인증 내역 목록 조회 (피드) - 무작위 챌린지
     FEED: {
       method: HttpMethod.GET,
       path: `/api/challenges/group/verifications`,
     },
   },
->>>>>>> 6a76cd9799472abed133c2cf74d05a134488c0b7
 
   ETC: {
     COUNT: {
