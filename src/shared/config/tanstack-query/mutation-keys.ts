@@ -24,6 +24,10 @@ const MEMBER_MUTATION_KEYS = {
   MODIFY: ['member', 'info'] as const,
   UNREGISTER: ['member', 'unregister'] as const,
 
+  FEEDBACK: {
+    POST_FEEDBACK: ['member', 'feedback'] as const,
+  },
+
   NOTIFICATION: {
     READ: ['member', 'notifications', 'read'] as const,
   },
