@@ -1,8 +1,7 @@
 import { Suspense } from 'react'
 
+import ChallengeListPage from '@features/challenge/components/challenge/group/list/ChallengeListPage'
 import Loading from '@shared/components/loading'
-
-import ChallengeListPage from '../../../../../features/challenge/components/challenge/group/list/ChallengeListPage'
 
 const Page = async () => {
   return (
