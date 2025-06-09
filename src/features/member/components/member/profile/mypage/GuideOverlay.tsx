@@ -1,8 +1,9 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { ChevronDown,ChevronLeft, ChevronRight } from 'lucide-react'
+
+import { useEffect,useState } from 'react'
 import styled from '@emotion/styled'
-import { theme } from '@shared/styles/theme'
-import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react'
+
 
 const GuideOverlay = ({ visible }: { visible: boolean }) => {
   const [shouldRender, setShouldRender] = useState(true)

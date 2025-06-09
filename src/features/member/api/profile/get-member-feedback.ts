@@ -1,6 +1,6 @@
 // @features/member/api/get-feedback.ts
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 export type FeedbackResponse = {
   content: string | null

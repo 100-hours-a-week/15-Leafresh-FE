@@ -1,8 +1,7 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { ApiResponse } from '@shared/lib/api/fetcher/type'
-import { fetchRequest } from '@shared/lib/api/fetcher'
 import { FeedbackResponse } from '@features/member/api/profile/get-member-feedback'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { fetchRequest } from '@shared/lib/api/fetcher'
 
 export async function pollFeedbackResult(): Promise<void> {
   const queryClient = getQueryClient()

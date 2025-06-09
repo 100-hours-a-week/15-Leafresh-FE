@@ -1,6 +1,5 @@
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
-import { HttpMethod } from '@shared/constants/http'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 export type CardBadge = {
   id: number

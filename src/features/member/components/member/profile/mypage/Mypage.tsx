@@ -11,6 +11,7 @@ import { pollFeedbackResult } from '@features/member/api/profile/get-member-feed
 import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
 import { getMemberProfileCard, ProfileCardResponse } from '@features/member/api/profile/get-member-profilecard'
 import { Badge, getRecentBadges } from '@features/member/api/profile/get-recent-badge'
+import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
@@ -22,7 +23,6 @@ import { theme } from '@shared/styles/theme'
 import ProfileBox from './ProfileBox'
 import ProfileCard from './ProfileCard'
 import RecentBadgeBox from './RecentBadgeBox'
-import Loading from '@shared/components/loading'
 
 const Mypage = () => {
   const router = useRouter()

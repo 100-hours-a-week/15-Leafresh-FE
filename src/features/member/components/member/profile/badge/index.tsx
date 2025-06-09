@@ -5,11 +5,11 @@ import { useQuery } from '@tanstack/react-query'
 
 import { badgeCategory } from '@entities/member/constant'
 import { BadgeData, getBadgeList } from '@features/member/api/profile/get-badge'
+import Loading from '@shared/components/loading'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { theme } from '@shared/styles/theme'
 
 import BadgeTabs from './BadgeTab'
-import Loading from '@shared/components/loading'
 
 const BadgePage = () => {
   const {

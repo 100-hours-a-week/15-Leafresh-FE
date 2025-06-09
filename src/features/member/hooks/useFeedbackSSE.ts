@@ -1,6 +1,7 @@
 // @features/member/hooks/useFeedbackSSE.ts
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { useState } from 'react'
+
+import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 
 export const useFeedbackSSE = () => {
   const [messages, setMessages] = useState<string[]>([])
