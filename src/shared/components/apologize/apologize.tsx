@@ -14,7 +14,7 @@ interface ApologizeContentProps {
 
 const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
   return (
-    <EmptySection>
+    <EmptySection className={className}>
       <Image src={ApologizeImage} alt='사죄 이미지' width={140} height={140} />
       <EmptyTitle>{title}</EmptyTitle>
       <EmptyDescription>{description}</EmptyDescription>
@@ -29,7 +29,6 @@ const EmptySection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 40px;
 `
 
 const EmptyTitle = styled.div`
