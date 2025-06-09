@@ -86,10 +86,46 @@ const CHALLENGE_ENDPOINTS = {
     },
 
     // 특정 단체 챌린지 인증 내역 목록 조회
-    VERIFICATIONS: (challengeId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/challenges/group/${challengeId}/verifications`,
-    }),
+    VERIFICATIONS: {
+      // 특정 단체 챌린지 인증 내역 목록 조회
+      LIST: (challengeId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verifications`,
+      }),
+      //인증 상세 조회
+      DETAILS: (challengeId: number, verificationId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verifications/${verificationId}`,
+      }),
+      //인증 상세 댓글
+      COMMENT: {
+        //댓글 조회
+        LIST: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.GET,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments`,
+        }),
+        //댓글 생성
+        CREATE: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.POST,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments`,
+        }),
+        //댓글/대댓글 수정
+        MODIFY: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.PUT,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}`,
+        }),
+        //댓글/대댓글 삭제
+        DELETE: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.DELETE,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}`,
+        }),
+        //대댓글 생성
+        REPLY: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.POST,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}/replies`,
+        }),
+      },
+    },
 
     // 인증 제출 (생성)
     VERIFY: (challengeId: number) => ({
