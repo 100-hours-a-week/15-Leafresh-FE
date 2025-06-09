@@ -47,6 +47,8 @@ const CHALLENGE_QUERY_KEYS = {
         LIST: {},
       },
     },
+    // 피드
+    FEED: (category: ChallengeCategoryType | undefined) => ['challenges', 'group', 'verifications', category ?? ''],
   },
 
   ETC: {

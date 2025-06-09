@@ -150,9 +150,9 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
 export default ChallengeGroupParticipateList
 
 const Wrapper = styled.div`
-  ${responsiveHorizontalPadding};
-
   height: 100%;
+
+  ${responsiveHorizontalPadding};
 
   position: relative;
   display: flex;

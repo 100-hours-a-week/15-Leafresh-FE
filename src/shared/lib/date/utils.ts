@@ -50,6 +50,16 @@ export const getDayOfWeek = (date: Date): DayType => {
 }
 
 /**
+ * 초(second) 를 "00:00:00" 형식으로 변환
+ */
+export const formatSecondToTime = (second: number): string => {
+  const hours = String(Math.floor(second / 3600)).padStart(2, '0')
+  const minutes = String(Math.floor((second % 3600) / 60)).padStart(2, '0')
+  const seconds = String(second % 60).padStart(2, '0')
+  return `${hours}:${minutes}:${seconds}`
+}
+
+/**
  * ISOFormat 형식의 시간 데이터를 기준으로 몇분 전인지 표시해주는 유틸 함수
  * @param dateString
  * @returns
@@ -75,14 +85,4 @@ export const getTimeDiff = (dateString: ISOFormatString): string => {
 
   // 외
   return `${diffDay}일 전`
-}
-
-/**
- * 초(second) 를 "00:00:00" 형식으로 변환
- */
-export const formatSecondToTime = (second: number): string => {
-  const hours = String(Math.floor(second / 3600)).padStart(2, '0')
-  const minutes = String(Math.floor((second % 3600) / 60)).padStart(2, '0')
-  const seconds = String(second % 60).padStart(2, '0')
-  return `${hours}:${minutes}:${seconds}`
 }

@@ -66,6 +66,9 @@ const CHALLENGE_QUERY_DEFAULTS = {
 
       // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
     },
+
+    // 인증 내역 목록 조회 (피드) - 무작위 챌린지
+    FEED: NO_CACHE,
   },
 
   ETC: {

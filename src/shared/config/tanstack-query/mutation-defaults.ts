@@ -204,7 +204,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMI
 
 // 좋아요 추가
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.CREATE, {
-  // TODO: 좋아요 추가 API 연결
   mutationFn: CreateVerificationLike,
   onSuccess(data, variables, context) {},
 
@@ -215,7 +214,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES
 
 // 좋아요 삭제
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.DELETE, {
-  // TODO: 좋아요 삭제 API 연결
   mutationFn: DeleteVerificationLike,
   onSuccess(data, variables, context) {},
 
