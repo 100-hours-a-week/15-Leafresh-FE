@@ -34,6 +34,10 @@ const MEMBER_URL = {
       value: '/member/profile/modify',
       isProtected: true,
     },
+    BADGE: {
+      name: '뱃지 조회',
+      value: '/member/profile/badge',
+    },
   },
   ALARM: {
     name: '알림 확인',

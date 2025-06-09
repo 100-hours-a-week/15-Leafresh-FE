@@ -10,7 +10,7 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { fetchRequest } from '@shared/lib/api/fetcher'
+import { fetchRequest } from '@shared/lib/api'
 
 /** 보호가 필요한 경로 목록 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
