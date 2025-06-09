@@ -20,7 +20,7 @@ const GroupChallengeParticipateListPage = async ({ params }: GroupChallengeParti
 
   try {
     await queryClient.prefetchInfiniteQuery({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS(idNumber),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS.LIST(idNumber),
       queryFn: ({ pageParam = {} }) =>
         getGroupChallengeParticipateList({
           challengeId: idNumber,
