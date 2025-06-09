@@ -55,6 +55,7 @@ RUN pnpm install --frozen-lockfile
 
 # Copy source and build
 COPY . .
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm run build
 
 # Stage 2: Runtime stage (minimal)
