@@ -29,7 +29,7 @@ const Introduce = () => {
 
   //TODO: 누적 인증 수 API 연결되면 해제
   // const animatedVerificationCount = useCountUp(verificationCount ?? 0, 1200)
-  const animatedVerificationCount = useCountUp(2000, 3000)
+  const animatedVerificationCount = useCountUp(verificationCount ?? 0, 3000)
   const animatedLeafCount = useCountUp(leafCount ?? 0, 3000)
 
   return (
