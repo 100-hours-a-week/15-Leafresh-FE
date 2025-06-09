@@ -81,7 +81,7 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
   let contents
   const groupChallenges: GroupChallengeItem[] = data?.pages.flatMap(page => page.data.groupChallenges ?? []) ?? []
   if (isLoading) {
-    contents = <Loading />
+    contents = <StyledLoading />
   } else if (!groupChallenges || groupChallenges.length === 0) {
     /** 검색값이 없는 경우 */
     contents = (
@@ -240,10 +240,16 @@ const ObserverTrigger = styled.div`
 
 const StyledNoContent = styled(NoContent)`
   margin: 60px 0;
+  min-height: 200px;
 `
 
 const EndMessage = styled.div`
   text-align: center;
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.lfDarkGray.base};
+`
+
+const StyledLoading = styled(Loading)`
+  margin: 60px 0;
+  min-height: 200px;
 `
