@@ -7,5 +7,9 @@ type LoginResponse = {
 }
 
 export const Login = (provider: LowercaseOAuthType) => {
-  return fetchRequest<LoginResponse>(ENDPOINTS.MEMBERS.AUTH.LOGIN(provider))
+  return fetchRequest<LoginResponse>(ENDPOINTS.MEMBERS.AUTH.LOGIN(provider), {
+    query: {
+      origin: encodeURIComponent(window.location.origin),
+    },
+  })
 }
