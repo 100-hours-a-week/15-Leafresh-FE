@@ -1,0 +1,42 @@
+# node_modules: Docker에서 다시 설치하므로 불필요
+node_modules
+
+# Git 관련
+.git
+.gitignore
+
+# 환경 변수 (보안상 절대 포함되면 안 됨)
+.env
+.env.*
+
+# 로그, 캐시
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+.pnpm-store
+.cache
+
+# Next.js 빌드 산출물 (다시 빌드할 것이므로 제외)
+.next
+out
+dist
+
+# 테스트, 문서, 개발 도구
+coverage
+.storybook
+*.spec.js
+*.spec.ts
+*.test.js
+*.test.ts
+tests/
+docs/
+*.md
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+
+# Docker 자체
+docker-compose.yml
+Dockerfile.dev

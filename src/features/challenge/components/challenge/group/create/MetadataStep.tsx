@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { memo, useCallback, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
 
 import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge/constant'
 import ChallengeVerifyExamples, {
@@ -112,6 +113,8 @@ const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepProps) => 
       setIsSubmitted(true)
     }
     if (isMetaValid) {
+      sendGAEvent('event', 'group-create-step-2', { value: 'Step2: 챌린지 다음 버튼' }) // GA: 로그 수집
+
       handleStepChange(2)
     }
   }

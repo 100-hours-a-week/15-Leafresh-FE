@@ -5,7 +5,7 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/fetcher/type'
+import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
 import {
   getGroupVerificationResult,
@@ -21,10 +21,10 @@ export const usePostGroupVerification = (challengeId: number) => {
 
   const qc = useQueryClient()
   return useMutation<ApiResponse<PostGroupVerificationResponse>, ErrorResponse, PostGroupVerificationBody>({
-    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.SUBMIT],
+    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT],
     mutationFn: body => PostGroupVerification({ challengeId, body }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId) })
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.RESULT(challengeId) })
     },
   })
 }
@@ -34,7 +34,7 @@ export const useGroupVerificationResult = (challengeId: number) => {
   const qc = useQueryClient()
 
   const query = useQuery({
-    queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId),
+    queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.RESULT(challengeId),
     queryFn: () => getGroupVerificationResult(challengeId),
     refetchInterval: query => {
       const data = query.state.data
@@ -42,7 +42,7 @@ export const useGroupVerificationResult = (challengeId: number) => {
     },
     refetchOnWindowFocus: false,
     retry: false,
-    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION_RESULT,
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.RESULT,
   })
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export const useGroupVerificationResult = (challengeId: number) => {
       qc.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS(challengeId) })
 
       // 폴링 중지
-      qc.setQueryDefaults(QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId), {
+      qc.setQueryDefaults(QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.RESULT(challengeId), {
         refetchInterval: undefined,
       })
     }

@@ -12,6 +12,7 @@ import { useGroupVerifications } from '@features/challenge/hook/useGroupVerifica
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 export default function GroupVerificationPage({ participateId }: { participateId: string }) {
@@ -21,7 +22,7 @@ export default function GroupVerificationPage({ participateId }: { participateId
   const postMutation = useMutationStore<
     PostGroupVerificationResponse,
     { challengeId: number; body: PostGroupVerificationBody }
-  >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY)
+  >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT)
   const resultQuery = useGroupVerificationResult(challengeId)
 
   const { open: openCameraModal } = useCameraModalStore()
@@ -90,7 +91,8 @@ export default function GroupVerificationPage({ participateId }: { participateId
 }
 
 const Container = styled.div`
-  padding: 20px;
+  ${responsiveHorizontalPadding};
+
   max-width: 500px;
   margin: 0 auto;
   display: flex;

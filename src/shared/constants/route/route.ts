@@ -3,6 +3,7 @@ import { ChallengeCategoryType } from '@entities/challenge/type'
 /**
  * FE라우트 엔드포인트 입니다
  */
+// 레이아웃 체크 필요 ✅  TODO: 뱃지 목록 페이지, 마이페이지, 프로필 수정
 const MAIN_URL = {
   INDEX: {
     name: '메인',
@@ -33,6 +34,10 @@ const MEMBER_URL = {
       value: '/member/profile/modify',
       isProtected: true,
     },
+    BADGE: {
+      name: '뱃지 조회',
+      value: '/member/profile/badge',
+    },
   },
   ALARM: {
     name: '알림 확인',
@@ -56,11 +61,6 @@ const MEMBER_URL = {
 }
 
 const CHALLENGE_URL = {
-  INDEX: {
-    name: '챌린지 목록',
-    value: '/challenge',
-    isProtected: false,
-  },
   PERSONAL: {
     DETAILS: {
       name: '개인 챌린지 상세',
@@ -71,12 +71,14 @@ const CHALLENGE_URL = {
   GROUP: {
     LIST: {
       name: '단체 챌린지 목록',
-      value: (category: ChallengeCategoryType) => `/challenge/group/list?category=${category}`,
+      value: (category?: ChallengeCategoryType) =>
+        category ? `/challenge/group/list?category=${category}` : '/challenge/group/list',
       isProtected: false,
     },
     CREATE: {
       name: '단체 챌린지 생성',
-      value: '/challenge/group/create',
+      value: (category?: ChallengeCategoryType) =>
+        category ? `/challenge/group/create?category=${category}` : `/challenge/group/create`,
       isProtected: true,
     },
     MODIFY: {
@@ -101,6 +103,11 @@ const CHALLENGE_URL = {
         isProtected: false,
       },
     },
+    FEED: {
+      name: '챌린지 인증 피드',
+      value: `/challenge/group/feed`,
+      isProtected: false,
+    },
   },
   PARTICIPATE: {
     INDEX: {
@@ -119,7 +126,7 @@ const CHALLENGE_URL = {
 const STORE_URL = {
   INDEX: {
     name: '나뭇잎 상점',
-    value: `store`,
+    value: `/store`,
     isProtected: false,
   },
 }
