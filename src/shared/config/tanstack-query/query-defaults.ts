@@ -54,8 +54,16 @@ const CHALLENGE_QUERY_DEFAULTS = {
     DETAILS: DEFAULT,
     // 목록 (검색 포함)
     LIST: DEFAULT,
-    // 인증 내역 목록 조회
-    VERIFICATIONS: DEFAULT,
+    // 인증
+    VERIFICATIONS: {
+      //인증 목록
+      LIST: DEFAULT,
+      //인증 상세
+      DETAILS: NO_CACHE,
+      //인증 댓글
+      COMMENT: DEFAULT,
+    },
+
     // 규약 조회
     RULES: DEFAULT,
     // 인증 결과 조회 (롱폴링)

@@ -10,7 +10,17 @@ const CHALLENGE_MUTATION_KEYS = {
     MODIFY: ['challenges', 'group', 'modify'] as const, // 수정
     DELETE: ['challenges', 'group', 'delete'] as const, // 삭제
     PARTICIPATE: ['challenges', 'group', 'participate'] as const, // 참여
-    VERIFY: ['challenges', 'group', 'verify'] as const, // 인증 제출
+    VERIFY: {
+      SUBMIT: ['challenges', 'group', 'verify'] as const, // 인증 제출
+      COMMENT: {
+        CREATE: ['challenges', 'group', 'verify', 'comment', 'create'] as const, //댓글 작성
+        REPLY: {
+          CREATE: ['challenges', 'group', 'verify', 'comment', 'reply', 'create'] as const, //대댓글 작성
+          DELETE: ['challenges', 'group', 'verify', 'comment', 'reply', 'delete'] as const, //댓글/대댓글 삭제
+          MODIFY: ['challenges', 'group', 'verify', 'comment', 'reply', 'modify'] as const, //댓글/대댓글 수정
+        },
+      },
+    },
   },
 }
 

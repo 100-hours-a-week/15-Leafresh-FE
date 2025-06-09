@@ -33,8 +33,26 @@ const CHALLENGE_QUERY_KEYS = {
       category,
       input ?? '',
     ],
-    // 인증 내역 목록 조회
-    VERIFICATIONS: (challengeId: number) => ['challenges', 'group', challengeId, 'verifications'],
+    // 인증
+    VERIFICATIONS: {
+      LIST: (challengeId: number) => ['challenges', 'group', challengeId, 'verifications'],
+      DETAILS: (challengeId: number, verificationId: number) => [
+        'challenges',
+        'group',
+        challengeId,
+        'verifications',
+        verificationId,
+      ],
+      COMMENT: (challengeId: number, verificationId: number) => [
+        'challenges',
+        'group',
+        challengeId,
+        'verifications',
+        verificationId,
+        'comments',
+      ],
+    },
+
     // 규칙
     RULES: (challengeId: number) => ['challenges', 'group', challengeId, 'rules'],
     // 인증 결과 확인

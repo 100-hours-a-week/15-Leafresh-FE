@@ -21,7 +21,7 @@ export const usePostGroupVerification = (challengeId: number) => {
 
   const qc = useQueryClient()
   return useMutation<ApiResponse<PostGroupVerificationResponse>, ErrorResponse, PostGroupVerificationBody>({
-    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFY],
+    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.SUBMIT],
     mutationFn: body => PostGroupVerification({ challengeId, body }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION_RESULT(challengeId) })

@@ -16,6 +16,10 @@ import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
 import { handleError } from './utils'
+import { postVerificationComment } from '@features/challenge/api/participate/verification/post-verification-comment'
+import { postVerificationReply } from '@features/challenge/api/participate/verification/post-verification-reply'
+import { deleteVerificationComment } from '@features/challenge/api/participate/verification/delete-verification-comment'
+import { putVerificationComment } from '@features/challenge/api/participate/verification/put-verification-comment'
 
 const queryClient = getQueryClient()
 
@@ -123,7 +127,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
 })
 
 // 인증 제출 (단체)
-queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.SUBMIT, {
   mutationFn: PostGroupVerification,
   onSuccess(data, variables, context) {
     const { challengeId } = variables
@@ -145,7 +149,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
 
     //인증 내역 목록
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS.LIST(challengeId),
     })
 
     //챌린지 일별 인증 기록
@@ -164,6 +168,66 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY, {
     })
   },
 
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+//댓글 작성
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.COMMENT.CREATE, {
+  //TODO: api 연결
+  mutationFn: postVerificationComment,
+  onSuccess(data, variables, context) {
+    const { challengeId, verificationId } = variables
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS.COMMENT(challengeId, verificationId),
+    })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+//대댓글 생성
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.COMMENT.REPLY.CREATE, {
+  //TODO: api 연결
+  mutationFn: postVerificationReply,
+  onSuccess(data, variables, context) {
+    const { challengeId, verificationId } = variables
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS.COMMENT(challengeId, verificationId),
+    })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+//댓글/대댓글 삭제
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.COMMENT.REPLY.DELETE, {
+  //TODO: api 연결
+  mutationFn: deleteVerificationComment,
+  onSuccess(data, variables, context) {
+    const { challengeId, verificationId } = variables
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS.COMMENT(challengeId, verificationId),
+    })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+//댓글/대댓글 수정
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFY.COMMENT.REPLY.MODIFY, {
+  //TODO: api 연결
+  mutationFn: putVerificationComment,
+  onSuccess(data, variables, context) {
+    const { challengeId, verificationId } = variables
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATIONS.COMMENT(challengeId, verificationId),
+    })
+  },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
   },
