@@ -4,10 +4,9 @@ import { cookies } from 'next/headers'
 
 import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
+import { BASE_URL } from '../fetcher'
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshServerAccessToken } from './server-reissue'
-
-const BASE_URL = 'https://leafresh.app'
 
 export async function serverFetchRequest<T>(
   endpoint: EndpointType,
