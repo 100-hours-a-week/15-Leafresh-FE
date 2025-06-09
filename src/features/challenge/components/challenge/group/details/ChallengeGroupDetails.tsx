@@ -289,7 +289,6 @@ const ThumbnailImageWrapper = styled.div`
 `
 
 const Thumbnail = styled(Image)`
-  width: 100%;
   object-fit: cover;
   border-radius: ${theme.radius.base};
 `
