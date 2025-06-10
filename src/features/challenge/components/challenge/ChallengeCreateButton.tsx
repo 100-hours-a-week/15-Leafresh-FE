@@ -6,13 +6,27 @@ import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
 import { URL } from '@shared/constants/route/route'
+import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 const ChallengeCreateButton = () => {
-  const pathname = usePathname()
   const router = useRouter()
+  const pathname = usePathname()
+
+  const { isLoggedIn } = useAuth()
+  const { openConfirmModal } = useConfirmModalStore()
 
   const handleCreateChallenge = () => {
+    // #0. 로그인 상태가 아닐 때
+    if (!isLoggedIn) {
+      openConfirmModal({
+        title: '챌린지 생성은 로그인이 필요합니다.',
+        description: '로그인 페이지로 이동 하시겠습니까?',
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+      })
+      return
+    }
     sendGAEvent('event', 'group-create-step-1', { value: 'Step1: 챌린지 생성 버튼' }) // GA: 로그 수집
     router.push(URL.CHALLENGE.GROUP.CREATE.value())
   }

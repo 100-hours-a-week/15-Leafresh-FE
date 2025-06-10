@@ -86,7 +86,7 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
     /** 검색값이 없는 경우 */
     contents = (
       <StyledNoContent
-        title='검색 결과가 없습니다'
+        title='검색돤 챌린지가 없습니다'
         buttonText='챌린지 생성하기'
         clickHandler={() => router.push(URL.CHALLENGE.GROUP.CREATE.value(category))} // 해당 카테고리로 생성하러 가기
       />
