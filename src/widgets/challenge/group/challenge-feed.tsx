@@ -14,11 +14,11 @@ import { FeedList } from '@features/challenge/components/challenge/group/feed/Fe
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-interface FeedPageProps {
+interface GroupChallengeFeedPageProps {
   className?: string
 }
 
-const FeedPage = ({ className }: FeedPageProps): ReactNode => {
+export const GroupChallengeFeedPage = ({ className }: GroupChallengeFeedPageProps): ReactNode => {
   /** 1. 카테고리 목록 조회 API */
   const { data: categoriesData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.CATEGORIES,
@@ -57,8 +57,6 @@ const FeedPage = ({ className }: FeedPageProps): ReactNode => {
     </Wrapper>
   )
 }
-
-export default FeedPage
 
 const Wrapper = styled.div`
   height: 100%;

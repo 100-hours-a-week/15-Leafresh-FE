@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { FullFormValues, GroupChallengeFormPage } from '@widgets/challenge'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryTypeKor } from '@entities/challenge/type'
@@ -9,13 +10,11 @@ import { getGroupChallengeDetails } from '@features/challenge/api/get-group-chal
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-import GroupChallengeFormPage, { FullFormValues } from '../GroupChallengeFormPage'
-
-interface ChallengeGroupModifyPageProps {
+interface PageProps {
   challengeId: number
 }
 
-const ChallengeGroupModifyPage = ({ challengeId }: ChallengeGroupModifyPageProps): ReactNode => {
+const Page = ({ challengeId }: PageProps): ReactNode => {
   /** 단체 챌린지 상세 가져오기 */
   const { data: challengeData, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
@@ -68,4 +67,4 @@ const ChallengeGroupModifyPage = ({ challengeId }: ChallengeGroupModifyPageProps
   return contents
 }
 
-export default ChallengeGroupModifyPage
+export default Page

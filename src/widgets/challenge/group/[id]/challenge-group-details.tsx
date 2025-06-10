@@ -33,7 +33,7 @@ import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
 
-import ChallengeVerifyCarousel from './ChallengeVerifyCarousel'
+import ChallengeVerifyCarousel from '../../../../features/challenge/components/challenge/group/details/ChallengeVerifyCarousel'
 
 type WarningType = {
   isWarning: boolean
@@ -48,12 +48,12 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   { isWarning: true, value: '부적절한 인증 사진은 관리자에 의해 삭제될 수 있습니다.' },
 ]
 
-interface ChallengeGroupDetailsProps {
+interface GroupChallengeDetailsPageProps {
   challengeId: number
   className?: string
 }
 
-const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
+export const GroupChallengeDetailsPage = ({ challengeId, className }: GroupChallengeDetailsPageProps) => {
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
 
@@ -261,8 +261,6 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     </Wrapper>
   )
 }
-
-export default ChallengeGroupDetails
 
 const Wrapper = styled.div`
   ${responsiveHorizontalPadding};

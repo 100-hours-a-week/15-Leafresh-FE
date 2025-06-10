@@ -3,19 +3,19 @@
 import { notFound } from 'next/navigation'
 
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { GroupChallengeParticipateListPage } from '@widgets/challenge'
 
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import { getGroupChallengeParticipateList } from '@features/challenge/api/participate/get-group-participant-list'
-import ChallengeGroupParticipateList from '@features/challenge/components/challenge/participate/list/ChallengeGroupParticipateList'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-interface GroupChallengePageProps {
+interface PageProps {
   params: Promise<{ id: string }>
 }
 
-const GroupChallengePage = async ({ params }: GroupChallengePageProps) => {
+const Page = async ({ params }: PageProps) => {
   const { id } = await params
   const idNumber = Number(id)
   if (isNaN(idNumber)) return notFound()
@@ -46,7 +46,7 @@ const GroupChallengePage = async ({ params }: GroupChallengePageProps) => {
 
     return (
       <HydrationBoundary state={dehydratedState}>
-        <ChallengeGroupParticipateList challengeId={idNumber} />
+        <GroupChallengeParticipateListPage challengeId={idNumber} />
       </HydrationBoundary>
     )
   } catch (err) {
@@ -55,4 +55,4 @@ const GroupChallengePage = async ({ params }: GroupChallengePageProps) => {
   }
 }
 
-export default GroupChallengePage
+export default Page

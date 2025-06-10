@@ -18,9 +18,9 @@ import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
 
-import VerificationCard from '../verification/verification-card'
+import VerificationCard from '../../../../features/challenge/components/challenge/participate/verification/verification-card'
 
-interface ChallengeGroupParticipateListProps {
+interface GroupChallengeParticipateListPageProps {
   challengeId: number
 }
 
@@ -74,7 +74,7 @@ const verificationsDummy: Verification[] = [
 ]
 // const verificationsDummy: Verification[] = []
 
-const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipateListProps) => {
+export const GroupChallengeParticipateListPage = ({ challengeId }: GroupChallengeParticipateListPageProps) => {
   const router = useRouter()
 
   /** 단체 챌린지 상세 가져오기 */
@@ -146,8 +146,6 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
     </Wrapper>
   )
 }
-
-export default ChallengeGroupParticipateList
 
 const Wrapper = styled.div`
   height: 100%;

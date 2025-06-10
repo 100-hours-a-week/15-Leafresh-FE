@@ -16,7 +16,7 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-const ChallengeListPage = () => {
+export const GroupChallengeListPage = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [input, setInput] = useState<string>('')
@@ -159,8 +159,6 @@ const ChallengeListPage = () => {
     </Container>
   )
 }
-
-export default ChallengeListPage
 
 const Container = styled.div`
   ${responsiveHorizontalPadding};

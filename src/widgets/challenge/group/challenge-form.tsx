@@ -71,7 +71,7 @@ interface GroupChallengeFormPageProps {
   challengeId?: number
 }
 
-const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: GroupChallengeFormPageProps) => {
+export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: GroupChallengeFormPageProps) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const openToast = useToast()
@@ -261,8 +261,6 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
     </PageWrapper>
   )
 }
-
-export default GroupChallengeFormPage
 
 const PageWrapper = styled.div`
   ${responsiveHorizontalPadding};
