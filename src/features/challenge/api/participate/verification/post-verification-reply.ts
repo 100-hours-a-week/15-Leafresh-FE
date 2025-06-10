@@ -7,7 +7,7 @@ export type PostReplytBody = {
   comment: string
 }
 
-type PostReplyVariables = {
+export type PostReplyVariables = {
   challengeId: number
   verificationId: number
   commentId: number
@@ -16,7 +16,7 @@ type PostReplyVariables = {
 
 export const postVerificationReply = ({ challengeId, verificationId, commentId, body }: PostReplyVariables) => {
   return fetchRequest<CommentResponse>(
-    ENDPOINTS.CHALLENGE.GROUP.VERIFICATIONS.COMMENT.REPLY(challengeId, verificationId, commentId),
+    ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY(challengeId, verificationId, commentId),
     {
       body,
     },
