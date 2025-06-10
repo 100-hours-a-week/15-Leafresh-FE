@@ -136,7 +136,7 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
 
 // 채팅 윈도우 컨테이너
 const Window = styled.div<{ open: boolean; animationComplete: boolean }>`
-  position: fixed;
+  position: absolute;
   max-width: 385px;
   width: 90%;
   height: 95%;
