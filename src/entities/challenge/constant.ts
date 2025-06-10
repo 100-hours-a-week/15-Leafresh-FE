@@ -7,6 +7,12 @@ export const CHALLENGE_PARTICIPATION_STATUS = ['NOT_STARTED', 'ONGOING', 'COMPLE
 export const CHALLENGE_VERIFICATION_RESULT = [
   'SUCCESS', // 성공
   'FAILURE', // 실패
+] as const
+
+/** 피드 인증 여부 */
+export const FEED_VERIFICATION_STAUS = [
+  'SUCCESS', // 성공
+  'FAILURE', // 실패
   'PENDING_APPROVE', // 인증 중
 ] as const
 
