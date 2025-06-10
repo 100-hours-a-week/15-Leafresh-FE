@@ -1,7 +1,5 @@
-'use client'
-
-import ChallengeParticipatePage from '@features/challenge/components/challenge/participate/ChallengeParticipatePage'
+import { ChallengeGroupParticipateListPage } from '@widgets/challenge'
 
 export default function Page() {
-  return <ChallengeParticipatePage />
+  return <ChallengeGroupParticipateListPage />
 }

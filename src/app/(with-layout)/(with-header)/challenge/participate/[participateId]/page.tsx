@@ -1,6 +1,10 @@
-import GroupVerificationPage from '@features/challenge/components/challenge/participate/GroupVerificationPage'
+import { ChallengeGroupVerificationStatusPage } from '@widgets/challenge'
 
-export default async function Page({ params }: { params: Promise<{ participateId: string }> }) {
+interface PageProps {
+  params: Promise<{ participateId: string }>
+}
+
+export default async function Page({ params }: PageProps) {
   const { participateId } = await params
-  return <GroupVerificationPage participateId={participateId} />
+  return <ChallengeGroupVerificationStatusPage participateId={participateId} />
 }

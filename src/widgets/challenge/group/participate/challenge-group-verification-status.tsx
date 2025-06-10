@@ -15,7 +15,11 @@ import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-export default function GroupVerificationPage({ participateId }: { participateId: string }) {
+interface ChallengeGroupVerificationStatusPageProps {
+  participateId: string
+}
+
+export const ChallengeGroupVerificationStatusPage = ({ participateId }: ChallengeGroupVerificationStatusPageProps) => {
   const challengeId = Number(participateId)
 
   const { data, isLoading, error } = useGroupVerifications(challengeId)

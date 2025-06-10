@@ -91,7 +91,7 @@ interface ChallengePersonalDetailsProps {
   className?: string
 }
 
-const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalDetailsProps): ReactNode => {
+export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalDetailsProps): ReactNode => {
   const router = useRouter()
   const openToast = useToast()
   const { open: openCameraModal } = useCameraModalStore()
@@ -291,8 +291,6 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
     </Wrapper>
   )
 }
-
-export default ChallengePersonalDetails
 
 const Wrapper = styled.div`
   ${responsiveHorizontalPadding};

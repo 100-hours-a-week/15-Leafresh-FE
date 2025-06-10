@@ -1,19 +1,18 @@
 import { notFound } from 'next/navigation'
 
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { ChallengePersonalDetails } from '@widgets/challenge'
 
 import { getPersonalChallengeDetails } from '@features/challenge/api/get-personal-challenge-details'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import ChallengePersonalDetails from './ChallengePersonalDetails'
-
-interface PersonalChallengeDetailsProps {
+interface PageProps {
   params: Promise<{ id: string }>
 }
 
-const PersonalChallengeDetails = async ({ params }: PersonalChallengeDetailsProps) => {
+const Page = async ({ params }: PageProps) => {
   const { id } = await params
 
   const idNumber = Number(id)
@@ -41,4 +40,4 @@ const PersonalChallengeDetails = async ({ params }: PersonalChallengeDetailsProp
   }
 }
 
-export default PersonalChallengeDetails
+export default Page
