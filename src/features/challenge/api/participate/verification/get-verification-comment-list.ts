@@ -1,26 +1,29 @@
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher'
+import { ISOFormatString } from '@shared/types/date'
 
 export type CommentResponse = {
-  comment: {
-    id: number
-    content: string
-    createdAt: string
-    updatedAt: string
-    nickname: string
-    profileImageUrl: string
-    parentCommentId: null
-    isMine: boolean
-    deleted: boolean
-    replies?: RepliesType[]
-  }[]
+  comment: CommentType[]
+}
+
+export type CommentType = {
+  id: number
+  content: string
+  createdAt: ISOFormatString
+  updatedAt: ISOFormatString
+  nickname: string
+  profileImageUrl: string
+  parentCommentId: null
+  isMine: boolean
+  deleted: boolean
+  replies?: RepliesType[]
 }
 
 export type RepliesType = {
   id: number
   content: string
-  createdAt: string
-  updatedAt: string
+  createdAt: ISOFormatString
+  updatedAt: ISOFormatString
   nickname: string
   profileImageUrl: string
   parentCommentId: number
@@ -29,7 +32,5 @@ export type RepliesType = {
 }
 
 export const getVerificationCommemtList = (challengeId: number, verificationId: number) => {
-  return fetchRequest<CommentResponse>(
-    ENDPOINTS.CHALLENGE.GROUP.VERIFICATIONS.COMMENT.LIST(challengeId, verificationId),
-  )
+  return fetchRequest<CommentResponse>(ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.COMMENT.LIST(challengeId, verificationId))
 }
