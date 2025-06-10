@@ -99,19 +99,7 @@ jobs:
       - name: Start Next.js app for testing
         run: pnpm run start &
       - name: Wait for App to Start (Health Check)
-        run: |
-          TIMEOUT=30
-          sleep $TIMEOUT;
-          # for i in $(seq 1 $TIMEOUT); do
-          #   if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 >/dev/null 2>&1 && [ "$status" -eq "200" ]; then
-          #     echo "Application is ready"
-          #     exit 0
-          #   fi
-          #   echo "Waiting for application... ($i/$TIMEOUT)"
-          #   sleep 1
-          # done
-          # echo "Application did not start within the timeout"
-          # exit 1
+        run: sleep 20
       - name: Run Playwright Tests (${{ matrix.browser }})
         run: pnpm exec playwright test --project=chromium
         env:
@@ -124,9 +112,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set short commit SHA
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Docker Login
         uses: docker/login-action@v3
@@ -150,9 +135,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set short commit SHA
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
-
       - name: Docker Login
         uses: docker/login-action@v3
         with:
@@ -171,6 +153,8 @@ jobs:
     name: Deploy to Dev Server
     if: startsWith(github.ref, 'refs/tags/v') && endsWith(github.ref, '-dev')
     runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.set-status.outputs.status }}
     steps:
       - name: Checkout for git access
         uses: actions/checkout@v3
@@ -178,7 +162,7 @@ jobs:
       - name: Extract tag name
         id: tag
         run: |
-          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          TAG_NAME="${GITHUB_REF#refs/tags/v}"
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Deploy to Dev
@@ -205,7 +189,17 @@ jobs:
       - name: Tag and Push Docker Image (tag = ${{ env.TAG_NAME }})
         run: |
           docker pull jchanho99/frontend-develop:latest
-          docker tag jchanho99/frontend-develop:latest jchanho99/frontend-develop:${TAG_NAME}
+          docker image tag jchanho99/frontend-develop:latest temp-image-with-label
+
+          # 임시 컨테이너 생성 후 레이블 추가로 digest 변경
+          docker container create --name temp-container temp-image-with-label
+          docker commit --change "LABEL force-push-tag=${TAG_NAME}-$(date +%s)" temp-container jchanho99/frontend-develop:${TAG_NAME}
+
+          # 정리
+          docker rm temp-container
+          docker rmi temp-image-with-label
+
+          # 푸시
           docker push jchanho99/frontend-develop:${TAG_NAME}
 
       - name: Set Status (Dev)
@@ -220,6 +214,8 @@ jobs:
   deploy-prod:
     name: Deploy to Prod Server (Blue-Green)
     if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-dev')
+    outputs:
+      status: ${{ steps.set-status.outputs.status }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout for git access
@@ -313,43 +309,40 @@ jobs:
         run: echo "status=success" >> "$GITHUB_OUTPUT"
 
       - name: Set Status (Prod Failure)
-        if: failure() && steps.deploy-step.outcome == 'failure' # deploy-step이 실패했을 때만
+        if: failure() && steps.deploy-prod.outcome == 'failure' # deploy-step이 실패했을 때만
         run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   notify:
     name: Discord Notification
     needs: [deploy-dev, deploy-prod] # 명시적으로 종속성 추가
     if: |
-      (needs.deploy-dev.result != 'skipped') || (needs.deploy-prod.result != 'skipped')
+      always() &&
+      (
+        needs.deploy-dev.result != 'skipped' || 
+        needs.deploy-prod.result != 'skipped'
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Message
         run: |
-          MESSAGE=""
-
-          # Check Dev Deploy Status
-          if [ "${{ needs.deploy-dev.result }}" != "" ]; then
-            STATUS_DEV="${{ needs.deploy-dev.outputs.status }}"
-            if [ "$STATUS_DEV" = "success" ]; then
-              MESSAGE="${MESSAGE}✅ \`[FE develop]\` 배포 완료\n"
-            elif [ "$STATUS_DEV" = "failure" ]; then
-              MESSAGE="${MESSAGE}🚨 \`[FE develop]\` 배포 실패\n"
-            fi
+          TAG="${GITHUB_REF#refs/tags/}"
+          if [[ "${{ needs.deploy-dev.result }}" != 'skipped' ]]; then
+            STATUS="${{ needs.deploy-dev.outputs.status }}"
+          elif [[ "${{ needs.deploy-prod.result }}" != 'skipped' ]]; then
+            STATUS="${{ needs.deploy-prod.outputs.status }}"
+          else
+            STATUS="unknown"
           fi
 
-          # Check Prod Deploy Status
-          if [ "${{ needs.deploy-prod.result }}" != "" ]; then
-            STATUS_PROD="${{ needs.deploy-prod.outputs.status }}"
-            if [ "$STATUS_PROD" = "success" ]; then
-              MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료 (Blue-Green)\n"
-            elif [ "$STATUS_PROD" = "failure" ]; then
-              MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패 (헬스체크 실패 등)\n"
-            fi
+          if [[ "$STATUS" == "success" ]]; then
+            MESSAGE="✅ [${TAG}] 배포 완료"
+          elif [[ "$STATUS" == "failure" ]]; then
+            MESSAGE="🚨 [${TAG}] 배포 실패"
+          else
+            MESSAGE="⚠️ [${TAG}] 배포 상태를 알 수 없습니다."
           fi
 
-          if [ -z "$MESSAGE" ]; then
-            MESSAGE="⚠️ 배포 상태 정보를 찾을 수 없습니다."
-          fi
+          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
 
           curl -H "Content-Type: application/json" \
                -X POST \
