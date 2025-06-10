@@ -196,8 +196,9 @@ jobs:
           docker commit --change "LABEL force-push-tag=${TAG_NAME}-$(date +%s)" temp-container jchanho99/frontend-develop:${TAG_NAME}
 
           # 정리
-          docker rm temp-container
-          docker rmi temp-image-with-label
+          docker container stop temp-container
+          docker container rm temp-container
+          docker image rm temp-image-with-label
 
           # 푸시
           docker push jchanho99/frontend-develop:${TAG_NAME}
