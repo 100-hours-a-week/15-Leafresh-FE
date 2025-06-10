@@ -20,11 +20,11 @@ import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
-import ProfileBox from './ProfileBox'
-import ProfileCard from './ProfileCard'
-import RecentBadgeBox from './RecentBadgeBox'
+import ProfileBox from '../../../features/member/components/member/profile/mypage/ProfileBox'
+import ProfileCard from '../../../features/member/components/member/profile/mypage/ProfileCard'
+import RecentBadgeBox from '../../../features/member/components/member/profile/mypage/RecentBadgeBox'
 
-const Mypage = () => {
+export const MemberProfileMypage = () => {
   const router = useRouter()
   const [count, setCount] = useState(8)
   const [isPolling, setIsPolling] = useState(false)
@@ -197,8 +197,6 @@ const Mypage = () => {
     </Container>
   )
 }
-
-export default Mypage
 
 const Container = styled.div`
   display: flex;

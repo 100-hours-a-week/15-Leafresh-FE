@@ -25,7 +25,7 @@ import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
-interface ProfileModifyPageProps {
+interface MemberProfileModifyPageProps {
   className?: string
 }
 
@@ -38,7 +38,7 @@ type ProfileForm = z.infer<typeof profileSchema>
 
 const maxLength = 20
 
-const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => {
+export const MemberProfileModifyPage = ({ className }: MemberProfileModifyPageProps): ReactNode => {
   const router = useRouter()
   const openToast = useToast()
 
@@ -210,8 +210,6 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
     </Container>
   )
 }
-
-export default ProfileModifyPage
 
 const Container = styled.div`
   max-width: 24rem;

@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { MemberStoreOrderListPage } from '@widgets/member'
 
 import { getMemberStoreOrderList } from '@features/member/api/store/get-order-list'
-import MemberOrderListPage from '@features/member/components/store/order-list-page'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
@@ -20,7 +20,7 @@ const Page = async () => {
 
     return (
       <HydrationBoundary state={dehydratedState}>
-        <MemberOrderListPage />
+        <MemberStoreOrderListPage />
       </HydrationBoundary>
     )
   } catch (err) {

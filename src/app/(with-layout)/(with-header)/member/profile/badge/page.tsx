@@ -1,6 +1,6 @@
-import BadgePage from '@features/member/components/member/profile/badge'
+import { MemberBadgeListPage } from '@widgets/member'
 
 const Page = () => {
-  return <BadgePage />
+  return <MemberBadgeListPage />
 }
 export default Page

@@ -32,7 +32,7 @@ export function formatRelativeTime(target: Date): string {
   })
 }
 
-const MemberAlarmList = () => {
+export const MemberAlarmList = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
   const { mutate: ReadAlarmMutate } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
 
@@ -80,8 +80,6 @@ const MemberAlarmList = () => {
     </Wrapper>
   )
 }
-
-export default MemberAlarmList
 
 const Wrapper = styled.div`
   ${responsiveHorizontalPadding};

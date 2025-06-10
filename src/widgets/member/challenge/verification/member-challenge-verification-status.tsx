@@ -15,11 +15,13 @@ import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-interface ChallengeGroupVerificationStatusPageProps {
+interface MemberChallengeVerificationStatusPageProps {
   participateId: string
 }
 
-export const ChallengeGroupVerificationStatusPage = ({ participateId }: ChallengeGroupVerificationStatusPageProps) => {
+export const MemberChallengeVerificationStatusPage = ({
+  participateId,
+}: MemberChallengeVerificationStatusPageProps) => {
   const challengeId = Number(participateId)
 
   const { data, isLoading, error } = useGroupVerifications(challengeId)

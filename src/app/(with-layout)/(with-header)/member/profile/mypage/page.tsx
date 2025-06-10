@@ -1,6 +1,6 @@
-import Mypage from '@features/member/components/member/profile/mypage/Mypage'
+import { MemberProfileModifyPage } from '@widgets/member'
 
 const Page = () => {
-  return <Mypage />
+  return <MemberProfileModifyPage />
 }
 export default Page

@@ -17,61 +17,7 @@ import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-// const dummyMemberGroupChallenge: GroupChallengeResponse[] = [
-//   {
-//     id: 1,
-//     name: '제로 웨이스트 도전!',
-//     description: '일회용품 줄이기 미션에 도전하세요!',
-//     startDate: '2025-06-01' as DateFormatString,
-//     endDate: '2025-06-30' as DateFormatString,
-//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     currentParticipantCount: 42,
-//     category: 'UPCYCLING',
-//   },
-//   {
-//     id: 2,
-//     name: '텀블러 챌린지',
-//     description: '텀블러를 사용하고 인증해요!',
-//     startDate: '2025-06-05' as DateFormatString,
-//     endDate: '2025-06-20' as DateFormatString,
-//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     currentParticipantCount: 18,
-//     category: 'ZERO_WASTE',
-//   },
-//   {
-//     id: 3,
-//     name: '플로깅 마스터',
-//     description: '조깅하며 쓰레기를 줍는 챌린지!',
-//     startDate: '2025-06-10' as DateFormatString,
-//     endDate: '2025-07-10' as DateFormatString,
-//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     currentParticipantCount: 73,
-//     category: 'ZERO_WASTE',
-//   },
-//   {
-//     id: 4,
-//     name: '친환경 장보기',
-//     description: '비닐 대신 장바구니 쓰기 도전!',
-//     startDate: '2025-06-15' as DateFormatString,
-//     endDate: '2025-06-30' as DateFormatString,
-//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     currentParticipantCount: 55,
-//     category: 'ZERO_WASTE',
-//   },
-//   {
-//     id: 5,
-//     name: '재활용 분리배출 고수',
-//     description: '올바른 분리배출 습관 챌린지',
-//     startDate: '2025-06-20' as DateFormatString,
-//     endDate: '2025-07-15' as DateFormatString,
-//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     currentParticipantCount: 39,
-//     category: 'ZERO_WASTE',
-//   },
-// ]
-// const dummyMemberGroupChallenge: GroupChallengeResponse[] = []
-
-const MemberChallengeCreationsPage = (): ReactNode => {
+export const MemberChallengeCreateListPage = (): ReactNode => {
   const router = useRouter()
   const { userInfo } = useAuth()
 
@@ -148,8 +94,6 @@ const MemberChallengeCreationsPage = (): ReactNode => {
   )
 }
 
-export default MemberChallengeCreationsPage
-
 const Wrapper = styled.div`
   ${responsiveHorizontalPadding};
 
@@ -196,3 +140,57 @@ const EndMessage = styled.div`
 const StyledNoContent = styled(NoContent)`
   height: 100%;
 `
+
+// const dummyMemberGroupChallenge: GroupChallengeResponse[] = [
+//   {
+//     id: 1,
+//     name: '제로 웨이스트 도전!',
+//     description: '일회용품 줄이기 미션에 도전하세요!',
+//     startDate: '2025-06-01' as DateFormatString,
+//     endDate: '2025-06-30' as DateFormatString,
+//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+//     currentParticipantCount: 42,
+//     category: 'UPCYCLING',
+//   },
+//   {
+//     id: 2,
+//     name: '텀블러 챌린지',
+//     description: '텀블러를 사용하고 인증해요!',
+//     startDate: '2025-06-05' as DateFormatString,
+//     endDate: '2025-06-20' as DateFormatString,
+//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+//     currentParticipantCount: 18,
+//     category: 'ZERO_WASTE',
+//   },
+//   {
+//     id: 3,
+//     name: '플로깅 마스터',
+//     description: '조깅하며 쓰레기를 줍는 챌린지!',
+//     startDate: '2025-06-10' as DateFormatString,
+//     endDate: '2025-07-10' as DateFormatString,
+//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+//     currentParticipantCount: 73,
+//     category: 'ZERO_WASTE',
+//   },
+//   {
+//     id: 4,
+//     name: '친환경 장보기',
+//     description: '비닐 대신 장바구니 쓰기 도전!',
+//     startDate: '2025-06-15' as DateFormatString,
+//     endDate: '2025-06-30' as DateFormatString,
+//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+//     currentParticipantCount: 55,
+//     category: 'ZERO_WASTE',
+//   },
+//   {
+//     id: 5,
+//     name: '재활용 분리배출 고수',
+//     description: '올바른 분리배출 습관 챌린지',
+//     startDate: '2025-06-20' as DateFormatString,
+//     endDate: '2025-07-15' as DateFormatString,
+//     imageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+//     currentParticipantCount: 39,
+//     category: 'ZERO_WASTE',
+//   },
+// ]
+// const dummyMemberGroupChallenge: GroupChallengeResponse[] = []

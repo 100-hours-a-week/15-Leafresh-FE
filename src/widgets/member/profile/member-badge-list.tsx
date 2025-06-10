@@ -9,9 +9,9 @@ import Loading from '@shared/components/loading'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { theme } from '@shared/styles/theme'
 
-import BadgeTabs from './BadgeTab'
+import BadgeTabs from '../../../features/member/components/member/profile/badge/BadgeTab'
 
-const BadgePage = () => {
+export const MemberBadgeListPage = () => {
   const {
     data: badgeListData,
     isLoading,
@@ -42,8 +42,6 @@ const BadgePage = () => {
     </Container>
   )
 }
-
-export default BadgePage
 
 const Container = styled.div`
   display: flex;

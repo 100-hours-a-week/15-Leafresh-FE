@@ -64,7 +64,7 @@ const dummyMemberStoreOrderList: PurchaseProduct[] = [
     purchasedAt: new Date().toISOString() as ISOFormatString, // 오늘
   },
 ]
-const MemberOrderListPage = (): ReactNode => {
+export const MemberStoreOrderListPage = (): ReactNode => {
   const router = useRouter()
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberStoreOrderList()
@@ -121,8 +121,6 @@ const MemberOrderListPage = (): ReactNode => {
     </Container>
   )
 }
-
-export default MemberOrderListPage
 
 interface ProductCardProps {
   data: PurchaseProduct

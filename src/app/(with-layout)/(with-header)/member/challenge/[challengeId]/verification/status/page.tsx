@@ -1,4 +1,4 @@
-import { ChallengeGroupVerificationStatusPage } from '@widgets/challenge'
+import { MemberChallengeVerificationStatusPage } from '@widgets/member'
 
 interface PageProps {
   params: Promise<{ participateId: string }>
@@ -6,5 +6,5 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { participateId } = await params
-  return <ChallengeGroupVerificationStatusPage participateId={participateId} />
+  return <MemberChallengeVerificationStatusPage participateId={participateId} />
 }

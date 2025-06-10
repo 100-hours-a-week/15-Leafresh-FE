@@ -21,7 +21,7 @@ const statusMap: Record<number, ChallengeStatus> = {
   2: 'completed',
 }
 
-export const ChallengeGroupParticipateListPage = () => {
+export const MemberChallengeParticipateListPage = () => {
   const [tab, setTab] = useState(1)
   const status = statusMap[tab]
   const router = useRouter()
