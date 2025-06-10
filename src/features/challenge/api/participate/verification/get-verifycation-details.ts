@@ -1,7 +1,7 @@
-import { ChallengeCategoryType, ChallengeVerificationResultType } from '@entities/challenge/type'
+import { ChallengeCategoryType, FeedVerificationStatusType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher'
-import { DateFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/types/date'
 
 export type VerificationDetailResponse = {
   id: 0
@@ -11,19 +11,19 @@ export type VerificationDetailResponse = {
   imageUrl: string // 인증 이미지
   content: string // 인증 텍스트
   category: ChallengeCategoryType
-  status: ChallengeVerificationResultType // SUCCESS, FAILURE, PENDING_APPROVAL
-  verifiedAt: DateFormatString | null // AI 인증 완료 시각 (null 허용)
+  status: FeedVerificationStatusType // SUCCESS, FAILURE, PENDING_APPROVAL
+  verifiedAt: ISOFormatString | null // AI 인증 완료 시각 (null 허용)
   counts: {
     view: number
     like: number
     comment: number
   }
-  createdAt: DateFormatString
-  updatedAt: DateFormatString
+  createdAt: ISOFormatString
+  updatedAt: ISOFormatString
 }
 
 export const getVerificationDetails = (challengeId: number, verificationId: number) => {
   return fetchRequest<VerificationDetailResponse>(
-    ENDPOINTS.CHALLENGE.GROUP.VERIFICATIONS.DETAILS(challengeId, verificationId),
+    ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
   )
 }
