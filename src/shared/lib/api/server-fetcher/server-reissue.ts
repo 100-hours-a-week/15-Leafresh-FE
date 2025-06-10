@@ -4,11 +4,10 @@ import { cookies } from 'next/headers'
 
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 
+import { BASE_URL } from '../fetcher'
+
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
-
-//TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
-const BASE_URL = 'https://leafresh.app'
 
 export async function refreshServerAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()
