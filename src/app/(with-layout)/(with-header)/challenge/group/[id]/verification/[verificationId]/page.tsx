@@ -1,19 +1,20 @@
-import { ReactNode } from 'react'
-
 import VerificationDetails from '@features/challenge/components/challenge/participate/verification/details/VerificationDetails'
 
 interface PageProps {
-  className?: string
-  params: {
+  params: Promise<{
     id: string
     verificationId: string
-  }
+  }>
 }
 
-const Page = async ({ className, params }: PageProps): Promise<ReactNode> => {
-  const challengeId = Number(params.id)
-  const verificationId = Number(params.verificationId)
-  return <VerificationDetails challengeId={challengeId} verificationId={verificationId} />
+const Page = async ({ params }: PageProps) => {
+  const { id } = await params
+  const { verificationId } = await params
+
+  const challengeIdNum = Number(id)
+  const verificationIdNum = Number(verificationId)
+
+  return <VerificationDetails challengeId={challengeIdNum} verificationId={verificationIdNum} />
 }
 
 export default Page
