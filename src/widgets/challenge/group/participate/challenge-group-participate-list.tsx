@@ -89,7 +89,7 @@ export const ChallengeGroupParticipateListPage = () => {
                 endDate={new Date(c.endDate)}
                 successCount={c.achievement.success}
                 maxCount={c.achievement.total}
-                onClick={() => router.push(URL.CHALLENGE.PARTICIPATE.DETAILS.value(c.id))}
+                onClick={() => router.push(URL.MEMBER.CHALLENGE.VERIFICATION.STATUS.value(c.id))}
               />
             ))
           ) : (

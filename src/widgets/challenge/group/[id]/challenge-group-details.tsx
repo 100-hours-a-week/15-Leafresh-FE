@@ -153,7 +153,7 @@ export const ChallengeGroupDetailsPage = ({ challengeId, className }: ChallengeG
       {
         onSuccess: () => {
           openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
-          router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
+          router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value) // 참여중인 챌린지로 이동
         },
       },
     )
@@ -161,7 +161,7 @@ export const ChallengeGroupDetailsPage = ({ challengeId, className }: ChallengeG
 
   /** 단체 챌린지 참여 이력 페이지로 이동 */
   const handleRouteToVerificationsPage = () => {
-    router.push(URL.CHALLENGE.GROUP.PARTICIPATE_LIST.value(challengeId))
+    router.push(URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId))
   }
   return (
     <Wrapper className={className}>

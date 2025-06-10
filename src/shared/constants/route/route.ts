@@ -44,11 +44,31 @@ const MEMBER_URL = {
     value: '/member/alarm',
     isProtected: true,
   },
-  CHALLENGES: {
-    CREATED: {
-      name: '생성한 챌린지',
-      value: '/member/challenges',
-      isProtected: true,
+  CHALLENGE: {
+    PARTICIPATE: {
+      // 참여 중인 챌린지
+      LIST: {
+        name: '참여중인 챌린지',
+        value: `/member/challenge/participate/list`,
+        isProtected: true,
+      },
+    },
+    VERIFICATION: {
+      // 특정 챌린지 인증 현황
+      STATUS: {
+        name: '특정 챌린지 인증 현황',
+        value: (challengeId: number) => `member/challenge/${challengeId}/verification/status`,
+        isProtected: true,
+      },
+    },
+
+    CREATE: {
+      // 생성한 챌린지
+      LIST: {
+        name: '생성한 챌린지',
+        value: '/member/challenge/create/list',
+        isProtected: true,
+      },
     },
   },
   STORE: {
@@ -90,27 +110,17 @@ const CHALLENGE_URL = {
       value: (challengeId: number) => `/challenge/group/${challengeId}`,
       isProtected: false,
     },
-    PARTICIPATE_LIST: {
-      name: '이용자 인증 내역 목록',
-      value: (challengeId: number) => `/challenge/group/${challengeId}/participate/list`,
-      isProtected: false,
-    },
     FEED: {
       name: '챌린지 인증 피드',
       value: `/challenge/group/feed`,
       isProtected: false,
     },
-  },
-  PARTICIPATE: {
-    INDEX: {
-      name: '참여중인 챌린지',
-      value: `/challenge/participate`,
-      isProtected: true,
-    },
-    DETAILS: {
-      name: '챌린지 인증 현황',
-      value: (participateId: number) => `/challenge/participate/${participateId}`,
-      isProtected: true,
+    VERIFICATION: {
+      LIST: {
+        name: '이용자 인증 내역 목록',
+        value: (challengeId: number) => `/challenge/group/${challengeId}/verification/list`,
+        isProtected: false,
+      },
     },
   },
 }

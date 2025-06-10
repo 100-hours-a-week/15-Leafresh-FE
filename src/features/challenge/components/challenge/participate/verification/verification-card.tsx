@@ -97,7 +97,7 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
 
   /** 클립보드 복사 */
   const handleCopyVerificationUrl = () => {
-    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.PARTICIPATE_LIST.value(challengeId)}`
+    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
     copyToClipboard(url)
   }
   return (

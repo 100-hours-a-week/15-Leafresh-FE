@@ -20,7 +20,7 @@ import { ISOFormatString } from '@shared/types/date'
 
 import VerificationCard from '../../../../features/challenge/components/challenge/participate/verification/verification-card'
 
-interface ChallengeGroupParticipateListPageProps {
+interface ChallengeGroupVerificationListPageProps {
   challengeId: number
 }
 
@@ -74,7 +74,7 @@ const verificationsDummy: Verification[] = [
 ]
 // const verificationsDummy: Verification[] = []
 
-export const ChallengeGroupParticipateListPage = ({ challengeId }: ChallengeGroupParticipateListPageProps) => {
+export const ChallengeGroupVerificationListPage = ({ challengeId }: ChallengeGroupVerificationListPageProps) => {
   const router = useRouter()
 
   /** 단체 챌린지 상세 가져오기 */
