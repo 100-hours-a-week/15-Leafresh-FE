@@ -13,7 +13,7 @@ export async function serverFetchRequest<T>(
   options: OptionsType = {},
   isRetry = false,
 ): Promise<ApiResponse<T>> {
-  const { method, path } = endpoint
+  const { method, path, credentials } = endpoint
   const url = new URL(BASE_URL + path)
 
   if (options.query) {
@@ -43,7 +43,7 @@ export async function serverFetchRequest<T>(
     method,
     headers: {
       ...headers,
-      Cookie: cookieHeader,
+      ...(credentials ? { Cookie: cookieHeader } : {}),
     },
     body,
   })

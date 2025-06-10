@@ -18,7 +18,6 @@ export async function refreshServerAccessToken(): Promise<void> {
     try {
       // ✅ SSR: 쿠키 수동 주입
       const cookieStore = await cookies()
-
       const cookieHeader = cookieStore
         .getAll()
         .map(({ name, value }) => `${name}=${value}`)
@@ -27,7 +26,7 @@ export async function refreshServerAccessToken(): Promise<void> {
       const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE}`, {
         method: 'POST',
         headers: {
-          Cookie: cookieHeader,
+          Cookie: cookieHeader, // 재발급은 쿠키 포함
         },
       })
       if (!response.ok) {

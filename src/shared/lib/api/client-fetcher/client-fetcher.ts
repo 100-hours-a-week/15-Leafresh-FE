@@ -1,4 +1,3 @@
-import { handleAuthError } from '@shared/config/tanstack-query/utils'
 import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
 import { BASE_URL } from '../fetcher'
@@ -11,7 +10,7 @@ export async function clientFetchRequest<T>(
   isRetry = false,
 ): Promise<ApiResponse<T>> {
   /** Request */
-  const { method, path } = endpoint
+  const { method, path, credentials } = endpoint
   const url = new URL(BASE_URL + path)
 
   if (options.query) {
@@ -35,7 +34,7 @@ export async function clientFetchRequest<T>(
     method,
     headers,
     body,
-    credentials: 'include',
+    ...(credentials ? { credentials: 'include' } : {}),
   })
 
   /** Response */
@@ -55,7 +54,7 @@ export async function clientFetchRequest<T>(
           data: null,
         }
         /** 미인증 유저에게는 토스트로 알림 */
-        handleAuthError(error)
+        // handleAuthError(error)
         throw error
       }
     }
