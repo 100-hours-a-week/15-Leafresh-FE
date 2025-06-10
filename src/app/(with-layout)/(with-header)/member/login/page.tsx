@@ -38,7 +38,6 @@ const LoginPage = () => {
       const { data } = await StartLogin()
       if (data?.data) {
         const { redirectUrl } = data.data
-        // const redirectUrl = 'https://localhost:3000/oauth/kakao/callback'
 
         window.location.href = redirectUrl
       }

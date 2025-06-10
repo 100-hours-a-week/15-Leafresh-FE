@@ -18,6 +18,11 @@ const MEMBER_URL = {
     value: '/member/login',
     isProtected: false,
   },
+  CALLBACK: {
+    name: '소셜 로그인 콜백',
+    value: (provider: string) => `/member/${provider}/callback`,
+    isProtected: false,
+  },
   SIGNUP: {
     name: '회원가입',
     value: '/member/signup',
