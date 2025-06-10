@@ -10,11 +10,11 @@ import { getGroupChallengeDetails } from '@features/challenge/api/get-group-chal
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-interface PageProps {
+interface ChallengeGroupModifyPageProps {
   challengeId: number
 }
 
-const Page = ({ challengeId }: PageProps): ReactNode => {
+export const ChallengeGroupModifyPage = ({ challengeId }: ChallengeGroupModifyPageProps): ReactNode => {
   /** 단체 챌린지 상세 가져오기 */
   const { data: challengeData, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
@@ -66,5 +66,3 @@ const Page = ({ challengeId }: PageProps): ReactNode => {
   }
   return contents
 }
-
-export default Page
