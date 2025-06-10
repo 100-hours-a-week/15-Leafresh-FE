@@ -7,6 +7,7 @@ import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
+import { useOAuthStateStore } from '@entities/member/context/OAuthStateStore'
 import { LowercaseOAuthType } from '@entities/member/type'
 import { Login } from '@features/member/api/oauth-login'
 import Loading from '@shared/components/loading'
@@ -21,6 +22,9 @@ import LogoImage from '@public/image/logo.svg'
 const LoginPage = () => {
   const openToast = useToast()
   const searchParams = useSearchParams()
+
+  const { setState } = useOAuthStateStore()
+
   const isExpired = searchParams.get('expired') === 'true'
 
   const providerRef = useRef<LowercaseOAuthType>('kakao')
@@ -39,7 +43,18 @@ const LoginPage = () => {
       if (data?.data) {
         const { redirectUrl } = data.data
 
-        window.location.href = redirectUrl
+        // ✅ URL 파싱
+        const parsedUrl = new URL(redirectUrl)
+        const stateParam = parsedUrl.searchParams.get('state')
+
+        // ✅ Zustand 저장
+        if (stateParam) {
+          setState(stateParam)
+          parsedUrl.searchParams.delete('state') // state 제거
+        }
+
+        // ✅ 수정된 URL로 리디렉션
+        window.location.href = parsedUrl.toString()
       }
     } catch (_error) {
       openToast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
