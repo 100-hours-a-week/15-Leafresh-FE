@@ -48,12 +48,12 @@ const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
   { isWarning: true, value: '부적절한 인증 사진은 관리자에 의해 삭제될 수 있습니다.' },
 ]
 
-interface GroupChallengeDetailsPageProps {
+interface ChallengeGroupDetailsPageProps {
   challengeId: number
   className?: string
 }
 
-export const GroupChallengeDetailsPage = ({ challengeId, className }: GroupChallengeDetailsPageProps) => {
+export const ChallengeGroupDetailsPage = ({ challengeId, className }: ChallengeGroupDetailsPageProps) => {
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
 

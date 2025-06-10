@@ -16,7 +16,7 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-export const GroupChallengeListPage = () => {
+export const ChallengeGroupListPage = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [input, setInput] = useState<string>('')

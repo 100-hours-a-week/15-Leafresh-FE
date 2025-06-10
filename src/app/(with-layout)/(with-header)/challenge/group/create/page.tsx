@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { FullFormValues, GroupChallengeFormPage } from '@widgets/challenge'
+import { ChallengeGroupFormPage, FullFormValues } from '@widgets/challenge'
 
 import { DetailFormValues } from '@features/challenge/components/challenge/group/create/DetailStep'
 import { MetaFormValues } from '@features/challenge/components/challenge/group/create/MetadataStep'
@@ -30,7 +30,7 @@ const Page = async () => {
   }
   return (
     <Suspense fallback={<Loading />}>
-      <GroupChallengeFormPage defaultValues={defaultFormValues} isEdit={false} />
+      <ChallengeGroupFormPage defaultValues={defaultFormValues} isEdit={false} />
     </Suspense>
   )
 }

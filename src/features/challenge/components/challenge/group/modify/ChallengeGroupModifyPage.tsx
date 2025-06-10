@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { FullFormValues, GroupChallengeFormPage } from '@widgets/challenge'
+import { ChallengeGroupFormPage, FullFormValues } from '@widgets/challenge'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryTypeKor } from '@entities/challenge/type'
@@ -62,7 +62,7 @@ const Page = ({ challengeId }: PageProps): ReactNode => {
       })),
     }
 
-    contents = <GroupChallengeFormPage defaultValues={defaultValues} isEdit={true} challengeId={id} />
+    contents = <ChallengeGroupFormPage defaultValues={defaultValues} isEdit={true} challengeId={id} />
   }
   return contents
 }

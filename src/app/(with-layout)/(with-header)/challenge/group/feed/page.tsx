@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-import { GroupChallengeFeedPage } from '@widgets/challenge'
+import { ChallengeGroupFeedPage } from '@widgets/challenge'
 
 import { getGroupChallengeCategoryList } from '@features/challenge/api/get-group-challenge-categories'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
@@ -21,7 +21,7 @@ const Page = async () => {
 
     return (
       <HydrationBoundary state={dehydratedState}>
-        <GroupChallengeFeedPage />
+        <ChallengeGroupFeedPage />
       </HydrationBoundary>
     )
   } catch (err) {

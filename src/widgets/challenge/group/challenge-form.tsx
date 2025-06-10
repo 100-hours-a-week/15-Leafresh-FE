@@ -65,13 +65,13 @@ const fullSchema = metaSchema
 
 export type FullFormValues = z.infer<typeof fullSchema>
 
-interface GroupChallengeFormPageProps {
+interface ChallengeGroupFormPageProps {
   defaultValues: FullFormValues
   isEdit?: boolean
   challengeId?: number
 }
 
-export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: GroupChallengeFormPageProps) => {
+export const ChallengeGroupFormPage = ({ defaultValues, isEdit = false, challengeId }: ChallengeGroupFormPageProps) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const openToast = useToast()
