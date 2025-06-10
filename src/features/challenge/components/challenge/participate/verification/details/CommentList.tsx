@@ -2,10 +2,9 @@
 
 import { ChevronDown, ChevronUp, Send } from 'lucide-react'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { useUserStore } from '@entities/member/context/UserStore'
 import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import { theme } from '@shared/styles/theme'
 
@@ -23,8 +22,12 @@ const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDelete }: 
   const [expandedMap, setExpandedMap] = useState<Record<number, boolean>>({})
   const [replyInputMap, setReplyInputMap] = useState<Record<number, string>>({})
   const [newCommentInput, setNewCommentInput] = useState('')
-  const [localComments, setLocalComments] = useState(comments)
-  const { userInfo } = useUserStore()
+  //댓글 작성 자동 스크롤 ref
+  const bottomRef = useRef<HTMLDivElement | null>(null)
+
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   const toggleReplies = (id: number) => {
     setExpandedMap(prev => ({ ...prev, [id]: !prev[id] }))
@@ -34,22 +37,10 @@ const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDelete }: 
     const content = newCommentInput.trim()
     if (!content) return
 
-    const newComment = {
-      id: Date.now(),
-      content,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
-      parentCommentId: null,
-      isMine: true,
-      deleted: false,
-      replies: [],
-    }
-
-    setLocalComments(prev => [newComment, ...prev])
     setNewCommentInput('')
     onSubmit(content)
+    // 스크롤 이동
+    setTimeout(scrollToBottom, 100)
   }
 
   const handleReplyChange = (commentId: number, value: string) => {
@@ -60,60 +51,15 @@ const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDelete }: 
     const content = replyInputMap[parentCommentId]?.trim()
     if (!content) return
 
-    const newReply = {
-      id: Date.now(),
-      content,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
-      parentCommentId,
-      isMine: true,
-      deleted: false,
-    }
-
-    setLocalComments(prev =>
-      prev.map(comment =>
-        comment.id === parentCommentId
-          ? {
-              ...comment,
-              replies: [...(comment.replies ?? []), newReply],
-            }
-          : comment,
-      ),
-    )
-
     setReplyInputMap(prev => ({ ...prev, [parentCommentId]: '' }))
     onReplySubmit(parentCommentId, content)
   }
 
   const handleUpdate = (id: number, content: string) => {
-    setLocalComments(prev =>
-      prev.map(comment => {
-        if (comment.id === id) return { ...comment, content, updatedAt: new Date().toISOString() }
-        return {
-          ...comment,
-          replies: comment.replies?.map(reply =>
-            reply.id === id ? { ...reply, content, updatedAt: new Date().toISOString() } : reply,
-          ),
-        }
-      }),
-    )
     onUpdate(id, content)
   }
 
   const handleDelete = (id: number) => {
-    setLocalComments(prev =>
-      prev.map(comment => {
-        if (comment.id === id) return { ...comment, deleted: true, content: '삭제된 댓글입니다.' }
-        return {
-          ...comment,
-          replies: comment.replies?.map(reply =>
-            reply.id === id ? { ...reply, deleted: true, content: '삭제된 댓글입니다.' } : reply,
-          ),
-        }
-      }),
-    )
     onDelete(id)
   }
 
@@ -128,7 +74,7 @@ const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDelete }: 
         <SubmitButton onClick={handleNewCommentSubmit} size={20} />
       </TextareaWrapper>
       <CommentListWrapper>
-        {localComments.map(comment => (
+        {comments.map(comment => (
           <CommentWrapper key={comment.id}>
             <CommentItem comment={comment} onUpdate={handleUpdate} onDelete={handleDelete} />
 
@@ -185,6 +131,7 @@ const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDelete }: 
             )}
           </CommentWrapper>
         ))}
+        <div ref={bottomRef} />
       </CommentListWrapper>
     </Container>
   )
