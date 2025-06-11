@@ -10,7 +10,7 @@ export async function clientFetchRequest<T>(
   isRetry = false,
 ): Promise<ApiResponse<T>> {
   /** Request */
-  const { method, path, credentials } = endpoint
+  const { method, path } = endpoint
   const url = new URL(BASE_URL + path)
 
   if (options.query) {
@@ -34,7 +34,7 @@ export async function clientFetchRequest<T>(
     method,
     headers,
     body,
-    ...(credentials ? { credentials: 'include' } : {}),
+    credentials: 'include',
   })
 
   /** Response */

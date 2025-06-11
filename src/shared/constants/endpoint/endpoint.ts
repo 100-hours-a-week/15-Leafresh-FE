@@ -5,7 +5,6 @@ import { HttpMethod } from '../http'
 export type EndpointType = {
   method: HttpMethod
   path: string
-  credentials?: boolean
 }
 
 const CHALLENGE_ENDPOINTS = {
@@ -21,7 +20,6 @@ const CHALLENGE_ENDPOINTS = {
     DETAILS: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/personal/${challengeId}`,
-      credentials: true,
     }),
 
     // 목록 (특정 카테고리)
@@ -34,21 +32,18 @@ const CHALLENGE_ENDPOINTS = {
     VERIFY: (challengeId: number) => ({
       method: HttpMethod.POST,
       path: `/api/challenges/personal/${challengeId}/verifications`,
-      credentials: true,
     }),
 
     // 인증 결과 조회 (롱폴링)
     VERIFICATION_RESULT: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/personal/${challengeId}/verification/result`,
-      credentials: true,
     }),
 
     // 규약 조회
     RULES: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/personal/${challengeId}/rules`,
-      credentials: true,
     }),
   },
 
@@ -65,33 +60,29 @@ const CHALLENGE_ENDPOINTS = {
     // 목록
     LIST: { method: HttpMethod.GET, path: '/api/challenges/group' },
     // 생성
-    CREATE: { method: HttpMethod.POST, path: '/api/challenges/group', credentials: true },
+    CREATE: { method: HttpMethod.POST, path: '/api/challenges/group' },
     // 수정
     MODIFY: (challengeId: number) => ({
       method: HttpMethod.PATCH,
       path: `/api/challenges/group/${challengeId}`,
-      credentials: true,
     }),
 
     // 삭제
     DELETE: (challengeId: number) => ({
       method: HttpMethod.DELETE,
       path: `/api/challenges/group/${challengeId}`,
-      credentials: true,
     }),
 
     // 인증 규약 조회
     RULES: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/group/${challengeId}/rules`,
-      credentials: true,
     }),
 
     // 참여 이력 생성
     PARTICIPATE: (challengeId: number) => ({
       method: HttpMethod.POST,
       path: `/api/challenges/group/${challengeId}/participations`,
-      credentials: true,
     }),
 
     // 인증 관련
@@ -100,7 +91,6 @@ const CHALLENGE_ENDPOINTS = {
       LIST: (challengeId: number) => ({
         method: HttpMethod.GET,
         path: `/api/challenges/group/${challengeId}/verifications`,
-        credentials: true,
       }),
 
       // TODO: 인증 상세 조회
@@ -110,14 +100,12 @@ const CHALLENGE_ENDPOINTS = {
       SUBMIT: (challengeId: number) => ({
         method: HttpMethod.POST,
         path: `/api/challenges/group/${challengeId}/verifications`,
-        credentials: true,
       }),
 
       // 인증 결과 조회 (롱폴링)
       RESULT: (challengeId: number) => ({
         method: HttpMethod.GET,
         path: `/api/challenges/group/${challengeId}/verification/result`,
-        credentials: true,
       }),
 
       LIKES: {
@@ -155,16 +143,21 @@ const CHALLENGE_ENDPOINTS = {
     FEED: {
       method: HttpMethod.GET,
       path: `/api/challenges/group/verifications`,
-      credentials: true,
     },
   },
 
   ETC: {
     COUNT: {
       // 누적 사용자 인증수 조회
-      VERIFICATION: { method: HttpMethod.GET, path: `/api/challenges/verifications/count`, credentials: false },
+      VERIFICATION: { method: HttpMethod.GET, path: `/api/challenges/verifications/count` },
     },
   },
+}
+
+const a = {
+  1: 2,
+  2: 3,
+  3: 4,
 }
 
 const MEMBER_ENDPOINTS = {
@@ -174,68 +167,64 @@ const MEMBER_ENDPOINTS = {
     LOGOUT: (provider: LowercaseOAuthType) => ({
       method: HttpMethod.DELETE,
       path: `/oauth/${provider}/token`,
-      credentials: true,
     }),
-    RE_ISSUE: { method: HttpMethod.POST, path: '/auth/token/reissue', credentials: true }, // 토큰 재발급
+    RE_ISSUE: { method: HttpMethod.POST, path: '/auth/token/reissue' }, // 토큰 재발급
   },
 
   DUPLICATE_NICKNAME: { method: HttpMethod.GET, path: '/api/members/nickname' }, // 닉네임 중복 검사
 
   // CRUD
   SIGNUP: { method: HttpMethod.POST, path: '/api/members' }, // 회원가입
-  DETAILS: { method: HttpMethod.GET, path: '/api/members', credentials: true }, // 회원 정보 조회
-  MODIFY: { method: HttpMethod.PATCH, path: '/api/members', credentials: true }, // 회원정보 수정
-  UNREGISTER: { method: HttpMethod.DELETE, path: '/api/members', credentials: true }, // 회원 탈퇴
+  DETAILS: { method: HttpMethod.GET, path: '/api/members' }, // 회원 정보 조회
+  MODIFY: { method: HttpMethod.PATCH, path: '/api/members' }, // 회원정보 수정
+  UNREGISTER: { method: HttpMethod.DELETE, path: '/api/members' }, // 회원 탈퇴
 
   // 회원 정보
-  PROFILE_CARD: { method: HttpMethod.GET, path: '/api/members/profilecard', credentials: true }, // 프로필 카드 조회
-  LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves', credentials: true }, // 나뭇잎 보유량 조회
+  PROFILE_CARD: { method: HttpMethod.GET, path: '/api/members/profilecard' }, // 프로필 카드 조회
+  LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves' }, // 나뭇잎 보유량 조회
 
   FEEDBACK: {
-    GET_FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback', credentials: true }, // 챌린지 피드백 조회
-    POST_FEEDBACK: { method: HttpMethod.POST, path: '/api/members/feedback', credentials: true }, //피드백 생성 요청
-    RESULT: { method: HttpMethod.GET, path: '/api/members/feedback/result', credentials: true }, //피드백 결과 조회(롱폴링)
+    GET_FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
+    POST_FEEDBACK: { method: HttpMethod.POST, path: '/api/members/feedback' }, //피드백 생성 요청
+    RESULT: { method: HttpMethod.GET, path: '/api/members/feedback/result' }, //피드백 결과 조회(롱폴링)
   },
 
   BADGES: {
-    LIST: { method: HttpMethod.GET, path: '/api/members/badges', credentials: true }, // 뱃지 조회
-    RECENT: { method: HttpMethod.GET, path: '/api/members/badges/recent', credentials: true }, //최근 획득 뱃지 조회
+    LIST: { method: HttpMethod.GET, path: '/api/members/badges' }, // 뱃지 조회
+    RECENT: { method: HttpMethod.GET, path: '/api/members/badges/recent' }, //최근 획득 뱃지 조회
   },
 
   // 알림
   NOTIFICATION: {
-    LIST: { method: HttpMethod.GET, path: '/api/members/notifications', credentials: true }, // 알림 조회
-    READ: { method: HttpMethod.PATCH, path: '/api/members/notifications', credentials: true }, // 알림 읽음 처리
+    LIST: { method: HttpMethod.GET, path: '/api/members/notifications' }, // 알림 조회
+    READ: { method: HttpMethod.PATCH, path: '/api/members/notifications' }, // 알림 읽음 처리
   },
 
   // 나뭇잎 상점
   STORE: {
     ORDERS: {
-      LIST: { method: HttpMethod.GET, path: '/api/members/products/list', credentials: true }, // 구매 내역
+      LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
     },
   },
 
   /** 챌린지 */
   CHALLENGE: {
     GROUP: {
-      CREATIONS: { method: HttpMethod.GET, path: '/api/members/challenges/group/creations', credentials: true }, // 생성한 챌린지
+      CREATIONS: { method: HttpMethod.GET, path: '/api/members/challenges/group/creations' }, // 생성한 챌린지
       PARTICIPATIONS: {
         method: HttpMethod.GET,
         path: '/api/members/challenges/group/participations',
-        credentials: true,
       }, // 참여한 단체 챌린지 목록 조회
 
       // 참여한 단체 챌린지 인증 내역을 일별로 조회
       VERIFICATIONS: (challengeId: number) => ({
         method: HttpMethod.GET,
         path: `/api/members/challenges/group/participations/${challengeId}/verifications`,
-        credentials: true,
       }),
       // 참여한 단체 챌린지 카운트 조회 (인증 페이지)
       COUNT: {
         method: HttpMethod.GET,
         path: `/api/members/challenges/group/participations/count`,
-        credentials: true,
       },
     },
   },
@@ -258,7 +247,6 @@ const STORE_ENDPOINTS = {
     ORDER: (dealId: number) => ({
       method: HttpMethod.POST,
       path: `/api/orders/${dealId}`,
-      credentials: true,
     }),
   },
   PRODUCTS: {
@@ -268,13 +256,12 @@ const STORE_ENDPOINTS = {
     ORDER: (productId: number) => ({
       method: HttpMethod.POST,
       path: `/api/orders/${productId}`,
-      credentials: true,
     }),
   },
   ETC: {
     COUNT: {
       // 누적 나뭇잎 수 조회
-      LEAVES: { method: HttpMethod.GET, path: '/api/leaves/count', credentials: false },
+      LEAVES: { method: HttpMethod.GET, path: '/api/leaves/count' },
     },
   },
 }
