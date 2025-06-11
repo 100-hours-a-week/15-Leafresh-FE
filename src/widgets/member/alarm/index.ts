@@ -1,1 +1,1 @@
-export * from './member-alarm-list'
+export * from './list/ui/member-alarm-list'
