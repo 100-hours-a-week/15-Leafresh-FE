@@ -10,9 +10,7 @@ import { getGroupChallengeDetails } from '@features/challenge/api/get-group-chal
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-interface ChallengeGroupModifyPageProps {
-  challengeId: number
-}
+import { ChallengeGroupModifyPageProps } from '../model/type'
 
 export const ChallengeGroupModifyPage = ({ challengeId }: ChallengeGroupModifyPageProps): ReactNode => {
   /** 단체 챌린지 상세 가져오기 */
@@ -36,6 +34,7 @@ export const ChallengeGroupModifyPage = ({ challengeId }: ChallengeGroupModifyPa
       thumbnailUrl,
       exampleImages,
       maxParticipantCount,
+      // 불필요 데이터
       // isEvent, // 이벤트 챌린지 여부
       // leafReward, // 보상 개수
       // verificationImages, // 참여자 인증 사진
