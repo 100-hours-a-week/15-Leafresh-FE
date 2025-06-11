@@ -4,7 +4,6 @@ import { differenceInCalendarDays } from 'date-fns'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
@@ -13,11 +12,8 @@ import {
   ParticipateGroupChallengeResponse,
   ParticipateGroupChallengeVariables,
 } from '@features/challenge/api/participate-group-challenge'
-import ChallengeVerifyExamples, {
-  VerificationImageData,
-} from '@features/challenge/components/common/ChallengeVerifyExamples'
-import BackButton from '@shared/components/button/BackButton'
-import DatePicker from '@shared/components/datepicker/DatePicker'
+import ChallengeVerifyCarousel from '@features/challenge/components/challenge/group/details/ChallengeVerifyCarousel'
+import { VerificationImageData } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
@@ -29,29 +25,11 @@ import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
 
-import ChallengeVerifyCarousel from '../../../../features/challenge/components/challenge/group/details/ChallengeVerifyCarousel'
-
-type WarningType = {
-  isWarning: boolean
-  value: string
-}
-
-const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
-  { isWarning: false, value: '단체 챌린지는 재참여가 불가능합니다.' },
-  { isWarning: false, value: '인증 참여가 아닌, 성공시 나뭇잎이 부여됩니다.' },
-  { isWarning: false, value: '인증 여부는 AI가 판단합니다.' },
-  { isWarning: false, value: '인증 사진은 모든 사용자에게 공개됩니다.' },
-  { isWarning: true, value: '부적절한 인증 사진은 관리자에 의해 삭제될 수 있습니다.' },
-]
-
-interface ChallengeGroupDetailsPageProps {
-  challengeId: number
-  className?: string
-}
+import { CHALLENGE_DETAILS_WARNINGS } from '../model/constants'
+import { ChallengeGroupDetailsPageProps } from '../model/types'
+import * as S from './styles'
 
 export const ChallengeGroupDetailsPage = ({ challengeId, className }: ChallengeGroupDetailsPageProps) => {
   const { isLoggedIn } = useAuth()
@@ -164,45 +142,45 @@ export const ChallengeGroupDetailsPage = ({ challengeId, className }: ChallengeG
     router.push(URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId))
   }
   return (
-    <Wrapper className={className}>
-      <DescriptionSection>
-        <StyledBackButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
-        <ThumbnailImageWrapper>
-          <Thumbnail src={thumbnailUrl} alt='썸네일' fill />
-        </ThumbnailImageWrapper>
-        <Participant>
+    <S.Wrapper className={className}>
+      <S.DescriptionSection>
+        <S.StyledBackButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
+        <S.ThumbnailImageWrapper>
+          <S.Thumbnail src={thumbnailUrl} alt='썸네일' fill />
+        </S.ThumbnailImageWrapper>
+        <S.Participant>
           <LucideIcon name='UsersRound' size={24} color='lfBlue' /> {currentParticipantCount}명 참여중
-        </Participant>
+        </S.Participant>
 
-        <Descriptions>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
-        </Descriptions>
-      </DescriptionSection>
+        <S.Descriptions>
+          <S.Title>{title}</S.Title>
+          <S.Description>{description}</S.Description>
+        </S.Descriptions>
+      </S.DescriptionSection>
 
-      <SectionWrapper>
-        <Section>
-          <SectionTitle>인증 방법</SectionTitle>
-          <WarningList>
-            <Warning isWarning={false}>
+      <S.SectionWrapper>
+        <S.Section>
+          <S.SectionTitle>인증 방법</S.SectionTitle>
+          <S.WarningList>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li>인증샷 예시에 맞는 사진 제출</li>
-            </Warning>
-            <Warning isWarning={false}>
+            </S.Warning>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li>AI가 사진분석을 통해 인증 성공 여부 판단</li>
-            </Warning>
-            <Warning isWarning={false}>
+            </S.Warning>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
                 인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
               </li>
-            </Warning>
-          </WarningList>
-        </Section>
+            </S.Warning>
+          </S.WarningList>
+        </S.Section>
 
-        <Section>
-          <StyledDatePicker
+        <S.Section>
+          <S.StyledDatePicker
             icon={<LucideIcon name='CalendarDays' size={24} />}
             label='인증 기간'
             startDate={new Date(startDate)}
@@ -211,15 +189,15 @@ export const ChallengeGroupDetailsPage = ({ challengeId, className }: ChallengeG
             setEndDate={() => {}}
             readOnly
           />
-          <TimeArea>
-            <TimeText>
+          <S.TimeArea>
+            <S.TimeText>
               매일, {totalDays}일간 {verificationStartTime} ~ {verificationEndTime} 인증하기
-            </TimeText>
-          </TimeArea>
-        </Section>
+            </S.TimeText>
+          </S.TimeArea>
+        </S.Section>
 
-        <Section>
-          <StyledChallengeVerifyExamples
+        <S.Section>
+          <S.StyledChallengeVerifyExamples
             title='인증샷 예시'
             description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
@@ -228,209 +206,39 @@ export const ChallengeGroupDetailsPage = ({ challengeId, className }: ChallengeG
             readOnly
             verificationInputClassName='verify-input'
           />
-        </Section>
+        </S.Section>
 
-        <Section>
-          <SectionTitle>
+        <S.Section>
+          <S.SectionTitle>
             <div>참여자 인증 사진</div>
-            <MoreButton onClick={handleRouteToVerificationsPage}>더 보기</MoreButton>
-          </SectionTitle>
+            <S.MoreButton onClick={handleRouteToVerificationsPage}>더 보기</S.MoreButton>
+          </S.SectionTitle>
           {verificationImages.length === 0 ? (
-            <NoVerficiationImageText>아직 인증사진이 없습니다!</NoVerficiationImageText>
+            <S.NoVerficiationImageText>아직 인증사진이 없습니다!</S.NoVerficiationImageText>
           ) : (
             <ChallengeVerifyCarousel images={verificationImages} />
           )}
-        </Section>
+        </S.Section>
 
-        <Section>
-          <SectionTitle>유의사항</SectionTitle>
-          <WarningList>
+        <S.Section>
+          <S.SectionTitle>유의사항</S.SectionTitle>
+          <S.WarningList>
             {CHALLENGE_DETAILS_WARNINGS.map(warnings => (
-              <Warning key={warnings.value} isWarning={warnings.isWarning}>
+              <S.Warning key={warnings.value} isWarning={warnings.isWarning}>
                 <LucideIcon name='Check' size={24} />
                 <li>{warnings.value}</li>
-              </Warning>
+              </S.Warning>
             ))}
-          </WarningList>
-        </Section>
-      </SectionWrapper>
+          </S.WarningList>
+        </S.Section>
+      </S.SectionWrapper>
 
-      <SubmitButton onClick={handleSubmit} disabled={isButtonDisabled}>
+      <S.SubmitButton onClick={handleSubmit} disabled={isButtonDisabled}>
         {!isPending ? getSubmitButtonLabel(status) : <Loading />}
-      </SubmitButton>
-    </Wrapper>
+      </S.SubmitButton>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  ${responsiveHorizontalPadding};
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`
-
-const DescriptionSection = styled.section`
-  margin-bottom: 45px;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const ThumbnailImageWrapper = styled.div`
-  width: 100%;
-  aspect-ratio: 14/9;
-
-  position: relative;
-`
-
-const Thumbnail = styled(Image)`
-  width: 100%;
-  object-fit: cover;
-  border-radius: ${theme.radius.base};
-`
-
-const Participant = styled.div`
-  padding: 14px 0;
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfBlue.base};
-
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`
-
-const Descriptions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`
-
-const Title = styled.h2`
-  font-size: 30px;
-  font-weight: ${theme.fontWeight.semiBold};
-`
-const Description = styled.p`
-  font-size: ${theme.fontSize.base};
-  white-space: pre-wrap;
-  word-break: break-word;
-  line-height: 1.6;
-`
-
-const MoreButton = styled.button`
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-
-  font-size: ${theme.fontSize.xs};
-  color: ${theme.colors.lfBlue.base};
-  background: none;
-  border: none;
-  font-weight: ${theme.fontWeight.medium};
-  cursor: pointer;
-`
-
-const SectionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-`
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-
-  gap: 12px;
-`
-
-const SectionTitle = styled.div`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  position: relative;
-`
-
-const StyledDatePicker = styled(DatePicker)`
-  font-weight: ${theme.fontWeight.semiBold};
-  font-size: ${theme.fontSize.md};
-`
-
-const TimeArea = styled.div`
-  background-color: ${theme.colors.lfInputBackground.base};
-  border-radius: ${theme.radius.sm};
-
-  margin-top: 18px;
-  padding: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const TimeText = styled.span`
-  font-weight: ${theme.fontWeight.medium};
-  font-size: ${theme.fontSize.base};
-`
-
-const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
-  font-weight: ${theme.fontWeight.semiBold};
-
-  .verify-input {
-    width: 40%;
-  }
-`
-
-const SubmitButton = styled.button`
-  /* padding: 12px; */
-  height: 50px;
-  border-radius: ${theme.radius.base};
-  background-color: ${({ disabled }) => (disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.base)};
-  color: ${({ disabled }) => (disabled ? theme.colors.lfBlack.base : theme.colors.lfWhite.base)};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  border: none;
-
-  &:hover {
-    background-color: ${({ disabled }) =>
-      disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.hover};
-  }
-`
-
-const WarningList = styled.ul`
-  margin-top: 5px;
-
-  font-size: ${theme.fontSize.base};
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`
-
-const Warning = styled.div<{ isWarning: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  font-weight: ${theme.fontWeight.medium};
-  color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-`
-
-const StyledBackButton = styled(BackButton)`
-  position: absolute;
-`
-
-const NoVerficiationImageText = styled.div`
-  text-align: center;
-  padding: 30px;
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfRed.base};
-`
 
 // export const dummyGroupChallengeDetail: GroupChallengeDetail = {
 //   id: 1,
