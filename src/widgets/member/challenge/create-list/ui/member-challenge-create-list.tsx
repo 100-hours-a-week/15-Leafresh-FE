@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 
 import { ReactNode, useEffect, useRef } from 'react'
-import styled from '@emotion/styled'
 
 import {
   GroupChallenge,
@@ -11,11 +10,10 @@ import {
 } from '@features/challenge/components/common/group-challenge-card/GroupChallengeCard'
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/hooks/useInfiniteMemberChallengeCreationsList'
 import Loading from '@shared/components/loading'
-import NoContent from '@shared/components/no-content/no-content'
 import { URL } from '@shared/constants/route/route'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
+
+import * as S from './styles'
 
 export const MemberChallengeCreateListPage = (): ReactNode => {
   const router = useRouter()
@@ -53,7 +51,7 @@ export const MemberChallengeCreateListPage = (): ReactNode => {
     contents = null
   } else if (groupChallenges.length === 0) {
     contents = (
-      <StyledNoContent
+      <S.StyledNoContent
         title='생성한 챌린지가 없습니다!'
         buttonText='챌린지 생성하러 가기'
         clickHandler={handleCreateChallenge}
@@ -61,7 +59,7 @@ export const MemberChallengeCreateListPage = (): ReactNode => {
     )
   } else {
     contents = (
-      <ChallengeList>
+      <S.ChallengeList>
         {groupChallenges.map(groupChallenge => {
           const { id, imageUrl, name, description, currentParticipantCount, category, endDate, startDate } =
             groupChallenge
@@ -79,67 +77,20 @@ export const MemberChallengeCreateListPage = (): ReactNode => {
         })}
         {isFetchingNextPage && <Loading />}
         {!hasNextPage && !isLoading && groupChallenges.length > 0 && (
-          <EndMessage>생성한 모든 챌린지를 불러왔습니다</EndMessage>
+          <S.EndMessage>생성한 모든 챌린지를 불러왔습니다</S.EndMessage>
         )}
-      </ChallengeList>
+      </S.ChallengeList>
     )
   }
 
   return (
-    <Wrapper>
-      <Title>{userInfo?.nickname || '익명'}의 단체 챌린지</Title>
+    <S.Wrapper>
+      <S.Title>{userInfo?.nickname || '익명'}의 단체 챌린지</S.Title>
       {contents}
-      <Observer ref={triggerRef}>{isFetchingNextPage && '불러오는 중...'}</Observer>
-    </Wrapper>
+      <S.Observer ref={triggerRef}>{isFetchingNextPage && '불러오는 중...'}</S.Observer>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  ${responsiveHorizontalPadding};
-
-  width: 100%;
-  height: 100%;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
-`
-
-const Title = styled.h1`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-  text-align: center;
-`
-
-const ChallengeList = styled.div`
-  width: 100%;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`
-
-const Observer = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-`
-
-const EndMessage = styled.div`
-  text-align: center;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.lfDarkGray.base};
-`
-
-const StyledNoContent = styled(NoContent)`
-  height: 100%;
-`
 
 // const dummyMemberGroupChallenge: GroupChallengeResponse[] = [
 //   {
