@@ -1,14 +1,12 @@
+import { BASE_API_URL } from '@shared/constants/api-url'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { useToastStore } from '@shared/context/toast/ToastStore'
-
-import { BASE_URL } from '../fetcher'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
 
-export async function refreshClientAccessToken(): Promise<void> {
-  const openToast = useToastStore.getState().open
+const BASE_URL = BASE_API_URL
 
+export async function refreshClientAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()
 
   isRefreshing = true
@@ -17,7 +15,7 @@ export async function refreshClientAccessToken(): Promise<void> {
     try {
       const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE}`, {
         method: 'POST',
-        credentials: 'include', // 쿠키 포함
+        credentials: 'include', // 재발급은 쿠키 포함
       })
 
       if (!response.ok) {

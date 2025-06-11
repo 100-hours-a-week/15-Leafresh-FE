@@ -40,7 +40,7 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/personal/${challengeId}/verification/result`,
     }),
 
-    // 규칙
+    // 규약 조회
     RULES: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/personal/${challengeId}/rules`,
@@ -73,13 +73,13 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/group/${challengeId}`,
     }),
 
-    // 규약
+    // 인증 규약 조회
     RULES: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/group/${challengeId}/rules`,
     }),
 
-    // 참여
+    // 참여 이력 생성
     PARTICIPATE: (challengeId: number) => ({
       method: HttpMethod.POST,
       path: `/api/challenges/group/${challengeId}/participations`,
@@ -154,6 +154,12 @@ const CHALLENGE_ENDPOINTS = {
   },
 }
 
+const a = {
+  1: 2,
+  2: 3,
+  3: 4,
+}
+
 const MEMBER_ENDPOINTS = {
   AUTH: {
     LOGIN: (provider: LowercaseOAuthType) => ({ method: HttpMethod.GET, path: `/oauth/${provider}` }), // OAuth 로그인 시작
@@ -169,13 +175,13 @@ const MEMBER_ENDPOINTS = {
 
   // CRUD
   SIGNUP: { method: HttpMethod.POST, path: '/api/members' }, // 회원가입
-  DETAILS: { method: HttpMethod.GET, path: '/api/members' }, // 내 정보 조회
+  DETAILS: { method: HttpMethod.GET, path: '/api/members' }, // 회원 정보 조회
   MODIFY: { method: HttpMethod.PATCH, path: '/api/members' }, // 회원정보 수정
   UNREGISTER: { method: HttpMethod.DELETE, path: '/api/members' }, // 회원 탈퇴
 
   // 회원 정보
   PROFILE_CARD: { method: HttpMethod.GET, path: '/api/members/profilecard' }, // 프로필 카드 조회
-  LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves' }, // 나뭇잎 개수 조회
+  LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves' }, // 나뭇잎 보유량 조회
 
   FEEDBACK: {
     GET_FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
@@ -205,9 +211,12 @@ const MEMBER_ENDPOINTS = {
   CHALLENGE: {
     GROUP: {
       CREATIONS: { method: HttpMethod.GET, path: '/api/members/challenges/group/creations' }, // 생성한 챌린지
-      PARTICIPATIONS: { method: HttpMethod.GET, path: '/api/members/challenges/group/participations' }, // 내가 참여한 챌린지
+      PARTICIPATIONS: {
+        method: HttpMethod.GET,
+        path: '/api/members/challenges/group/participations',
+      }, // 참여한 단체 챌린지 목록 조회
 
-      // 챌린지 인증 내역
+      // 참여한 단체 챌린지 인증 내역을 일별로 조회
       VERIFICATIONS: (challengeId: number) => ({
         method: HttpMethod.GET,
         path: `/api/members/challenges/group/participations/${challengeId}/verifications`,
@@ -264,72 +273,10 @@ const CHATBOT_ENDPOINTS = {
   CHATTING: { method: HttpMethod.POST, path: '/api/chatbot/recommendation/free-text' },
 }
 
-/** 관리자 (v3 개발)*/
-// const ADMIN_ENDPOINTS = {
-//   CHALLENGE: {
-//     EVENT: {
-//       // 이벤트 챌린지 생성
-//       CREATE: { method: HttpMethod.POST, path: '/api/admin/challenges/event' },
-//     },
-//     PERSONAL: {
-//       // 템플릿
-//       TEMPLATE: {
-//         GET: { method: HttpMethod.GET, path: '/api/admin/challenges/personal' }, // 조회
-//         CREATE: { method: HttpMethod.POST, path: '/api/admin/challenges/personal' }, // 생성
-//         // 개인 챌린지 템플릿 수정
-//         UPDATE: (templateId: number) => ({
-//           method: HttpMethod.PATCH,
-//           path: `/api/admin/challenges/personal/${templateId}`,
-//         }),
-//         // 개인 챌린지 템플릿 삭제
-//         DELETE: (templateId: number) => ({
-//           method: HttpMethod.DELETE,
-//           path: `/api/admin/challenges/personal/${templateId}`,
-//         }),
-//       },
-//       PRODUCT: {
-//         // 일반 상품
-//         STORE: {
-//           // 등록
-//           CREATE: { method: HttpMethod.POST, path: '/api/admin/products' },
-
-//           // 수정
-//           UPDATE: (productId: number) => ({
-//             method: HttpMethod.PATCH,
-//             path: `/api/admin/products/${productId}`,
-//           }),
-
-//           // 삭제
-//           DELETE: (productId: number) => ({
-//             method: HttpMethod.DELETE,
-//             path: `/api/admin/products/${productId}`,
-//           }),
-//         },
-//         // 타임딜
-//         TIME_DEAL: {
-//           // 등록ㄴ
-//           CREATE: { method: HttpMethod.POST, path: '/api/admin/timedeals' },
-//           // 수정
-//           UPDATE: (dealId: number) => ({
-//             method: HttpMethod.PATCH,
-//             path: `/api/admin/timedeals/${dealId}`,
-//           }),
-//           // 삭제
-//           DELETE: (dealId: number) => ({
-//             method: HttpMethod.DELETE,
-//             path: `/api/admin/timedeals/${dealId}`,
-//           }),
-//         },
-//       },
-//     },
-//   },
-// }
-
 export const ENDPOINTS = {
   CHALLENGE: CHALLENGE_ENDPOINTS,
   MEMBERS: MEMBER_ENDPOINTS,
   STORE: STORE_ENDPOINTS,
   CHATBOT: CHATBOT_ENDPOINTS,
   S3: S3_ENDPOINTS,
-  // ADMIN: ADMIN_ENDPOINTS,
 } as const
