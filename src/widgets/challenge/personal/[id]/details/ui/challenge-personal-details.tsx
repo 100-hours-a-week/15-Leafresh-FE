@@ -1,10 +1,8 @@
 'use client'
-
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
@@ -17,9 +15,7 @@ import {
   VerifyPersonalChallengeBody,
   VerifyVariables,
 } from '@features/challenge/api/verify-personal-challenge'
-import ChallengeVerifyExamples, {
-  VerificationImageData,
-} from '@features/challenge/components/common/ChallengeVerifyExamples'
+import { VerificationImageData } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
@@ -32,11 +28,14 @@ import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
 
+import { CHALLENGE_DETAILS_WARNINGS } from '../model/constants'
+import { ChallengePersonalDetailsProps } from '../model/types'
+import * as S from './styles'
+
+// TODO: /entities로 더미데이터 분리
 export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {
   id: 1,
   title: '제로 웨이스트 실천하기',
@@ -71,24 +70,6 @@ export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {
     },
   ],
   status: 'NOT_SUBMITTED',
-}
-
-type WarningType = {
-  isWarning: boolean
-  value: string
-}
-
-const CHALLENGE_DETAILS_WARNINGS: WarningType[] = [
-  { isWarning: false, value: '개인 챌린지는 재참여가 불가합니다.' },
-  { isWarning: false, value: '인증 참여가 아닌, 성공시 나뭇잎이 부여됩니다.' },
-  { isWarning: false, value: '인증 여부는 챌린지 생성자가 아닌, AI가 판단합니다.' },
-  { isWarning: false, value: '개인 챌린지 인증 사진은 비공개 상태로 관리됩니다.' },
-  { isWarning: true, value: '부적절한 인증 사진은 관리자에 의해 삭제될 수 있습니다.' },
-]
-
-interface ChallengePersonalDetailsProps {
-  challengeId: number
-  className?: string
 }
 
 export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalDetailsProps): ReactNode => {
@@ -223,45 +204,44 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
   }
 
   return (
-    <Wrapper className={className}>
-      <DescriptionSection>
-        <Thumbnail src={thumbnailUrl} alt='썸네일' width={500} height={200} />
+    <S.Wrapper className={className}>
+      <S.DescriptionSection>
+        <S.Thumbnail src={thumbnailUrl} alt='썸네일' width={500} height={200} />
 
-        <Descriptions>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
-        </Descriptions>
-      </DescriptionSection>
-
-      <SectionWrapper>
-        <Section>
-          <SectionTitle>인증 방법</SectionTitle>
-          <WarningList>
-            <Warning isWarning={false}>
+        <S.Descriptions>
+          <S.Title>{title}</S.Title>
+          <S.Description>{description}</S.Description>
+        </S.Descriptions>
+      </S.DescriptionSection>
+      <S.SectionWrapper>
+        <S.Section>
+          <S.SectionTitle>인증 방법</S.SectionTitle>
+          <S.WarningList>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li>인증샷 예시에 맞는 사진 제출</li>
-            </Warning>
-            <Warning isWarning={false}>
+            </S.Warning>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li>AI가 사진분석을 통해 인증 성공 여부 판단</li>
-            </Warning>
-            <Warning isWarning={false}>
+            </S.Warning>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
                 인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
               </li>
-            </Warning>
-          </WarningList>
+            </S.Warning>
+          </S.WarningList>
 
-          <TimeArea>
-            <TimeText>
+          <S.TimeArea>
+            <S.TimeText>
               오늘, {verificationStartTime} ~ {verificationEndTime} 인증하기
-            </TimeText>
-          </TimeArea>
-        </Section>
+            </S.TimeText>
+          </S.TimeArea>
+        </S.Section>
 
-        <Section>
-          <StyledChallengeVerifyExamples
+        <S.Section>
+          <S.StyledChallengeVerifyExamples
             title='인증샷 예시'
             description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
@@ -270,150 +250,27 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
             readOnly
             verificationInputClassName='verify-input'
           />
-        </Section>
+        </S.Section>
 
-        <Section>
-          <SectionTitle>유의사항</SectionTitle>
-          <WarningList>
+        <S.Section>
+          <S.SectionTitle>유의사항</S.SectionTitle>
+          <S.WarningList>
             {CHALLENGE_DETAILS_WARNINGS.map(warnings => (
-              <Warning key={warnings.value} isWarning={warnings.isWarning}>
+              <S.Warning key={warnings.value} isWarning={warnings.isWarning}>
                 <LucideIcon name='Check' size={24} />
                 <li>{warnings.value}</li>
-              </Warning>
+              </S.Warning>
             ))}
-          </WarningList>
-        </Section>
-      </SectionWrapper>
+          </S.WarningList>
+        </S.Section>
+      </S.SectionWrapper>
 
-      <SubmitButton onClick={openImageModal} disabled={isButtonDisabled}>
+      <S.SubmitButton onClick={openImageModal} disabled={isButtonDisabled}>
         {!isPending ? getSubmitButtonLabel(status) : <Loading />}
-      </SubmitButton>
-    </Wrapper>
+      </S.SubmitButton>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  ${responsiveHorizontalPadding};
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`
-
-const DescriptionSection = styled.section`
-  margin-bottom: 45px;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const Thumbnail = styled(Image)`
-  width: 100%;
-  aspect-ratio: 14/9;
-
-  border-radius: ${theme.radius.base};
-`
-
-const Descriptions = styled.div`
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const Title = styled.h2`
-  font-size: 30px;
-  font-weight: ${theme.fontWeight.semiBold};
-`
-const Description = styled.p`
-  font-size: ${theme.fontSize.base};
-  white-space: pre-wrap;
-  word-break: break-word;
-`
-
-const SectionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-`
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-
-  gap: 12px;
-`
-
-const SectionTitle = styled.div`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  position: relative;
-`
-
-const TimeArea = styled.div`
-  background-color: ${theme.colors.lfInputBackground.base};
-  border-radius: ${theme.radius.sm};
-
-  margin-top: 16px;
-  padding: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const TimeText = styled.span`
-  font-weight: ${theme.fontWeight.medium};
-  font-size: ${theme.fontSize.base};
-`
-
-const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
-  font-weight: ${theme.fontWeight.semiBold};
-
-  .verify-input {
-    width: 40%;
-  }
-`
-
-const SubmitButton = styled.button`
-  /* padding: 12px; */
-  height: 50px;
-  border-radius: ${theme.radius.base};
-  background-color: ${({ disabled }) => (disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.base)};
-  color: ${({ disabled }) => (disabled ? theme.colors.lfBlack.base : theme.colors.lfWhite.base)};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  border: none;
-
-  &:hover {
-    background-color: ${({ disabled }) =>
-      disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.hover};
-  }
-`
-
-const WarningList = styled.ul`
-  margin-top: 5px;
-
-  font-size: ${theme.fontSize.base};
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`
-
-const Warning = styled.div<{ isWarning: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  font-weight: ${theme.fontWeight.medium};
-  color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-`
 
 // export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {
 //   id: 1,
