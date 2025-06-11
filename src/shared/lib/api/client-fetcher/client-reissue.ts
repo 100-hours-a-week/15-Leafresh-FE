@@ -1,9 +1,10 @@
+import { BASE_API_URL } from '@shared/constants/api-url'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-
-import { BASE_URL } from '../fetcher'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
+
+const BASE_URL = BASE_API_URL
 
 export async function refreshClientAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()

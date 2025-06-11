@@ -1,8 +1,10 @@
+import { BASE_API_URL } from '@shared/constants/api-url'
 import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
-import { BASE_URL } from '../fetcher'
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshClientAccessToken } from './client-reissue'
+
+const BASE_URL = BASE_API_URL
 
 export async function clientFetchRequest<T>(
   endpoint: EndpointType,

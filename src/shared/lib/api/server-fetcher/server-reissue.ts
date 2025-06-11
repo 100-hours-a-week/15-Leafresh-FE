@@ -2,12 +2,14 @@
 
 import { cookies } from 'next/headers'
 
+import { BASE_API_URL } from '@shared/constants/api-url'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-
-import { BASE_URL } from '../fetcher'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
+
+//환경에 따라 다른 Url
+const BASE_URL = BASE_API_URL
 
 export async function refreshServerAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()
