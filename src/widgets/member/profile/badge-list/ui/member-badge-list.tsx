@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query'
 
 import { badgeCategory } from '@entities/member/constant'
 import { BadgeData, getBadgeList } from '@features/member/api/profile/get-badge'
+import BadgeTab from '@features/member/components/member/profile/badge/BadgeTab'
 import Loading from '@shared/components/loading'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-import BadgeTabs from '../../../features/member/components/member/profile/badge/BadgeTab'
 import * as S from './styles'
 
 export const MemberBadgeListPage = () => {
@@ -37,11 +37,12 @@ export const MemberBadgeListPage = () => {
         <div style={{ width: '24px' }} />
       </S.Header>
 
-      <BadgeTabs categories={badgeCategory} badgeData={badgeData} />
+      <BadgeTab categories={badgeCategory} badgeData={badgeData} />
     </S.Container>
   )
 }
 
+// TODO: (refactor) entities 폴더로 옮기기
 const dummyBadgeData: BadgeData = {
   group: Array.from({ length: 2 }, (_, i) => ({
     id: i,
