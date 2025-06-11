@@ -45,7 +45,7 @@ import { ISOFormatString } from '@shared/types/date'
 import Like from '@public/icon/like.svg'
 import UnLike from '@public/icon/unLike.svg'
 
-import CommentList from './CommentList'
+import CommentList from './comment-list'
 
 interface VerificationDetailsProps {
   challengeId: number

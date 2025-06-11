@@ -4,9 +4,8 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 
 import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import { getTimeDiff } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
-
-import { formatTimeAgo } from './VerificationDetails'
 
 interface CommentItemProps {
   comment: CommentResponse['comment'][number]
@@ -33,7 +32,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }: CommentItemProps) => {
             <Nickname>{comment.nickname || '(알수 없음)'}</Nickname>
           </UserWrapper>
           <Meta>
-            <Time>{formatTimeAgo(comment.createdAt)}</Time>
+            <Time>{getTimeDiff(comment.createdAt)}</Time>
             {comment.isMine && !isEditing && !comment.deleted && (
               <Controls>
                 <EditButton onClick={() => setIsEditing(true)}>수정</EditButton>
