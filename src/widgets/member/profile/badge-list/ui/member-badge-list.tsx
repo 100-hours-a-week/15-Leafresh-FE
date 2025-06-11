@@ -1,15 +1,14 @@
 'use client'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { badgeCategory } from '@entities/member/constant'
 import { BadgeData, getBadgeList } from '@features/member/api/profile/get-badge'
 import Loading from '@shared/components/loading'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { theme } from '@shared/styles/theme'
 
 import BadgeTabs from '../../../features/member/components/member/profile/badge/BadgeTab'
+import * as S from './styles'
 
 export const MemberBadgeListPage = () => {
   const {
@@ -28,43 +27,22 @@ export const MemberBadgeListPage = () => {
   const badgeData: BadgeData =
     badgeListData?.data.badges && Object.keys(badgeListData.data.badges).length > 0
       ? badgeListData.data.badges
-      : fallbackData
+      : dummyBadgeData
 
   if (isLoading) return <Loading />
   return (
-    <Container>
-      <Header>
-        <Title>활동 뱃지</Title>
+    <S.Container>
+      <S.Header>
+        <S.Title>활동 뱃지</S.Title>
         <div style={{ width: '24px' }} />
-      </Header>
+      </S.Header>
 
       <BadgeTabs categories={badgeCategory} badgeData={badgeData} />
-    </Container>
+    </S.Container>
   )
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 20px;
-  background: ${theme.colors.lfWhite.base};
-  /*  */
-`
-
-const Title = styled.h1`
-  font-size: 18px;
-  font-weight: 600;
-  color: ${theme.colors.lfBlack.base};
-  margin: 0;
-`
-
-const fallbackData: BadgeData = {
+const dummyBadgeData: BadgeData = {
   group: Array.from({ length: 2 }, (_, i) => ({
     id: i,
     name: `그룹 뱃지 ${i + 1}`,

@@ -1,3 +1,3 @@
-export * from './member-badge-list'
-export * from './member-profile-modify'
-export * from './member-profile-mypage'
+export * from './badge-list'
+export * from './modify'
+export * from './mypage'
