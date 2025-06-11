@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
+import { ProfileResponse } from '@features/member/api/profile/get-member-profile'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
@@ -37,14 +38,6 @@ interface Props {
   children: React.ReactNode
 }
 
-type UserInfoResponse = {
-  nickname: string
-  profileImageUrl: string
-  treeLevelId: number
-  treeLevelName: string
-  treeImageUrl: string
-}
-
 const AuthGuard = ({ children }: Props) => {
   const pathname = usePathname()
   const router = useRouter()
@@ -65,10 +58,11 @@ const AuthGuard = ({ children }: Props) => {
 
     const validate = async () => {
       try {
-        const { data } = await fetchRequest<UserInfoResponse>(ENDPOINTS.MEMBERS.DETAILS)
-        const { nickname, profileImageUrl, treeImageUrl, treeLevelId, treeLevelName } = data
+        const { data } = await fetchRequest<ProfileResponse>(ENDPOINTS.MEMBERS.DETAILS)
+        const { nickname, email, profileImageUrl, treeImageUrl, treeLevelId, treeLevelName } = data
         const userInfo: UserInfo = {
           nickname,
+          email,
           imageUrl: profileImageUrl,
           treeState: {
             level: treeLevelId,
