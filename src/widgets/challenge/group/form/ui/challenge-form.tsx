@@ -1,11 +1,9 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { z } from 'zod'
 
 import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { sendGAEvent } from '@next/third-parties/google'
 
@@ -23,53 +21,19 @@ import {
   ModifyChallengeVariables,
   NewImage,
 } from '@features/challenge/api/modify-group-challenge'
-import DetailStep, { detailSchema } from '@features/challenge/components/challenge/group/create/DetailStep'
-import MetaDataStep, { metaSchema } from '@features/challenge/components/challenge/group/create/MetadataStep'
+import DetailStep from '@features/challenge/components/challenge/group/create/DetailStep'
+import MetaDataStep from '@features/challenge/components/challenge/group/create/MetadataStep'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { formatDateToDateFormatString } from '@shared/lib/date/utils'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
 
-const fullSchema = metaSchema
-  .merge(detailSchema)
-  .refine(
-    ({ startDate, endDate }) => {
-      const start = startDate.setHours(0, 0, 0, 0)
-      const end = endDate.setHours(0, 0, 0, 0)
-      const msDiff = end - start
-      return msDiff > 0
-    },
-    {
-      path: ['endDate'],
-      message: '하루 지속되는 챌린지는 불가능합니다.',
-    },
-  )
-  .refine(
-    data => {
-      const msPerDay = 24 * 60 * 60 * 1000
-      const start = data.startDate.setHours(0, 0, 0, 0)
-      const end = data.endDate.setHours(0, 0, 0, 0)
-      const diffDays = (end - start) / msPerDay
-      return diffDays >= 1
-    },
-    {
-      path: ['endDate'],
-      message: '종료일은 시작일보다 정확히 하루 뒤여야 합니다.',
-    },
-  )
-
-export type FullFormValues = z.infer<typeof fullSchema>
-
-interface ChallengeGroupFormPageProps {
-  defaultValues: FullFormValues
-  isEdit?: boolean
-  challengeId?: number
-}
+import { fullSchema } from '../model/constants'
+import { ChallengeGroupFormPageProps, FullFormValues } from '../model/types'
+import * as S from './styles'
 
 export const ChallengeGroupFormPage = ({ defaultValues, isEdit = false, challengeId }: ChallengeGroupFormPageProps) => {
   const searchParams = useSearchParams()
@@ -246,7 +210,7 @@ export const ChallengeGroupFormPage = ({ defaultValues, isEdit = false, challeng
     window.scrollTo({ top: 0, behavior: 'auto' })
   }
   return (
-    <PageWrapper>
+    <S.PageWrapper>
       {step === 1 ? (
         <MetaDataStep form={form} handleStepChange={handleStepChange} isEdit={isEdit} />
       ) : (
@@ -258,18 +222,6 @@ export const ChallengeGroupFormPage = ({ defaultValues, isEdit = false, challeng
           isEdit={isEdit}
         />
       )}
-    </PageWrapper>
+    </S.PageWrapper>
   )
 }
-
-const PageWrapper = styled.div`
-  ${responsiveHorizontalPadding};
-
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-width: 480px;
-  margin: 0 auto;
-  background-color: ${theme.colors.lfWhite.base};
-`
