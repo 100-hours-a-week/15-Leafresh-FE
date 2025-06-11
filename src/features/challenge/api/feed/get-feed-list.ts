@@ -36,7 +36,7 @@ type GetGroupChallengeFeedListResponse = GroupChallengeFeedList
 export const getGroupChallengeFeedList = ({ category, cursorId, cursorTimestamp }: GroupChallengeFeedListParams) => {
   return fetchRequest<GetGroupChallengeFeedListResponse>(ENDPOINTS.CHALLENGE.GROUP.FEED, {
     query: {
-      ...(category ? { category } : {}), // "전체" 인 경우에는 카테고리 쿼리 없이 요청
+      ...(category && category !== 'ALL' ? { category } : {}), // "전체" 인 경우에는 카테고리 쿼리 없이 요청
       ...(cursorId !== undefined ? { cursorId } : {}),
       ...(cursorTimestamp ? { cursorTimestamp } : {}),
     },

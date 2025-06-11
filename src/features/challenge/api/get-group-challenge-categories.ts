@@ -1,10 +1,10 @@
-import { ChallengeCategoryType, ChallengeCategoryTypeKor } from '@entities/challenge/type'
+import { FilterChallengeCategoryType, FilterChallengeCategoryTypeKor } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 
 export type GroupChallengeCategory = {
-  category: ChallengeCategoryType
-  label: ChallengeCategoryTypeKor
+  category: FilterChallengeCategoryType
+  label: FilterChallengeCategoryTypeKor
   imageUrl: string
 }
 

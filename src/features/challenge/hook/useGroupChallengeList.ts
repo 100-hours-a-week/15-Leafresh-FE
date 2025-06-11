@@ -1,12 +1,11 @@
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
 import {
   fetchGroupChallenges,
   type FetchGroupChallengesParams,
-  type FetchGroupChallengesResponse,
 } from '@features/challenge/api/get-group-challenge-list'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ApiResponse } from '@shared/lib/api/type'
 
 /**
  * 단체 챌린지 목록 조회를 위한 React Query 훅 (무한 스크롤)
@@ -14,16 +13,7 @@ import { ApiResponse } from '@shared/lib/api/type'
  * @param input - 검색어 (string)
  */
 export const useInfiniteGroupChallenges = (category: string, input: string) =>
-  useInfiniteQuery<
-    // 한 페이지당 반환되는 데이터 타입
-    ApiResponse<FetchGroupChallengesResponse>,
-    // 에러 타입
-    Error,
-    // 최종 Data 타입: FetchGroupChallengesResponse 그대로 사용
-    InfiniteData<ApiResponse<FetchGroupChallengesResponse>>,
-    // Query Key 타입
-    readonly [...ReturnType<typeof QUERY_KEYS.CHALLENGE.GROUP.LIST>]
-  >({
+  useInfiniteQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.LIST(category, input),
     queryFn: ctx => {
       const params = ctx.pageParam as FetchGroupChallengesParams
@@ -42,5 +32,5 @@ export const useInfiniteGroupChallenges = (category: string, input: string) =>
           }
         : undefined,
     initialPageParam: {},
-    staleTime: 5 * 60 * 1000, // 5분
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.LIST,
   })

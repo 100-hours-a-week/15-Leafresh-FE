@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { ChallengeCategoryType } from '@entities/challenge/type'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
+import { ChallengeCategoryType, FilterChallengeCategoryType } from '@entities/challenge/type'
 import { GroupChallengeCategory } from '@features/challenge/api/get-group-challenge-categories'
 import { GroupChallengeItem } from '@features/challenge/api/get-group-challenge-list'
 import {
@@ -26,8 +27,8 @@ interface GroupChallengeSectionsProps {
 export const GroupChallengeSections = ({ categories, className }: GroupChallengeSectionsProps): ReactNode => {
   const router = useRouter()
 
-  // TODO: 챌린지 카테고리 종류가 추가되면, 전체 카테고리로 초기값 설정
-  const [category, setCategory] = useState<ChallengeCategoryType>(categories[0].category) // 영어
+  const [category, setCategory] = useState<FilterChallengeCategoryType>(categories[0].category) // 영어
+
   const [input, setInput] = useState('') // 유저의 검색값
 
   const searchInputRef = useRef<HTMLInputElement>(null)
@@ -84,9 +85,16 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
     contents = <StyledLoading />
   } else if (!groupChallenges || groupChallenges.length === 0) {
     /** 검색값이 없는 경우 */
+    let title: string
+    if (category === 'ALL') {
+      title = `진행중인 챌린지가 없습니다`
+    } else {
+      const korCategory = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(category) as string
+      title = `${korCategory}\n 챌린지가 없습니다`
+    }
     contents = (
       <StyledNoContent
-        title='검색돤 챌린지가 없습니다'
+        title={title}
         buttonText='챌린지 생성하기'
         clickHandler={() => router.push(URL.CHALLENGE.GROUP.CREATE.value(category))} // 해당 카테고리로 생성하러 가기
       />
@@ -113,7 +121,7 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
   }
 
   return (
-    <Section>
+    <Section className={className}>
       <SectionTitle>
         <span>단체 챌린지</span>
         <SearchBar>
@@ -187,7 +195,7 @@ const CategoryGrid = styled.div`
   margin-top: 8px;
   display: grid;
   gap: 4px;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(9, 1fr);
   overflow-x: auto;
 
   &::-webkit-scrollbar {

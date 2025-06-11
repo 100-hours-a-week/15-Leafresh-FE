@@ -14,13 +14,10 @@ import { getPersonalChallengeList, PersonalChallengeType } from '@features/chall
 import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@features/main/components'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { useToast } from '@shared/hooks/useToast/useToast'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 
 const MainPage = (): ReactNode => {
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
-  const openToast = useToast()
-
   const { data: categoriesData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.CATEGORIES,
     queryFn: getGroupChallengeCategoryList,

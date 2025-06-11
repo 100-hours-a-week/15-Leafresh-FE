@@ -40,6 +40,8 @@ const NoChallengeMessage = styled.div`
   font-size: ${theme.fontSize.lg};
   font-weight: ${theme.fontWeight.semiBold};
   color: ${theme.colors.lfBlack.base};
+  white-space: pre-line;
+  text-align: center;
 `
 
 const CreateButton = styled.button`

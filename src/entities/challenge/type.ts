@@ -27,3 +27,7 @@ export type DayTypeKor = (typeof DAY_PAIRS)[number]['kor']
 /** 카테고리 */
 export type ChallengeCategoryType = (typeof CHALLENGE_CATEGORY_PAIRS)[number]['eng']
 export type ChallengeCategoryTypeKor = (typeof CHALLENGE_CATEGORY_PAIRS)[number]['kor']
+
+// DB에 없는 필터용 카테고리
+export type FilterChallengeCategoryType = ChallengeCategoryType | 'ALL'
+export type FilterChallengeCategoryTypeKor = ChallengeCategoryType | '전체'
