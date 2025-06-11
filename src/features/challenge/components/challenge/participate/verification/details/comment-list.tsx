@@ -6,9 +6,8 @@ import { useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import CommentItem from '@features/challenge/components/challenge/participate/verification/details/comment-item'
 import { theme } from '@shared/styles/theme'
-
-import CommentItem from './CommentItem'
 
 interface CommentListProps {
   comments: CommentResponse['comment']

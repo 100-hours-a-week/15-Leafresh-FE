@@ -27,6 +27,7 @@ import {
 import { PostCommentVariables } from '@features/challenge/api/participate/verification/post-verification-comment'
 import { PostReplyVariables } from '@features/challenge/api/participate/verification/post-verification-reply'
 import { PutCommentVariables } from '@features/challenge/api/participate/verification/put-verification-comment'
+import CommentList from '@features/challenge/components/challenge/participate/verification/details/comment-list'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
@@ -44,8 +45,6 @@ import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
 import Like from '@public/icon/like.svg'
 import UnLike from '@public/icon/unLike.svg'
-
-import CommentList from './comment-list'
 
 interface VerificationDetailsProps {
   challengeId: number
