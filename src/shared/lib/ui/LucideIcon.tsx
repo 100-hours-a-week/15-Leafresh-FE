@@ -1,11 +1,11 @@
 'use client'
 import { icons } from 'lucide-react'
 
-import isPropValid from '@emotion/is-prop-valid'
-import styled from '@emotion/styled'
-
 import { ThemeColorType } from '@shared/styles/theme/type'
 import { getThemeColor } from '@shared/styles/theme/utils'
+
+import isPropValid from '@emotion/is-prop-valid'
+import styled from '@emotion/styled'
 
 export interface LucideIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'ref'> {
   name: keyof typeof icons

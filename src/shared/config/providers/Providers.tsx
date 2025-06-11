@@ -1,13 +1,14 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { ThemeProvider } from '@emotion/react'
 
 import GlobalStyle from '@shared/styles/GlobalStyle'
 import { theme } from '@shared/styles/theme'
 
 import { ChakraUseProvider } from './ChakraProvider'
 import TanstackQueryProvider from './QueryClientProvider'
+
+import { ThemeProvider } from '@emotion/react'
 
 /**
  * 전역 Layout.tsx에 지정되는 Provider를 모아두는 저장소입니다.

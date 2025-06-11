@@ -1,9 +1,9 @@
 import Image from 'next/image'
 
-import styled from '@emotion/styled'
-
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+
+import styled from '@emotion/styled'
 
 export const Wrapper = styled.div`
   ${responsiveHorizontalPadding};

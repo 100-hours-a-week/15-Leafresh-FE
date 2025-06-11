@@ -1,4 +1,4 @@
-import { DAYS, DAYS_KOR } from '@entities/challenge/constant'
+import { DAYS, DAYS_KOR } from '@entities/challenge/consts'
 import { DayType } from '@entities/challenge/type'
 import { DateFormatString, ISOFormatString } from '@shared/types/date'
 

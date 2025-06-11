@@ -1,10 +1,10 @@
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
-
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ApiResponse } from '@shared/lib/api/type'
 
 import { getMemberStoreOrderList, MemberStoreOrderListResponse } from '../api/store/get-order-list'
+
+import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
 export const useInfiniteMemberStoreOrderList = () => {
   return useInfiniteQuery<

@@ -1,9 +1,7 @@
 import { useRouter } from 'next/navigation'
-
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/consts'
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
   DeleteGroupChallengeResponse,
@@ -19,6 +17,8 @@ import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { DateFormatString } from '@shared/types/date'
+
+import styled from '@emotion/styled'
 
 export type GroupChallenge = {
   id: number

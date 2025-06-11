@@ -26,12 +26,7 @@ export const useInfoModalStore = create<InfoModalState>(set => ({
   onClose: undefined,
   onCancel: undefined,
 
-  openInfoModal: ({
-    title,
-    description,
-    variant = 'default',
-    onClose,
-  }) =>
+  openInfoModal: ({ title, description, variant = 'default', onClose }) =>
     set({
       isOpen: true,
       title,

@@ -1,11 +1,11 @@
 'use client'
-import styled from '@emotion/styled'
-
 import ChallengeCreateButton from '@features/challenge/components/challenge/ChallengeCreateButton'
 import { Navbar } from '@shared/components'
 import Chatbot from '@shared/components/chatbot/Chatbot'
 import Header from '@shared/components/header'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 const WIDTH_PADDING = 20
 

@@ -1,12 +1,8 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import styled from '@emotion/styled'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { OAuthType } from '@entities/member/type'
@@ -22,6 +18,10 @@ import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useQuery } from '@tanstack/react-query'
 
 const SignupPage = () => {
   const router = useRouter()

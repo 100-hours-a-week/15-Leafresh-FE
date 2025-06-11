@@ -3,13 +3,13 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
-
 import { URL } from '@shared/constants/route/route'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LogoImage from '@public/image/logo.svg'
+
+import styled from '@emotion/styled'
 
 interface HeaderProps {
   padding: number

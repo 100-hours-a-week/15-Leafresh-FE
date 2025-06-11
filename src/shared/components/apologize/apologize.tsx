@@ -1,10 +1,10 @@
 import Image from 'next/image'
-
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
 import ApologizeImage from '@public/image/apologize_character.svg'
+
+import styled from '@emotion/styled'
 
 interface ApologizeContentProps {
   title: string

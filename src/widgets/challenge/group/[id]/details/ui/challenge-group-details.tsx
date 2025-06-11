@@ -4,8 +4,6 @@ import { differenceInCalendarDays } from 'date-fns'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { useQuery } from '@tanstack/react-query'
-
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import {
@@ -30,6 +28,8 @@ import LeafIcon from '@public/icon/leaf.png'
 import { CHALLENGE_DETAILS_WARNINGS } from '../model/constants'
 import { ChallengeGroupDetailsPageProps } from '../model/types'
 import * as S from './styles'
+
+import { useQuery } from '@tanstack/react-query'
 
 export const ChallengeGroupDetailsPage = ({ challengeId, className }: ChallengeGroupDetailsPageProps) => {
   const { isLoggedIn } = useAuth()

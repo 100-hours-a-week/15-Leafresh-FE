@@ -1,15 +1,15 @@
 'use client'
 
 import Image from 'next/image'
-
 import { useEffect, useRef, useState } from 'react'
-import styled from '@emotion/styled'
 
 import { treeLevelMap } from '@entities/member/constant'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { theme } from '@shared/styles/theme'
 
 import GuideOverlay from './GuideOverlay'
+
+import styled from '@emotion/styled'
 
 interface Badge {
   id: number

@@ -1,9 +1,7 @@
 'use client'
 
 import { addMonths, startOfMonth, startOfToday, subMonths } from 'date-fns'
-
 import { useRef, useState } from 'react'
-import styled from '@emotion/styled'
 
 import { DayType } from '@entities/challenge/type'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
@@ -12,6 +10,8 @@ import { theme } from '@shared/styles/theme'
 import CalendarDates from './calender-dates'
 import CalendarHeader from './calender-header'
 import CalendarWeekdays from './calender-weekdays'
+
+import styled from '@emotion/styled'
 
 interface CalendarProps {
   startDate?: Date

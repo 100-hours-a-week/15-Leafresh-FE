@@ -4,7 +4,7 @@ import {
   CHALLENGE_VERIFICATION_RESULT,
   CHALLENGE_VERIFICATION_STATUS,
   DAY_PAIRS,
-} from './constant'
+} from './consts'
 
 export type ConstantPair = { kor: string; eng: string }
 

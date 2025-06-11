@@ -1,12 +1,9 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-
 import { useState } from 'react'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
-import { convertLanguage, DAY_PAIRS } from '@entities/challenge/constant'
+import { convertLanguage, DAY_PAIRS } from '@entities/challenge/consts'
 import {
   getGroupChallengeRulesList,
   GroupChallengeRulesListResponse,
@@ -23,6 +20,9 @@ import { ChallengeDataType } from '@shared/context/modal/CameraModalStore'
 import { ApiResponse } from '@shared/lib/api/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 interface VerificationGuideModalProps {
   isOpen: boolean

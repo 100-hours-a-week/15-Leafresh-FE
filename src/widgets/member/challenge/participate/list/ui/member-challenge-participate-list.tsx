@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { useEffect, useRef, useState } from 'react'
 
 import type { ParticipantChallengeItem } from '@features/challenge/api/participate/group-participant'

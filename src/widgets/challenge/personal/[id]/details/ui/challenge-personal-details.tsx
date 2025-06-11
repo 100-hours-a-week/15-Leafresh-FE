@@ -1,9 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { ReactNode } from 'react'
-import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import {
@@ -34,6 +32,8 @@ import LeafIcon from '@public/icon/leaf.png'
 import { CHALLENGE_DETAILS_WARNINGS } from '../model/constants'
 import { ChallengePersonalDetailsProps } from '../model/types'
 import * as S from './styles'
+
+import { useQuery } from '@tanstack/react-query'
 
 // TODO: /entities로 더미데이터 분리
 export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {

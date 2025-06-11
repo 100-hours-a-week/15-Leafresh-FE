@@ -1,11 +1,11 @@
 // src/app/(with-header)/member/alarm/page.tsx
 
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-import { MemberAlarmList } from '@widgets/member'
-
 import { getMemberAlarmList } from '@features/member/api/get-alarm'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { MemberAlarmList } from '@widgets/member'
 
 const MemberAlarmPage = async () => {
   const queryClient = getQueryClient()

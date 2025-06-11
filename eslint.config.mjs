@@ -1,3 +1,4 @@
+import prettier from 'eslint-plugin-prettier'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import unusedImport from 'eslint-plugin-unused-imports'
 import { dirname } from 'path'
@@ -13,10 +14,10 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...compat.extends('next/core-web-vitals', 'next/typescript', 'plugin:prettier/recommended'),
   { ignores: ['.next', '.lintstagedrc.js'] },
   {
-    plugins: { 'simple-import-sort': simpleImportSort, 'unused-imports': unusedImport }, // 플러그인 추가
+    plugins: { 'simple-import-sort': simpleImportSort, 'unused-imports': unusedImport, prettier }, // 플러그인 추가
     rules: {
       // simpleImportSort
       'simple-import-sort/imports': [
@@ -24,7 +25,7 @@ const eslintConfig = [
         {
           groups: [
             ['^node:', '^\\w'], // 1. node, builtin 모듈
-            ['^react', '^@?\\w'], // 2. 외부 라이브러리 (react 관련 우선)
+            // ['^react', '^@?\\w'], // 2. 외부 라이브러리 (react 관련 우선)
             ['^@app/', '^@entities/', '^@features/', '^@shared/', '^@public/'], // 3. 내부 alias 경로 - @app, @features 등
             ['^\\u0000', '^\\.\\.(?!/?$)', '^\\.'], // 4. 상대경로 import
             ['^.+\\.s?css$'], // 5. 스타일 import
@@ -58,6 +59,8 @@ const eslintConfig = [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-interface': 'off', // 빈 인터페이스 허용
       '@typescript-eslint/no-empty-object-type': 'off', // 빈 객체 타입 허용
+
+      'prettier/prettier': 'warn',
     },
   },
 ]

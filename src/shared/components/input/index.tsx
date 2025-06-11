@@ -1,9 +1,10 @@
 'use client'
 
 import { InputHTMLAttributes, useState } from 'react'
-import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string

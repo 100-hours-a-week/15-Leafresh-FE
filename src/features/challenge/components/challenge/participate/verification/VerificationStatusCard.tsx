@@ -2,11 +2,12 @@
 'use client'
 
 import React from 'react'
-import styled from '@emotion/styled'
 
 import LucideIcon, { LucideIconProps } from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import { ThemeColorType } from '@shared/styles/theme/type'
+
+import styled from '@emotion/styled'
 
 export type VerificationStatus = 'SUCCESS' | 'FAILURE' | 'PENDING_APPROVAL'
 

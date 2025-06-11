@@ -1,8 +1,6 @@
 'use client'
 
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
@@ -12,6 +10,9 @@ import { ISOFormatString } from '@shared/types/date'
 import { getTimeDealProducts, TimeDealProduct } from '../../api/get-timedeals'
 import OngoingTimeDealCard from './OngoingTimeDealCard'
 import UpcomingTimeDealCard from './UpcomingTimeDealCard'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 // const dummyTimeDealProducts: TimeDealProduct[] = []
 const dummyTimeDealProducts: TimeDealProduct[] = [

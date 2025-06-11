@@ -1,13 +1,10 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-
 import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { sendGAEvent } from '@next/third-parties/google'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/consts'
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
   CreateChallengeBody,
@@ -34,6 +31,9 @@ import { TimeFormatString } from '@shared/types/date'
 import { fullSchema } from '../model/constants'
 import { ChallengeGroupFormPageProps, FullFormValues } from '../model/types'
 import * as S from './styles'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { sendGAEvent } from '@next/third-parties/google'
 
 export const ChallengeGroupFormPage = ({ defaultValues, isEdit = false, challengeId }: ChallengeGroupFormPageProps) => {
   const searchParams = useSearchParams()

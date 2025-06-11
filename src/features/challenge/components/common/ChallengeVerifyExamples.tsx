@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect } from 'react'
-import styled from '@emotion/styled'
 
-import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/constant'
+import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/consts'
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { ImageZoomModalData, useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { theme } from '@shared/styles/theme'
 
 import VerificationImageInput from './VerificationImageInput'
+
+import styled from '@emotion/styled'
 
 export interface VerificationImageData {
   id?: number

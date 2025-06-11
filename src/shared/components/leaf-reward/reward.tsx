@@ -1,9 +1,9 @@
 import Image from 'next/image'
-
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 
 import LeafIcon from '@public/icon/leaf.svg'
+
+import styled from '@emotion/styled'
 
 interface LeafRewardProps {
   reward: number

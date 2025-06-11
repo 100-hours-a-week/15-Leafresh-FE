@@ -1,8 +1,6 @@
 'use client'
 import Image from 'next/image'
-
 import { ReactNode, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
@@ -15,6 +13,8 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import { ChallengeGroupFeedPageProps } from '../model/types'
 import * as S from './styles'
+
+import { useQuery } from '@tanstack/react-query'
 
 export const ChallengeGroupFeedPage = ({ className }: ChallengeGroupFeedPageProps): ReactNode => {
   /** 1. 카테고리 목록 조회 API */

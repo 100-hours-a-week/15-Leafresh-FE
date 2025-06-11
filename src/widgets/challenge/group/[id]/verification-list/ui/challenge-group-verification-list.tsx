@@ -1,9 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-
 import { useEffect, useRef } from 'react'
-import { useQuery } from '@tanstack/react-query'
 
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import { Verification } from '@features/challenge/api/participate/get-group-participant-list'
@@ -17,6 +15,8 @@ import { ISOFormatString } from '@shared/types/date'
 
 import { ChallengeGroupVerificationListPageProps } from '../model/types'
 import * as S from './styles'
+
+import { useQuery } from '@tanstack/react-query'
 
 // TODO: entities/constants로 이동
 const verificationsDummy: Verification[] = [

@@ -1,5 +1,3 @@
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
-
 import {
   fetchGroupChallenges,
   type FetchGroupChallengesParams,
@@ -7,6 +5,8 @@ import {
 } from '@features/challenge/api/get-group-challenge-list'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ApiResponse } from '@shared/lib/api/type'
+
+import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
 /**
  * 단체 챌린지 목록 조회를 위한 React Query 훅 (무한 스크롤)

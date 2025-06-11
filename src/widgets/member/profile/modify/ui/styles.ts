@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
-
 import ErrorText from '@shared/components/errortext'
+
+import styled from '@emotion/styled'
 
 export const Container = styled.div`
   max-width: 24rem;

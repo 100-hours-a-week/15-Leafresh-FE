@@ -3,12 +3,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import styled from '@emotion/styled'
-
 import { URL } from '@shared/constants/route/route'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 import NotFoundImage from '@public/image/404.svg'
+
+import styled from '@emotion/styled'
 
 export default function NotFound() {
   return (

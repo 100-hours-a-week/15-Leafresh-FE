@@ -2,7 +2,6 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-
 import { useEffect, useState } from 'react'
 
 import { UserInfo, useUserStore } from '@entities/member/context/UserStore'

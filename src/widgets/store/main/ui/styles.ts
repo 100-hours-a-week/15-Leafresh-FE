@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
-
 import { media } from '@shared/styles/emotion/media'
+
+import styled from '@emotion/styled'
 
 export const Container = styled.div`
   display: flex;

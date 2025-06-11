@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
-
 import { slideRotateIn } from '@entities/member/style'
+
+import styled from '@emotion/styled'
 
 export const Container = styled.div`
   display: flex;

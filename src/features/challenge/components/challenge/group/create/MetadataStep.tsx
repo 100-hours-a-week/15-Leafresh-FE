@@ -1,13 +1,10 @@
 'use client'
 
-import { z } from 'zod'
-
 import { memo, useCallback, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
-import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
+import { z } from 'zod'
 
-import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge/constant'
+import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge/consts'
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
@@ -20,7 +17,9 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { StyledGeneric } from '@shared/styles/emotion/utils'
 import { theme } from '@shared/styles/theme'
 
-import { FullFormValues } from '../../../../../../widgets/challenge/group/form/ui/challenge-form'
+import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
+import { FullFormValues } from '@widgets/challenge/group/form/model/types'
 
 const PARTICIPANT_OPTIONS = Array.from(
   { length: Math.floor((PARTICIPANT_RANGE.MAX - PARTICIPANT_RANGE.MIN) / PARTICIPANT_RANGE.RANGE) + 1 },

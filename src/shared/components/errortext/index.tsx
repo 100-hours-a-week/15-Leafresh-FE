@@ -1,8 +1,8 @@
 'use client'
 
-import styled from '@emotion/styled'
-
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 interface ErrorTextProps {
   message?: string

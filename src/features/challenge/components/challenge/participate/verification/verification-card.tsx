@@ -1,11 +1,9 @@
 import { motion } from 'motion/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { ReactNode, useState } from 'react'
-import styled from '@emotion/styled'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/consts'
 import { Verification } from '@features/challenge/api/participate/get-group-participant-list'
 import {
   CreateVerificationLikeResponse,
@@ -27,6 +25,8 @@ import { copyToClipboard } from '@shared/lib/ui/copy-clipboard'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import ActiveLikeIcon from '@public/icon/like_active.svg'
 import InActiveLikeIcon from '@public/icon/like_inactive.svg'
+
+import styled from '@emotion/styled'
 
 interface VerificationCardProps {
   challengeId: number

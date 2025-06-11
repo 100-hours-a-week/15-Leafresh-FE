@@ -1,8 +1,9 @@
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 interface ChallengeProps {
   className?: string

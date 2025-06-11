@@ -1,8 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-
 import { useEffect, useRef, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 
 import { FeedbackResponse, getFeedback } from '@features/member/api/profile/get-member-feedback'
 import { pollFeedbackResult } from '@features/member/api/profile/get-member-feedback-result'
@@ -21,6 +19,8 @@ import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import * as S from './styles'
+
+import { useQuery } from '@tanstack/react-query'
 export const MemberProfileMypage = () => {
   const router = useRouter()
   const [count, setCount] = useState(8) // TODO: ENUM 화 하기

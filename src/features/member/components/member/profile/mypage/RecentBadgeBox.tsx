@@ -1,10 +1,10 @@
 import Image from 'next/image'
-
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 
 import { Badge } from '@features/member/api/profile/get-recent-badge'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 interface RecentBadgeBoxProps {
   className?: string

@@ -1,8 +1,8 @@
 'use client'
 
-import styled from '@emotion/styled'
-
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 export interface SwitchTapProps {
   //탭의 수(제목들)

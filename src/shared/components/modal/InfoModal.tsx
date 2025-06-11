@@ -1,13 +1,14 @@
 'use client'
 
 import { useRef } from 'react'
-import styled from '@emotion/styled'
 
 import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 const InfoModal = () => {
   const { isOpen, title, description, variant, onClose, closeInfoModal } = useInfoModalStore()

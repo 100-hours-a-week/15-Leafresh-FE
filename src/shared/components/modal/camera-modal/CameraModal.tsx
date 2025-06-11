@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import CheckIcon from '@shared/components/check-icon/CheckIcon'
@@ -15,6 +14,8 @@ import { theme } from '@shared/styles/theme'
 
 import SwitchTap from '../../switchtap/SwitchTap'
 import VerificationGuideModal from './VerificationGuideModal'
+
+import styled from '@emotion/styled'
 
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']

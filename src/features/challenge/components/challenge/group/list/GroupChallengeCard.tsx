@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import React from 'react'
-import styled from '@emotion/styled'
 
 import { URL } from '@shared/constants/route/route'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
+
+import styled from '@emotion/styled'
 
 interface GroupChallengeProps {
   challenge: {

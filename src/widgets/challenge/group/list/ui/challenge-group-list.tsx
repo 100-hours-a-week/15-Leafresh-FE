@@ -1,11 +1,9 @@
 'use client'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
-
 import React, { useEffect, useRef, useState } from 'react'
-import { Spinner } from '@chakra-ui/react'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/consts'
 import { GroupChallengeItem } from '@features/challenge/api/get-group-challenge-list'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import { URL } from '@shared/constants/route/route'
@@ -13,6 +11,8 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import { categoryBannerMap } from '../model/constants'
 import * as S from './styles'
+
+import { Spinner } from '@chakra-ui/react'
 
 export const ChallengeGroupListPage = () => {
   const searchParams = useSearchParams()

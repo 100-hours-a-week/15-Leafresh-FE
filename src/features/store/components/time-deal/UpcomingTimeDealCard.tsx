@@ -2,14 +2,14 @@ import { format } from 'date-fns'
 import Autoplay from 'embla-carousel-autoplay'
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
-
 import { ReactNode, useRef } from 'react'
-import styled from '@emotion/styled'
 
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
 import ApologizeContent from '@shared/components/apologize/apologize'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 interface UpcomingTimeDealCardProps {
   data: TimeDealProduct[]

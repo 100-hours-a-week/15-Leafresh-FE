@@ -1,11 +1,11 @@
 'use client'
 
 import useEmblaCarousel from 'embla-carousel-react'
-
 import { useCallback, useEffect, useState } from 'react'
-import styled from '@emotion/styled'
 
 import VerificationStatusCard, { VerificationStatus } from './VerificationStatusCard'
+
+import styled from '@emotion/styled'
 
 interface Verification {
   day: number

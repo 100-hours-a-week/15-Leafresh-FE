@@ -1,6 +1,3 @@
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-import { MainPage } from '@widgets/main'
-
 import { DayType } from '@entities/challenge/type'
 import { getEventChallengeList } from '@features/challenge/api/get-event-challenge-list'
 import { getGroupChallengeCategoryList } from '@features/challenge/api/get-group-challenge-categories'
@@ -9,6 +6,9 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { getDayOfWeek } from '@shared/lib/date/utils'
+
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { MainPage } from '@widgets/main'
 
 const Page = async () => {
   try {

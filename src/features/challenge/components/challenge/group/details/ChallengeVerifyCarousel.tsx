@@ -2,11 +2,11 @@
 
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
-
 import { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 interface ChallengeVerifyCarouselProps {
   images: string[]

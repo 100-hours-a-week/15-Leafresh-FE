@@ -1,9 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react'
-import styled from '@emotion/styled'
 
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import { GroupChallengeCategory } from '@features/challenge/api/get-group-challenge-categories'
@@ -17,6 +15,8 @@ import Loading from '@shared/components/loading'
 import NoContent from '@shared/components/no-content/no-content'
 import { URL } from '@shared/constants/route/route'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+
+import styled from '@emotion/styled'
 
 interface GroupChallengeSectionsProps {
   categories: GroupChallengeCategory[]

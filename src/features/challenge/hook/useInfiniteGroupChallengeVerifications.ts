@@ -1,5 +1,3 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
-
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
@@ -7,6 +5,8 @@ import {
   getGroupChallengeParticipateList,
   GroupChallengeParticipateListParams,
 } from '../api/participate/get-group-participant-list'
+
+import { useInfiniteQuery } from '@tanstack/react-query'
 
 export const useInfiniteGroupChallengeVerifications = (challengeId: number) =>
   useInfiniteQuery({

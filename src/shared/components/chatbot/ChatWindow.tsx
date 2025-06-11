@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
 
 import ChatFrame, { FrameStep } from './ChatFrame'
 import Header from './ChatHeader'
+
+import styled from '@emotion/styled'
 
 export interface ChatWindowProps {
   open: boolean

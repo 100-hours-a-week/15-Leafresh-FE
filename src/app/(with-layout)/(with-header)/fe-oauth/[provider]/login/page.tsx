@@ -1,10 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-
 import { use, useEffect } from 'react'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { LowercaseOAuthType } from '@entities/member/type'
@@ -15,6 +12,9 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthType }> }) => {
   const router = useRouter()

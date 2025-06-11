@@ -1,10 +1,10 @@
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-import { ChallengeGroupFeedPage } from '@widgets/challenge'
-
 import { getGroupChallengeCategoryList } from '@features/challenge/api/get-group-challenge-categories'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { ChallengeGroupFeedPage } from '@widgets/challenge'
 
 const Page = async () => {
   const queryClient = getQueryClient()

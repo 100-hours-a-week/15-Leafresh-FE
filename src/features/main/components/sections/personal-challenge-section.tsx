@@ -1,16 +1,16 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
 
 import { PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
 import { LeafReward } from '@shared/components'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+
+import styled from '@emotion/styled'
+import { sendGAEvent } from '@next/third-parties/google'
 
 interface PersonalChallengeSectionProps {
   personalChallenges: PersonalChallengeType[]

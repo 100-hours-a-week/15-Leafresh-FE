@@ -1,7 +1,6 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { useQuery } from '@tanstack/react-query'
 
 import { DayType } from '@entities/challenge/type'
 import { EventChallenge, getEventChallengeList } from '@features/challenge/api/get-event-challenge-list'
@@ -16,6 +15,8 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 
 import * as S from './styles'
+
+import { useQuery } from '@tanstack/react-query'
 
 export const MainPage = (): ReactNode => {
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준

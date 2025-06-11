@@ -3,8 +3,6 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
-
 import { Product } from '@features/store/api/get-products'
 import {
   OrderProductBody,
@@ -22,6 +20,8 @@ import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 interface ProductCardProps {
   product: Product

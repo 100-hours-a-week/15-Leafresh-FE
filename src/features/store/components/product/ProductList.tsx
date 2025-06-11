@@ -1,7 +1,6 @@
 'use client'
 
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import styled from '@emotion/styled'
 
 import ApologizeContent from '@shared/components/apologize/apologize'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
@@ -10,6 +9,8 @@ import { theme } from '@shared/styles/theme'
 import { Product } from '../../api/get-products'
 import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'
+
+import styled from '@emotion/styled'
 
 const dummyProducts: Product[] = [
   {

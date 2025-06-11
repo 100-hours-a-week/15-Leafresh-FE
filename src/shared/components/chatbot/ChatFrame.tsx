@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useMemo,useRef, useState } from 'react'
-import styled from '@emotion/styled'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import {
   RecommendationResponseDataDTO,
@@ -13,6 +12,8 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import ChatBubble from './ChatBubble'
 import ChatSelection from './ChatSelection'
+
+import styled from '@emotion/styled'
 
 export type FrameStep = 1 | 2 | 3
 

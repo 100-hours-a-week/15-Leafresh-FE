@@ -1,10 +1,10 @@
 import Image from 'next/image'
-
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
 import LogoCharacterImage from '@public/image/main-icon.svg'
+
+import styled from '@emotion/styled'
 
 interface NoContentProps {
   title: string

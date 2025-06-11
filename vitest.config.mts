@@ -11,8 +11,8 @@ export default defineConfig({
       'node_modules',
       'dist',
       'build',
-      'tests',               // ignore tests/
-      '**/*.spec.ts',        // ignore playwright test files
+      'tests', // ignore tests/
+      '**/*.spec.ts', // ignore playwright test files
     ],
   },
 })

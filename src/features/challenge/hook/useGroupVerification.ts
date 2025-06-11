@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
@@ -13,6 +12,8 @@ import {
   PostGroupVerificationBody,
   type PostGroupVerificationResponse,
 } from '../api/participate/verification/group-verification'
+
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 // import { showNotification } from '@/libs/showNotification'
 
 /** 인증 제출 뮤테이션 */

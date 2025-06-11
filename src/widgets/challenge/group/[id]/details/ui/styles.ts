@@ -1,11 +1,11 @@
 import Image from 'next/image'
 
-import styled from '@emotion/styled'
-
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
 import BackButton from '@shared/components/button/BackButton'
 import DatePicker from '@shared/components/datepicker/DatePicker'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+
+import styled from '@emotion/styled'
 export const Wrapper = styled.div`
   ${responsiveHorizontalPadding};
 

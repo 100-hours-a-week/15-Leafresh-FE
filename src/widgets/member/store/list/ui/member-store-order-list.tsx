@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { ReactNode, useEffect, useRef } from 'react'
 
 import { PurchaseProduct } from '@features/member/api/store/get-order-list'

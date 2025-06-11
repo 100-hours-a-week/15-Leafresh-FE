@@ -1,12 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { z } from 'zod'
-
 import { ReactNode, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
+import { z } from 'zod'
 
 import { useUserStore } from '@entities/member/context/UserStore'
 import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
@@ -25,6 +22,9 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { maxLength, profileSchema } from '../model/consts'
 import { MemberProfileModifyPageProps, ProfileForm } from '../model/types'
 import * as S from './styles'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useQuery } from '@tanstack/react-query'
 
 export const MemberProfileModifyPage = ({ className }: MemberProfileModifyPageProps): ReactNode => {
   const router = useRouter()

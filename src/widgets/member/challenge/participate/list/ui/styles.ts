@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
-
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+
+import styled from '@emotion/styled'
 
 // 전체 페이지 컨테이너
 export const Container = styled.div`

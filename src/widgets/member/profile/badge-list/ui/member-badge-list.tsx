@@ -1,7 +1,5 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
-
 import { badgeCategory } from '@entities/member/constant'
 import { BadgeData, getBadgeList } from '@features/member/api/profile/get-badge'
 import BadgeTab from '@features/member/components/member/profile/badge/BadgeTab'
@@ -9,6 +7,8 @@ import Loading from '@shared/components/loading'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 import * as S from './styles'
+
+import { useQuery } from '@tanstack/react-query'
 
 export const MemberBadgeListPage = () => {
   const {

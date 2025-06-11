@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+
 import { Grid, GridProps } from '@chakra-ui/react'
 
 export interface GridBoxProps extends Omit<GridProps, 'display' | 'templateColumns'> {

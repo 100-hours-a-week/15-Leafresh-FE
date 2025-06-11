@@ -2,10 +2,7 @@
 
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-
 import { useEffect, useRef } from 'react'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 import { LowercaseOAuthType } from '@entities/member/type'
 import { Login } from '@features/member/api/oauth-login'
@@ -17,6 +14,9 @@ import { useToast } from '@shared/hooks/useToast/useToast'
 import { theme } from '@shared/styles/theme'
 import KakaoLoginButton from '@public/image/kakao_login.svg'
 import LogoImage from '@public/image/logo.svg'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 const LoginPage = () => {
   const openToast = useToast()

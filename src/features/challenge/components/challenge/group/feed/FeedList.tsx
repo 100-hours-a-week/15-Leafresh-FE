@@ -1,7 +1,5 @@
 import { useRouter } from 'next/navigation'
-
 import { ReactNode, useEffect, useRef } from 'react'
-import styled from '@emotion/styled'
 
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import { Verification } from '@features/challenge/api/feed/get-feed-list'
@@ -12,6 +10,8 @@ import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { ISOFormatString } from '@shared/types/date'
 
 import VerificationCard from '../../participate/verification/verification-card'
+
+import styled from '@emotion/styled'
 
 interface FeedListProps {
   category: ChallengeCategoryType

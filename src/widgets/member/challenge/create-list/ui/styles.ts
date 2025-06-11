@@ -1,7 +1,7 @@
-import styled from '@emotion/styled'
-
 import NoContent from '@shared/components/no-content/no-content'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+
+import styled from '@emotion/styled'
 
 export const Wrapper = styled.div`
   ${responsiveHorizontalPadding};

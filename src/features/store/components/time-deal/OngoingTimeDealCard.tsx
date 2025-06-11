@@ -1,9 +1,7 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { ReactNode, useEffect, useState } from 'react'
-import styled from '@emotion/styled'
 
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
 import {
@@ -25,6 +23,8 @@ import { formatSecondToTime } from '@shared/lib/date/utils'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
+
+import styled from '@emotion/styled'
 
 interface Props {
   data: TimeDealProduct[]

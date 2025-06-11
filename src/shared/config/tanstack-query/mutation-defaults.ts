@@ -1,5 +1,3 @@
-import { useMutation } from '@tanstack/react-query'
-
 import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
@@ -22,6 +20,8 @@ import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
 import { handleError } from './utils'
+
+import { useMutation } from '@tanstack/react-query'
 
 const queryClient = getQueryClient()
 

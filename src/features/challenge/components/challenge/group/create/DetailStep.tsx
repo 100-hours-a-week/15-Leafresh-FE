@@ -1,10 +1,8 @@
 'use client'
 
-import { z } from 'zod'
-
 import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import styled from '@emotion/styled'
+import { z } from 'zod'
 
 import ErrorText from '@shared/components/errortext'
 import ImageInput from '@shared/components/image-input'
@@ -13,6 +11,8 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
 import { FullFormValues } from '../../../../../../widgets/challenge/group/form/ui/challenge-form'
+
+import styled from '@emotion/styled'
 
 export const detailSchema = z.object({
   description: z.string().min(1, '챌린지 설명을 입력해주세요'),
