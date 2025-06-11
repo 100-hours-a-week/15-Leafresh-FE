@@ -37,7 +37,7 @@ const queryClient = getQueryClient()
 
 /** 개인 챌린지 */
 // 인증 제출
-queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFICATION.SUBMIT, {
   mutationFn: VerifyGroupChallenge,
   onSuccess(data, variables, context) {
     const { challengeId } = variables

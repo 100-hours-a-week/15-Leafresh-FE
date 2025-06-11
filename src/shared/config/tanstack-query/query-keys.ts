@@ -17,7 +17,9 @@ const CHALLENGE_QUERY_KEYS = {
     // 규약 조회
     RULES: (challengeId: number) => ['challenges', 'personal', challengeId, 'rules'],
     // 인증 결과 조회 (롱폴링)
-    VERIFICATION_RESULT: (challengeId: number) => ['challenges', 'personal', challengeId, 'verification', 'result'],
+    VERIFICATION: {
+      RESULT: (challengeId: number) => ['challenges', 'personal', challengeId, 'verification', 'result'],
+    },
   },
 
   /** 단체 챌린지 */
@@ -47,20 +49,20 @@ const CHALLENGE_QUERY_KEYS = {
         'challenges',
         'group',
         challengeId,
-        'verifications',
+        'verification',
         verificationId,
       ],
       COMMENT: (challengeId: number, verificationId: number) => [
         'challenges',
         'group',
         challengeId,
-        'verifications',
+        'verification',
         verificationId,
         'comments',
       ],
     },
     // 피드
-    FEED: (category: ChallengeCategoryType | undefined) => ['challenges', 'group', 'verification', category ?? ''],
+    FEED: (category: ChallengeCategoryType | undefined) => ['challenges', 'group', 'verifications', category ?? ''],
   },
 
   ETC: {

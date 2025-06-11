@@ -107,7 +107,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
 
   /** 개인 챌린지 인증 생성 (제출) */
   const { mutate: VerifyMutate, isPending } = useMutationStore<VerifyGroupChallengeResponse, VerifyVariables>(
-    MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY,
+    MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFICATION.SUBMIT,
   )
 
   if (isLoading || !data?.data) return <Loading />

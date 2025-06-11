@@ -1,7 +1,9 @@
 const CHALLENGE_MUTATION_KEYS = {
   /** 개인 챌린지 */
   PERSONAL: {
-    VERIFY: ['challenges', 'personal', 'verify'] as const, // 인증 제출
+    VERIFICATION: {
+      SUBMIT: ['challenges', 'personal', 'verify'] as const, // 인증 제출
+    },
   },
 
   /** 단체 챌린지 */
