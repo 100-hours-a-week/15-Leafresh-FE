@@ -106,14 +106,12 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   const verifications: VerificationDetailResponse = verificationData?.data ?? ({} as VerificationDetailResponse)
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
 
-  const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
-  const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
-
   // const verifications: VerificationDetailResponse = verificationData?.data ?? (dummypost as VerificationDetailResponse)
   // const comments: CommentResponse = commentData?.data ?? (dummycomments as CommentResponse)
 
+  const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
+  const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
   const [localComments, setLocalComments] = useState<CommentType[]>(comments.comment ?? [])
-  console.log(localComments)
 
   /** 좋아요 핸들러 */
   const handleLikeToggle = () => {
