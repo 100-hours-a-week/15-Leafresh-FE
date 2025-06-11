@@ -1,10 +1,8 @@
 'use client'
 
-import Image from 'next/image'
-
 import React, { ReactNode } from 'react'
+import Image from 'next/image'
 import styled from '@emotion/styled'
-
 import { theme } from '@shared/styles/theme'
 
 export interface ChatBubbleProps {
@@ -20,12 +18,12 @@ export interface ChatBubbleProps {
 const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAnswer, onClick }: ChatBubbleProps) => (
   <Container role={role}>
     {role === 'bot' && (
-      <Avatar>
+      <Avatar role={role}>
         <Image src='/image/chatbot/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
       </Avatar>
     )}
     <BubbleWrapper>
-      <NameText role={role}>{role === 'bot' && '수피'}</NameText>
+      <NameText role={role}>{role === 'bot' ? '수피' : ''}</NameText>
       <Bubble role={role} isAnswer={isAnswer}>
         {loading
           ? '잠시만 기다려주세요…'
@@ -53,7 +51,7 @@ const Container = styled.div<{ role: 'bot' | 'user' }>`
   gap: 8px;
 `
 
-const Avatar = styled.div`
+const Avatar = styled.div<{ role: 'bot' | 'user' }>`
   width: 32px;
   height: 32px;
   display: flex;
@@ -73,20 +71,20 @@ const NameText = styled.p<{ role: 'bot' | 'user' }>`
   font-size: ${theme.fontSize.xs};
   font-weight: ${theme.fontWeight.semiBold};
   margin: 8px 0 0 0;
+  color: ${({ role }) => (role === 'bot' ? theme.colors.lfBlack.base : theme.colors.lfBlack.base)};
 `
 
 const Bubble = styled.div<{ role: 'bot' | 'user'; isAnswer?: boolean }>`
   max-width: 250px;
   min-width: 60px;
   padding: 16px 12px;
-  line-height: 0.8rem;
   background: ${({ role, isAnswer }) =>
     isAnswer ? theme.colors.lfWhite.base : role === 'bot' ? '#AFF9BB' : theme.colors.lfWhite.base};
   color: ${({ role }) => (role === 'bot' ? '#333333' : `${theme.colors.lfBlack.base}`)};
   border: ${({ isAnswer }) => (isAnswer ? `solid 1px ${theme.colors.lfGreenBorder.base}` : 'none')};
-  justify-content: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   border-radius: 20px;
   white-space: pre-wrap;
   font-size: ${theme.fontSize.xs};
