@@ -1,1 +1,1 @@
-export * from './member-challenge-verification-status'
+export * from './status'
