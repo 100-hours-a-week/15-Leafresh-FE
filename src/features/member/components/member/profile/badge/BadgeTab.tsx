@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import { Category } from '@entities/member/constant'
 import { BadgeData } from '@features/member/api/profile/get-badge'
 import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 interface BadgeTabProps {
@@ -104,6 +105,7 @@ const Underline = styled.div<{ $index: number }>`
 `
 
 const GridWrapper = styled.div`
+  ${responsiveHorizontalPadding};
   position: relative;
 `
 

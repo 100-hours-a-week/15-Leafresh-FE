@@ -18,6 +18,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 import ProfileBox from './ProfileBox'
@@ -201,6 +202,8 @@ const Mypage = () => {
 export default Mypage
 
 const Container = styled.div`
+  ${responsiveHorizontalPadding};
+
   display: flex;
   flex-direction: column;
 
@@ -266,7 +269,7 @@ const BadgeSection = styled.div`
 `
 const AnimatedCardWrapper = styled.div`
   animation: ${slideRotateIn} 1.6s ease forwards;
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform-origin: center center;
