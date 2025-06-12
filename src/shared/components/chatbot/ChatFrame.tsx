@@ -174,10 +174,9 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         const { recommend, challenges } = data
 
         // const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
-        const responseMessage = useMemo(
-          () => [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)],
-          [recommend, challenges],
-        )
+        const responseMessage = useMemo(() => {
+          return `${recommend}\n\n${formatChallengeResponse(challenges)}`
+        }, [recommend, challenges])
         addChatItem({
           type: 'message',
           role: 'bot',
@@ -285,10 +284,9 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         const { recommend, challenges } = data
 
         // const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
-        const responseMessage = useMemo(
-          () => [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)],
-          [recommend, challenges],
-        )
+        const responseMessage = useMemo(() => {
+          return `${recommend}\n\n${formatChallengeResponse(challenges)}`
+        }, [recommend, challenges])
 
         addChatItem({
           type: 'message',

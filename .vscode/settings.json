@@ -1,0 +1,28 @@
+{
+  "folder-color.pathColors": [
+    {
+      "folderPath": "leafresh-fe/src/entities/",
+      "badge": ":yellow_circle:"
+    },
+    {
+      "folderPath": "leafresh-fe/src/widgets/",
+      "badge": ":red_circle:"
+    },
+    {
+      "folderPath": "leafresh-fe/src/features/",
+      "badge": ":orange_circle:"
+    },
+    {
+      "folderPath": "leafresh-fe/src/shared/",
+      "badge": ":white_check_mark:"
+    },
+    {
+      "folderPath": "leafresh-fe/src/app/",
+      "badge": ":white_circle:"
+    },
+    {
+      "folderPath": "leafresh-fe/tests/",
+      "badge": ":test_tube:"
+    }
+  ]
+}
