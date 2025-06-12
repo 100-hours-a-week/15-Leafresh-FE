@@ -14,7 +14,7 @@ export async function clientFetchRequest<T>(
   /** Request */
   const { method, path } = endpoint
   const url = new URL(BASE_URL + path)
-  console.log('클라이언트에서 보낸 엔드포인트 :', url)
+  console.log('✅클라이언트에서 보낸 엔드포인트 :', url)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
