@@ -4,6 +4,7 @@ import {
   CHALLENGE_VERIFICATION_RESULT,
   CHALLENGE_VERIFICATION_STATUS,
   DAY_PAIRS,
+  FEED_VERIFICATION_STAUS,
 } from './constant'
 
 export type ConstantPair = { kor: string; eng: string }
@@ -19,6 +20,9 @@ export type ChallengeVerificationResultType = (typeof CHALLENGE_VERIFICATION_RES
 
 /** 인증 상태 */
 export type ChallengeVerificationStatusType = (typeof CHALLENGE_VERIFICATION_STATUS)[number]
+
+/** 피드 인증 상태 */
+export type FeedVerificationStatusType = (typeof FEED_VERIFICATION_STAUS)[number]
 
 /** 요일 */
 export type DayType = (typeof DAY_PAIRS)[number]['eng']

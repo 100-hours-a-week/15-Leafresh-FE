@@ -9,6 +9,13 @@ export const CHALLENGE_VERIFICATION_RESULT = [
   'FAILURE', // 실패
 ] as const
 
+/** 피드 인증 여부 */
+export const FEED_VERIFICATION_STAUS = [
+  'SUCCESS', // 성공
+  'FAILURE', // 실패
+  'PENDING_APPROVE', // 인증 중
+] as const
+
 /** 인증 상태 */
 export const CHALLENGE_VERIFICATION_STATUS = [
   'NOT_SUBMITTED', // 제출 안함

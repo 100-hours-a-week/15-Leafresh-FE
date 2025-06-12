@@ -1,7 +1,9 @@
 const CHALLENGE_MUTATION_KEYS = {
   /** 개인 챌린지 */
   PERSONAL: {
-    VERIFY: ['challenges', 'personal', 'verify'] as const, // 인증 제출
+    VERIFICATION: {
+      SUBMIT: ['challenges', 'personal', 'verify'] as const, // 인증 제출
+    },
   },
 
   /** 단체 챌린지 */
@@ -18,17 +20,11 @@ const CHALLENGE_MUTATION_KEYS = {
         DELETE: ['challenges', 'group', 'verify', 'comment', 'likes', 'delete'] as const, // 좋아요 삭제
       },
       COMMENT: {
-        // TODO: 댓글 생성
-        CREATE: {},
-        // TODO: 댓글 수정
-        MODIFY: {},
-        // TODO: 댓글 삭제 (대댓글 포함)
-        DELETE: {},
+        CREATE: ['challenges', 'group', 'verify', 'comment', 'create'] as const, //댓글 작성
         REPLY: {
-          // TODO: 대댓글 생성
-          CREATE: {},
-          // TODO: 대댓글 수정
-          MODIFY: {},
+          CREATE: ['challenges', 'group', 'verify', 'comment', 'reply', 'create'] as const, //대댓글 작성
+          DELETE: ['challenges', 'group', 'verify', 'comment', 'reply', 'delete'] as const, //댓글/대댓글 삭제
+          MODIFY: ['challenges', 'group', 'verify', 'comment', 'reply', 'modify'] as const, //댓글/대댓글 수정
         },
       },
     },

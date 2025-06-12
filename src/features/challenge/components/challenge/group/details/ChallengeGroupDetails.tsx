@@ -161,7 +161,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
 
   /** 단체 챌린지 참여 이력 페이지로 이동 */
   const handleRouteToVerificationsPage = () => {
-    router.push(URL.CHALLENGE.GROUP.PARTICIPATE_LIST.value(challengeId))
+    router.push(URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId))
   }
   return (
     <Wrapper className={className}>

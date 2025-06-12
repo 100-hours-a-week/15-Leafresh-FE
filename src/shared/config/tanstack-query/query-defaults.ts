@@ -54,6 +54,7 @@ const CHALLENGE_QUERY_DEFAULTS = {
     DETAILS: DEFAULT,
     // 목록 (검색 포함)
     LIST: DEFAULT,
+
     // 규약 조회
     RULES: DEFAULT,
 
@@ -64,7 +65,10 @@ const CHALLENGE_QUERY_DEFAULTS = {
       // 인증 결과 조회 (롱폴링)
       RESULT: DEFAULT,
 
-      // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
+      //인증 상세
+      DETAILS: NO_CACHE,
+      //인증 댓글
+      COMMENT: DEFAULT,
     },
 
     // 인증 내역 목록 조회 (피드) - 무작위 챌린지

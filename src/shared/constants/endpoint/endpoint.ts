@@ -93,9 +93,6 @@ const CHALLENGE_ENDPOINTS = {
         path: `/api/challenges/group/${challengeId}/verifications`,
       }),
 
-      // TODO: 인증 상세 조회
-      DETAILS: {},
-
       // 인증 제출 (생성)
       SUBMIT: (challengeId: number) => ({
         method: HttpMethod.POST,
@@ -121,21 +118,38 @@ const CHALLENGE_ENDPOINTS = {
         }),
       },
 
+      //인증 상세 조회
+      DETAILS: (challengeId: number, verificationId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verifications/${verificationId}`,
+      }),
+      //인증 상세 댓글
       COMMENT: {
-        // TODO: 댓글 목록 조회 (댓글 + 대댓글 포함)
-        LIST: {},
-        // TODO: 댓글 생성
-        CREATE: {},
-        // TODO: 댓글 수정
-        MODIFY: {},
-        // TODO: 댓글 삭제 (대댓글 포함)
-        DELETE: {},
-        REPLY: {
-          // TODO: 대댓글 생성
-          CREATE: {},
-          // TODO: 대댓글 수정
-          MODIFY: {},
-        },
+        //댓글 조회
+        LIST: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.GET,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments`,
+        }),
+        //댓글 생성
+        CREATE: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.POST,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments`,
+        }),
+        //댓글/대댓글 수정
+        MODIFY: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.PUT,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}`,
+        }),
+        //댓글/대댓글 삭제
+        DELETE: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.DELETE,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}`,
+        }),
+        //대댓글 생성
+        REPLY: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.POST,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}/replies`,
+        }),
       },
     },
 

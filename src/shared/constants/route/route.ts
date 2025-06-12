@@ -95,10 +95,18 @@ const CHALLENGE_URL = {
       value: (challengeId: number) => `/challenge/group/${challengeId}`,
       isProtected: false,
     },
-    PARTICIPATE_LIST: {
-      name: '이용자 인증 내역 목록',
-      value: (challengeId: number) => `/challenge/group/${challengeId}/participate/list`,
-      isProtected: false,
+    VERIFICATION: {
+      LIST: {
+        name: '이용자 인증 내역 목록',
+        value: (challengeId: number) => `/challenge/group/${challengeId}/verification/list`,
+        isProtected: false,
+      },
+      DETAILS: {
+        name: '챌린지 인증 상세',
+        value: (challengeId: number, verificationId: number) =>
+          `/challenge/group/${challengeId}/verification/${verificationId}`,
+        isProtected: false,
+      },
     },
     FEED: {
       name: '챌린지 인증 피드',

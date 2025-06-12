@@ -3,9 +3,13 @@ import { useMutation } from '@tanstack/react-query'
 import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
+import { deleteVerificationComment } from '@features/challenge/api/participate/verification/delete-verification-comment'
 import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
 import { CreateVerificationLike } from '@features/challenge/api/participate/verification/likes/create-like'
 import { DeleteVerificationLike } from '@features/challenge/api/participate/verification/likes/delete-like'
+import { postVerificationComment } from '@features/challenge/api/participate/verification/post-verification-comment'
+import { postVerificationReply } from '@features/challenge/api/participate/verification/post-verification-reply'
+import { putVerificationComment } from '@features/challenge/api/participate/verification/put-verification-comment'
 import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
 import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
 import { Logout } from '@features/member/api/logout'
@@ -33,7 +37,7 @@ const queryClient = getQueryClient()
 
 /** 개인 챌린지 */
 // 인증 제출
-queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFY, {
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.PERSONAL.VERIFICATION.SUBMIT, {
   mutationFn: VerifyGroupChallenge,
   onSuccess(data, variables, context) {
     const { challengeId } = variables
@@ -206,7 +210,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMI
 queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES.CREATE, {
   mutationFn: CreateVerificationLike,
   onSuccess(data, variables, context) {},
-
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
   },
@@ -219,6 +222,56 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.LIKES
 
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
+  },
+})
+
+//댓글 생성
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.CREATE, {
+  mutationFn: postVerificationComment,
+  onSuccess(data, variables, context) {
+    const { challengeId, verificationId } = variables
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
+    })
+  },
+})
+
+//대댓글 생성
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.CREATE, {
+  mutationFn: postVerificationReply,
+  onSuccess(data, variables, context) {
+    const { challengeId, verificationId } = variables
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
+    })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+//댓글/대댓글 삭제
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.DELETE, {
+  mutationFn: deleteVerificationComment,
+  onSuccess(data, variables, context) {
+    const { challengeId, verificationId } = variables
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
+    })
+  },
+  onError(error: ErrorResponse, variables, context) {
+    handleError(error)
+  },
+})
+
+//댓글/대댓글 수정
+queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.MODIFY, {
+  mutationFn: putVerificationComment,
+  onSuccess(data, variables, context) {
+    const { challengeId, verificationId } = variables
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
+    })
   },
 })
 
