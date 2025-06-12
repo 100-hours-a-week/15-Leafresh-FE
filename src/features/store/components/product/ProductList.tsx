@@ -3,90 +3,12 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { Product } from '@features/store/api/get-products'
 import ApologizeContent from '@shared/components/apologize/apologize'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'
-
-const dummyProducts: Product[] = [
-  {
-    id: 1,
-    title:
-      '친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 ',
-    description:
-      '언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 ',
-    imageUrl: '/image/Main_1.png',
-    price: 4000,
-    stock: 0,
-  },
-  {
-    id: 2,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 3,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 4,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 5,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 6,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 7,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 8,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 9,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-]
 
 interface ProductListProps {
   className?: string
@@ -121,7 +43,8 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   /** 이벤트 핸들러 */
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     setSearch(input)
   }
 
@@ -204,4 +127,80 @@ const ObserverTrigger = styled.div`
   height: 1px;
 `
 
+// const dummyProducts: Product[] = [
+//   {
+//     id: 1,
+//     title:
+//       '친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 ',
+//     description:
+//       '언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 ',
+//     imageUrl: '/image/Main_1.png',
+//     price: 4000,
+//     stock: 0,
+//   },
+//   {
+//     id: 2,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 3,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 4,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 5,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 6,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 7,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 8,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 9,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+// ]
 // const dummyProducts: Product[] = []

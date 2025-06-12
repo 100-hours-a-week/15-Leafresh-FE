@@ -38,6 +38,5 @@ export const useInfiniteProducts = (input: string) => {
           }
         : undefined,
     ...QUERY_OPTIONS.STORE.PRODUCTS.LIST,
-    enabled: false, // TODO: API 추가하면서 삭제 필요
   })
 }
