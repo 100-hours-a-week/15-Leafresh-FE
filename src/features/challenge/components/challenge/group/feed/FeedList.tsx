@@ -136,7 +136,7 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
   return (
     <Wrapper className={className} isLoading={isLoading}>
       {contents}
-      {!hasNextPage && !isLoading && verifications.length > 0 && <EndMessage>모든 인증을 불러왔습니다</EndMessage>}
+      {!hasNextPage && !isLoading && verifications.length > 0 && <EndMessage>피드를 모두 불러왔습니다</EndMessage>}
       <ObserverTrigger ref={observerRef} />
     </Wrapper>
   )

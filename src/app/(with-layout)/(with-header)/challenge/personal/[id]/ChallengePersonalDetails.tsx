@@ -225,7 +225,9 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   return (
     <Wrapper className={className}>
       <DescriptionSection>
-        <Thumbnail src={thumbnailUrl} alt='썸네일' width={500} height={200} />
+        <ThumbnailImageWrapper>
+          <Thumbnail src={thumbnailUrl} alt='썸네일' fill />
+        </ThumbnailImageWrapper>
 
         <Descriptions>
           <Title>{title}</Title>
@@ -311,10 +313,15 @@ const DescriptionSection = styled.section`
   gap: 12px;
 `
 
-const Thumbnail = styled(Image)`
+const ThumbnailImageWrapper = styled.div`
   width: 100%;
   aspect-ratio: 14/9;
 
+  position: relative;
+`
+
+const Thumbnail = styled(Image)`
+  object-fit: cover;
   border-radius: ${theme.radius.base};
 `
 

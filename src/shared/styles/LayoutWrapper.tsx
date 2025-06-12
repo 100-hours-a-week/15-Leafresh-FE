@@ -31,6 +31,8 @@ const EntirePageLayout = styled.div`
 `
 
 const ContentWrapper = styled.div`
+  margin-right: 150px;
+
   min-width: 300px;
   max-width: 430px;
   width: 100%;
@@ -40,10 +42,9 @@ const ContentWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow: hidden;
 
-  margin-right: 150px;
+  box-shadow: 0 0 22px -2px #000000bf;
 
   @media (max-width: 1150px) {
     margin-right: 0px;

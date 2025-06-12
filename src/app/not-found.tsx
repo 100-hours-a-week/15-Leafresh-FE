@@ -78,7 +78,7 @@ const Description = styled.p`
 const HomeButton = styled(Link)`
   margin-top: 16px;
   padding: 18px 32px;
-  background-color: #294721;
+  background-color: ${theme.colors.lfGreenDark.base};
   color: #d0ddb4;
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.semiBold};
@@ -87,7 +87,7 @@ const HomeButton = styled(Link)`
   cursor: pointer;
 
   &:hover {
-    background-color: #355e2a;
+    background-color: ${theme.colors.lfGreenDark.hover};
   }
 
   ${media.afterMobile} {

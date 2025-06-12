@@ -5,9 +5,13 @@ import { ReactNode } from 'react'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 
-const Loading = (): ReactNode => {
+interface LoadingProps {
+  className?: string
+}
+
+const Loading = ({ className }: LoadingProps): ReactNode => {
   return (
-    <Container>
+    <Container className={className}>
       <DotWrapper>
         <Dot delay='0s' />
         <Dot delay='0.2s' />

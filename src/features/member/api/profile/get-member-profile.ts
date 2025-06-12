@@ -3,6 +3,7 @@ import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 export type ProfileResponse = {
   nickname: string
+  email: string
   profileImageUrl: string
   treeLevelId: number
   treeLevelName: string

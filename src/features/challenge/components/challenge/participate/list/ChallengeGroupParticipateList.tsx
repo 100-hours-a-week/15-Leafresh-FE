@@ -141,7 +141,7 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
           />
         )}
       </ContentsWrapper>
-      {!hasNextPage && !isLoading && verifications.length > 0 && <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>}
+      {!hasNextPage && !isLoading && verifications.length > 0 && <EndMessage>인증 내역을 모두 불러왔습니다</EndMessage>}
       <ObserverTrigger ref={observerRef} />
     </Wrapper>
   )

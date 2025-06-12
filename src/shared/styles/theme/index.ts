@@ -12,6 +12,11 @@ const colorThemes = {
   lfGreenBorder: {
     base: '#03452E',
   },
+  lfGreenDark: {
+    base: '#294721',
+    hover: '#355e2a',
+  },
+
   lfGreenInactive: {
     base: '#8FBF97',
   },

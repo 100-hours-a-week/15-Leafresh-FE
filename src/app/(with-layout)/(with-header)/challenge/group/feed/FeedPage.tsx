@@ -29,7 +29,6 @@ const FeedPage = ({ className }: FeedPageProps): ReactNode => {
   // 상수
   const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
 
-  // TODO: 챌린지 카테고리 종류가 추가되면, 전체 카테고리로 초기값 설정
   const [category, setCategory] = useState<ChallengeCategoryType>(categories[0].category) // 영어
 
   /** 이벤트 핸들러 */
@@ -73,7 +72,7 @@ const CategoryGrid = styled.div`
   margin-top: 8px;
   display: grid;
   gap: 4px;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(9, 1fr);
   overflow-x: auto;
 
   &::-webkit-scrollbar {

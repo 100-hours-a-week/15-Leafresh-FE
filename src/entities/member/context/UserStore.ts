@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 
 export interface UserInfo {
   nickname: string
+  email: string
   imageUrl: string
   treeState: {
     level: number

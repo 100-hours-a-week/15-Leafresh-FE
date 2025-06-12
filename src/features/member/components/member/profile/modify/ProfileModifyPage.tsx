@@ -194,14 +194,21 @@ const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => 
       </ProfileWrapper>
 
       <InputSection>
-        <Label>닉네임</Label>
-        <TextInput type='text' {...register('nickname')} placeholder={profile?.nickname || '나의 닉네임'} />
-        <InputMeta hasError={!!errors.nickname}>
-          <StyledErrorText message={errors.nickname?.message} />
-          <CountText hasError={!!errors.nickname}>
-            {watch('nickname')?.length || 0}/{maxLength}
-          </CountText>
-        </InputMeta>
+        <InputWrapper>
+          <Label>이메일</Label>
+          <TextInput type='text' defaultValue={profile?.email} readOnly $readonly />
+        </InputWrapper>
+
+        <InputWrapper>
+          <Label>닉네임</Label>
+          <TextInput type='text' {...register('nickname')} placeholder={profile?.nickname || '나의 닉네임'} />
+          <InputMeta hasError={!!errors.nickname}>
+            <StyledErrorText message={errors.nickname?.message} />
+            <CountText hasError={!!errors.nickname}>
+              {watch('nickname')?.length || 0}/{maxLength}
+            </CountText>
+          </InputMeta>
+        </InputWrapper>
       </InputSection>
 
       <SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || uploading}>
@@ -279,8 +286,12 @@ const CameraWrapper = styled.div`
 const HiddenInput = styled.input`
   display: none;
 `
-
 const InputSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`
+const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `
@@ -293,23 +304,30 @@ const Label = styled.label`
   margin-bottom: 0.5rem;
 `
 
-const TextInput = styled.input`
+const TextInput = styled.input<{ $readonly?: boolean }>`
   width: 100%;
   padding: 0.5rem 0;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid #d1d5db;
-  color: #111827;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lfLightGray.base};
+  color: ${({ theme }) => theme.colors.lfBlack.base};
   font-size: 1rem;
   &::placeholder {
-    color: #9ca3af;
+    color: ${({ theme }) => theme.colors.lfGray.base};
   }
   &:focus {
     outline: none;
-    border-color: #6b7280;
+    border-color: ${({ theme }) => theme.colors.lfGray.base};
   }
-`
 
+  ${({ $readonly, theme }) =>
+    $readonly &&
+    `
+    color: ${theme.colors.lfGray.base};
+    cursor: not-allowed;
+    background-color: transparent;
+  `}
+`
 const InputMeta = styled.div<{ hasError: boolean }>`
   display: flex;
 

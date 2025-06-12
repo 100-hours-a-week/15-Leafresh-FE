@@ -24,7 +24,10 @@ const UpcomingTimeDealCard = ({ data, className }: UpcomingTimeDealCardProps): R
   /** 다가오는 특가 상품이 없는 경우 */
   if (data.length === 0) {
     content = (
-      <ApologizeContent title='예정된 특가 상품이 없습니다' description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다' />
+      <StyledApologizeContent
+        title='예정된 특가 상품이 없습니다'
+        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+      />
     )
   } else {
     /** 다가오는 특가 상품이 있는 경우 */
@@ -190,4 +193,8 @@ const CarouselSlide = styled.div`
 const LeafIcon = styled(Image)`
   width: 24px;
   aspect-ratio: 1/1;
+`
+
+const StyledApologizeContent = styled(ApologizeContent)`
+  margin: 24px 0;
 `

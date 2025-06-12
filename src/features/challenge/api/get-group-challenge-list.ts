@@ -11,6 +11,7 @@ export interface FetchGroupChallengesParams {
   category?: string
   cursorId?: number
   cursorTimestamp?: string
+  size?: number
 }
 
 /**
@@ -41,7 +42,7 @@ export type FetchGroupChallengesResponse = InfiniteScrollResponse<{
 export const fetchGroupChallenges = (params: FetchGroupChallengesParams) => {
   // query 객체에 undefined 값은 제외하고 문자열/숫자 타입으로만 전환
   const query: Record<string, string | number> = {}
-  if (params.category) query.category = params.category
+  if (params.category && params.category !== 'ALL') query.category = params.category // (API SPEC) "전체" 인 경우에는 카테고리 쿼리 없이 요청
   if (params.input) query.input = params.input
   if (params.cursorId !== undefined) query.cursorId = params.cursorId
   if (params.cursorTimestamp) query.cursorTimestamp = params.cursorTimestamp

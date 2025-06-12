@@ -1,5 +1,7 @@
 'use client'
 
+import { AnimatePresence, motion } from 'motion/react'
+
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
@@ -19,21 +21,9 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
     challenge?: string
   }>({})
   const [resetCount, setResetCount] = useState(0)
-  const [animationComplete, setAnimationComplete] = useState(false)
 
   // 현재 단계 상태
   const [currentStep, setCurrentStep] = useState<FrameStep>(1)
-
-  // 열릴 때 애니메이션 효과 추가
-  useEffect(() => {
-    if (open) {
-      setAnimationComplete(false)
-      const timer = setTimeout(() => {
-        setAnimationComplete(true)
-      }, 1200) // 1.2초 애니메이션 지속시간
-      return () => clearTimeout(timer)
-    }
-  }, [open])
 
   // 세션 스토리지에서 선택 데이터 로드
   useEffect(() => {
@@ -125,37 +115,42 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
   }
 
   return (
-    <Window open={open} animationComplete={animationComplete}>
-      <Header close={handleReset} />
-      <Body>
-        <ChatFrame key={resetCount} step={currentStep} onSelect={handleSelect} onRetry={handleRetry} />
-      </Body>
-    </Window>
+    <AnimatePresence>
+      {open && (
+        <MotionWindow
+          key='chat-window'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.19, 1, 0.22, 1],
+          }}
+        >
+          <Header close={handleReset} />
+          <Body>
+            <ChatFrame key={resetCount} step={currentStep} onSelect={handleSelect} onRetry={handleRetry} />
+          </Body>
+        </MotionWindow>
+      )}
+    </AnimatePresence>
   )
 }
 
 // 채팅 윈도우 컨테이너
-const Window = styled.div<{ open: boolean; animationComplete: boolean }>`
-  position: fixed;
+const MotionWindow = styled(motion.div)`
+  position: absolute;
   max-width: 385px;
   width: 90%;
   height: 95%;
   top: 50%;
   left: 50%;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+
+  background: ${({ theme }) => theme.colors.lfWhite.base};
+  border-radius: ${({ theme }) => theme.radius.lg};
   overflow: hidden;
   z-index: 100000;
-
-  /* 애니메이션 적용 */
-  transform: translate(-50%, ${({ open }) => (open ? '-50%' : '100%')});
-  opacity: ${({ open }) => (open ? 1 : 0)};
-  visibility: ${({ open }) => (open ? 'visible' : 'hidden')};
-  transition:
-    transform 1.2s cubic-bezier(0.19, 1, 0.22, 1),
-    opacity 1s,
-    visibility 1s;
 
   display: flex;
   flex-direction: column;

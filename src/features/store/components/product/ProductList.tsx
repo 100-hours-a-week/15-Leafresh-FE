@@ -3,11 +3,11 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
+import { Product } from '@features/store/api/get-products'
 import ApologizeContent from '@shared/components/apologize/apologize'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-import { Product } from '../../api/get-products'
 import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'
 
@@ -87,7 +87,6 @@ const dummyProducts: Product[] = [
     stock: 5,
   },
 ]
-// const dummyProducts: Product[] = []
 
 interface ProductListProps {
   className?: string
@@ -102,7 +101,6 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   // 일반 상품 목록 조회
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteProducts(search)
 
-  // TODO: API 추가하면서 삭제 필요
   // const products = data?.pages.flatMap(page => page?.data?.products || []) ?? []
   const products: Product[] = dummyProducts
 
@@ -130,9 +128,13 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   /** 상품 리스트 */
   let contents
   /** 일반 상품이 없는 경우 */
-  if (products.length === 0) {
+  const hasProducts: boolean = !(products.length === 0)
+  if (!hasProducts) {
     contents = (
-      <ApologizeContent title='준비된 일반 상품이 없습니다' description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다' />
+      <StyledApologizeContent
+        title='준비된 일반 상품이 없습니다'
+        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+      />
     )
   } else {
     /** 일반 상품이 있는 경우 */
@@ -157,15 +159,22 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
     )
   }
 
-  return <ContentWrapper>{contents}</ContentWrapper>
+  return <ContentWrapper hasProducts={hasProducts}>{contents}</ContentWrapper>
 }
 
 export default ProductList
 
-const ContentWrapper = styled.div`
-  ${responsiveHorizontalPadding};
+const ContentWrapper = styled.div<{ hasProducts: boolean }>`
+  flex: 1;
 
+  ${responsiveHorizontalPadding};
   margin-top: 20px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: ${({ hasProducts }) => (!hasProducts ? 'center' : 'flex-start')};
+  align-items: center;
 `
 
 const ProductGrid = styled.div`
@@ -176,6 +185,7 @@ const ProductGrid = styled.div`
 `
 
 const SearchBar = styled.form`
+  width: 100%;
   padding-bottom: 10px;
 `
 
@@ -196,3 +206,8 @@ const SearchInput = styled.input`
 const ObserverTrigger = styled.div`
   height: 1px;
 `
+
+const StyledApologizeContent = styled(ApologizeContent)`
+  height: 100%;
+`
+// const dummyProducts: Product[] = []
