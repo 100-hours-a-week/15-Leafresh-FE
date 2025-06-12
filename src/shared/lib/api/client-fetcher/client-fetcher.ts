@@ -1,11 +1,9 @@
-import { handleAuthError } from '@shared/config/tanstack-query/utils'
 import { BASE_API_URL } from '@shared/constants/api-url'
 import { EndpointType } from '@shared/constants/endpoint/endpoint'
 
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshClientAccessToken } from './client-reissue'
 
-//TODO: dev/prod 환경에 따라 서로 다른 도메인 설정
 const BASE_URL = BASE_API_URL
 
 export async function clientFetchRequest<T>(
@@ -58,7 +56,7 @@ export async function clientFetchRequest<T>(
           data: null,
         }
         /** 미인증 유저에게는 토스트로 알림 */
-        handleAuthError(error)
+        // handleAuthError(error)
         throw error
       }
     }

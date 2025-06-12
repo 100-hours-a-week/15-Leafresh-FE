@@ -2,10 +2,11 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 
-import { use, useEffect } from 'react'
+import { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
+import { useOAuthStateStore } from '@entities/member/context/OAuthStateStore'
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { LowercaseOAuthType } from '@entities/member/type'
 import { LoginCallback } from '@features/member/api/oauth-callback'
@@ -16,25 +17,37 @@ import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 
-const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthType }> }) => {
+interface CallbackPageProps {
+  provider: LowercaseOAuthType
+}
+
+const CallbackPage = ({ provider }: CallbackPageProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { provider } = use(params)
   const openToast = useToast()
+
   const { setOAuthUserInfo } = useOAuthUserStore()
+  const { state } = useOAuthStateStore()
 
   const code = searchParams.get('code')
-
   const { data, isLoading, isError } = useQuery({
     queryKey: QUERY_KEYS.MEMBER.AUTH.CALLBACK(provider),
-    queryFn: () => LoginCallback(provider, { code: code! }),
-    enabled: !!code,
+    queryFn: () => {
+      if (!code || !state) {
+        return
+      }
+      return LoginCallback({
+        provider,
+        code,
+        state,
+      })
+    },
     ...QUERY_OPTIONS.MEMBER.AUTH.CALLBACK,
+    enabled: typeof code === 'string' && code.length > 0,
   })
 
   useEffect(() => {
     if (!data) return
-
     const { isMember, email, imageUrl, nickname } = data.data
 
     setOAuthUserInfo({ isMember, email, imageUrl, nickname, provider })
@@ -46,7 +59,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
       openToast(ToastType.Success, '로그인 성공')
       router.replace(URL.MAIN.INDEX.value)
     }
-  }, [data, router, openToast, setOAuthUserInfo])
+  }, [data])
 
   if (isLoading) {
     return (
@@ -57,7 +70,7 @@ const CallbackPage = ({ params }: { params: Promise<{ provider: LowercaseOAuthTy
   }
 
   if (isError) {
-    openToast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
+    // openToast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
 
     return <p>로그인 실패</p>
   }
