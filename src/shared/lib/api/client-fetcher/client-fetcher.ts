@@ -14,6 +14,7 @@ export async function clientFetchRequest<T>(
   /** Request */
   const { method, path } = endpoint
   const url = new URL(BASE_URL + path)
+  console.log('엔드포인트 :', BASE_URL)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))

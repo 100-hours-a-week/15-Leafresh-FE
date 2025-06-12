@@ -14,5 +14,3 @@ export const fetchRequest = async <T>(endpoint: EndpointType, options: OptionsTy
   }
   return clientFetchRequest<T>(endpoint, options)
 }
-
-export const BASE_URL = 'https://be.dev-leafresh.app'
