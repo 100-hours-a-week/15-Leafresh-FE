@@ -42,7 +42,7 @@ const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAns
   </Container>
 )
 
-export default ChatBubble
+export default React.memo(ChatBubble)
 
 const Container = styled.div<{ role: 'bot' | 'user' }>`
   display: flex;

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import {
@@ -154,54 +154,60 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   }
 
   // 챌린지 카테고리 선택 핸들러
-  const handleChallengeSelect = async (value: string) => {
-    if (loading) return
-    setLoading(true)
+  const handleChallengeSelect = useCallback(
+    async (value: string): Promise<void> => {
+      if (loading) return
+      setLoading(true)
 
-    // 사용자 메시지 추가
-    addChatItem({ type: 'message', role: 'user', text: getDisplayLabel(value) })
-    updateChatSelections({ category: value })
+      // 사용자 메시지 추가
+      addChatItem({ type: 'message', role: 'user', text: getDisplayLabel(value) })
+      updateChatSelections({ category: value })
 
-    try {
-      const response = await requestCategoryBasedRecommendation({
-        sessionId: sessionId || '',
-        location: chatSelections.location || '',
-        workType: chatSelections.workType || '',
-        category: value,
-      })
-      const data = response.data as RecommendationResponse
-      const { recommend, challenges } = data
+      try {
+        const response = await requestCategoryBasedRecommendation({
+          sessionId: sessionId || '',
+          location: chatSelections.location || '',
+          workType: chatSelections.workType || '',
+          category: value,
+        })
+        const data = response.data as RecommendationResponse
+        const { recommend, challenges } = data
 
-      const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
+        // const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
+        const responseMessage = useMemo(
+          () => [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)],
+          [recommend, challenges],
+        )
+        addChatItem({
+          type: 'message',
+          role: 'bot',
+          text: responseMessage,
+          subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
+          buttonText: '카테고리 재선택',
+          isAnswer: true,
+          onClick: handleRetry,
+        })
 
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text: responseMessage,
-        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
-        buttonText: '카테고리 재선택',
-        isAnswer: true,
-        onClick: handleRetry,
-      })
-
-      onSelect(value, 2)
-    } catch (err) {
-      const msg =
-        err && typeof err === 'object' && 'message' in err
-          ? String((err as { message: string }).message)
-          : '추천 중 오류가 발생했습니다. 다시 시도해주세요.'
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text: `죄송합니다. ${msg}`,
-        buttonText: '다시 시도',
-        isAnswer: true,
-        onClick: handleRetry,
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
+        onSelect(value, 2)
+      } catch (err) {
+        const msg =
+          err && typeof err === 'object' && 'message' in err
+            ? String((err as { message: string }).message)
+            : '추천 중 오류가 발생했습니다. 다시 시도해주세요.'
+        addChatItem({
+          type: 'message',
+          role: 'bot',
+          text: `죄송합니다. ${msg}`,
+          buttonText: '다시 시도',
+          isAnswer: true,
+          onClick: handleRetry,
+        })
+      } finally {
+        setLoading(false)
+      }
+    },
+    [loading, sessionId, chatSelections, addChatItem, onSelect],
+  )
 
   // 카테고리 설명 핸들러
   const handleExplainCategory = () => {
@@ -236,7 +242,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   }
 
   // 재선택 핸들러
-  const handleRetry = () => {
+  const handleRetry = useCallback((): void => {
     if (loading) {
       setTimeout(() => handleRetry(), 1000)
       return
@@ -256,61 +262,68 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       },
     })
     onRetry()
-  }
+  }, [loading, addChatItem, onRetry, handleExplainCategory, handleChallengeSelect])
 
   // 자유 텍스트 전송 핸들러
-  const handleSendMessage = async (txt: string) => {
-    if (!txt.trim() || loading) return
-    setLoading(true)
-    addChatItem({ type: 'message', role: 'user', text: txt })
+  const handleSendMessage = useCallback(
+    async (txt: string): Promise<void> => {
+      if (!txt.trim() || loading) return
+      setLoading(true)
+      addChatItem({ type: 'message', role: 'user', text: txt })
 
-    const formatMultilineText = (t: string): React.ReactNode[] =>
-      t.split('\n').flatMap((line: string, i: number) => [line, <br key={`line-${i}`} />])
+      const formatMultilineText = (t: string): React.ReactNode[] =>
+        t.split('\n').flatMap((line: string, i: number) => [line, <br key={`line-${i}`} />])
 
-    try {
-      const response = await requestFreetextBasedRecommendation({
-        sessionId: sessionId || '',
-        location: chatSelections.location || '',
-        workType: chatSelections.workType || '',
-        message: txt,
-      })
-      const data = response.data as RecommendationResponse
-      const { recommend, challenges } = data
+      try {
+        const response = await requestFreetextBasedRecommendation({
+          sessionId: sessionId || '',
+          location: chatSelections.location || '',
+          workType: chatSelections.workType || '',
+          message: txt,
+        })
+        const data = response.data as RecommendationResponse
+        const { recommend, challenges } = data
 
-      const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
+        // const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
+        const responseMessage = useMemo(
+          () => [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)],
+          [recommend, challenges],
+        )
 
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text: responseMessage,
-        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
-        buttonText: '카테고리 재선택',
-        isAnswer: true,
-        onClick: handleRetry,
-      })
-    } catch (err) {
-      let errorMessage = '오류가 발생했습니다. 다시 시도해주세요.'
-      if (err && typeof err === 'object' && 'status' in err) {
-        const status = (err as { status: number }).status
-        if (status === 422) errorMessage = '메시지는 최소 5글자 이상 입력해주세요.'
-        else if (status === 400) errorMessage = '메시지를 입력해주세요.'
-        else if (status === 502) errorMessage = 'AI 서버 연결에 실패했습니다.'
-        else if (status === 500) errorMessage = '서버 오류가 발생했습니다.'
+        addChatItem({
+          type: 'message',
+          role: 'bot',
+          text: responseMessage,
+          subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
+          buttonText: '카테고리 재선택',
+          isAnswer: true,
+          onClick: handleRetry,
+        })
+      } catch (err) {
+        let errorMessage = '오류가 발생했습니다. 다시 시도해주세요.'
+        if (err && typeof err === 'object' && 'status' in err) {
+          const status = (err as { status: number }).status
+          if (status === 422) errorMessage = '메시지는 최소 5글자 이상 입력해주세요.'
+          else if (status === 400) errorMessage = '메시지를 입력해주세요.'
+          else if (status === 502) errorMessage = 'AI 서버 연결에 실패했습니다.'
+          else if (status === 500) errorMessage = '서버 오류가 발생했습니다.'
+        }
+        addChatItem({
+          type: 'message',
+          role: 'bot',
+          text: `죄송합니다. ${errorMessage}`,
+          subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
+          buttonText: '카테고리 재선택',
+          isAnswer: true,
+          onClick: handleRetry,
+        })
+      } finally {
+        setLoading(false)
+        setInputText('')
       }
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text: `죄송합니다. ${errorMessage}`,
-        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
-        buttonText: '카테고리 재선택',
-        isAnswer: true,
-        onClick: handleRetry,
-      })
-    } finally {
-      setLoading(false)
-      setInputText('')
-    }
-  }
+    },
+    [loading, sessionId, chatSelections, addChatItem, handleRetry],
+  )
 
   return (
     <Container>
