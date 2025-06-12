@@ -187,6 +187,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
+            cd /home/ubuntu/frontend/app
+            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env.
+            echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
+            echo "${{  secrets.ENV_FE_LOCAL  }}" >> .env.local
+            echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+            echo "${{  secrets.ENV_FE_DEV  }}" >> .env.development
+            
             IMAGE="jchanho99/frontend-develop:latest"
             cd /home/ubuntu/frontend
             sudo docker compose down --rmi all
@@ -202,12 +209,6 @@ jobs:
 
       - name: Tag and Push Docker Image (tag = ${{ env.TAG_NAME }})
         run: |
-          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env.
-          echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-          echo "${{  secrets.ENV_FE_LOCAL  }}" >> .env.local
-          echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
-          echo "${{  secrets.ENV_FE_DEV  }}" >> .env.development
-          
           docker pull jchanho99/frontend-develop:latest
           docker image tag jchanho99/frontend-develop:latest temp-image-with-label
 
