@@ -95,9 +95,6 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
   const challenge = challengeData?.data
 
   const verifications = verificationData?.pages.flatMap(page => page?.data?.verifications || []) ?? []
-
-  console.log(verifications)
-
   // const verifications = verificationsDummy
 
   const observerRef = useRef<HTMLDivElement>(null)
