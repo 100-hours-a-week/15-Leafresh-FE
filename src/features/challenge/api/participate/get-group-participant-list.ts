@@ -27,7 +27,7 @@ export type Verification = {
 }
 
 export type GroupChallengeParticipateList = InfiniteScrollResponse<{
-  items: Verification[]
+  verifications: Verification[]
 }>
 
 export type GetGroupChallengeParticipateListResponse = GroupChallengeParticipateList

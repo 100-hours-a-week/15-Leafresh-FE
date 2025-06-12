@@ -94,9 +94,11 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
 
   const challenge = challengeData?.data
 
-  // TODO: 실제 데이터로 교체하기
-  // const verifications = verificationData?.pages.flatMap(page => page?.data?.items || []) ?? []
-  const verifications = verificationsDummy
+  const verifications = verificationData?.pages.flatMap(page => page?.data?.verifications || []) ?? []
+
+  console.log(verifications)
+
+  // const verifications = verificationsDummy
 
   const observerRef = useRef<HTMLDivElement>(null)
 
