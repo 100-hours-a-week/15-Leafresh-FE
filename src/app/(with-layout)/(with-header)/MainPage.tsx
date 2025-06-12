@@ -43,6 +43,9 @@ const MainPage = (): ReactNode => {
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
+  console.log(categories)
+  console.log(categoriesData)
+
   return (
     <Container>
       <EventSection eventChallenges={eventChallenges} />

@@ -13,5 +13,6 @@ type GroupChallengeCategoryListResponse = {
 }
 
 export const getGroupChallengeCategoryList = () => {
+  console.log(ENDPOINTS.CHALLENGE.GROUP.CATEGORIES)
   return fetchRequest<GroupChallengeCategoryListResponse>(ENDPOINTS.CHALLENGE.GROUP.CATEGORIES)
 }
