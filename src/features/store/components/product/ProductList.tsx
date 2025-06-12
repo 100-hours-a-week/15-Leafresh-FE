@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import ApologizeContent from '@shared/components/apologize/apologize'
+import Loading from '@shared/components/loading'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
@@ -73,6 +74,7 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
           {products.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
+          {isFetchingNextPage && <StyledLoading />}
           {hasNextPage && <ObserverTrigger ref={observerRef} />}
         </ProductGrid>
       </>
@@ -100,7 +102,7 @@ const ContentWrapper = styled.div<{ hasProducts: boolean }>`
 const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: 12px;
   margin-top: 8px;
 `
 
@@ -125,6 +127,10 @@ const SearchInput = styled.input`
 
 const ObserverTrigger = styled.div`
   height: 1px;
+`
+
+const StyledLoading = styled(Loading)`
+  grid-column: span 2;
 `
 
 // const dummyProducts: Product[] = [

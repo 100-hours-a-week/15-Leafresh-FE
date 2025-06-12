@@ -140,7 +140,6 @@ const Thumbnail = styled(Image)`
 `
 
 const TextContent = styled.div`
-  padding: 10px 0;
   display: flex;
   flex-direction: column;
 `
@@ -175,14 +174,14 @@ const LeafIcon = styled(Image)`
 `
 
 const StockNotice = styled.div<{ isSoldOut: boolean }>`
-  font-size: ${theme.fontSize.xs};
+  font-size: ${theme.fontSize.sm};
   color: ${({ isSoldOut }) => (isSoldOut ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
 
   margin-top: 8px;
 `
 
 const BuyButton = styled.button`
-  margin-top: 4px;
+  margin-top: 8px;
   width: 100%;
   height: 44px;
   background: ${theme.colors.lfWhite.base};
