@@ -27,7 +27,13 @@ interface GroupChallengeSectionsProps {
 export const GroupChallengeSections = ({ categories, className }: GroupChallengeSectionsProps): ReactNode => {
   const router = useRouter()
 
-  const [category, setCategory] = useState<FilterChallengeCategoryType>(categories[0].category) // 영어
+  console.log('groupchallengesections : categoires', categories)
+  console.log('categories[0]: ', categories[0])
+  console.log('categories[0]: ', categories[0]?.imageUrl)
+
+  const [category, setCategory] = useState<FilterChallengeCategoryType>(categories[0]?.category) // 영어
+
+  console.log('카테고리 : ', category)
 
   const [input, setInput] = useState('') // 유저의 검색값
 

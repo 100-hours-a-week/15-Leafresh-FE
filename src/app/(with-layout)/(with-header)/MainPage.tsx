@@ -5,11 +5,13 @@ import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { DayType } from '@entities/challenge/type'
+import { EventChallenge, getEventChallengeList } from '@features/challenge/api/get-event-challenge-list'
 import {
   getGroupChallengeCategoryList,
   GroupChallengeCategory,
 } from '@features/challenge/api/get-group-challenge-categories'
-import { GroupChallengeSections } from '@features/main/components'
+import { getPersonalChallengeList, PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
+import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@features/main/components'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getDayOfWeek } from '@shared/lib/date/utils'
@@ -24,29 +26,29 @@ const MainPage = (): ReactNode => {
 
   console.log('categoiresData: ', categoriesData)
 
-  // const { data: eventData } = useQuery({
-  //   queryKey: QUERY_KEYS.CHALLENGE.EVENT.LIST,
-  //   queryFn: getEventChallengeList,
-  //   ...QUERY_OPTIONS.CHALLENGE.EVENT.LIST,
-  // })
+  const { data: eventData } = useQuery({
+    queryKey: QUERY_KEYS.CHALLENGE.EVENT.LIST,
+    queryFn: getEventChallengeList,
+    ...QUERY_OPTIONS.CHALLENGE.EVENT.LIST,
+  })
 
-  // const { data: personalData } = useQuery({
-  //   queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.LIST(dayOfWeek),
-  //   queryFn: () => getPersonalChallengeList({ dayOfWeek }),
-  //   ...QUERY_OPTIONS.CHALLENGE.PERSONAL.LIST,
-  // })
+  const { data: personalData } = useQuery({
+    queryKey: QUERY_KEYS.CHALLENGE.PERSONAL.LIST(dayOfWeek),
+    queryFn: () => getPersonalChallengeList({ dayOfWeek }),
+    ...QUERY_OPTIONS.CHALLENGE.PERSONAL.LIST,
+  })
 
   const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
-  // const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
-  // const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
+  const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
+  const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
-  console.log(categories)
-  console.log(categoriesData)
+  console.log('categoriesData: ', categoriesData)
+  console.log('categories: ', categories)
 
   return (
     <Container>
-      {/* <EventSection eventChallenges={eventChallenges} />
-      <PersonalChallengeSection personalChallenges={personalChallenges} /> */}
+      <EventSection eventChallenges={eventChallenges} />
+      <PersonalChallengeSection personalChallenges={personalChallenges} />
       <GroupChallengeSections categories={categories} />
     </Container>
   )
