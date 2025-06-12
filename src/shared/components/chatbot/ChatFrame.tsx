@@ -3,26 +3,25 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
+import { categoryDescriptions,CHAT_CHALLENGE_OPTIONS } from '@entities/chatbot/constants'
+import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
+import { RecommendationResponse } from '@features/chatbot/chatbot-base-info'
+import { formatChallengeResponse } from '@shared/components/chatbot/formatChallengeResponse'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
+
 import {
-  useScrollToBottom,
-  useChatSession,
   getDisplayLabel,
-  loadSelectionsFromSession,
-  saveSelectionsToSession,
   getRandomLiveImage,
   getRandomWorkImage,
+  loadSelectionsFromSession,
+  saveSelectionsToSession,
+  useChatSession,
+  useScrollToBottom,
 } from '../../../entities/chatbot/utils'
-import { CHAT_CHALLENGE_OPTIONS, categoryDescriptions } from '@entities/chatbot/constants'
-import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
-
+import { useChatHistory } from '../../../features/chatbot/hooks/useChatHistory'
 import ChatBubble from './ChatBubble'
 import ChatSelection from './ChatSelection'
 import HorizontalCards from './HorizontalCards'
-
-import { RecommendationResponse } from '@features/chatbot/chatbot-base-info'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { useChatHistory } from '../../../features/chatbot/hooks/useChatHistory'
-import { formatChallengeResponse } from '@shared/components/chatbot/formatChallengeResponse'
 
 export interface ChatFrameProps {
   step: FrameStep

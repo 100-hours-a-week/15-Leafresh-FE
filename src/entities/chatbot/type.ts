@@ -1,4 +1,5 @@
 import type React from 'react'
+
 import { ChatSelectionProps } from '../../shared/components/chatbot/ChatSelection'
 
 export type ChatOption = {

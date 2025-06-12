@@ -1,4 +1,3 @@
-import React from 'react'
 
 //ChatBubble에 들어갈 ReactNode[] 형태로 변환
 export function formatChallengeResponse(challenges: { title: string; description: string }[]): string {
