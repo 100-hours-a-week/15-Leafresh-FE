@@ -15,10 +15,14 @@ export async function serverFetchRequest<T>(
   options: OptionsType = {},
   isRetry = false,
 ): Promise<ApiResponse<T>> {
+  console.log('🏴 서버 이장')
+
   const { method, path } = endpoint
+  console.log('base url: ', BASE_URL)
+
   const url = new URL(BASE_URL + path)
 
-  console.log('서버에서 보낸 엔드포인트 : ', url)
+  console.log('✅ 서버에서 보낸 엔드포인트 : ', url)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
