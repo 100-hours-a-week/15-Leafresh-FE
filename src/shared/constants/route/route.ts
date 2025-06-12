@@ -42,6 +42,7 @@ const MEMBER_URL = {
     BADGE: {
       name: '뱃지 조회',
       value: '/member/profile/badge',
+      isProtected: true,
     },
   },
   ALARM: {
@@ -89,6 +90,7 @@ const CHALLENGE_URL = {
     MODIFY: {
       name: '단체 챌린지 수정',
       value: (challengeId: number) => `/challenge/group/${challengeId}/modify`,
+      isProtected: true,
     },
     DETAILS: {
       name: '단체 챌린지 상세',
