@@ -130,6 +130,7 @@ const ThumbnailWrapper = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: ${theme.radius.base};
+  overflow: hidden;
 `
 
 const Thumbnail = styled(Image)`
@@ -146,12 +147,12 @@ const TextContent = styled.div`
 
 const Title = styled.h3`
   margin: 12px 0 6px 0;
-  font-size: ${theme.fontSize.md};
+  font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semiBold};
 `
 
 const Description = styled.p`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
   color: ${theme.colors.lfBlack.base};
   margin-top: 4px;
 `
@@ -181,7 +182,7 @@ const StockNotice = styled.div<{ isSoldOut: boolean }>`
 `
 
 const BuyButton = styled.button`
-  margin-top: 12px;
+  margin-top: 4px;
   width: 100%;
   height: 44px;
   background: ${theme.colors.lfWhite.base};

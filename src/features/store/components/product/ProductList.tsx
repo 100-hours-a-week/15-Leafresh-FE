@@ -101,8 +101,8 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   // 일반 상품 목록 조회
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteProducts(search)
 
-  // const products = data?.pages.flatMap(page => page?.data?.products || []) ?? []
-  const products: Product[] = dummyProducts
+  const products = data?.pages.flatMap(page => page?.data?.products || []) ?? []
+  // const products: Product[] = dummyProducts
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return
@@ -131,10 +131,7 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   const hasProducts: boolean = !(products.length === 0)
   if (!hasProducts) {
     contents = (
-      <StyledApologizeContent
-        title='준비된 일반 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
-      />
+      <ApologizeContent title='준비된 일반 상품이 없습니다' description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다' />
     )
   } else {
     /** 일반 상품이 있는 경우 */
@@ -207,7 +204,4 @@ const ObserverTrigger = styled.div`
   height: 1px;
 `
 
-const StyledApologizeContent = styled(ApologizeContent)`
-  height: 100%;
-`
 // const dummyProducts: Product[] = []
