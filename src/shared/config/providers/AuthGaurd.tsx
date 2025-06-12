@@ -21,18 +21,24 @@ function extractProtectedRoutes(obj: any): string[] {
   for (const key in obj) {
     const entry = obj[key]
     if (typeof entry === 'object' && entry !== null) {
-      if (typeof entry.value === 'string' && entry.isProtected) {
-        result.push(entry.value)
-      } else {
-        result.push(...extractProtectedRoutes(entry))
+      if (entry.isProtected) {
+        if (typeof entry.value === 'string') {
+          result.push(entry.value)
+        } else if (typeof entry.dynamicPath === 'string') {
+          result.push(entry.dynamicPath)
+        }
       }
+      result.push(...extractProtectedRoutes(entry))
     }
   }
 
   return result
 }
 
-const PROTECTED_ROUTES = extractProtectedRoutes(URL)
+const PROTECTED_ROUTES = extractProtectedRoutes(URL).map(path =>
+  path.includes('[') ? path.replace(/\[.*?\]/g, '[^/]+') : path,
+)
+console.log(PROTECTED_ROUTES)
 
 interface Props {
   children: React.ReactNode
@@ -47,7 +53,10 @@ const AuthGuard = ({ children }: Props) => {
   const [isVerified, setIsVerified] = useState(false)
 
   // 보호 경로인지 판별
-  const isProtectedRoute = PROTECTED_ROUTES.some(prefix => pathname.startsWith(prefix))
+  const isProtectedRoute = PROTECTED_ROUTES.some(pattern => {
+    const regex = new RegExp(`^${pattern}$`)
+    return regex.test(pathname)
+  })
 
   useEffect(() => {
     if (!isProtectedRoute) {
