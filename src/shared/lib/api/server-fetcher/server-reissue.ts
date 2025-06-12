@@ -25,7 +25,7 @@ export async function refreshServerAccessToken(): Promise<void> {
         .map(({ name, value }) => `${name}=${value}`)
         .join('; ')
 
-      const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE}`, {
+      const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE.path}`, {
         method: 'POST',
         headers: {
           Cookie: cookieHeader, // 재발급은 쿠키 포함

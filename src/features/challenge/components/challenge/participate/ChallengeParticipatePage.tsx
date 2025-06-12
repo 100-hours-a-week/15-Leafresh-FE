@@ -70,7 +70,8 @@ export default function ChallengeParticipatePage() {
   }, [hasError, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   let challengeContents
-  if (realChallenges && realChallenges.length > 0) {
+  const isChallengeExists: boolean = realChallenges && realChallenges.length > 0
+  if (isChallengeExists) {
     challengeContents = (
       <CardList>
         {realChallenges.map(challenge => {
@@ -108,7 +109,7 @@ export default function ChallengeParticipatePage() {
         <SwitchTap tabs={tabLabels} currentIndex={tab} onChange={setTab} />
       </SwitchTapContainer>
 
-      <CardListContainer>
+      <CardListContainer isChallengeExists={isChallengeExists}>
         {challengeContents}
         {isFetchingNextPage && <Loading />}
         {!hasNextPage && !isLoading && realChallenges.length > 0 && <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>}
@@ -141,14 +142,15 @@ const SwitchTapContainer = styled.div`
 `
 
 // 카드 리스트 컨테이너
-const CardListContainer = styled.div`
+const CardListContainer = styled.div<{ isChallengeExists: boolean }>`
   width: 100%;
-  flex: 1; /* 남은 공간 모두 차지하도록 변경 */
+  height: ${({ isChallengeExists }) => (!isChallengeExists ? '100%' : 'fit-content')};
 
   display: flex;
   align-self: center;
   flex-direction: column; /* 세로 방향으로 설정 */
   overflow: hidden; /* 내부 스크롤만 보이도록 설정 */
+  gap: 24px;
 `
 
 const ObserverTrigger = styled.div`

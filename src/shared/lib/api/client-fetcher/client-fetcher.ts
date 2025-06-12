@@ -14,7 +14,6 @@ export async function clientFetchRequest<T>(
   /** Request */
   const { method, path } = endpoint
   const url = new URL(BASE_URL + path)
-  console.log('✅클라이언트에서 보낸 엔드포인트 :', url)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
@@ -49,6 +48,7 @@ export async function clientFetchRequest<T>(
     if ((response.status === 401 || response.status === 403) && !isRetry) {
       try {
         await refreshClientAccessToken()
+
         return clientFetchRequest<T>(endpoint, options, true) // 딱 한 번만 재시도
       } catch (refreshError) {
         const error: ErrorResponse = {

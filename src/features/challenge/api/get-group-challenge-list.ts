@@ -1,3 +1,4 @@
+import { ChallengeCategoryType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
@@ -20,6 +21,8 @@ export interface FetchGroupChallengesParams {
 export interface GroupChallengeItem {
   id: number
   title: string
+  category: ChallengeCategoryType
+  description: string
   thumbnailUrl: string
   leafReward: number
   startDate: DateFormatString

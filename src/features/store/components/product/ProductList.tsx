@@ -3,90 +3,13 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { Product } from '@features/store/api/get-products'
 import ApologizeContent from '@shared/components/apologize/apologize'
+import Loading from '@shared/components/loading'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'
-
-const dummyProducts: Product[] = [
-  {
-    id: 1,
-    title:
-      '친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 ',
-    description:
-      '언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 ',
-    imageUrl: '/image/Main_1.png',
-    price: 4000,
-    stock: 0,
-  },
-  {
-    id: 2,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 3,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 4,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 5,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 6,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 7,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 8,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-  {
-    id: 9,
-    title: '대나무 칫솔',
-    description: '지구를 생각한 생분해 칫솔',
-    imageUrl: '/image/Main_1.png',
-    price: 3000,
-    stock: 5,
-  },
-]
 
 interface ProductListProps {
   className?: string
@@ -101,8 +24,8 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   // 일반 상품 목록 조회
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteProducts(search)
 
-  // const products = data?.pages.flatMap(page => page?.data?.products || []) ?? []
-  const products: Product[] = dummyProducts
+  const products = data?.pages.flatMap(page => page?.data?.products || []) ?? []
+  // const products: Product[] = dummyProducts
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return
@@ -121,7 +44,8 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   /** 이벤트 핸들러 */
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     setSearch(input)
   }
 
@@ -131,10 +55,7 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
   const hasProducts: boolean = !(products.length === 0)
   if (!hasProducts) {
     contents = (
-      <StyledApologizeContent
-        title='준비된 일반 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
-      />
+      <ApologizeContent title='준비된 일반 상품이 없습니다' description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다' />
     )
   } else {
     /** 일반 상품이 있는 경우 */
@@ -153,6 +74,7 @@ const ProductList = ({ className }: ProductListProps): ReactNode => {
           {products.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
+          {isFetchingNextPage && <StyledLoading />}
           {hasNextPage && <ObserverTrigger ref={observerRef} />}
         </ProductGrid>
       </>
@@ -180,7 +102,7 @@ const ContentWrapper = styled.div<{ hasProducts: boolean }>`
 const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: 12px;
   margin-top: 8px;
 `
 
@@ -207,7 +129,84 @@ const ObserverTrigger = styled.div`
   height: 1px;
 `
 
-const StyledApologizeContent = styled(ApologizeContent)`
-  height: 100%;
+const StyledLoading = styled(Loading)`
+  grid-column: span 2;
 `
+
+// const dummyProducts: Product[] = [
+//   {
+//     id: 1,
+//     title:
+//       '친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 친환경 텀블러 ',
+//     description:
+//       '언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 언제 어디서나 사용 가능한 그린 텀블러 ',
+//     imageUrl: '/image/Main_1.png',
+//     price: 4000,
+//     stock: 0,
+//   },
+//   {
+//     id: 2,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 3,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 4,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 5,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 6,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 7,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 8,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+//   {
+//     id: 9,
+//     title: '대나무 칫솔',
+//     description: '지구를 생각한 생분해 칫솔',
+//     imageUrl: '/image/Main_1.png',
+//     price: 3000,
+//     stock: 5,
+//   },
+// ]
 // const dummyProducts: Product[] = []

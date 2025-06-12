@@ -182,7 +182,7 @@ const MEMBER_ENDPOINTS = {
       method: HttpMethod.DELETE,
       path: `/oauth/${provider}/token`,
     }),
-    RE_ISSUE: { method: HttpMethod.POST, path: '/auth/token/reissue' }, // 토큰 재발급
+    RE_ISSUE: { method: HttpMethod.POST, path: '/oauth/token/reissue' }, // 토큰 재발급
   },
 
   DUPLICATE_NICKNAME: { method: HttpMethod.GET, path: '/api/members/nickname' }, // 닉네임 중복 검사

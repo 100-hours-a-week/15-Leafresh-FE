@@ -9,8 +9,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
 
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
 import { OAuthType } from '@entities/member/type'
 import { NicknameDuplicate } from '@features/member/api/nickname-duplicate'
+import { ProfileResponse } from '@features/member/api/profile/get-member-profile'
 import { SignUpBody, SignUpResponse, SignUpVariables } from '@features/member/api/signup'
 import { SignupFormType, signupSchema } from '@features/member/signup/schema'
 import ErrorText from '@shared/components/errortext'
@@ -18,15 +20,18 @@ import { useMutationStore } from '@shared/config/tanstack-query/mutation-default
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
+import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
+import { fetchRequest } from '@shared/lib/api'
 import { theme } from '@shared/styles/theme'
 
 const SignupPage = () => {
   const router = useRouter()
   const { OAuthUserInfo } = useOAuthUserStore()
   const openToast = useToast()
+  const { setUserInfo } = useUserStore()
 
   const [isDuplicateChecked, setIsDuplicateChecked] = useState<boolean>(false)
   const [lastCheckedNickname, setLastCheckedNickname] = useState<string>('') // 검사된 닉네임 저장
@@ -120,7 +125,31 @@ const SignupPage = () => {
       { body },
       {
         onSuccess: () => {
-          /** ✅ 주의 : UserStore 정보를 받아오지 않는 이유는 AT+RT 받기를 성공했으면 언젠가는 데이터를 불러올 수 있기 때문이다! */
+          // ✅ 로그인 성공 → 유저 정보 요청 → 전역 상태에 저장
+          ;(async () => {
+            try {
+              const { data: profileData } = await fetchRequest<ProfileResponse>(ENDPOINTS.MEMBERS.DETAILS)
+              if (profileData) {
+                const { nickname, email, profileImageUrl, treeImageUrl, treeLevelId, treeLevelName } = profileData
+
+                const userInfo: UserInfo = {
+                  nickname,
+                  email,
+                  imageUrl: profileImageUrl,
+                  treeState: {
+                    level: treeLevelId,
+                    name: treeLevelName,
+                    imageUrl: treeImageUrl,
+                  },
+                }
+
+                setUserInfo(userInfo)
+              }
+            } catch (err) {
+              console.warn('유저 정보 가져오기 실패', err)
+            }
+          })()
+
           router.replace(URL.MAIN.INDEX.value) // 회원가입 후 메인으로 이동
         },
       },
