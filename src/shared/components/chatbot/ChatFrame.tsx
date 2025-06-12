@@ -82,29 +82,6 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     })
   }
 
-  // 거주 지역∙직장 형태 카드 렌더링
-  const renderHorizontalCards = (): React.ReactNode[] => {
-    const locationCard = (
-      <ChatSelection
-        selectionType='location'
-        title='거주 지역 선택'
-        subtitle='* 자신의 생활환경을 위해 선택해주세요.'
-        imageUrl={liveImage}
-        onSelect={handleLocationSelect}
-      />
-    )
-    const workCard = (
-      <ChatSelection
-        selectionType='workType'
-        title='직장 형태 선택'
-        subtitle='* 자신의 직업환경을 위해 선택해주세요.'
-        imageUrl={workImage}
-        onSelect={handleWorkTypeSelect}
-      />
-    )
-    return [locationCard, workCard]
-  }
-
   // 두 선택(지역 & 직장) 완료 시
   useEffect(() => {
     if (selectedLocation && selectedWorkType) {
@@ -153,6 +130,31 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     updateChatSelections({ workType: value })
   }
 
+  // 거주 지역∙직장 형태 카드 렌더링
+  const horizontalCards = useMemo<React.ReactNode[]>(
+    () => [
+      <ChatSelection
+        key='loc'
+        selectionType='location'
+        title='거주 지역 선택'
+        subtitle='* 자신의 생활환경을 위해 선택해주세요.'
+        imageUrl={liveImage}
+        onSelect={handleLocationSelect}
+      />,
+      <ChatSelection
+        key='work'
+        selectionType='workType'
+        title='직장 형태 선택'
+        subtitle='* 자신의 직업환경을 위해 선택해주세요.'
+        imageUrl={workImage}
+        onSelect={handleWorkTypeSelect}
+      />,
+    ],
+    [liveImage, workImage, handleLocationSelect, handleWorkTypeSelect],
+  )
+
+  const renderHorizontalCards = useCallback(() => horizontalCards, [horizontalCards])
+
   // 챌린지 카테고리 선택 핸들러
   const handleChallengeSelect = useCallback(
     async (value: string): Promise<void> => {
@@ -174,9 +176,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         const { recommend, challenges } = data
 
         // const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
-        const responseMessage = useMemo(() => {
-          return `${recommend}\n\n${formatChallengeResponse(challenges)}`
-        }, [recommend, challenges])
+        const responseMessage = recommend + '\n\n' + formatChallengeResponse(challenges)
         addChatItem({
           type: 'message',
           role: 'bot',
@@ -270,9 +270,6 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       setLoading(true)
       addChatItem({ type: 'message', role: 'user', text: txt })
 
-      const formatMultilineText = (t: string): React.ReactNode[] =>
-        t.split('\n').flatMap((line: string, i: number) => [line, <br key={`line-${i}`} />])
-
       try {
         const response = await requestFreetextBasedRecommendation({
           sessionId: sessionId || '',
@@ -284,9 +281,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         const { recommend, challenges } = data
 
         // const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
-        const responseMessage = useMemo(() => {
-          return `${recommend}\n\n${formatChallengeResponse(challenges)}`
-        }, [recommend, challenges])
+        const responseMessage = recommend + '\n\n' + formatChallengeResponse(challenges)
 
         addChatItem({
           type: 'message',
