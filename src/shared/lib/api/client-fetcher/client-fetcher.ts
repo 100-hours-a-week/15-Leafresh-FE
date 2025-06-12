@@ -47,14 +47,10 @@ export async function clientFetchRequest<T>(
     // ✅ Access Token 만료 추정 시 재시도
     if ((response.status === 401 || response.status === 403) && !isRetry) {
       try {
-        console.log('🥲 재발급 시작')
-
         await refreshClientAccessToken()
 
         return clientFetchRequest<T>(endpoint, options, true) // 딱 한 번만 재시도
       } catch (refreshError) {
-        console.log('✅ 리프레시에서 오류 발생')
-
         const error: ErrorResponse = {
           status: 401,
           message: '세션이 만료되었습니다. 다시 로그인해주세요',

@@ -29,8 +29,6 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
 
   const [category, setCategory] = useState<FilterChallengeCategoryType>(categories[0]?.category) // 영어
 
-  console.log('카테고리 : ', category)
-
   const [input, setInput] = useState('') // 유저의 검색값
 
   const searchInputRef = useRef<HTMLInputElement>(null)
