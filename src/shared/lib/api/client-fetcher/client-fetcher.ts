@@ -14,7 +14,6 @@ export async function clientFetchRequest<T>(
   /** Request */
   const { method, path } = endpoint
   const url = new URL(BASE_URL + path)
-  console.log('✅클라이언트에서 보낸 엔드포인트 :', url)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
@@ -48,9 +47,14 @@ export async function clientFetchRequest<T>(
     // ✅ Access Token 만료 추정 시 재시도
     if ((response.status === 401 || response.status === 403) && !isRetry) {
       try {
+        console.log('🥲 재발급 시작')
+
         await refreshClientAccessToken()
+
         return clientFetchRequest<T>(endpoint, options, true) // 딱 한 번만 재시도
       } catch (refreshError) {
+        console.log('✅ 리프레시에서 오류 발생')
+
         const error: ErrorResponse = {
           status: 401,
           message: '세션이 만료되었습니다. 다시 로그인해주세요',
