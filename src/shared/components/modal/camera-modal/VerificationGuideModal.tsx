@@ -3,15 +3,15 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 
-import { convertLanguage, DAY_PAIRS } from '@entities/challenge/consts'
 import {
   getGroupChallengeRulesList,
   GroupChallengeRulesListResponse,
-} from '@features/challenge/api/get-group-challenge-rules'
+} from '@entities/challenge/api/get-group-challenge-rules'
 import {
   getPersonalChallengeRulesList,
   PersonalChallengeRulesListResponse,
-} from '@features/challenge/api/get-personal-challenge-rules'
+} from '@entities/challenge/api/get-personal-challenge-rules'
+import { convertLanguage, DAY_PAIRS } from '@entities/challenge/model/consts'
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

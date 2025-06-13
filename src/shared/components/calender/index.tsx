@@ -3,7 +3,7 @@
 import { addMonths, startOfMonth, startOfToday, subMonths } from 'date-fns'
 import { useRef, useState } from 'react'
 
-import { DayType } from '@entities/challenge/type'
+import { DayType } from '@entities/challenge/model/type'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { theme } from '@shared/styles/theme'
 

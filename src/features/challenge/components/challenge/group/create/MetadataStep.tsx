@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
-import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge/consts'
+import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge/model/consts'
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'

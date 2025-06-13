@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 
-import { EventChallenge } from '@features/challenge/api/get-event-challenge-list'
+import { EventChallenge } from '@entities/challenge/api/get-event-challenge-list'
 import { URL } from '@shared/constants/route/route'
 import { media } from '@shared/styles/emotion/media'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'

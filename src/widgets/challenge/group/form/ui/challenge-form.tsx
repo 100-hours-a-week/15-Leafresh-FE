@@ -4,20 +4,20 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/consts'
-import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
   CreateChallengeBody,
   CreateChallengeResponse,
   CreateChallengeVariables,
   ExampleImage,
-} from '@features/challenge/api/create-group-challenge'
+} from '@entities/challenge/api/create-group-challenge'
 import {
   KeepImage,
   ModifyChallengeBody,
   ModifyChallengeVariables,
   NewImage,
-} from '@features/challenge/api/modify-group-challenge'
+} from '@entities/challenge/api/modify-group-challenge'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model/consts'
+import { ChallengeCategoryType } from '@entities/challenge/model/type'
 import DetailStep from '@features/challenge/components/challenge/group/create/DetailStep'
 import MetaDataStep from '@features/challenge/components/challenge/group/create/MetadataStep'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'

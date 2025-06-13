@@ -1,12 +1,12 @@
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ApiResponse } from '@shared/lib/api/type'
 
-import type { ParticipantChallengeResponse } from '../api/participate/group-participant'
+import type { ParticipantChallengeResponse } from '../../../entities/challenge/api/participate/group-participant'
 import {
   type ChallengeStatus,
   fetchGroupParticipations,
   type FetchGroupParticipationsParams,
-} from '../api/participate/group-participant'
+} from '../../../entities/challenge/api/participate/group-participant'
 
 import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 

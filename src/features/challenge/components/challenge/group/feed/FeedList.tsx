@@ -1,8 +1,8 @@
 import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 
-import { ChallengeCategoryType } from '@entities/challenge/type'
-import { Verification } from '@features/challenge/api/feed/get-feed-list'
+import { Verification } from '@entities/challenge/api/feed/get-feed-list'
+import { ChallengeCategoryType } from '@entities/challenge/model/type'
 import { useInfiniteGroupChallengeFeedList } from '@features/challenge/hook/useInfiniteFeedList'
 import Loading from '@shared/components/loading'
 import NoContent from '@shared/components/no-content/no-content'

@@ -1,6 +1,6 @@
 'use client'
 
-import { ChallengeVerificationStatusType } from '@entities/challenge/type'
+import { ChallengeVerificationStatusType } from '@entities/challenge/model/type'
 import ImageInput from '@shared/components/image-input'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'

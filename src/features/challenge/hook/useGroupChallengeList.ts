@@ -2,7 +2,7 @@ import {
   fetchGroupChallenges,
   type FetchGroupChallengesParams,
   type FetchGroupChallengesResponse,
-} from '@features/challenge/api/get-group-challenge-list'
+} from '@entities/challenge/api/get-group-challenge-list'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ApiResponse } from '@shared/lib/api/type'
 

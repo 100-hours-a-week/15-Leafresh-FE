@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { ChallengeVerificationResultType } from '@entities/challenge/type'
+import { ChallengeVerificationResultType } from '@entities/challenge/model/type'
 
 import { ZoomModalStore } from './type'
 

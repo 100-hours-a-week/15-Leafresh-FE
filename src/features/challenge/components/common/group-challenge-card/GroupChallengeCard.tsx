@@ -1,12 +1,12 @@
 import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/consts'
-import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
   DeleteGroupChallengeResponse,
   DeleteGroupChallengeVariables,
-} from '@features/challenge/api/delete-group-challenge'
+} from '@entities/challenge/api/delete-group-challenge'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model/consts'
+import { ChallengeCategoryType } from '@entities/challenge/model/type'
 import { LeafReward } from '@shared/components'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'

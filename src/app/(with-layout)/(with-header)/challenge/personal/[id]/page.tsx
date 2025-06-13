@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 
-import { getPersonalChallengeDetails } from '@features/challenge/api/get-personal-challenge-details'
+import { getPersonalChallengeDetails } from '@entities/challenge/api/get-personal-challenge-details'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'

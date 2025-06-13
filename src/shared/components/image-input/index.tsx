@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 
-import { ChallengeVerificationStatusType } from '@entities/challenge/type'
+import { ChallengeVerificationStatusType } from '@entities/challenge/model/type'
 import { ASPECT_RATIOS, AspectRatioType } from '@shared/constants/image-size'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import LucideIcon from '@shared/lib/ui/LucideIcon'

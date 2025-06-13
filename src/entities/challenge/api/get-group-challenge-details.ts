@@ -4,7 +4,7 @@ import {
   ChallengeCategoryType,
   ChallengeVerificationResultType,
   ChallengeVerificationStatusType,
-} from '@entities/challenge/type'
+} from '@entities/challenge/model/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'

@@ -11,7 +11,7 @@ import {
   PostGroupVerification,
   PostGroupVerificationBody,
   type PostGroupVerificationResponse,
-} from '../api/participate/verification/group-verification'
+} from '../../../entities/challenge/api/participate/verification/group-verification'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 // import { showNotification } from '@/libs/showNotification'

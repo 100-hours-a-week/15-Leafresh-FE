@@ -1,4 +1,4 @@
-import { ChallengeVerificationResultType, DayType } from '@entities/challenge/type'
+import { ChallengeVerificationResultType, DayType } from '@entities/challenge/model/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { TimeFormatString } from '@shared/types/date'

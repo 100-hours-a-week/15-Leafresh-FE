@@ -1,7 +1,7 @@
 'use client'
 
-import { DAYS } from '@entities/challenge/consts'
-import { DayType } from '@entities/challenge/type'
+import { DAYS } from '@entities/challenge/model/consts'
+import { DayType } from '@entities/challenge/model/type'
 import { convertDayToLabel } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 

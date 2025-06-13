@@ -3,16 +3,16 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
-import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import {
   getPersonalChallengeDetails,
   PersonalChallengeDetail,
-} from '@features/challenge/api/get-personal-challenge-details'
+} from '@entities/challenge/api/get-personal-challenge-details'
 import {
   VerifyGroupChallengeResponse,
   VerifyPersonalChallengeBody,
   VerifyVariables,
-} from '@features/challenge/api/verify-personal-challenge'
+} from '@entities/challenge/api/verify-personal-challenge'
+import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/model/type'
 import { VerificationImageData } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'

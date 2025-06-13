@@ -3,9 +3,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react'
 
-import { ChallengeCategoryType } from '@entities/challenge/type'
-import { GroupChallengeCategory } from '@features/challenge/api/get-group-challenge-categories'
-import { GroupChallengeItem } from '@features/challenge/api/get-group-challenge-list'
+import { GroupChallengeCategory } from '@entities/challenge/api/get-group-challenge-categories'
+import { GroupChallengeItem } from '@entities/challenge/api/get-group-challenge-list'
+import { ChallengeCategoryType } from '@entities/challenge/model/type'
 import {
   GroupChallenge,
   GroupChallengeCard,

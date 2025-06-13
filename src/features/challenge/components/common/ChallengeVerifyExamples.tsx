@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react'
 
-import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/consts'
-import { ChallengeVerificationResultType } from '@entities/challenge/type'
+import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/model/consts'
+import { ChallengeVerificationResultType } from '@entities/challenge/model/type'
 import { ImageZoomModalData, useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 import { theme } from '@shared/styles/theme'
 
