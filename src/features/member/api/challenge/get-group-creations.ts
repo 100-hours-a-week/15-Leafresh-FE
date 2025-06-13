@@ -1,4 +1,4 @@
-import { ChallengeCategoryType } from '@entities/challenge/model/type'
+import { ChallengeCategoryType } from '@entities/common/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'

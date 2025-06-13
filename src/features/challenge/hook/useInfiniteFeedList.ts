@@ -1,10 +1,10 @@
 'use client'
 
-import { ChallengeCategoryType } from '@entities/challenge/model/type'
+import { ChallengeCategoryType } from '@entities/common/type'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-import { getGroupChallengeFeedList } from '../../../entities/challenge/api/feed/get-feed-list'
+import { getGroupChallengeFeedList } from '../../../entities/challenge/api/group/feed/get-feed-list'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
 

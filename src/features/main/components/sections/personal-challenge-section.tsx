@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
-import { PersonalChallengeType } from '@entities/challenge/api/get-personal-challenge-list'
+import { PersonalChallengeType } from '@entities/challenge/api/personal/get-personal-list'
 import { LeafReward } from '@shared/components'
 import { URL } from '@shared/constants/route/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'

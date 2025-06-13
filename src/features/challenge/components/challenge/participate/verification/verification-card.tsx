@@ -3,16 +3,16 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 
-import { Verification } from '@entities/challenge/api/participate/get-group-participant-list'
+import { Verification } from '@entities/challenge/api/group/verification/get-group-verification-list'
 import {
   CreateVerificationLikeResponse,
   CreateVerificationLikeVariables,
-} from '@entities/challenge/api/participate/verification/likes/create-like'
+} from '@entities/challenge/api/group/verification/likes/create-like'
 import {
   DeleteVerificationLikeResponse,
   DeleteVerificationLikeVariables,
-} from '@entities/challenge/api/participate/verification/likes/delete-like'
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model/consts'
+} from '@entities/challenge/api/group/verification/likes/delete-like'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/common/consts'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'

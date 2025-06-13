@@ -2,9 +2,9 @@
 
 import { ReactNode } from 'react'
 
-import { getGroupChallengeDetails } from '@entities/challenge/api/get-group-challenge-details'
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model/consts'
-import { ChallengeCategoryTypeKor } from '@entities/challenge/model/type'
+import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-group-details'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/common/consts'
+import { ChallengeCategoryTypeKor } from '@entities/common/type'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 

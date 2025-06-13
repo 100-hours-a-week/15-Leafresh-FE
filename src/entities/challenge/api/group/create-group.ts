@@ -1,7 +1,8 @@
-import { ChallengeCategoryType, ChallengeVerificationResultType } from '@entities/challenge/model/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { DateFormatString, TimeFormatString } from '@shared/types/date'
+
+import { ChallengeCategoryType, ChallengeVerificationResultType } from '../../model'
 
 export type CreateChallengeResponse = {
   id: number

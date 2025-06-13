@@ -1,5 +1,5 @@
-import { DAYS, DAYS_KOR } from '@entities/challenge/model/consts'
-import { DayType } from '@entities/challenge/model/type'
+import { DAYS, DAYS_KOR } from '@entities/common/consts'
+import { DayType } from '@entities/common/type'
 import { DateFormatString, ISOFormatString } from '@shared/types/date'
 
 /**

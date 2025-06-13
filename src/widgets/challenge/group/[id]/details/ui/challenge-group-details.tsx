@@ -4,12 +4,12 @@ import { differenceInCalendarDays } from 'date-fns'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { getGroupChallengeDetails } from '@entities/challenge/api/get-group-challenge-details'
+import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-group-details'
 import {
   ParticipateGroupChallengeResponse,
   ParticipateGroupChallengeVariables,
-} from '@entities/challenge/api/participate-group-challenge'
-import { ChallengeVerificationStatusType } from '@entities/challenge/model/type'
+} from '@entities/challenge/api/group/participate/participate-group'
+import { ChallengeVerificationStatusType } from '@entities/common/type'
 import ChallengeVerifyCarousel from '@features/challenge/components/challenge/group/details/ChallengeVerifyCarousel'
 import { VerificationImageData } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'

@@ -6,13 +6,13 @@ import { ReactNode } from 'react'
 import {
   getPersonalChallengeDetails,
   PersonalChallengeDetail,
-} from '@entities/challenge/api/get-personal-challenge-details'
+} from '@entities/challenge/api/personal/get-personal-details'
 import {
   VerifyGroupChallengeResponse,
   VerifyPersonalChallengeBody,
   VerifyVariables,
-} from '@entities/challenge/api/verify-personal-challenge'
-import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/model/type'
+} from '@entities/challenge/api/personal/verify-personal'
+import { ChallengeVerificationStatusType, DayType } from '@entities/common/type'
 import { VerificationImageData } from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'

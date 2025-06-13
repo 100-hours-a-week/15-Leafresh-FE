@@ -1,4 +1,5 @@
-import { LanguageMap } from '../type'
+import { LanguageMap } from '@entities/common'
+
 import { ChallengeCategoryType, ChallengeCategoryTypeKor } from './types'
 
 /** 카테고리 */

@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
-import { getGroupChallengeDetails } from '@entities/challenge/api/get-group-challenge-details'
-import { Verification } from '@entities/challenge/api/participate/get-group-participant-list'
+import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-group-details'
+import { Verification } from '@entities/challenge/api/group/verification/get-group-verification-list'
 import VerificationCard from '@features/challenge/components/challenge/participate/verification/verification-card'
 import { useInfiniteGroupChallengeVerifications } from '@features/challenge/hook/useInfiniteGroupChallengeVerifications'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

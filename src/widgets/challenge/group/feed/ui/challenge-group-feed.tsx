@@ -2,11 +2,8 @@
 import Image from 'next/image'
 import { ReactNode, useState } from 'react'
 
-import {
-  getGroupChallengeCategoryList,
-  GroupChallengeCategory,
-} from '@entities/challenge/api/get-group-challenge-categories'
-import { ChallengeCategoryType } from '@entities/challenge/model/type'
+import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@entities/challenge/api/group/get-categories'
+import { ChallengeCategoryType } from '@entities/common/type'
 import { FeedList } from '@features/challenge/components/challenge/group/feed/FeedList'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

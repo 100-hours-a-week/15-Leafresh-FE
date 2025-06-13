@@ -9,15 +9,15 @@ import {
   CreateChallengeResponse,
   CreateChallengeVariables,
   ExampleImage,
-} from '@entities/challenge/api/create-group-challenge'
+} from '@entities/challenge/api/group/create-group'
 import {
   KeepImage,
   ModifyChallengeBody,
   ModifyChallengeVariables,
   NewImage,
-} from '@entities/challenge/api/modify-group-challenge'
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model/consts'
-import { ChallengeCategoryType } from '@entities/challenge/model/type'
+} from '@entities/challenge/api/group/modify-group'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/common/consts'
+import { ChallengeCategoryType } from '@entities/common/type'
 import DetailStep from '@features/challenge/components/challenge/group/create/DetailStep'
 import MetaDataStep from '@features/challenge/components/challenge/group/create/MetadataStep'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { ChallengeVerificationStatusType } from '@entities/challenge/model/type'
+import { ChallengeVerificationStatusType } from '@entities/common/type'
 import CheckIcon from '@shared/components/check-icon/CheckIcon'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { ToastType } from '@shared/context/toast/type'

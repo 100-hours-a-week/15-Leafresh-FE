@@ -1,10 +1,7 @@
 // @features/challenge/api/getGroupChallengeDetails.ts
 
-import {
-  ChallengeVerificationResultType,
-  ChallengeVerificationStatusType,
-  DayType,
-} from '@entities/challenge/model/type'
+import { ChallengeVerificationResultType, ChallengeVerificationStatusType } from '@entities/challenge/model'
+import { DayType } from '@entities/common'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { TimeFormatString } from '@shared/types/date'

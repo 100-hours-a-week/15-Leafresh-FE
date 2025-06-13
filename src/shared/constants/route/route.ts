@@ -1,4 +1,4 @@
-import { ChallengeCategoryType } from '@entities/challenge/model/type'
+import { ChallengeCategoryType } from '@entities/common/type'
 
 /**
  * FE라우트 엔드포인트 입니다

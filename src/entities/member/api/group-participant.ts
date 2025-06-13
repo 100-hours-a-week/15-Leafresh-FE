@@ -31,6 +31,7 @@ export type ParticipantChallengeResponse = InfiniteScrollResponse<{
   status: number
 }>
 
+// 내가 "참여(participate)"한 챌린지
 export const fetchGroupParticipations = ({ status, cursorId, cursorTimestamp }: FetchGroupParticipationsParams) => {
   return fetchRequest<ParticipantChallengeResponse>(ENDPOINTS.MEMBERS.CHALLENGE.GROUP.PARTICIPATIONS, {
     query: {

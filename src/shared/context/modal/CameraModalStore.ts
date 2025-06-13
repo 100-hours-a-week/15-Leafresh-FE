@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { ChallengeType, ChallengeVerificationStatusType } from '@entities/challenge/model/type'
+import { ChallengeType, ChallengeVerificationStatusType } from '@entities/common/type'
 
 export type ChallengeDataType = {
   id: number

@@ -1,4 +1,4 @@
-import { ChallengeCategoryType } from '@entities/challenge/model/type'
+import { ChallengeCategoryType } from '@entities/challenge/model'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { InfiniteScrollResponse } from '@shared/types/api'
@@ -10,7 +10,7 @@ export interface GroupChallengeFeedListParams {
   category?: ChallengeCategoryType // 없는 경우 : "전체" 카테고리인 경우
 }
 
-export type Verification = {
+export type VerificationData = {
   id: number
   challengeId: number
   nickname: string
@@ -28,7 +28,7 @@ export type Verification = {
 }
 
 export type GroupChallengeFeedList = InfiniteScrollResponse<{
-  verifications: Verification[]
+  verifications: VerificationData[]
 }>
 
 type GetGroupChallengeFeedListResponse = GroupChallengeFeedList

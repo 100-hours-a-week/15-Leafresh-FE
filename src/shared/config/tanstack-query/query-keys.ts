@@ -1,4 +1,4 @@
-import { ChallengeCategoryType, DayType } from '@entities/challenge/model/type'
+import { ChallengeCategoryType, DayType } from '@entities/common/type'
 import { LowercaseOAuthType } from '@entities/member/type'
 
 const CHALLENGE_QUERY_KEYS = {

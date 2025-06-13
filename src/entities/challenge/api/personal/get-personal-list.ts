@@ -1,6 +1,4 @@
-// @features/challenge/api/getPersonalChallengeList.ts
-
-import { DayType } from '@entities/challenge/model/type'
+import { DayType } from '@entities/common/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 

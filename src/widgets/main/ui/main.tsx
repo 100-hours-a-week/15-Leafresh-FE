@@ -2,13 +2,10 @@
 
 import { ReactNode } from 'react'
 
-import { EventChallenge, getEventChallengeList } from '@entities/challenge/api/get-event-challenge-list'
-import {
-  getGroupChallengeCategoryList,
-  GroupChallengeCategory,
-} from '@entities/challenge/api/get-group-challenge-categories'
-import { getPersonalChallengeList, PersonalChallengeType } from '@entities/challenge/api/get-personal-challenge-list'
-import { DayType } from '@entities/challenge/model/type'
+import { EventChallenge, getEventChallengeList } from '@entities/challenge/api/event/get-event-list'
+import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@entities/challenge/api/group/get-categories'
+import { getPersonalChallengeList, PersonalChallengeType } from '@entities/challenge/api/personal/get-personal-list'
+import { DayType } from '@entities/common/type'
 import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@features/main/components'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
