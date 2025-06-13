@@ -1,5 +1,4 @@
-import { getProducts, ProductsResponse } from '@features/store/api/get-products'
-import { getTimeDealProducts } from '@features/store/api/get-timedeals'
+import { getProducts, getTimeDealProducts, ProductsResponse } from '@entities/store/api'
 import { Cursor } from '@features/store/hook/useInfiniteProducts'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

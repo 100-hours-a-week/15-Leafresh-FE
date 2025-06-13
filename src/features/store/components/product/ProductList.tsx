@@ -6,7 +6,7 @@ import ApologizeContent from '@shared/components/apologize/apologize'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-import { Product } from '../../api/get-products'
+import { Product } from '../../../../entities/store/api/product/get-product-list'
 import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'
 

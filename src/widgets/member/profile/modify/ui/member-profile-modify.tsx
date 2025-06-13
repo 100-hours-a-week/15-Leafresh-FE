@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import { getMemberProfile, ProfileResponse } from '@entities/member/api/profile/get-profile'
 import { MemberInfoRequest, MemberInfoResponse } from '@entities/member/api/profile/update-profile'
-import { useUserStore } from '@entities/member/context/UserStore'
+import { useUserStore } from '@entities/member/model/user-store'
 import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'

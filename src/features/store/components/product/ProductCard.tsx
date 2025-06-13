@@ -3,13 +3,13 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { Product } from '@features/store/api/get-products'
+import { Product } from '@entities/store/api/product/get-product-list'
 import {
   OrderProductBody,
   OrderProductHeaders,
   OrderProductResponse,
   OrderProductVariables,
-} from '@features/store/api/order-proudcts'
+} from '@entities/store/api/product/order-proudct'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'

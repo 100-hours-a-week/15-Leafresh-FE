@@ -2,7 +2,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
-import { getProducts, ProductsResponse } from '../api/get-products'
+import { getProducts, ProductsResponse } from '../../../entities/store/api/product/get-product-list'
 
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 

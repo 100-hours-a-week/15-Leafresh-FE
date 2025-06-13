@@ -1,7 +1,7 @@
 'use client'
 
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { useUserStore } from '@entities/member/context/UserStore'
+import { useOAuthUserStore } from '@entities/member/model/oauth-user-store'
+import { useUserStore } from '@entities/member/model/user-store'
 import { URL } from '@shared/constants/route/route'
 import { useToastStore } from '@shared/context/toast/ToastStore'
 import { ToastType } from '@shared/context/toast/type'

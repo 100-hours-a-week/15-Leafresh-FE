@@ -3,13 +3,13 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 
-import { TimeDealProduct } from '@features/store/api/get-timedeals'
+import { TimeDealProduct } from '@entities/store/api/timedeal/get-timedeal-list'
 import {
   OrderTimeDealProductBody,
   OrderTimeDealProductHeaders,
   OrderTimeDealProductResponse,
   OrderTimeDealProductVariables,
-} from '@features/store/api/order-timedeal'
+} from '@entities/store/api/timedeal/order-timedeal'
 import ApologizeContent from '@shared/components/apologize/apologize'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'

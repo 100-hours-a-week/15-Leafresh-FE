@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
-import { Login } from '@entities/member/api/oauth-login'
+import { Login } from '@entities/member/api/login-oauth'
 import { LowercaseOAuthType } from '@entities/member/type'
 import Loading from '@shared/components/loading'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

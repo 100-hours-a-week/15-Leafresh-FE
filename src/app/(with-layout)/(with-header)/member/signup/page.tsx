@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 
 import { NicknameDuplicate } from '@entities/member/api/check-nickname-duplicate'
 import { SignUpBody, SignUpResponse, SignUpVariables } from '@entities/member/api/register'
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { useOAuthUserStore } from '@entities/member/model/oauth-user-store'
 import { OAuthType } from '@entities/member/type'
 import { SignupFormType, signupSchema } from '@features/member/signup/schema'
 import ErrorText from '@shared/components/errortext'

@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { ReactNode, useRef } from 'react'
 
-import { TimeDealProduct } from '@features/store/api/get-timedeals'
+import { TimeDealProduct } from '@entities/store/api/timedeal/get-timedeal-list'
 import ApologizeContent from '@shared/components/apologize/apologize'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'

@@ -4,7 +4,7 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
+import { UserInfo, useUserStore } from '@entities/member/model/user-store'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
