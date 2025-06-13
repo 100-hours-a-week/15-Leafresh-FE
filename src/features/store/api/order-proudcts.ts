@@ -25,5 +25,6 @@ export type OrderProductVariables = {
 export const OrderProduct = ({ productId, headers, body }: OrderProductVariables) => {
   return fetchRequest<OrderProductResponse>(ENDPOINTS.STORE.PRODUCTS.ORDER(productId), {
     body,
+    headers,
   })
 }

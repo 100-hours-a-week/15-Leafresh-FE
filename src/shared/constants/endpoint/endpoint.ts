@@ -260,7 +260,7 @@ const STORE_ENDPOINTS = {
     // 타임딜 상품 주문
     ORDER: (dealId: number) => ({
       method: HttpMethod.POST,
-      path: `/api/orders/${dealId}`,
+      path: `/api/orders/timedeals/${dealId}`,
     }),
   },
   PRODUCTS: {
@@ -269,7 +269,7 @@ const STORE_ENDPOINTS = {
     // 상품 주문
     ORDER: (productId: number) => ({
       method: HttpMethod.POST,
-      path: `/api/orders/${productId}`,
+      path: `/api/orders/products/${productId}`,
     }),
   },
   ETC: {
