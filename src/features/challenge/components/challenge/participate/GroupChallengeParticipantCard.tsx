@@ -79,11 +79,6 @@ const CardContainer = styled.div`
   display: flex;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s;
-  //마우스 호버
-  &:hover {
-    transform: translateY(-2px);
-  }
 `
 
 const LeftSection = styled.div`

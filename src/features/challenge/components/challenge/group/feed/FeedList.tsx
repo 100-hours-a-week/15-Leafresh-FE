@@ -3,11 +3,13 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import { Verification } from '@features/challenge/api/feed/get-feed-list'
 import { useInfiniteGroupChallengeFeedList } from '@features/challenge/hook/useInfiniteFeedList'
 import Loading from '@shared/components/loading'
 import NoContent from '@shared/components/no-content/no-content'
+import { URL } from '@shared/constants/route/route'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { ISOFormatString } from '@shared/types/date'
 
@@ -75,8 +77,13 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
   const router = useRouter()
 
   /** 인증 피드 목록 조회 API */
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
-    useInfiniteGroupChallengeFeedList(category)
+  const {
+    data: verificationData,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+  } = useInfiniteGroupChallengeFeedList(category)
 
   const observerRef = useRef<HTMLDivElement | null>(null)
 
@@ -104,22 +111,28 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-  // TODO: 실제 데이터로 교체하기
-  // const verifications = verificationData?.pages.flatMap(page => page?.data?.items || []) ?? []
-  const verifications = verificationsDummy
-  console.log(verifications)
+  const verifications = verificationData?.pages.flatMap(page => page?.data?.verifications || []) ?? []
+  // const verifications = verificationsDummy
 
   let contents
   if (isLoading) {
     contents = <Loading />
   } else if (!verifications || verifications.length === 0) {
     /** 검색값이 없는 경우 */
+    let title: string
+    if (category === 'ALL') {
+      title = `챌린지가 없습니다`
+    } else {
+      const korCategory = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(category) as string
+      title = `${korCategory}\n 인증 내역이 없습니다`
+    }
     contents = (
       <StyledNoContent
-        title='검색 결과가 없습니다'
-        buttonText='챌린지 생성하기'
-        // TODO: 메인의 단체 챌린지로 라우팅 (페이지의 섹션을 나눠서 딱 챌린지 쪽으로 포커스 가게 만들기)
-        clickHandler={() => {}}
+        title={title}
+        buttonText='챌린지 참여하기'
+        clickHandler={() => {
+          router.push(URL.MAIN.INDEX.value)
+        }}
       />
     )
   } else {

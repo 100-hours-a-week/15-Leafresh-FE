@@ -130,6 +130,7 @@ const ThumbnailWrapper = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: ${theme.radius.base};
+  overflow: hidden;
 `
 
 const Thumbnail = styled(Image)`
@@ -139,19 +140,18 @@ const Thumbnail = styled(Image)`
 `
 
 const TextContent = styled.div`
-  padding: 10px 0;
   display: flex;
   flex-direction: column;
 `
 
 const Title = styled.h3`
   margin: 12px 0 6px 0;
-  font-size: ${theme.fontSize.md};
+  font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semiBold};
 `
 
 const Description = styled.p`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.base};
   color: ${theme.colors.lfBlack.base};
   margin-top: 4px;
 `
@@ -174,14 +174,14 @@ const LeafIcon = styled(Image)`
 `
 
 const StockNotice = styled.div<{ isSoldOut: boolean }>`
-  font-size: ${theme.fontSize.xs};
+  font-size: ${theme.fontSize.sm};
   color: ${({ isSoldOut }) => (isSoldOut ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
 
   margin-top: 8px;
 `
 
 const BuyButton = styled.button`
-  margin-top: 12px;
+  margin-top: 8px;
   width: 100%;
   height: 44px;
   background: ${theme.colors.lfWhite.base};

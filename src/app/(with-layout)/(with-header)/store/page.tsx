@@ -1,4 +1,4 @@
-import { dehydrate } from '@tanstack/react-query'
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getProducts, ProductsResponse } from '@features/store/api/get-products'
 import { getTimeDealProducts } from '@features/store/api/get-timedeals'
@@ -44,9 +44,9 @@ const Page = async () => {
     const dehydratedState = dehydrate(queryClient)
 
     return (
-      // <HydrationBoundary state={dehydratedState}>
-      <StorePage />
-      // </HydrationBoundary>
+      <HydrationBoundary state={dehydratedState}>
+        <StorePage />
+      </HydrationBoundary>
     )
   } catch (err) {
     console.error('[SSR] 그룹 챌린지 상세 데이터 로드 실패:', err)

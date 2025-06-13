@@ -24,8 +24,6 @@ const MainPage = (): ReactNode => {
     ...QUERY_OPTIONS.CHALLENGE.GROUP.CATEGORIES,
   })
 
-  console.log('categoiresData: ', categoriesData)
-
   const { data: eventData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.EVENT.LIST,
     queryFn: getEventChallengeList,
@@ -41,9 +39,6 @@ const MainPage = (): ReactNode => {
   const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
   const eventChallenges: EventChallenge[] = eventData?.data.eventChallenges ?? []
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
-
-  console.log('categoriesData: ', categoriesData)
-  console.log('categories: ', categories)
 
   return (
     <Container>
