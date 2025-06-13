@@ -1,11 +1,5 @@
-import { HttpMethod } from '@shared/constants/http'
+import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-
-// 자유 텍스트 기반 챌린지 추천 요청 엔드포인트
-export const FREETEXT_RECOMMENDATION_ENDPOINT = {
-  method: HttpMethod.POST,
-  path: '/api/chatbot/recommendation/free-text',
-}
 
 /**
  * 자유 텍스트 기반 챌린지 추천 요청 DTO
@@ -40,5 +34,5 @@ export const requestFreetextBasedRecommendation = (body: FreetextRecommendationR
     })
   }
 
-  return fetchRequest(FREETEXT_RECOMMENDATION_ENDPOINT, { body })
+  return fetchRequest(ENDPOINTS.CHATBOT.CHATTING, { body })
 }

@@ -1,43 +1,30 @@
-import { HttpMethod } from '@shared/constants/http'
+import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-
-// 카테고리 기반 챌린지 추천 요청 엔드포인트
-export const CATEGORY_RECOMMENDATION_ENDPOINT = {
-  method: HttpMethod.POST,
-  path: '/api/chatbot/recommendation/base-info',
-}
 
 /**
  * 카테고리 기반 챌린지 추천 요청 DTO
  */
-export interface CategoryRecommendationRequestDTO {
+export type CategoryRecommendationRequestDTO = {
   sessionId: string
-  /** 위치 정보 (필수) */
-  location: string
-  /** 업무 타입 (필수) */
-  workType: string
-  /** 카테고리 (필수) */
-  category: string
+  location: string /** 위치 정보 (필수) */
+  workType: string /** 업무 타입 (필수) *=/
+  category: string /** 카테고리 (필수) */
 }
 
 /**
  * 챌린지 정보 타입
  */
-export interface ChallengeDTO {
-  /** 챌린지 제목 */
-  title: string
-  /** 챌린지 설명 */
-  description: string
+export type ChallengeDTO = {
+  title: string /** 챌린지 제목 */
+  description: string /** 챌린지 설명 */
 }
 
 /**
  * 챌린지 추천 응답 데이터 타입
  */
-export interface RecommendationResponseDataDTO {
-  /** 추천 설명 */
-  recommend: string
-  /** 추천된 챌린지 목록 */
-  challenges: ChallengeDTO[]
+export type RecommendationResponseDataDTO = {
+  recommend: string /** 추천 설명 */
+  challenges: ChallengeDTO[] /** 추천된 챌린지 목록 */
 }
 
 /**
@@ -51,5 +38,5 @@ export interface RecommendationResponseDataDTO {
  * @throws 502 - AI 서버 연결 실패 ("AI 서버로부터 추천 결과를 받아오는 데 실패했습니다.")
  */
 export const requestCategoryBasedRecommendation = (body: CategoryRecommendationRequestDTO) => {
-  return fetchRequest(CATEGORY_RECOMMENDATION_ENDPOINT, { body })
+  return fetchRequest(ENDPOINTS.CHATBOT.CATEGORY, { body })
 }
