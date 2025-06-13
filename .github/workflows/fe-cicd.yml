@@ -66,12 +66,9 @@ jobs:
         run: pnpm run lint
       - name: Run Unit Test
         run: |
-          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env.
+          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
           echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-          echo "${{  secrets.ENV_FE_LOCAL  }}" >> .env.local
-          echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
-          echo "${{  secrets.ENV_FE_DEV  }}" >> .env.development
-          
+
           pnpm run test
 
   integration-test:
@@ -105,13 +102,11 @@ jobs:
         run: pnpm run build
       - name: Start Next.js app for testing
         run: |
-          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env.
-          echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-          echo "${{  secrets.ENV_FE_LOCAL  }}" >> .env.local
-          echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
-          echo "${{  secrets.ENV_FE_DEV  }}" >> .env.development
+          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
+          echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
           
           pnpm run start &
+          
       - name: Wait for App to Start (Health Check)
         run: sleep 20
       - name: Run Playwright Tests (${{ matrix.browser }})
@@ -188,12 +183,9 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/frontend/app
-            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env.
-            echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-            echo "${{  secrets.ENV_FE_LOCAL  }}" >> .env.local
-            echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
-            echo "${{  secrets.ENV_FE_DEV  }}" >> .env.development
-            
+            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
+            echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
+
             IMAGE="jchanho99/frontend-develop:latest"
             cd /home/ubuntu/frontend
             sudo docker compose down --rmi all
@@ -258,6 +250,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
+            # dir 추가 필요
+            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
+            echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+
+
+
+          
             set -e # 오류 발생 시 즉시 스크립트 중단
             VERSION="${{ github.ref }}"             # ex: refs/tags/v2.0.6
             VERSION="${VERSION#refs/tags/}"         # remove prefix
