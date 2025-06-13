@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import { Badge } from '@features/member/api/profile/get-recent-badge'
+import { Badge } from '@entities/member/api/profile/badge/get-recent-badge-list'
 import { theme } from '@shared/styles/theme'
 
 import styled from '@emotion/styled'

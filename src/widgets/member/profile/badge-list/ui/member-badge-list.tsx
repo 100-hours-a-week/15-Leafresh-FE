@@ -1,7 +1,7 @@
 'use client'
 
+import { BadgeData, getBadgeList } from '@entities/member/api/profile/badge/get-badge-list'
 import { badgeCategory } from '@entities/member/constant'
-import { BadgeData, getBadgeList } from '@features/member/api/profile/get-badge'
 import BadgeTab from '@features/member/components/member/profile/badge/BadgeTab'
 import Loading from '@shared/components/loading'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

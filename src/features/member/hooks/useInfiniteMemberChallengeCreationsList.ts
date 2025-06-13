@@ -5,7 +5,7 @@ import { ApiResponse } from '@shared/lib/api/type'
 import {
   MemberGroupChallengeCreations,
   MemberGroupChallengeCreationsResponse,
-} from '../api/challenge/get-group-creations'
+} from '../../../entities/member/api/challenge/get-group-create-list'
 
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 

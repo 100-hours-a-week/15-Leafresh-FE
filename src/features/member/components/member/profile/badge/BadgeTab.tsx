@@ -3,8 +3,8 @@
 import Image from 'next/image'
 import { useState } from 'react'
 
+import { BadgeData } from '@entities/member/api/profile/badge/get-badge-list'
 import { Category } from '@entities/member/constant'
-import { BadgeData } from '@features/member/api/profile/get-badge'
 import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
 import { theme } from '@shared/styles/theme'
 

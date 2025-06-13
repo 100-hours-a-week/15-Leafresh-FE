@@ -1,4 +1,4 @@
-import { FeedbackResponse } from '@features/member/api/profile/get-member-feedback'
+import { FeedbackResponse } from '@entities/member/api/profile/feedback/get-feedback'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher'

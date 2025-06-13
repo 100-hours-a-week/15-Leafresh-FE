@@ -3,9 +3,9 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { use, useEffect } from 'react'
 
+import { LoginCallback } from '@entities/member/api/oauth-callback'
 import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
 import { LowercaseOAuthType } from '@entities/member/type'
-import { LoginCallback } from '@features/member/api/oauth-callback'
 import Loading from '@shared/components/loading'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

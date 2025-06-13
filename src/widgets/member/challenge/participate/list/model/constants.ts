@@ -1,4 +1,4 @@
-import { ChallengeStatus } from '@entities/member/api/group-participant'
+import { ChallengeStatus } from '@entities/member/api/challenge/participate/group-participant-list'
 
 export const statusMap: Record<number, ChallengeStatus> = {
   0: 'not_started',

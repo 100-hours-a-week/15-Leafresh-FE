@@ -3,7 +3,11 @@
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ApiResponse } from '@shared/lib/api/type'
 
-import { getMemberAlarmList, MemberAlarmList, MemberAlarmListParams } from '../api/get-alarm'
+import {
+  getMemberAlarmList,
+  MemberAlarmList,
+  MemberAlarmListParams,
+} from '../../../entities/member/api/challenge/alarm/get-alarm-list'
 
 import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
