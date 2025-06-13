@@ -16,8 +16,8 @@ const WithHeaderLayout = ({
 }>) => {
   return (
     <>
+      <Header padding={WIDTH_PADDING} />
       <ContentsWrapper>
-        <Header padding={WIDTH_PADDING} />
         <Main>{children}</Main>
       </ContentsWrapper>
       <Chatbot />
