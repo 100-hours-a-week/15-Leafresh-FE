@@ -1,1 +1,1 @@
-export * from './details/ui/challenge-personal-details'
+export * from '../../../../shared/constants/details/ui/challenge-personal-details'
