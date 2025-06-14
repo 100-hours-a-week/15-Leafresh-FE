@@ -73,7 +73,7 @@ const MemberAlarmList = () => {
             </AlarmCard>
           ))
         ) : (
-          <NoAlarmText>도착한 알림이 없습니다!</NoAlarmText>
+          <NoAlarmText>아직 도착한 알림이 없습니다!</NoAlarmText>
         )}
       </AlarmList>
       <Observer ref={triggerRef}>{isFetchingNextPage && '단체 챌린지 불러오는 중...'}</Observer>
@@ -160,11 +160,14 @@ const Observer = styled.div`
 `
 
 const NoAlarmText = styled.div`
-  position: fixed;
+  width: 100%;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfRed.base};
+  color: ${theme.colors.lfBlack.base};
+
+  text-align: center;
 `

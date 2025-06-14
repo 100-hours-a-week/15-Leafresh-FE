@@ -77,6 +77,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         const headers: OrderProductHeaders = {
           'Idempotency-Key': IdempotencyKey,
         }
+
         return PurchaseMutate(
           { productId: id, headers, body },
           {
