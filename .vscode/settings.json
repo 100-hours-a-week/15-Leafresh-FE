@@ -1,0 +1,28 @@
+{
+  "folder-color.pathColors": [
+    {
+      "folderPath": "leafresh-fe/src/entities/",
+      "badge": "🟡"
+    },
+    {
+      "folderPath": "leafresh-fe/src/widgets/",
+      "badge": "🔴"
+    },
+    {
+      "folderPath": "leafresh-fe/src/features/",
+      "badge": "🟠"
+    },
+    {
+      "folderPath": "leafresh-fe/src/shared/",
+      "badge": "✅"
+    },
+    {
+      "folderPath": "leafresh-fe/src/app/",
+      "badge": "⚪"
+    },
+    {
+      "folderPath": "leafresh-fe/tests/",
+      "badge": "🧪"
+    }
+  ]
+}

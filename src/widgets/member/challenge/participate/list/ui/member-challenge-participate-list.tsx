@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
-import type { ParticipantChallengeItem } from '@entities/member/api/challenge/participate/group-participant-list'
+import type { ParticipantChallengeItem } from '@entities/member/api/challenge/participate/get-group-participant-list'
 import ChallengeCard from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCard'
 import CardList from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCardList'
 import { useGroupParticipationsCount } from '@features/challenge/hook/useGroupParticipationsCount'

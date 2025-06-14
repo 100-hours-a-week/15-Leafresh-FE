@@ -4,7 +4,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import {
   getGroupChallengeParticipateList,
   GroupChallengeParticipateListParams,
-} from '../../../entities/challenge/api/group/verification/get-group-verification-list'
+} from '../../../../../entities/challenge/api/group/verification/get-group-verification-list'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
 

@@ -1,2 +1,2 @@
-export * from './group-participant-count'
-export * from './group-participant-list'
+export * from './get-group-participant-count'
+export * from './get-group-participant-list'
