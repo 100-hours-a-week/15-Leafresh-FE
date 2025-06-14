@@ -2,7 +2,7 @@
 
 import { BadgeData, getBadgeList } from '@entities/member/api/profile/badge/get-badge-list'
 import { badgeCategory } from '@entities/member/constant'
-import BadgeTab from '@features/member/components/member/profile/badge/BadgeTab'
+import BadgeTab from '@features/member/components/badge-tab/ui/badge-tab'
 import Loading from '@shared/components/loading'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
