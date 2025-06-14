@@ -15,7 +15,7 @@ import * as S from './styles'
 
 import { sendGAEvent } from '@next/third-parties/google'
 
-const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepProps) => {
+export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepProps) => {
   const {
     register,
     control,
@@ -182,5 +182,3 @@ const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepProps) => 
     </S.Form>
   )
 }
-
-export default MetaDataStep

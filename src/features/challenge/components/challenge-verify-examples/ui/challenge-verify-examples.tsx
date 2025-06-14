@@ -9,7 +9,7 @@ import VerificationImageInput from '../../verification-image-input/ui/verificati
 import { ChallengeVerifyExamplesProps, VerificationImageData } from '../model/types'
 import * as S from './styles'
 
-const ChallengeVerifyExamples = ({
+export const ChallengeVerifyExamples = ({
   title,
   description,
   maxCount,
@@ -163,5 +163,3 @@ const ChallengeVerifyExamples = ({
     </S.Wrapper>
   )
 }
-
-export default ChallengeVerifyExamples

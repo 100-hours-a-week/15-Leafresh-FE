@@ -27,7 +27,7 @@ import InActiveLikeIcon from '@public/icon/like_inactive.svg'
 import { VerificationCardProps } from '../model/types'
 import * as S from './stlyes'
 
-const VerificationCard = ({ challengeId, verificationData, className }: VerificationCardProps): ReactNode => {
+export const VerificationCard = ({ challengeId, verificationData, className }: VerificationCardProps): ReactNode => {
   const router = useRouter()
   const openToast = useToast()
   const { openConfirmModal } = useConfirmModalStore()
@@ -140,5 +140,3 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
     </S.Wrapper>
   )
 }
-
-export default VerificationCard

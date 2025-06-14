@@ -10,7 +10,7 @@ import { CHALLENGE_DETAILS_WARNINGS } from '../model/consts'
 import { DetailsStepProps } from '../model/types'
 import * as S from './styles'
 
-const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdit }: DetailsStepProps) => {
+export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdit }: DetailsStepProps) => {
   const {
     register,
     setValue,
@@ -97,5 +97,3 @@ const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdit }: De
     </S.Container>
   )
 }
-
-export default DetailStep

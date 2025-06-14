@@ -30,7 +30,7 @@ const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.Rea
   },
 }
 
-const VerificationImageInput = ({
+export const VerificationImageInput = ({
   label,
   description,
   status,
@@ -69,5 +69,3 @@ const VerificationImageInput = ({
     </S.Container>
   )
 }
-
-export default VerificationImageInput

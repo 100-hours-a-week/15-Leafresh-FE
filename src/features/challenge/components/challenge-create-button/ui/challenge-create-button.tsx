@@ -8,7 +8,7 @@ import { ButtonIcon, Container } from './styles'
 
 import { sendGAEvent } from '@next/third-parties/google'
 
-const ChallengeCreateButton = () => {
+export const ChallengeCreateButton = () => {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -25,5 +25,3 @@ const ChallengeCreateButton = () => {
     </Container>
   )
 }
-
-export default ChallengeCreateButton

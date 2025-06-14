@@ -7,7 +7,7 @@ import { SLIDES_PER_PAGE } from '../model/consts'
 import { ChallengeVerifyCarouselProps } from '../model/types'
 import * as S from './styles'
 
-const ChallengeVerifyCarousel = ({ images, className }: ChallengeVerifyCarouselProps) => {
+export const ChallengeVerifyCarousel = ({ images, className }: ChallengeVerifyCarouselProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     slidesToScroll: SLIDES_PER_PAGE,
     containScroll: 'trimSnaps',
@@ -44,5 +44,3 @@ const ChallengeVerifyCarousel = ({ images, className }: ChallengeVerifyCarouselP
     </S.Wrapper>
   )
 }
-
-export default ChallengeVerifyCarousel

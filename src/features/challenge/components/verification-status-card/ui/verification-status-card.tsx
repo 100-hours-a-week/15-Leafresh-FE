@@ -25,7 +25,7 @@ const statusMap: Record<VerificationStatus, StatusConfig> = {
   },
 }
 
-const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({ day, imageUrl, status }) => {
+export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({ day, imageUrl, status }) => {
   const { barColor, iconName, iconColorKey } = statusMap[status]
 
   return (
@@ -40,5 +40,3 @@ const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({ day, im
     </S.Card>
   )
 }
-
-export default VerificationStatusCard

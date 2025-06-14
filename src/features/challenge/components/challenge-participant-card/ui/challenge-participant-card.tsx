@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { ChallengeProps } from '../model/types'
 import * as S from './styles'
 
-const GroupChallengeParticipantCard = ({
+export const GroupChallengeParticipantCard = ({
   className,
   imageUrl = '',
   title,
@@ -55,5 +55,3 @@ const GroupChallengeParticipantCard = ({
     </S.CardContainer>
   )
 }
-
-export default GroupChallengeParticipantCard

@@ -4,7 +4,7 @@ import {
   PostGroupVerificationBody,
   PostGroupVerificationResponse,
 } from '@entities/challenge/api/group/verification/create-group-verification'
-import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
+import { VerificationCarousel } from '@features/challenge/components'
 import { useGroupVerificationResult } from '@features/challenge/hook/useGroupVerification'
 import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'

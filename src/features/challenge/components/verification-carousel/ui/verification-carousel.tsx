@@ -3,13 +3,13 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from 'react'
 
-import VerificationStatusCard from '../../verification-status-card/ui/verification-status-card'
+import { VerificationStatusCard } from '../../verification-status-card'
 import { carousel_options } from '../model/consts'
 import { chunkArray } from '../model/lib'
 import { VerificationCarouselProps } from '../model/types'
 import * as S from './styles'
 
-const VerificationCarousel = ({ verifications }: VerificationCarouselProps) => {
+export const VerificationCarousel = ({ verifications }: VerificationCarouselProps) => {
   // Fix 1: Use the correct type for containScroll ('trimSnaps' is a valid value but needs to be properly typed)
   // dragFree를 false로 설정하여 스와이프당 한 슬라이드만 이동하게 함
   // skipSnaps를 false로 설정하여 중간 스냅 지점을 건너뛰지 않도록 함
@@ -90,5 +90,3 @@ const VerificationCarousel = ({ verifications }: VerificationCarouselProps) => {
     </div>
   )
 }
-
-export default VerificationCarousel
