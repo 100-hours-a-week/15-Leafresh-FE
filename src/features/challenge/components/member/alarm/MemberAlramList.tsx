@@ -36,8 +36,7 @@ const MemberAlarmList = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
   const { mutate: ReadAlarmMutate } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
 
-  // const alarms = data?.pages.flatMap(page => page?.data?.notifications || []) ?? []
-  const alarms = []
+  const alarms = data?.pages.flatMap(page => page?.data?.notifications || []) ?? []
   const triggerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
