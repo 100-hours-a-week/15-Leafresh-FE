@@ -5,7 +5,7 @@ import { treeLevelMap } from '@entities/member/constant'
 import { ProfileBoxProps } from '../model/types'
 import * as S from './styles'
 
-const ProfileBox = ({
+export const ProfileBox = ({
   className,
   nickName,
   profileImageUrl,
@@ -27,5 +27,3 @@ const ProfileBox = ({
     </S.Container>
   )
 }
-
-export default ProfileBox

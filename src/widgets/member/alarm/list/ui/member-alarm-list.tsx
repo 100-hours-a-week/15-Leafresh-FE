@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-import { useInfiniteMemberAlarmList } from '@features/member/api/alarm/use-alarm-list'
+import { useInfiniteMemberAlarmList } from '@features/member/api/alarm/use-get-alarm-list'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 
 import { PurchaseProduct } from '@entities/member/api/store/get-ordered-list'
-import { useInfiniteMemberStoreOrderList } from '@features/member/api/store/useInfiniteMemberStoreOrderList'
+import { useInfiniteMemberStoreOrderList } from '@features/member/api/store/use-get-ordered-list'
 import { URL } from '@shared/constants/route/route'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { ISOFormatString } from '@shared/types/date'

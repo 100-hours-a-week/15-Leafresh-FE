@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 
-import ProductList from '../../../../features/store/components/product/ProductList'
-import TimeDealList from '../../../../features/store/components/time-deal/TimeDealList'
+import { ProductList, TimeDealList } from '@features/store/components'
+
 import { TabState } from '../model/types'
 import * as S from './styles'
 

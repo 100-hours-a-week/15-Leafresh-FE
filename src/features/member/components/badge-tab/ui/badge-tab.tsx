@@ -7,7 +7,7 @@ import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
 import { BadgeTabProps } from '../model/types'
 import * as S from './styles'
 
-const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
+export const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const selectedCategory = categories[selectedIndex]?.key ?? ''
   const { openInfoModal } = useInfoModalStore()
@@ -47,5 +47,3 @@ const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
     </S.Container>
   )
 }
-
-export default BadgeTab

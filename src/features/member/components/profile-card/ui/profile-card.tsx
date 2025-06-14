@@ -6,12 +6,12 @@ import { useEffect, useRef, useState } from 'react'
 import { treeLevelMap } from '@entities/member/constant'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 
-import GuideOverlay from '../../guide-overlay/ui/guide-overlay'
+import { GuideOverlay } from '../../guide-overlay'
 import { DRAG_THRESHOLD } from '../model/consts'
 import { ProfileCardProps } from '../model/types'
 import * as S from './styles'
 
-const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
+export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null)
   const startX = useRef(0)
   const startY = useRef(0)
@@ -227,5 +227,3 @@ const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
     </S.Wrapper>
   )
 }
-
-export default ProfileCard

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { GuideOverlayProps } from '../model/types'
 import * as S from './styles'
 
-const GuideOverlay = ({ visible }: GuideOverlayProps) => {
+export const GuideOverlay = ({ visible }: GuideOverlayProps) => {
   const [shouldRender, setShouldRender] = useState(true)
 
   useEffect(() => {
@@ -33,5 +33,3 @@ const GuideOverlay = ({ visible }: GuideOverlayProps) => {
     </S.Overlay>
   )
 }
-
-export default GuideOverlay

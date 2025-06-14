@@ -21,17 +21,11 @@ import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { formatSecondToTime } from '@shared/lib/date/utils'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
 
-import styled from '@emotion/styled'
+import { OngoingTimeDealCardProps } from '../model/types'
+import * as S from './styles'
 
-interface Props {
-  data: TimeDealProduct[]
-  className?: string
-}
-
-const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
+export const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): ReactNode => {
   const router = useRouter()
   const openToast = useToast()
   const { isLoggedIn } = useAuth()
@@ -130,23 +124,23 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
   } else {
     /** 타임딜 상품이 있는 경우 */
     timeDealContents = (
-      <CarouselWrapper>
+      <S.CarouselWrapper>
         {canScrollPrev && (
-          <LeftButton onClick={() => emblaApi?.scrollPrev()}>
+          <S.LeftButton onClick={() => emblaApi?.scrollPrev()}>
             <LucideIcon name='ChevronLeft' size={24} />
-          </LeftButton>
+          </S.LeftButton>
         )}
 
-        <Embla ref={emblaRef}>
-          <EmblaTrack>
+        <S.Embla ref={emblaRef}>
+          <S.EmblaTrack>
             {data.map((deal, index) => {
               const remainingSec = remainingTimes[index] ?? 0
               const formatted = remainingSec !== 0 ? formatSecondToTime(remainingSec) : '마감되었습니다!' // 00:00:00 형식
               const isRunningOut = remainingSec <= 300
               const isSoldOut = deal.stock <= 0
               return (
-                <EmblaSlide key={deal.productId}>
-                  <Timer isRunningOut={isRunningOut}>
+                <S.EmblaSlide key={deal.productId}>
+                  <S.Timer isRunningOut={isRunningOut}>
                     <LucideIcon
                       name='Hourglass'
                       size={18}
@@ -154,205 +148,46 @@ const OngoingTimeDealCard = ({ data, className }: Props): ReactNode => {
                       color={isRunningOut ? 'lfRed' : 'lfBlack'}
                     />
                     {formatted}
-                  </Timer>
-                  <Card>
-                    <ImageBox>
+                  </S.Timer>
+                  <S.Card>
+                    <S.ImageBox>
                       <Image src={deal.imageUrl} alt={deal.title} fill style={{ objectFit: 'cover' }} />
-                    </ImageBox>
-                    <DescriptionSection>
-                      <Title>{deal.title}</Title>
-                      <Description>{deal.description}</Description>
-                      <PriceRow>
-                        <Discount>{deal.discountedPercentage}%</Discount>
-                        <Price>
+                    </S.ImageBox>
+                    <S.DescriptionSection>
+                      <S.Title>{deal.title}</S.Title>
+                      <S.Description>{deal.description}</S.Description>
+                      <S.PriceRow>
+                        <S.Discount>{deal.discountedPercentage}%</S.Discount>
+                        <S.Price>
                           <Image src='/icon/leaf.png' alt='leaf' width={18} height={18} /> {deal.discountedPrice}
-                        </Price>
-                        <Origin>{deal.defaultPrice}</Origin>
-                      </PriceRow>
-                      <Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${deal.stock}개`}</Stock>
-                      <BuyButton onClick={() => handlePurchase(deal)}>구매하기</BuyButton>
-                    </DescriptionSection>
-                  </Card>
-                </EmblaSlide>
+                        </S.Price>
+                        <S.Origin>{deal.defaultPrice}</S.Origin>
+                      </S.PriceRow>
+                      <S.Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${deal.stock}개`}</S.Stock>
+                      <S.BuyButton onClick={() => handlePurchase(deal)}>구매하기</S.BuyButton>
+                    </S.DescriptionSection>
+                  </S.Card>
+                </S.EmblaSlide>
               )
             })}
-          </EmblaTrack>
-        </Embla>
+          </S.EmblaTrack>
+        </S.Embla>
 
         {canScrollNext && (
-          <RightButton onClick={() => emblaApi?.scrollNext()}>
+          <S.RightButton onClick={() => emblaApi?.scrollNext()}>
             <LucideIcon name='ChevronRight' size={24} />
-          </RightButton>
+          </S.RightButton>
         )}
-      </CarouselWrapper>
+      </S.CarouselWrapper>
     )
   }
   return (
-    <Container className={className}>
-      <TitleBox>
-        <SectionTitle>🔥 지금만 이 가격</SectionTitle>
-        <SubText>세상은 1등만 기억해!</SubText>
-      </TitleBox>
+    <S.Container className={className}>
+      <S.TitleBox>
+        <S.SectionTitle>🔥 지금만 이 가격</S.SectionTitle>
+        <S.SubText>세상은 1등만 기억해!</S.SubText>
+      </S.TitleBox>
       {timeDealContents}
-    </Container>
+    </S.Container>
   )
 }
-
-export default OngoingTimeDealCard
-
-const Container = styled.section`
-  margin: 20px 0;
-  width: 100%;
-  position: relative;
-  cursor: pointer;
-`
-const TitleBox = styled.div`
-  margin-bottom: 12px;
-`
-
-const SectionTitle = styled.h2`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-`
-
-const SubText = styled.p`
-  margin: 8px 0px;
-  color: ${theme.colors.lfDarkGray.base};
-  font-size: ${theme.fontSize.sm};
-
-  ${media.afterMobile} {
-    font-size: ${theme.fontSize.base};
-  }
-`
-
-const CarouselWrapper = styled.div`
-  width: 100%;
-
-  position: relative;
-`
-const Embla = styled.div`
-  padding: 6px 0;
-  overflow: hidden;
-`
-const EmblaTrack = styled.div`
-  display: flex;
-`
-const EmblaSlide = styled.div`
-  flex: 0 0 100%;
-  padding: 0 12px;
-  box-sizing: border-box;
-`
-const Card = styled.div`
-  background: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  box-shadow: ${theme.shadow.lfInput};
-  overflow: hidden;
-`
-
-const Timer = styled.div<{ isRunningOut: boolean }>`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
-  margin: 4px 0;
-  color: ${({ isRunningOut }) => (isRunningOut ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`
-const ImageBox = styled.div`
-  position: relative;
-  aspect-ratio: 2/1;
-`
-const DescriptionSection = styled.div`
-  padding: 10px 14px;
-`
-
-const Title = styled.h3`
-  padding: 4px 0;
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.bold};
-
-  ${media.afterMobile} {
-    font-size: ${theme.fontSize.lg};
-  }
-`
-
-const Description = styled.p`
-  font-size: ${theme.fontSize.sm};
-  margin: 8px 0;
-
-  ${media.afterMobile} {
-    font-size: ${theme.fontSize.base};
-    margin: 12px 0;
-  }
-`
-
-const PriceRow = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 16px;
-  gap: 12px;
-`
-
-const Discount = styled.span`
-  color: #ff7043;
-  font-weight: ${theme.fontWeight.bold};
-`
-
-const Price = styled.span`
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  display: flex;
-  align-items: center;
-  gap: 3px;
-`
-
-const Origin = styled.del`
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfGray.base};
-`
-
-const Stock = styled.div<{ soldout: boolean }>`
-  margin: 8px 0;
-  font-size: ${theme.fontSize.sm};
-  color: ${({ soldout }) => (soldout ? theme.colors.lfRed.base : theme.colors.lfDarkGray.base)};
-`
-const BuyButton = styled.button`
-  margin-top: 12px;
-  width: 100%;
-  height: 44px;
-  background: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
-
-  cursor: pointer;
-`
-
-const MoveButton = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.full};
-  box-shadow: ${theme.shadow.lfInput};
-  width: 36px;
-  height: 36px;
-  z-index: 10;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${theme.colors.lfInputBackground.base};
-  }
-`
-
-const LeftButton = styled(MoveButton)`
-  left: 0;
-`
-const RightButton = styled(LeftButton)`
-  left: auto;
-  right: 0;
-`

@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { RecentBadgeBoxProps } from '../model/types'
 import * as S from './styles'
 
-const RecentBadgeBox = ({ className, badges }: RecentBadgeBoxProps): ReactNode => {
+export const RecentBadgeBox = ({ className, badges }: RecentBadgeBoxProps): ReactNode => {
   return (
     <S.Container>
       <S.TitleWrapper>
@@ -24,5 +24,3 @@ const RecentBadgeBox = ({ className, badges }: RecentBadgeBoxProps): ReactNode =
     </S.Container>
   )
 }
-
-export default RecentBadgeBox

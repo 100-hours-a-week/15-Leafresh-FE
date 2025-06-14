@@ -4,14 +4,14 @@ import { ReactNode } from 'react'
 
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { ISOFormatString } from '@shared/types/date'
 
-import { getTimeDealProducts, TimeDealProduct } from '../../../../entities/store/api/timedeal/get-timedeal-list'
-import OngoingTimeDealCard from './OngoingTimeDealCard'
-import UpcomingTimeDealCard from './UpcomingTimeDealCard'
+import { getTimeDealProducts, TimeDealProduct } from '../../../../../entities/store/api/timedeal/get-timedeal-list'
+import { OngoingTimeDealCard } from '../../ongoing-timedeal-card'
+import { UpcomingTimeDealCard } from '../../upcoming-timedeal-card'
+import { TimeDealListProps } from '../model/types'
+import * as S from './styles'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 // const dummyTimeDealProducts: TimeDealProduct[] = []
@@ -103,11 +103,7 @@ const dummyTimeDealProducts: TimeDealProduct[] = [
   },
 ]
 
-interface TimeDealListProps {
-  className?: string
-}
-
-const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
+export const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
   // 타임딜 상품 목록 조회
   const { data: timeDealData } = useQuery({
     queryKey: QUERY_KEYS.STORE.TIME_DEAL.LIST,
@@ -124,21 +120,9 @@ const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
   const upcoming = timeDealProducts.filter(item => item.timeDealStatus === 'UPCOMING') /** 다가오는 타임딜 상품 */
 
   return (
-    <Container className={className}>
+    <S.Container className={className}>
       <OngoingTimeDealCard data={ongoing} />
       <UpcomingTimeDealCard data={upcoming} />
-    </Container>
+    </S.Container>
   )
 }
-
-export default TimeDealList
-
-const Container = styled.div`
-  ${responsiveHorizontalPadding};
-
-  /* padding-bottom: 40px; */
-
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`
