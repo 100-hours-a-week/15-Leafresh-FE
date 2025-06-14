@@ -1,83 +1,11 @@
-'use client'
-
-import Autoplay from 'embla-carousel-autoplay'
-import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
 
-import { EventChallenge } from '@entities/challenge/api/event/get-event-list'
-import { URL } from '@shared/constants/route/route'
 import { media } from '@shared/styles/emotion/media'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
 
-interface EventSectionProps {
-  eventChallenges: EventChallenge[]
-  className?: string
-}
-
-export const EventSection = ({ eventChallenges, className }: EventSectionProps): ReactNode => {
-  const router = useRouter()
-  const [selectedIndex, setSelectedIndex] = useState<number>(0)
-
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-    },
-    [Autoplay({ delay: 4000, stopOnInteraction: false })],
-  )
-
-  useEffect(() => {
-    if (!emblaApi) return
-
-    const onSelect = () => {
-      setSelectedIndex(emblaApi.selectedScrollSnap())
-    }
-
-    emblaApi.on('select', onSelect)
-    onSelect()
-  }, [emblaApi])
-
-  const handleClickCard = (ch: EventChallenge) => {
-    sendGAEvent('event', 'event-card', { challengeId: ch.id }) // GA: 로그 수집
-
-    router.push(URL.CHALLENGE.GROUP.DETAILS.value(ch.id))
-  }
-
-  return (
-    <Section>
-      <CarouselWrapper ref={emblaRef}>
-        <CarouselInner>
-          {eventChallenges.length !== 0 ? (
-            eventChallenges.map(ch => (
-              <EventCard key={ch.id} onClick={() => handleClickCard(ch)}>
-                <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
-                <EventGradientOverlay />
-                <EventTitleOverlay>{ch.title}</EventTitleOverlay>
-                <Badge className='badge'>이벤트 챌린지</Badge>
-              </EventCard>
-            ))
-          ) : (
-            <NoneContent>진행중인 이벤트 챌린지가 없습니다 !</NoneContent>
-          )}
-        </CarouselInner>
-
-        {eventChallenges.length > 0 && (
-          <CarouselIndicator>
-            {selectedIndex + 1} / {eventChallenges.length}
-          </CarouselIndicator>
-        )}
-      </CarouselWrapper>
-    </Section>
-  )
-}
-
-// === Styles ===
-
-const Section = styled.section`
+export const Section = styled.section`
   ${responsiveHorizontalPadding};
 
   display: flex;
@@ -90,7 +18,7 @@ const Section = styled.section`
   }
 `
 
-const Badge = styled.div`
+export const Badge = styled.div`
   position: absolute;
   right: 16px;
   top: 16px;
@@ -106,7 +34,7 @@ const Badge = styled.div`
   z-index: 10;
 `
 
-const CarouselWrapper = styled.div`
+export const CarouselWrapper = styled.div`
   width: 100%;
   /* height: 160px; */
   aspect-ratio: 5/3;
@@ -115,13 +43,13 @@ const CarouselWrapper = styled.div`
   overflow: hidden;
 `
 
-const CarouselInner = styled.div`
+export const CarouselInner = styled.div`
   width: 100%;
   height: 100%;
 
   display: flex;
 `
-const EventCard = styled.div`
+export const EventCard = styled.div`
   margin-right: 8px;
   flex: 0 0 100%;
   height: 100%;
@@ -138,14 +66,14 @@ const EventCard = styled.div`
   cursor: pointer;
 `
 
-const EventImage = styled(Image)`
+export const EventImage = styled(Image)`
   position: absolute;
   top: 0;
   object-fit: cover;
   object-position: center center;
   border-radius: ${({ theme }) => theme.radius.base};
 `
-const EventGradientOverlay = styled.div`
+export const EventGradientOverlay = styled.div`
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -153,7 +81,7 @@ const EventGradientOverlay = styled.div`
   border-radius: ${({ theme }) => theme.radius.base};
 `
 
-const EventTitleOverlay = styled.div`
+export const EventTitleOverlay = styled.div`
   position: absolute;
   inset: 0;
   z-index: 2;
@@ -168,7 +96,7 @@ const EventTitleOverlay = styled.div`
   pointer-events: none;
 `
 
-const NoneContent = styled.div`
+export const NoneContent = styled.div`
   width: 100%;
 
   display: flex;
@@ -183,7 +111,7 @@ const NoneContent = styled.div`
   }
 `
 
-const CarouselIndicator = styled.div`
+export const CarouselIndicator = styled.div`
   position: absolute;
   bottom: 8px;
   right: 12px;
