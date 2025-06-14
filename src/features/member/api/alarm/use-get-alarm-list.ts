@@ -7,7 +7,7 @@ import {
   getMemberAlarmList,
   MemberAlarmList,
   MemberAlarmListParams,
-} from '../../../entities/member/api/challenge/alarm/get-alarm-list'
+} from '../../../../entities/member/api/challenge/alarm/get-alarm-list'
 
 import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 

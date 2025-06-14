@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 /** 인증 성공 여부 */
 export const OAuth = ['KAKAO'] as const // 대문자
 export const LowercaseOAuth = OAuth.map(v => v.toLowerCase()) as Lowercase<(typeof OAuth)[number]>[] // 소문자
@@ -24,3 +26,9 @@ export const badgeCategory: Category[] = [
   { key: 'special', name: '특별' },
   { key: 'event', name: '이벤트' },
 ]
+
+export const signupSchema = z.object({
+  nickname: z.string().min(1, '닉네임을 입력해주세요.'),
+})
+
+export type SignupFormType = z.infer<typeof signupSchema>

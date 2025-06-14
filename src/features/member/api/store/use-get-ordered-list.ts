@@ -5,7 +5,7 @@ import { ApiResponse } from '@shared/lib/api/type'
 import {
   getMemberStoreOrderList,
   MemberStoreOrderListResponse,
-} from '../../../entities/member/api/store/get-ordered-list'
+} from '../../../../entities/member/api/store/get-ordered-list'
 
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
