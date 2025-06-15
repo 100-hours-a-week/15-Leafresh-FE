@@ -6,7 +6,7 @@ import { getLeafAccumulateCount } from '@entities/common/api'
 import { getVerificationAccumulateCount } from '@entities/common/api/get-accumulate-verification'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { useCountUp } from '@shared/hooks/useCountUp'
+import { useCountUp } from '@shared/hooks/use-count-up/useCountUp'
 
 import * as S from './styles'
 

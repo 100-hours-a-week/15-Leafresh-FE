@@ -4,7 +4,7 @@ import { addMonths, startOfMonth, startOfToday, subMonths } from 'date-fns'
 import { useRef, useState } from 'react'
 
 import { DayType } from '@entities/common/type'
-import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
+import { useOutsideClick } from '@shared/hooks/use-outside-click/useOutsideClick'
 
 import { CalendarDates } from '../dates'
 import { CalendarHeader } from '../header'

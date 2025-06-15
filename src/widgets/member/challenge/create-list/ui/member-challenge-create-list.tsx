@@ -10,7 +10,7 @@ import {
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/api/use-get-group-create-list'
 import Loading from '@shared/components/loading/ui/loading'
 import { URL } from '@shared/constants/route'
-import { useAuth } from '@shared/hooks/useAuth/useAuth'
+import { useAuth } from '@shared/hooks/use-auth/useAuth'
 
 import * as S from './styles'
 

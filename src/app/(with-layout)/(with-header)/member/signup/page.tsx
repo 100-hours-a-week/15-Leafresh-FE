@@ -16,7 +16,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { useToast } from '@shared/hooks/use-toast/useToast'
 import { theme } from '@shared/styles/theme'
 
 import styled from '@emotion/styled'

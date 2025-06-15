@@ -3,8 +3,8 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 import { URL } from '@shared/constants/route'
-import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
-import { useToggle } from '@shared/hooks/useToggle/useToggle'
+import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
+import { useToggle } from '@shared/hooks/use-toggle/useToggle'
 
 import { ChatWindow } from '../window'
 import * as S from './styles'

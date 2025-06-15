@@ -4,8 +4,8 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { useEffect, useRef, useState } from 'react'
 
 import { useImageZoomStore } from '@shared/context/modal/image-zoom-modal-store'
-import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import { useKeyClose } from '@shared/hooks/use-key-close/useKeyClose'
+import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 
 import * as S from './styles'
 

@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
-import { useAuth } from '@shared/hooks/useAuth/useAuth'
+import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import { NAVBAR_TABS } from '../model/consts'

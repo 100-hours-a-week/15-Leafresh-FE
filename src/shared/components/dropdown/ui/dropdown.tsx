@@ -2,9 +2,9 @@
 
 import { useRef, useState } from 'react'
 
-import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
-import { useToggle } from '@shared/hooks/useToggle/useToggle'
+import { useKeyClose } from '@shared/hooks/use-key-close/useKeyClose'
+import { useOutsideClick } from '@shared/hooks/use-outside-click/useOutsideClick'
+import { useToggle } from '@shared/hooks/use-toggle/useToggle'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import * as S from './styles'

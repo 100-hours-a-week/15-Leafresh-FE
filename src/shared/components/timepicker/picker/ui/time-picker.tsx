@@ -1,5 +1,5 @@
 'use client'
-import { useToggle } from '@shared/hooks/useToggle/useToggle'
+import { useToggle } from '@shared/hooks/use-toggle/useToggle'
 
 import { TimeDropdown } from '../../dropdown'
 import * as S from './styles'

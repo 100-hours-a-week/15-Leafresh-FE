@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
 import { treeLevelMap } from '@entities/member/constant'
-import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 
 import { GuideOverlay } from '../../guide-overlay'
 import { DRAG_THRESHOLD } from '../model/consts'
