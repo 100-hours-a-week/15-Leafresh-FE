@@ -6,11 +6,16 @@ import { ReactNode } from 'react'
 import { PersonalChallengeType } from '@entities/challenge/api/personal/get-personal-list'
 import { URL } from '@shared/constants/route'
 
-import { PersonalChallengeSectionProps } from '../model/types'
 import * as S from './styles'
 
 import { CardDescription, CardTitle } from '@chakra-ui/react'
 import { sendGAEvent } from '@next/third-parties/google'
+
+interface PersonalChallengeSectionProps {
+  personalChallenges: PersonalChallengeType[]
+  className?: string
+}
+
 export const PersonalChallengeSection = ({
   personalChallenges,
   className,

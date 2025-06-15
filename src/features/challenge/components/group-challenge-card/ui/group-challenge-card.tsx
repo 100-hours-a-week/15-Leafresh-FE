@@ -15,7 +15,7 @@ import { DateFormatString } from '@shared/type'
 
 import * as S from './styles'
 
-type GroupChallenge = {
+export type GroupChallenge = {
   id: number
   name: string
   description: string

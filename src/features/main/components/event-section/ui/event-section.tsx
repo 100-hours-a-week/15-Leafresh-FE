@@ -8,10 +8,14 @@ import { ReactNode, useEffect, useState } from 'react'
 import { EventChallenge } from '@entities/challenge/api/event/get-event-list'
 import { URL } from '@shared/constants/route'
 
-import { EventSectionProps } from '../model/types'
 import * as S from './styles'
 
 import { sendGAEvent } from '@next/third-parties/google'
+
+interface EventSectionProps {
+  eventChallenges: EventChallenge[]
+  className?: string
+}
 
 export const EventSection = ({ eventChallenges, className }: EventSectionProps): ReactNode => {
   const router = useRouter()
