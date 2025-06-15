@@ -70,20 +70,22 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.COMMENT,
   })
 
+  // console.log(commentData)
+
   // 댓글 작성
-  const { mutate: commentMutation } = useMutationStore<CommentResponse, PostCommentVariables>(
+  const { mutate: commentMutation } = useMutationStore<CommentType, PostCommentVariables>(
     MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.CREATE,
     // mutationFn: postVerificationComment,
   )
 
   // 대댓글 작성
-  const { mutate: replyMutation } = useMutationStore<CommentResponse, PostReplyVariables>(
+  const { mutate: replyMutation } = useMutationStore<CommentType, PostReplyVariables>(
     MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.CREATE,
     // mutationFn: postVerificationReply,
   )
 
   // 댓글/대댓글 수정
-  const { mutate: updateMutation } = useMutationStore<CommentResponse, PutCommentVariables>(
+  const { mutate: updateMutation } = useMutationStore<CommentType, PutCommentVariables>(
     MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.MODIFY,
     // mutationFn: putVerificationComment,
   )
@@ -105,13 +107,15 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
 
   const verifications: VerificationDetailResponse = verificationData?.data ?? ({} as VerificationDetailResponse)
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
-
   // const verifications: VerificationDetailResponse = verificationData?.data ?? (dummypost as VerificationDetailResponse)
   // const comments: CommentResponse = commentData?.data ?? (dummycomments as CommentResponse)
 
   const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
+  const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
   const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
-  const [localComments, setLocalComments] = useState<CommentType[]>(comments.comment ?? [])
+  const [localComments, setLocalComments] = useState<CommentType[]>(comments.comments ?? [])
+
+  console.log(userInfo)
 
   /** 좋아요 핸들러 */
   const handleLikeToggle = () => {
@@ -179,19 +183,26 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
 
     setLocalComments(prev => [...prev, optimisticComment])
 
+    const prevComment = commentCount
     commentMutation(
       {
         challengeId,
         verificationId,
-        body: { comment: content },
+        body: { content: content },
       },
       {
+        onSuccess: response => {
+          const realId = response.data.id
+
+          setCommentCount(prevComment + 1)
+
+          setLocalComments(prev => prev.map(comment => (comment.id === tempId ? { ...comment, id: realId } : comment)))
+        },
         onError: () => {
-          // 롤백
-          setLocalComments(prev)
+          setLocalComments(prev) // rollback
+          setCommentCount(prevComment)
           openToast(ToastType.Error, '댓글 작성에 실패했어요😢')
         },
-        onSuccess: () => {},
       },
     )
   }
@@ -209,6 +220,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
 
     const tempId = Date.now()
     const prev = structuredClone(localComments)
+    const prevComment = commentCount
 
     const optimisticReply = {
       id: tempId,
@@ -239,10 +251,27 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
         challengeId,
         verificationId,
         commentId: parentCommentId,
-        body: { comment: content },
+        body: { content: content },
       },
       {
+        onSuccess: response => {
+          const realId = response.data.id
+
+          setCommentCount(prevComment + 1)
+          setLocalComments(prev =>
+            prev.map(comment => {
+              if (comment.id !== parentCommentId) return comment
+
+              const updatedReplies = comment.replies?.map(reply =>
+                reply.id === tempId ? { ...reply, id: realId } : reply,
+              )
+
+              return { ...comment, replies: updatedReplies }
+            }),
+          )
+        },
         onError: () => {
+          setCommentCount(prevComment)
           setLocalComments(prev) // rollback
           openToast(ToastType.Error, '답글 작성에 실패했어요😢')
         },
@@ -273,7 +302,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
         challengeId,
         verificationId,
         commentId: id,
-        body: { comment: content },
+        body: { content: content },
       },
       {
         onError: () => {
@@ -286,37 +315,62 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
 
   //댓글/대댓글 삭제 핸들러
   const handleCommentDelete = (id: number) => {
-    const prev = structuredClone(localComments)
-    const nickname = '(알 수 없음)'
-    const content = '(삭제된 댓글입니다.)'
-    setLocalComments(prev =>
-      prev.map(comment => {
-        if (comment.id === id) {
-          return { ...comment, nickname, content, updatedAt: new Date().toISOString() as ISOFormatString }
-        }
-        return {
-          ...comment,
-          replies: comment.replies?.map(reply =>
-            reply.id === id
-              ? { ...reply, nickname, content, updatedAt: new Date().toISOString() as ISOFormatString }
-              : reply,
-          ),
-        }
-      }),
-    )
-    deleteMutation(
-      {
-        challengeId,
-        verificationId,
-        commentId: id,
+    openConfirmModal({
+      title: '댓글 삭제',
+      description: '정말 삭제하시겠습니까?',
+      onConfirm: () => {
+        const prev = structuredClone(localComments)
+        const prevComment = commentCount
+        const nickname = '(알수없음)'
+        const content = '삭제된 댓글입니다.'
+
+        setCommentCount(prevComment - 1)
+
+        setLocalComments(prev =>
+          prev.map(comment => {
+            if (comment.id === id) {
+              return {
+                ...comment,
+                nickname,
+                content,
+                deleted: true,
+                updatedAt: new Date().toISOString() as ISOFormatString,
+              }
+            }
+            return {
+              ...comment,
+              replies: comment.replies?.map(reply =>
+                reply.id === id
+                  ? {
+                      ...reply,
+                      nickname,
+                      content,
+                      deleted: true,
+                      updatedAt: new Date().toISOString() as ISOFormatString,
+                    }
+                  : reply,
+              ),
+            }
+          }),
+        )
+
+        //mutation 실행
+        deleteMutation(
+          {
+            challengeId,
+            verificationId,
+            commentId: id,
+          },
+          {
+            onError: () => {
+              setCommentCount(prevComment)
+              setLocalComments(prev) // rollback
+              openToast(ToastType.Error, '삭제에 실패했어요😢')
+            },
+          },
+        )
       },
-      {
-        onError: () => {
-          setLocalComments(prev) // rollback
-          openToast(ToastType.Error, '삭제에 실패했어요😢')
-        },
-      },
-    )
+    })
   }
 
   return (
@@ -343,7 +397,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
           </LikeButton>
           <Stat>
             <LucideIcon name='MessageCircle' size={16} strokeWidth={1.5} />
-            {verifications.counts.comment}
+            {commentCount}
           </Stat>
           <Stat onClick={handleCopyVerificationUrl}>
             <LucideIcon name='SquareArrowOutUpRight' size={16} strokeWidth={1.5} />
@@ -424,8 +478,8 @@ const ContentImage = styled.img`
 
 const Content = styled.p`
   padding: 16px 0;
-  font-size: 14px;
-  color: #333;
+  font-size: ${theme.fontSize.sm};
+  color: ${theme.colors.lfBlack.base};
 `
 
 const Stats = styled.div`
