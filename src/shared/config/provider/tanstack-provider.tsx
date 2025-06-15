@@ -10,7 +10,7 @@ interface Props {
   children: ReactNode
 }
 
-export default function TanstackQueryProvider({ children }: Props) {
+export function TanstackQueryProvider({ children }: Props) {
   return (
     <QueryClientProvider client={getQueryClient()}>
       {children}

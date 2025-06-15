@@ -2,17 +2,13 @@
 
 import { useEffect } from 'react'
 
+import { CameraModal, ConfirmModal, ImageZoomModal, InfoModal } from '@shared/components'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
 import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
 
-import CameraModal from '../../components/modal/camera-modal/ui/camera-modal'
-import ConfirmModal from '../../components/modal/confirm-modal/ui/confirm-modal'
-import ImageZoomModal from '../../components/modal/image-zoom-modal/ui/image-zoom-modal'
-import InfoModal from '../../components/modal/info-modal/ui/info-modal'
-
-const ModalProvider = () => {
+export const ModalProvider = () => {
   const { isOpen: isCameraOpen, close: closeCameraModal } = useCameraModalStore()
   const { isOpen: isConfirmOpen, closeConfirmModal } = useConfirmModalStore()
   const { isOpen: isInfoOpen, closeInfoModal } = useInfoModalStore()
@@ -40,5 +36,3 @@ const ModalProvider = () => {
     </>
   )
 }
-
-export default ModalProvider

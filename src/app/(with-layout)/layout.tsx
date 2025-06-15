@@ -1,6 +1,5 @@
 import { Toast } from '@shared/components'
-import AuthGuard from '@shared/config/providers/AuthGaurd'
-import ModalProvider from '@shared/config/providers/ModalProvider'
+import { AuthGuard, ModalProvider } from '@shared/config/provider'
 import LayoutWrapper from '@shared/styles/LayoutWrapper'
 
 const RootLayout = ({

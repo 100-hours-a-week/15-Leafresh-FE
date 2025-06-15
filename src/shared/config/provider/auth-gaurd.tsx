@@ -44,7 +44,7 @@ type UserInfoResponse = {
   treeImageUrl: string
 }
 
-const AuthGuard = ({ children }: Props) => {
+export const AuthGuard = ({ children }: Props) => {
   const pathname = usePathname()
   const router = useRouter()
   const openToast = useToast()
@@ -91,5 +91,3 @@ const AuthGuard = ({ children }: Props) => {
 
   return <>{children}</>
 }
-
-export default AuthGuard

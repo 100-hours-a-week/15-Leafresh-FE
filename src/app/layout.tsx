@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { pretendard } from '@shared/config/font'
-import { Providers } from '@shared/config/providers/Providers'
+import { Providers } from '@shared/config/provider'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
 
