@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import {
@@ -23,6 +23,8 @@ import { RecommendationResponse } from '@features/chatbot/chatbot-base-info'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { useChatHistory } from '../../../features/chatbot/hooks/useChatHistory'
 import { formatChallengeResponse } from '@shared/components/chatbot/formatChallengeResponse'
+import { useRecommendationStream } from '@features/chatbot/hooks/useStreamApi'
+import { RecommendationEvent } from '@features/chatbot/stream-api'
 
 export interface ChatFrameProps {
   step: FrameStep
@@ -40,10 +42,15 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [chatSelections, setChatSelections] = useState(() => loadSelectionsFromSession() || {})
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [selectedWorkType, setSelectedWorkType] = useState<string | null>(null)
+
+  const [streamingText, setStreamingText] = useState<string | null>(null)
+
   const [liveImage] = useState(() => getRandomLiveImage())
   const [workImage] = useState(() => getRandomWorkImage())
 
   const { history: chatHistory, addItem: addChatItem } = useChatHistory()
+  const { startCategory, startFreeText } = useRecommendationStream()
+
   //dev 모드에서 소개 2번 렌더링 방지
   const hasInitializedRef = useRef(false)
 
@@ -152,56 +159,108 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     setSelectedWorkType(value)
     updateChatSelections({ workType: value })
   }
+  const appendStream = useCallback((token: string) => {
+    setStreamingText(prev => (prev ?? '') + token)
+  }, [])
 
   // 챌린지 카테고리 선택 핸들러
-  const handleChallengeSelect = async (value: string) => {
-    if (loading) return
-    setLoading(true)
+  // const handleChallengeSelect = async (value: string) => {
+  //   if (loading) return
+  //   setLoading(true)
 
-    // 사용자 메시지 추가
-    addChatItem({ type: 'message', role: 'user', text: getDisplayLabel(value) })
-    updateChatSelections({ category: value })
+  //   // 사용자 메시지 추가
+  //   addChatItem({ type: 'message', role: 'user', text: getDisplayLabel(value) })
+  //   updateChatSelections({ category: value })
 
-    try {
-      const response = await requestCategoryBasedRecommendation({
-        sessionId: sessionId || '',
-        location: chatSelections.location || '',
-        workType: chatSelections.workType || '',
-        category: value,
-      })
-      const data = response.data as RecommendationResponse
-      const { recommend, challenges } = data
+  //   try {
+  //     const response = await requestCategoryBasedRecommendation({
+  //       sessionId: sessionId || '',
+  //       location: chatSelections.location || '',
+  //       workType: chatSelections.workType || '',
+  //       category: value,
+  //     })
+  //     const data = response.data as RecommendationResponse
+  //     const { recommend, challenges } = data
 
-      const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
+  //     const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
 
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text: responseMessage,
-        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
-        buttonText: '카테고리 재선택',
-        isAnswer: true,
-        onClick: handleRetry,
-      })
+  //     addChatItem({
+  //       type: 'message',
+  //       role: 'bot',
+  //       text: responseMessage,
+  //       subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
+  //       buttonText: '카테고리 재선택',
+  //       isAnswer: true,
+  //       onClick: handleRetry,
+  //     })
 
-      onSelect(value, 2)
-    } catch (err) {
-      const msg =
-        err && typeof err === 'object' && 'message' in err
-          ? String((err as { message: string }).message)
-          : '추천 중 오류가 발생했습니다. 다시 시도해주세요.'
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text: `죄송합니다. ${msg}`,
-        buttonText: '다시 시도',
-        isAnswer: true,
-        onClick: handleRetry,
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
+  //     onSelect(value, 2)
+  //   } catch (err) {
+  //     const msg =
+  //       err && typeof err === 'object' && 'message' in err
+  //         ? String((err as { message: string }).message)
+  //         : '추천 중 오류가 발생했습니다. 다시 시도해주세요.'
+  //     addChatItem({
+  //       type: 'message',
+  //       role: 'bot',
+  //       text: `죄송합니다. ${msg}`,
+  //       buttonText: '다시 시도',
+  //       isAnswer: true,
+  //       onClick: handleRetry,
+  //     })
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
+  const handleChallengeSelect = useCallback(
+    (category: string) => {
+      if (loading) return
+      setLoading(true)
+      addChatItem({ type: 'message', role: 'user', text: getDisplayLabel(category) })
+      updateChatSelections({ category })
+      onSelect(category, 2)
+
+      setStreamingText('')
+      startCategory(
+        sessionId!,
+        chatSelections.location ?? '',
+        chatSelections.workType ?? '',
+        category,
+        (evt: RecommendationEvent) => {
+          console.log('이벤트 수신', evt)
+          appendStream(evt.data?.token ?? '')
+        },
+        evt => {
+          addChatItem({ type: 'message', role: 'bot', text: evt.message })
+          console.log(evt)
+          // setStreamingText(null)
+          setLoading(false)
+        },
+        evt => {
+          addChatItem({ type: 'message', role: 'bot', text: `오류: ${evt.message}` })
+          setStreamingText(null)
+          // console.log(evt)
+          setLoading(false)
+        },
+        () => {
+          setStreamingText(null)
+          setLoading(false)
+        },
+      )
+    },
+    [
+      loading,
+      sessionId,
+      chatSelections.location,
+      chatSelections.workType,
+      addChatItem,
+      updateChatSelections,
+      onSelect,
+      startCategory,
+      appendStream,
+    ],
+  )
 
   // 카테고리 설명 핸들러
   const handleExplainCategory = () => {
@@ -317,7 +376,6 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       <MessagesContainer>
         {chatHistory.map((item, idx) => (
           <div key={idx}>
-            {/* 메시지 타입 */}
             {item.type === 'message' && item.role && (
               <ChatBubble
                 role={item.role}
@@ -330,21 +388,19 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
               </ChatBubble>
             )}
 
-            {/* 일반 선택지 타입 */}
             {item.type === 'selection' && item.selectionProps && (
               <SelectionWrapper>
                 <ChatSelection {...item.selectionProps} />
               </SelectionWrapper>
             )}
 
-            {/* 가로 스크롤 카드 타입 */}
             {item.type === 'horizontal-cards' && (
               <HorizontalCards visibleIndex={visibleCardIndex} renderCards={renderHorizontalCards} />
             )}
           </div>
         ))}
+        {streamingText !== null && <ChatBubble role='bot'>{streamingText}</ChatBubble>}
 
-        {/* 자동 스크롤용 ref */}
         <div ref={messagesEndRef} />
       </MessagesContainer>
 

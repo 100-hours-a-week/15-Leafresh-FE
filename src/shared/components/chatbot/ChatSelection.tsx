@@ -60,7 +60,7 @@ function ChatSelection({
 
         <OptionsGrid data-type={selectionType}>
           {options.map((opt: ChatOption) => (
-            <OptionButton key={opt.value} data-type={selectionType} onClick={() => onSelect(opt.value)}>
+            <OptionButton key={opt.value} data-type={selectionType} onClick={() => onSelect(opt.label)}>
               {opt.label}
             </OptionButton>
           ))}
