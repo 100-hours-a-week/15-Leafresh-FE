@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
-import { media } from '@shared/styles/emotion/media'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { media } from '@shared/config/style/media'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 import styled from '@emotion/styled'
 

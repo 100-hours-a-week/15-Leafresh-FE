@@ -1,7 +1,7 @@
 import { ChallengeCategoryType, ChallengeVerificationResultType } from '@entities/challenge/model'
 import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { DateFormatString, TimeFormatString } from '@shared/types/date'
+import { DateFormatString, TimeFormatString } from '@shared/type/date'
 
 export type KeepImage = {
   id: number

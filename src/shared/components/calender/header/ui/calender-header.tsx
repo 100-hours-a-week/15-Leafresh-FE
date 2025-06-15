@@ -3,7 +3,7 @@
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 
 import * as S from './styles'
 

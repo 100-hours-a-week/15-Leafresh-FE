@@ -3,7 +3,7 @@ import ChallengeCreateButton from '@features/challenge/components/challenge/Chal
 import { Navbar } from '@shared/components'
 import Chatbot from '@shared/components/chatbot/Chatbot'
 import Header from '@shared/components/header/ui/header'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
 
 import styled from '@emotion/styled'
 

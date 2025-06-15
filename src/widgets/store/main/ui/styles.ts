@@ -1,4 +1,4 @@
-import { media } from '@shared/styles/emotion/media'
+import { media } from '@shared/config/style/media'
 
 import styled from '@emotion/styled'
 

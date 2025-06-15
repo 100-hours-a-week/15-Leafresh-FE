@@ -1,5 +1,5 @@
 import NoContent from '@shared/components/no-content/ui/no-content'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 import styled from '@emotion/styled'
 

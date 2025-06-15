@@ -3,10 +3,10 @@
 import { useState } from 'react'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/model'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { ThemeColorType, ThemeFontSizeType } from '@shared/config/style/type'
 import { ASPECT_RATIOS, AspectRatioType } from '@shared/constants/image-size'
 import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { ThemeColorType, ThemeFontSizeType } from '@shared/styles/theme/type'
 
 import * as S from './styles'
 

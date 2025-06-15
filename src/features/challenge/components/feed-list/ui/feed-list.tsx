@@ -2,13 +2,18 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 
 import { VerificationData } from '@entities/challenge/api/group/feed/get-feed-list'
+import { ChallengeCategoryType } from '@entities/challenge/model'
 import { useInfiniteGroupChallengeFeedList } from '@features/challenge/api'
-import Loading from '@shared/components/loading/ui/loading'
-import { ISOFormatString } from '@shared/types/date'
+import { Loading } from '@shared/components'
+import { ISOFormatString } from '@shared/type/date'
 
-import VerificationCard from '../../verification-card/ui/verification-card'
-import { FeedListProps } from '../model/types'
+import { VerificationCard } from '../../verification-card'
 import * as S from './styles'
+
+interface FeedListProps {
+  category: ChallengeCategoryType
+  className?: string
+}
 
 const verificationsDummy: VerificationData[] = [
   {

@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { CheckIcon, SwitchTap } from '@shared/components'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useImageUpload } from '@shared/hooks/use-image-uplaod/useImageUpload'
 import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 import { useToast } from '@shared/hooks/use-toast/useToast'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import { VerificationGuideModal } from '../../verification-guide-modal'
 import * as S from './styles'

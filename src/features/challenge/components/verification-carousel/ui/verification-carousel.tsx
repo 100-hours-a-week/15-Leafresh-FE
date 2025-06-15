@@ -3,11 +3,20 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from 'react'
 
-import { VerificationStatusCard } from '../../verification-status-card'
+import { VerificationStatus, VerificationStatusCard } from '../../verification-status-card'
 import { carousel_options } from '../model/consts'
 import { chunkArray } from '../model/lib'
-import { VerificationCarouselProps } from '../model/types'
 import * as S from './styles'
+
+interface Verification {
+  day: number
+  imageUrl: string
+  status: VerificationStatus
+}
+
+interface VerificationCarouselProps {
+  verifications: Verification[]
+}
 
 export const VerificationCarousel = ({ verifications }: VerificationCarouselProps) => {
   // Fix 1: Use the correct type for containScroll ('trimSnaps' is a valid value but needs to be properly typed)

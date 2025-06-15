@@ -17,8 +17,8 @@ import { OrderTimeDealProduct } from '@entities/store/api/timedeal/order-timedea
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
 import { MUTATION_KEYS } from './mutation-keys'
+import { getQueryClient } from './query-client'
 import { QUERY_KEYS } from './query-keys'
-import { getQueryClient } from './queryClient'
 import { handleError } from './utils'
 
 import { useMutation } from '@tanstack/react-query'

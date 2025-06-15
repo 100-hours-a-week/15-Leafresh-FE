@@ -3,7 +3,7 @@ import Image from 'next/image'
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
 import BackButton from '@shared/components/back-button/ui/back-button'
 import DatePicker from '@shared/components/datepicker/DatePicker'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 import styled from '@emotion/styled'
 export const Wrapper = styled.div`

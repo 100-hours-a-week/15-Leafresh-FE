@@ -1,14 +1,31 @@
 'use client'
 
 import { useState } from 'react'
+import { UseFormReturn } from 'react-hook-form'
+import { z } from 'zod'
 
-import { Loading } from '@shared/components'
-import ErrorText from '@shared/components/errortext/ui/error-text'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { ErrorText, Loading, LucideIcon } from '@shared/components'
 
-import { CHALLENGE_DETAILS_WARNINGS } from '../model/consts'
-import { DetailsStepProps } from '../model/types'
+import { CHALLENGE_DETAILS_WARNINGS, detailSchema } from '../model/consts'
 import * as S from './styles'
+
+import { FullFormValues } from '@widgets/challenge/group/form/model/types'
+
+type DetailFormValues = z.infer<typeof detailSchema>
+
+interface DetailsStepProps {
+  form: UseFormReturn<FullFormValues>
+  handleStepChange: (step: 1 | 2) => void
+  onSubmit: () => void
+  isCreating: boolean
+
+  isEdit: boolean
+}
+
+export type WarningType = {
+  isWarning: boolean
+  value: string
+}
 
 export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdit }: DetailsStepProps) => {
   const {

@@ -2,18 +2,41 @@ import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
 import { DeleteGroupChallengeResponse, DeleteGroupChallengeVariables } from '@entities/challenge/api/group/delete-group'
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model'
+import { CHALLENGE_CATEGORY_PAIRS, ChallengeCategoryType, convertLanguage } from '@entities/challenge/model'
+import { LucideIcon } from '@shared/components'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route'
+import { ToastType } from '@shared/context'
 import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
-import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { DateFormatString } from '@shared/type'
 
-import { GroupChallengeCardProps } from '../model/types'
 import * as S from './styles'
+
+type GroupChallenge = {
+  id: number
+  name: string
+  description: string
+  startDate: DateFormatString // YYYY-mm-dd
+  endDate: DateFormatString
+  imageUrl: string
+  currentParticipantCount: number
+  category: ChallengeCategoryType
+
+  leafReward?: number // 생성한 챌린지에는 없음
+}
+
+interface GroupChallengeCardProps {
+  data: GroupChallenge
+
+  isAuth: boolean // 본인의 챌린지인지 여부
+
+  deleteCallback?: () => void // 삭제 후 실행 콜백
+
+  className?: string
+}
 
 export const GroupChallengeCard = ({
   data,

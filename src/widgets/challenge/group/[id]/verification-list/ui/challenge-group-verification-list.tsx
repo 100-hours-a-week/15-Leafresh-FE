@@ -7,11 +7,11 @@ import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-grou
 import { Verification } from '@entities/challenge/api/group/verification/get-group-verification-list'
 import VerificationCard from '@features/challenge/components/challenge/participate/verification/verification-card'
 import { useInfiniteGroupChallengeVerifications } from '@features/challenge/hook/useInfiniteGroupChallengeVerifications'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { ISOFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/type/date'
 
 import { ChallengeGroupVerificationListPageProps } from '../model/types'
 import * as S from './styles'

@@ -11,12 +11,12 @@ import ProfileBox from '@features/member/components/profile/mypage/ProfileBox'
 import ProfileCard from '@features/member/components/profile/mypage/ProfileCard'
 import RecentBadgeBox from '@features/member/components/profile/mypage/RecentBadgeBox'
 import Loading from '@shared/components/loading/ui/loading'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import * as S from './styles'
 

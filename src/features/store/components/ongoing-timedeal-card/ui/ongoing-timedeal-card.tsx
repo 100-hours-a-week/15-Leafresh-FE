@@ -11,6 +11,7 @@ import {
   OrderTimeDealProductVariables,
 } from '@entities/store/api/timedeal/order-timedeal'
 import ApologizeContent from '@shared/components/apologize/ui/apologize'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route'
@@ -19,8 +20,7 @@ import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
-import { formatSecondToTime } from '@shared/lib/date/utils'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { formatSecondToTime } from '@shared/lib/date/lib'
 
 import { OngoingTimeDealCardProps } from '../model/types'
 import * as S from './styles'

@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import React, { useState } from 'react'
 
 import Calendar from '@shared/components/calender/ui/calender'
-import { dayToString } from '@shared/lib/date/utils'
+import { dayToString } from '@shared/lib/date/lib'
 
 import * as S from './styles'
 

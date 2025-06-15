@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ISOFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/type/date'
 
 import { getTimeDealProducts, TimeDealProduct } from '../../../../../entities/store/api/timedeal/get-timedeal-list'
 import { OngoingTimeDealCard } from '../../ongoing-timedeal-card'

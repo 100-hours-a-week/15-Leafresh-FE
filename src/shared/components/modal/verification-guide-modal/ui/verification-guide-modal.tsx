@@ -14,11 +14,11 @@ import {
 import { convertLanguage } from '@entities/challenge/model'
 import { DAY_PAIRS } from '@entities/common'
 import { Loading } from '@shared/components/loading'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ChallengeDataType } from '@shared/context/modal/camera-modal-store'
 import { ApiResponse } from '@shared/lib/api/type'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import * as S from './styles'
 

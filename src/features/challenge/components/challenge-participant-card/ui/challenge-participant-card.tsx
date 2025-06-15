@@ -1,7 +1,17 @@
 import { ReactNode } from 'react'
 
-import { ChallengeProps } from '../model/types'
 import * as S from './styles'
+
+interface ChallengeProps {
+  className?: string
+  imageUrl?: string
+  title: string
+  startDate: Date
+  endDate: Date
+  successCount: number
+  maxCount: number
+  onClick?: () => void
+}
 
 export const GroupChallengeParticipantCard = ({
   className,

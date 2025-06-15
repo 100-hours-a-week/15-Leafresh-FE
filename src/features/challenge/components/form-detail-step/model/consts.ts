@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { WarningType } from './types'
+import { WarningType } from '../ui/form-detail-step'
 
 export const detailSchema = z.object({
   description: z.string().min(1, '챌린지 설명을 입력해주세요'),

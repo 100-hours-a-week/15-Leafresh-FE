@@ -2,7 +2,7 @@
 
 import { DAYS } from '@entities/common/consts'
 import { DayType } from '@entities/common/type'
-import { convertDayToLabel } from '@shared/lib/date/utils'
+import { convertDayToLabel } from '@shared/lib/date/lib'
 
 import * as S from './styles'
 

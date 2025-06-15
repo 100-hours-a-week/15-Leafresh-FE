@@ -3,8 +3,8 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import { NAVBAR_TABS } from '../model/consts'
 import * as S from './styles'

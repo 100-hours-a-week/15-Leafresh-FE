@@ -2,18 +2,26 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { Controller } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
+import { z } from 'zod'
 
 import { CHALLENGE_CATEGORIES_KOR } from '@entities/challenge/model'
-import ErrorText from '@shared/components/errortext/ui/error-text'
-import Input from '@shared/components/input/ui/input'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { ErrorText, Input, LucideIcon } from '@shared/components'
 
-import { VerificationImageData } from '../../challenge-verify-examples/model/types'
-import { PARTICIPANT_OPTIONS } from '../model/consts'
-import { MetaDataStepProps } from '../model/types'
+import { VerificationImageData } from '../../challenge-verify-examples'
+import { metaSchema, PARTICIPANT_OPTIONS } from '../model/consts'
 import * as S from './styles'
 
 import { sendGAEvent } from '@next/third-parties/google'
+import { FullFormValues } from '@widgets/challenge/group/form/model/types'
+
+type MetaFormValues = z.infer<typeof metaSchema>
+
+interface MetaDataStepProps {
+  form: UseFormReturn<FullFormValues>
+  handleStepChange: (step: 1 | 2) => void
+  isEdit: boolean
+}
 
 export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepProps) => {
   const {

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import { ChallengeVerifyExamples } from '@features/challenge/components'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 import styled from '@emotion/styled'
 

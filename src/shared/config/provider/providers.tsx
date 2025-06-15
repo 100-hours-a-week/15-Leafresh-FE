@@ -2,8 +2,8 @@
 
 import { ReactNode } from 'react'
 
-import GlobalStyle from '@shared/styles/GlobalStyle'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import GlobalStyle from '@shared/styles/global-style'
 
 import { ChakraUseProvider } from './chakra-provider'
 import { TanstackQueryProvider } from './tanstack-provider'

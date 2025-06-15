@@ -1,6 +1,6 @@
 import ImageInput from '@shared/components/image-input/ui/image-input'
-import { ThemeColorType } from '@shared/styles/theme/type'
-import { getThemeColor } from '@shared/styles/theme/utils'
+import { ThemeColorType } from '@shared/config/style/type'
+import { getThemeColor } from '@shared/lib/utils/theme-utils'
 
 import styled from '@emotion/styled'
 

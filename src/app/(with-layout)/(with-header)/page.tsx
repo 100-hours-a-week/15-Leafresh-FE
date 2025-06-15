@@ -2,10 +2,10 @@ import { getEventChallengeList } from '@entities/challenge/api/event/get-event-l
 import { getGroupChallengeCategoryList } from '@entities/challenge/api/group/get-categories'
 import { getPersonalChallengeList } from '@entities/challenge/api/personal/get-personal-list'
 import { DayType } from '@entities/common/type'
+import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
-import { getDayOfWeek } from '@shared/lib/date/utils'
+import { getDayOfWeek } from '@shared/lib/date/lib'
 
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { MainPage } from '@widgets/main'

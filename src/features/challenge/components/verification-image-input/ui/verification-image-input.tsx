@@ -1,10 +1,9 @@
 'use client'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/model'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { ThemeColorType } from '@shared/styles/theme/type'
+import { LucideIcon } from '@shared/components'
+import { ThemeColorType } from '@shared/config/style/type'
 
-import { VerificationImageInputProps } from '../model/types'
 import * as S from './styles'
 
 const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.ReactNode; color: ThemeColorType }> = {
@@ -28,6 +27,18 @@ const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.Rea
     icon: <LucideIcon name='Plus' size={20} color='lfWhite' />,
     color: 'lfGray',
   },
+}
+
+interface VerificationImageInputProps {
+  label: string
+  status: ChallengeVerificationStatusType
+  imageUrl: string | null
+  description: string | null
+  cameraTitle: string
+  onChange: (data: { imageUrl: string | null; description?: string | null }) => void
+  onZoom: () => void
+  readOnly?: boolean
+  className?: string
 }
 
 export const VerificationImageInput = ({

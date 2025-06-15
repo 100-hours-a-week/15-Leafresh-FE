@@ -2,7 +2,7 @@ import { ChallengeVerificationResultType } from '@entities/challenge/model'
 import { DayType } from '@entities/common'
 import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { TimeFormatString } from '@shared/types/date'
+import { TimeFormatString } from '@shared/type/date'
 
 export type PersonalChallengeExampleImageType = {
   id: number

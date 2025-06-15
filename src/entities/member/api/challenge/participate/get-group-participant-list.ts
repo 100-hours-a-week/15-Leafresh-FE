@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { InfiniteScrollResponse } from '@shared/types/api'
+import { InfiniteScrollResponse } from '@shared/type/api'
 
 export type ChallengeStatus = 'not_started' | 'ongoing' | 'completed'
 

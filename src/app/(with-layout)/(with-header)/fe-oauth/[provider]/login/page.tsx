@@ -4,12 +4,12 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { use, useEffect } from 'react'
 
 import { LoginCallback } from '@entities/member/api/callback-oauth'
-import { useOAuthUserStore } from '@entities/member/model/oauth-user-store'
 import { LowercaseOAuthType } from '@entities/member/type'
 import Loading from '@shared/components/loading/ui/loading'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route'
+import { useOAuthUserStore } from '@shared/context/oauth-user/oauth-user-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/use-toast/useToast'
 

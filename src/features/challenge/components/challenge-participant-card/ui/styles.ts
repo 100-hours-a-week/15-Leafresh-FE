@@ -1,5 +1,5 @@
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/theme'
+import { LucideIcon } from '@shared/components'
+import { theme } from '@shared/config/style/theme'
 
 import styled from '@emotion/styled'
 

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
-import { ThemeColorType, ThemeFontSizeType } from '@shared/styles/theme/type'
-import { getThemeColor, getThemeFontSize } from '@shared/styles/theme/utils'
+import { ThemeColorType, ThemeFontSizeType } from '@shared/config/style/type'
+import { getThemeColor, getThemeFontSize } from '@shared/lib/utils/theme-utils'
 
 import styled from '@emotion/styled'
 

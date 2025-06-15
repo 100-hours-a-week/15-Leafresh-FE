@@ -1,7 +1,7 @@
 // TODO: 같은 이름의 컴포넌트가 있음. 수정필요
 import { DeprecatedGroupChallengeCard } from '@features/challenge/components'
 import { GridBox } from '@shared/components'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 import styled from '@emotion/styled'
 

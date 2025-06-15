@@ -1,8 +1,8 @@
 import Image from 'next/image'
 
 import { LeafReward } from '@shared/components'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 import styled from '@emotion/styled'
 

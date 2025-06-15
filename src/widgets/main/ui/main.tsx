@@ -9,7 +9,7 @@ import { DayType } from '@entities/common/type'
 import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@features/main/components'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { getDayOfWeek } from '@shared/lib/date/utils'
+import { getDayOfWeek } from '@shared/lib/date/lib'
 
 import * as S from './styles'
 

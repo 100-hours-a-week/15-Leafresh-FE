@@ -3,9 +3,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { media } from '@shared/config/style/media'
+import { theme } from '@shared/config/style/theme'
 import { URL } from '@shared/constants/route'
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
 import NotFoundImage from '@public/image/404.svg'
 
 import styled from '@emotion/styled'

@@ -4,10 +4,10 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { UserInfo, useUserStore } from '@entities/member/model/user-store'
 import { ENDPOINTS } from '@shared/constants/endpoint'
 import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
+import { UserInfo, useUserStore } from '@shared/context/user/user-store'
 import { useToast } from '@shared/hooks/use-toast/useToast'
 import { fetchRequest } from '@shared/lib/api'
 

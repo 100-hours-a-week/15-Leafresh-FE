@@ -4,8 +4,12 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { useEffect, useState } from 'react'
 
 import { SLIDES_PER_PAGE } from '../model/consts'
-import { ChallengeVerifyCarouselProps } from '../model/types'
 import * as S from './styles'
+
+interface ChallengeVerifyCarouselProps {
+  images: string[]
+  className?: string
+}
 
 export const ChallengeVerifyCarousel = ({ images, className }: ChallengeVerifyCarouselProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({

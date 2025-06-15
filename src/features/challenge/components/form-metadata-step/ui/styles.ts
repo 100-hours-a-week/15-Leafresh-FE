@@ -1,9 +1,7 @@
 import { memo } from 'react'
 
-import DatePicker from '@shared/components/datepicker/ui/date-picker'
-import Dropdown, { DropdownProps } from '@shared/components/dropdown/ui/dropdown'
-import TimePicker from '@shared/components/timepicker/picker/ui/time-picker'
-import { StyledGeneric } from '@shared/styles/emotion/utils'
+import { DatePicker, Dropdown, DropdownProps, TimePicker } from '@shared/components'
+import { StyledGeneric } from '@shared/styles/styled-generic'
 
 import { ChallengeVerifyExamples } from '../../challenge-verify-examples'
 

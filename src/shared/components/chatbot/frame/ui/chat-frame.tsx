@@ -7,8 +7,8 @@ import {
   requestCategoryBasedRecommendation,
   requestFreetextBasedRecommendation,
 } from '@entities/chatbot/api'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import SlideArea from '@shared/components/slidearea/ui/slide-area'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import { ChatBubble } from '../../bubble'
 import { ChatSelection } from '../../selection'

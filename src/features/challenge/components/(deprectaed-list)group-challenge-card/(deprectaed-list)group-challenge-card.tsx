@@ -2,8 +2,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
+import { theme } from '@shared/config/style/theme'
 import { URL } from '@shared/constants/route'
-import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
 
 import styled from '@emotion/styled'

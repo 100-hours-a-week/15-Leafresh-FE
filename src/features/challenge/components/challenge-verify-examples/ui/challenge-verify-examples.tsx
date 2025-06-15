@@ -5,9 +5,27 @@ import { useEffect } from 'react'
 import { CHALLENGE_VERIFICATION_RESULT, ChallengeVerificationResultType } from '@entities/challenge/model'
 import { ImageZoomModalData, useImageZoomStore } from '@shared/context/modal/image-zoom-modal-store'
 
-import VerificationImageInput from '../../verification-image-input/ui/verification-image-input'
-import { ChallengeVerifyExamplesProps, VerificationImageData } from '../model/types'
+import { VerificationImageInput } from '../../verification-image-input'
 import * as S from './styles'
+
+export interface VerificationImageData {
+  id?: number
+  url: string | null
+  description: string
+  type: ChallengeVerificationResultType
+}
+
+interface ChallengeVerifyExamplesProps {
+  title: string
+  description: string
+  maxCount: number
+  examples: VerificationImageData[]
+  onChange: (updated: VerificationImageData[]) => void
+  readOnly?: boolean
+  required?: boolean
+  className?: string
+  verificationInputClassName?: string
+}
 
 export const ChallengeVerifyExamples = ({
   title,

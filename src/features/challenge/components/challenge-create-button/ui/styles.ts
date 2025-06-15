@@ -1,4 +1,4 @@
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { LucideIcon } from '@shared/components'
 
 import styled from '@emotion/styled'
 

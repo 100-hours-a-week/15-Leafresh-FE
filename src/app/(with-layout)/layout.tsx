@@ -1,6 +1,6 @@
 import { Toast } from '@shared/components'
 import { AuthGuard, ModalProvider } from '@shared/config/provider'
-import LayoutWrapper from '@shared/styles/LayoutWrapper'
+import { GlobalWrapper } from '@shared/styles/global-wrapper'
 
 const RootLayout = ({
   children,
@@ -9,11 +9,11 @@ const RootLayout = ({
 }>) => {
   return (
     <AuthGuard>
-      <LayoutWrapper>
+      <GlobalWrapper>
         {children}
         <Toast />
         <ModalProvider />
-      </LayoutWrapper>
+      </GlobalWrapper>
     </AuthGuard>
   )
 }

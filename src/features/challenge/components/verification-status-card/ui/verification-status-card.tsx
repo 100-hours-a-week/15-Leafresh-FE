@@ -1,10 +1,10 @@
 'use client'
 import React from 'react'
 
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/theme'
+import { LucideIcon, LucideIconProps } from '@shared/components'
+import { ThemeColorType } from '@shared/config/style'
+import { theme } from '@shared/config/style/theme'
 
-import { StatusConfig, VerificationStatus, VerificationStatusCardProps } from '../model/types'
 import * as S from './styles'
 
 const statusMap: Record<VerificationStatus, StatusConfig> = {
@@ -23,6 +23,20 @@ const statusMap: Record<VerificationStatus, StatusConfig> = {
     iconName: 'RotateCw',
     iconColorKey: 'lfBlack',
   },
+}
+
+export type VerificationStatus = 'SUCCESS' | 'FAILURE' | 'PENDING_APPROVAL'
+
+interface StatusConfig {
+  barColor: string // 헥스코드: styled BottomBar 에 쓰임
+  iconName: LucideIconProps['name']
+  iconColorKey: ThemeColorType
+}
+
+interface VerificationStatusCardProps {
+  day: number
+  imageUrl: string
+  status: VerificationStatus
 }
 
 export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({ day, imageUrl, status }) => {

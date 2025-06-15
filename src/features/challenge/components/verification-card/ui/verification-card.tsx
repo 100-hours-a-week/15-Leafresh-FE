@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 
+import { Verification } from '@entities/challenge/api'
 import {
   CreateVerificationLikeResponse,
   CreateVerificationLikeVariables,
@@ -11,21 +12,26 @@ import {
   DeleteVerificationLikeVariables,
 } from '@entities/challenge/api/group/verification/likes/delete-like'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model'
+import { LucideIcon } from '@shared/components'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route'
+import { ToastType } from '@shared/context'
 import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
-import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
-import { getTimeDiff } from '@shared/lib/date/utils'
-import { copyToClipboard } from '@shared/lib/ui/copy-clipboard'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { getTimeDiff } from '@shared/lib/date/lib'
+import { copyToClipboard } from '@shared/lib/utils/copy-clipboard'
 import ActiveLikeIcon from '@public/icon/like_active.svg'
 import InActiveLikeIcon from '@public/icon/like_inactive.svg'
 
-import { VerificationCardProps } from '../model/types'
 import * as S from './stlyes'
+
+interface VerificationCardProps {
+  challengeId: number
+  verificationData: Verification
+  className?: string
+}
 
 export const VerificationCard = ({ challengeId, verificationData, className }: VerificationCardProps): ReactNode => {
   const router = useRouter()

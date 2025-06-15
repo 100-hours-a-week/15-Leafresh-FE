@@ -1,4 +1,4 @@
-import { LanguageMap } from '@entities/common'
+import { LanguageMap } from '@entities/common/model'
 
 import { ChallengeCategoryType, ChallengeCategoryTypeKor } from './types'
 

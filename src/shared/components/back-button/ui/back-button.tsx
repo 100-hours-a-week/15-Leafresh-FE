@@ -1,4 +1,4 @@
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 
 import * as S from './styles'
 

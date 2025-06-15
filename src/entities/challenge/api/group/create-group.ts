@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { DateFormatString, TimeFormatString } from '@shared/types/date'
+import { DateFormatString, TimeFormatString } from '@shared/type/date'
 
 import { ChallengeCategoryType, ChallengeVerificationResultType } from '../../model'
 
