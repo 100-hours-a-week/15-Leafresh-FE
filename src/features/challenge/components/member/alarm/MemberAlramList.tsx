@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import { useInfiniteMemberAlarmList } from '@features/member/hooks/useInfiniteMemberAlarmList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
 
@@ -33,7 +33,6 @@ export function formatRelativeTime(target: Date): string {
 }
 
 const MemberAlarmList = () => {
-  const openToast = useToast()
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
   const { mutate: ReadAlarmMutate } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
 
@@ -74,7 +73,7 @@ const MemberAlarmList = () => {
             </AlarmCard>
           ))
         ) : (
-          <NoAlarmText>도착한 알림이 없습니다!</NoAlarmText>
+          <NoAlarmText>아직 도착한 알림이 없습니다!</NoAlarmText>
         )}
       </AlarmList>
       <Observer ref={triggerRef}>{isFetchingNextPage && '단체 챌린지 불러오는 중...'}</Observer>
@@ -85,7 +84,7 @@ const MemberAlarmList = () => {
 export default MemberAlarmList
 
 const Wrapper = styled.div`
-  padding: 24px 0;
+  ${responsiveHorizontalPadding};
 `
 
 const Title = styled.h1`
@@ -161,11 +160,14 @@ const Observer = styled.div`
 `
 
 const NoAlarmText = styled.div`
-  position: fixed;
+  width: 100%;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfRed.base};
+  color: ${theme.colors.lfBlack.base};
+
+  text-align: center;
 `

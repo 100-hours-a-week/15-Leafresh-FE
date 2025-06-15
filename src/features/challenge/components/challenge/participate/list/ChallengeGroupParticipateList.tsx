@@ -1,28 +1,106 @@
 'use client'
 
-import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
+import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
+import { Verification } from '@features/challenge/api/participate/get-group-participant-list'
 import { useInfiniteGroupChallengeVerifications } from '@features/challenge/hook/useInfiniteGroupChallengeVerifications'
-import BackButton from '@shared/components/button/BackButton'
+import NoContent from '@shared/components/no-content/no-content'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
+import { URL } from '@shared/constants/route/route'
+import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
+import { ISOFormatString } from '@shared/types/date'
+
+import VerificationCard from '../verification/verification-card'
 
 interface ChallengeGroupParticipateListProps {
   challengeId: number
 }
 
-const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipateListProps) => {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteGroupChallengeVerifications(challengeId)
+const verificationsDummy: Verification[] = [
+  {
+    id: 1,
+    nickname: '지호개발자',
+    profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    verificationImageUrl: '/image/banner.png',
+    description:
+      '제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱 제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱 제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱',
+    category: 'ZERO_WASTE',
+    counts: {
+      view: 120,
+      like: 35,
+      comment: 12,
+    },
+    createdAt: new Date().toISOString() as ISOFormatString,
+    isLiked: true,
+  },
+  {
+    id: 2,
+    nickname: '그린라이프',
+    profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    verificationImageUrl: '/image/banner.png',
+    description: '재활용 분리수거 철저히 했습니다. 환경 보호는 습관!',
+    category: 'PLOGGING',
+    counts: {
+      view: 89,
+      like: 22,
+      comment: 4,
+    },
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString() as ISOFormatString, // 5시간 전
+    isLiked: false,
+  },
+  {
+    id: 3,
+    nickname: 'eco친구',
+    profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
+    verificationImageUrl: '/image/banner.png',
+    description: '비건 도시락 도전! 채식도 맛있어요 🥗',
+    category: 'VEGAN',
+    counts: {
+      view: 45,
+      like: 10,
+      comment: 1,
+    },
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString() as ISOFormatString, // 하루 전
+    isLiked: true,
+  },
+]
+// const verificationsDummy: Verification[] = []
 
-  const verifications = data?.pages.flatMap(page => page?.data?.items || []) ?? []
-  // const verifications = dummyVerifications
-  const triggerRef = useRef<HTMLDivElement>(null)
+const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipateListProps) => {
+  const router = useRouter()
+
+  /** 단체 챌린지 상세 가져오기 */
+  const { data: challengeData } = useQuery({
+    queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
+    queryFn: () => getGroupChallengeDetails(challengeId),
+    ...QUERY_OPTIONS.CHALLENGE.GROUP.DETAILS,
+  })
+  /** 인증 목록 조회 */
+  const {
+    data: verificationData,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteGroupChallengeVerifications(challengeId)
+
+  const challenge = challengeData?.data
+
+  const verifications = verificationData?.pages.flatMap(page => page?.data?.verifications || []) ?? []
+  // const verifications = verificationsDummy
+
+  const observerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage || !triggerRef.current) return
+    if (!hasNextPage || isFetchingNextPage || !observerRef.current) return
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !isFetchingNextPage) {
@@ -31,34 +109,39 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
       },
       { rootMargin: '200px' },
     )
-    observer.observe(triggerRef.current)
+    observer.observe(observerRef.current)
     return () => observer.disconnect()
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
+  /** 이벤트 핸들러 */
+  const handleParticipateChallenge = () => {
+    // 단체 챌린지 상세로 이동
+    router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
+  }
+
   return (
     <Wrapper>
-      <TitleWrapper>
-        <StyledBackButton />
-        {/* TODO: API에 챌린지 제목 필드가 추가되면 넣기 */}
-        <Title>단체 챌린지</Title>
-      </TitleWrapper>
-      <Grid>
+      <ChallengeDataWrapper>
+        <Title>{challenge?.title}</Title>
+        <Participant>
+          <LucideIcon name='UsersRound' size={16} color='lfBlue' /> {challenge?.currentParticipantCount}명 참여중
+        </Participant>
+      </ChallengeDataWrapper>
+      <ContentsWrapper>
         {verifications.length !== 0 ? (
-          verifications.map(item => (
-            <Card key={item.id}>
-              <ProfileWrapper>
-                <ProfileImage src={item.profileImageUrl} alt='프로필' width={16} height={16} />
-                <Nickname>{item.nickname}</Nickname>
-              </ProfileWrapper>
-              <VerificationImage src={item.verificationImageUrl} alt='인증 이미지' width={150} height={150} />
-              <Description>{item.description}</Description>
-            </Card>
+          verifications.map(verificationData => (
+            <VerificationCard key={verificationData.id} challengeId={challengeId} verificationData={verificationData} />
           ))
         ) : (
-          <NoImageText>제출된 이미지가 없습니다!</NoImageText>
+          <StyledNoContent
+            title='아직 인증 내역이 없습니다'
+            buttonText='참여하러 가기'
+            clickHandler={handleParticipateChallenge}
+          />
         )}
-      </Grid>
-      <Observer ref={triggerRef}>{isFetchingNextPage ? '불러오는 중...' : ''}</Observer>
+      </ContentsWrapper>
+      {!hasNextPage && !isLoading && verifications.length > 0 && <EndMessage>인증 내역을 모두 불러왔습니다</EndMessage>}
+      <ObserverTrigger ref={observerRef} />
     </Wrapper>
   )
 }
@@ -66,132 +149,70 @@ const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupParticipat
 export default ChallengeGroupParticipateList
 
 const Wrapper = styled.div`
+  height: 100%;
+
+  ${responsiveHorizontalPadding};
+
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-
-  gap: 40px;
+  gap: 18px;
 `
-const TitleWrapper = styled.div`
+const ChallengeDataWrapper = styled.div`
   width: 100%;
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-const StyledBackButton = styled(BackButton)`
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  gap: 4px;
+
+  font-size: ${theme.fontSize.lg};
 `
 
 const Title = styled.h1`
   text-align: center;
   font-weight: ${theme.fontWeight.bold};
-  font-size: ${theme.fontSize.lg};
+  border-bottom: 1px solid ${theme.colors.lfDarkGray.base};
 `
 
-const Grid = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px 20px;
-`
+const Participant = styled.div`
+  margin-top: 12px;
+  align-self: flex-end;
 
-const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-`
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.medium};
+  color: ${theme.colors.lfBlue.base};
 
-const ProfileWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.medium};
+  gap: 5px;
 `
 
-const ProfileImage = styled(Image)`
-  border-radius: 9999px;
-`
-const Nickname = styled.span`
-  font-size: ${theme.fontSize.sm};
-`
-
-const VerificationImage = styled(Image)`
-  margin-top: 8px;
+const ContentsWrapper = styled.div`
   width: 100%;
-  height: auto;
-  border-radius: ${theme.radius.base};
-  object-fit: cover;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 28px;
 `
 
-const Description = styled.div`
-  margin-top: 12px;
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-  white-space: pre-wrap;
-  word-break: break-word;
-`
-
-const Observer = styled.div`
+const ObserverTrigger = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 1px;
 `
 
-const NoImageText = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfRed.base};
+const StyledNoContent = styled(NoContent)`
+  height: 100%;
 `
-// const dummyVerifications: VerificationType[] = [
-//   {
-//     id: 1,
-//     nickname: '지호님',
-//     profileImageUrl: '/icon/category_book_share.png',
-//     verificationImageUrl: '/icon/category_book_share.png',
-//     description:
-//       'asdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsaddaasdsadda',
-//   },
-//   {
-//     id: 2,
-//     nickname: 'LeafreshUser',
-//     profileImageUrl: '/icon/category_book_share.png',
-//     verificationImageUrl: '/icon/category_book_share.png',
-//     description: '플로깅 완료!',
-//   },
-//   {
-//     id: 3,
-//     nickname: '그린이',
-//     profileImageUrl: '/icon/category_book_share.png',
-//     verificationImageUrl: '/icon/category_book_share.png',
-//     description: '분리수거 인증이에요.',
-//   },
-//   {
-//     id: 4,
-//     nickname: '그린이',
-//     profileImageUrl: '/icon/category_book_share.png',
-//     verificationImageUrl: '/icon/category_book_share.png',
-//     description: '분리수거 인증이에요.',
-//   },
-//   {
-//     id: 5,
-//     nickname: '그린이',
-//     profileImageUrl: '/icon/category_book_share.png',
-//     verificationImageUrl: '/icon/category_book_share.png',
-//     description: '분리수거 인증이에요.',
-//   },
-//   {
-//     id: 6,
-//     nickname: '그린이',
-//     profileImageUrl: '/icon/category_book_share.png',
-//     verificationImageUrl: '/icon/category_book_share.png',
-//     description: '분리수거 인증이에요.',
-//   },
-// ]
+
+const EndMessage = styled.div`
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.lfDarkGray.base};
+`

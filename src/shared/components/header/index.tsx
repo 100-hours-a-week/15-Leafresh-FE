@@ -1,37 +1,69 @@
 'use client'
 
-import { Menu } from 'lucide-react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
 import { URL } from '@shared/constants/route/route'
-import { useDrawerStore } from '@shared/context/slide-drawer/DrawerStore'
-import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 import LogoImage from '@public/image/logo.svg'
 
+import BackButton from '../button/BackButton'
+
 interface HeaderProps {
-  height: number
   padding: number
 }
 
-const Header = ({ height, padding }: HeaderProps) => {
+/** 보호가 필요한 경로 목록 */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function extractBackButtonRoutes(obj: any): string[] {
+  const result: string[] = []
+
+  for (const key in obj) {
+    const entry = obj[key]
+    if (typeof entry === 'object' && entry !== null) {
+      if (entry.hasBackButton) {
+        if (typeof entry.value === 'string') {
+          result.push(entry.value)
+        } else if (typeof entry.dynamicPath === 'string') {
+          result.push(entry.dynamicPath)
+        }
+      }
+      result.push(...extractBackButtonRoutes(entry))
+    }
+  }
+
+  return result
+}
+
+const BACK_BUTTON_ROUTES = extractBackButtonRoutes(URL).map(path =>
+  path.includes('[') ? path.replace(/\[.*?\]/g, '\\d+') : path,
+)
+
+const Header = ({ padding }: HeaderProps) => {
   const router = useRouter()
-  const { open: openDrawer } = useDrawerStore()
-  const { isLoggedIn } = useAuth()
+  const pathname = usePathname()
+
+  // 보호 경로인지 판별
+  const hasBackButton: boolean = BACK_BUTTON_ROUTES.some(pattern => {
+    const regex = new RegExp(`^${pattern}$`)
+    return regex.test(pathname)
+  })
 
   return (
-    <HeaderContainer height={height}>
+    <HeaderContainer>
       <CustomWidthWrapper padding={padding}>
-        <LogoWrapper onClick={() => router.push(URL.CHALLENGE.INDEX.value)}>
-          <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
-        </LogoWrapper>
+        {!hasBackButton ? (
+          <LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
+            <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
+          </LogoWrapper>
+        ) : (
+          <BackButton />
+        )}
         <MenuButtons>
-          {isLoggedIn && <AlarmButton name='Bell' size={24} onClick={() => router.push(URL.MEMBER.ALARM.value)} />}
-          <Menu size={24} strokeWidth={2.5} onClick={openDrawer} />
+          <AlarmButton name='Bell' size={24} strokeWidth={2.5} onClick={() => router.push(URL.MEMBER.ALARM.value)} />
         </MenuButtons>
       </CustomWidthWrapper>
     </HeaderContainer>
@@ -40,22 +72,18 @@ const Header = ({ height, padding }: HeaderProps) => {
 
 export default Header
 
-const HeaderContainer = styled.header<{ height: number }>`
-  min-width: 320px;
-  max-width: 500px;
+const HeaderContainer = styled.header`
   width: 100%;
-  height: ${({ height }) => `${height}px`};
+  height: 60px;
+  flex-shrink: 0;
 
-  position: fixed;
-  top: 0; /* 반드시 명시해야 함 */
-  /* left: 0; 명시해도 문제 없음 */
+  position: relative;
 
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: ${theme.colors.lfWhite.base};
-
-  z-index: 100;
+  border-bottom: 1px solid ${theme.colors.lfLightGray.base};
 `
 
 const CustomWidthWrapper = styled.div<{ padding: number }>`

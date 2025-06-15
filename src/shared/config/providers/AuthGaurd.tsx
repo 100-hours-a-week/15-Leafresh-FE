@@ -6,11 +6,12 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
+import { ProfileResponse } from '@features/member/api/profile/get-member-profile'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api'
 
 /** 보호가 필요한 경로 목록 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,29 +21,27 @@ function extractProtectedRoutes(obj: any): string[] {
   for (const key in obj) {
     const entry = obj[key]
     if (typeof entry === 'object' && entry !== null) {
-      if (typeof entry.value === 'string' && entry.isProtected) {
-        result.push(entry.value)
-      } else {
-        result.push(...extractProtectedRoutes(entry))
+      if (entry.isProtected) {
+        if (typeof entry.value === 'string') {
+          result.push(entry.value)
+        } else if (typeof entry.dynamicPath === 'string') {
+          result.push(entry.dynamicPath)
+        }
       }
+      result.push(...extractProtectedRoutes(entry))
     }
   }
 
   return result
 }
 
-const PROTECTED_ROUTES = extractProtectedRoutes(URL)
+const PROTECTED_ROUTES = extractProtectedRoutes(URL).map(path =>
+  path.includes('[') ? path.replace(/\[.*?\]/g, '[^/]+') : path,
+)
+console.log(PROTECTED_ROUTES)
 
 interface Props {
   children: React.ReactNode
-}
-
-type UserInfoResponse = {
-  nickname: string
-  profileImageUrl: string
-  treeLevelId: number
-  treeLevelName: string
-  treeImageUrl: string
 }
 
 const AuthGuard = ({ children }: Props) => {
@@ -54,7 +53,10 @@ const AuthGuard = ({ children }: Props) => {
   const [isVerified, setIsVerified] = useState(false)
 
   // 보호 경로인지 판별
-  const isProtectedRoute = PROTECTED_ROUTES.some(prefix => pathname.startsWith(prefix))
+  const isProtectedRoute = PROTECTED_ROUTES.some(pattern => {
+    const regex = new RegExp(`^${pattern}$`)
+    return regex.test(pathname)
+  })
 
   useEffect(() => {
     if (!isProtectedRoute) {
@@ -65,10 +67,11 @@ const AuthGuard = ({ children }: Props) => {
 
     const validate = async () => {
       try {
-        const { data } = await fetchRequest<UserInfoResponse>(ENDPOINTS.MEMBERS.DETAILS)
-        const { nickname, profileImageUrl, treeImageUrl, treeLevelId, treeLevelName } = data
+        const { data } = await fetchRequest<ProfileResponse>(ENDPOINTS.MEMBERS.DETAILS)
+        const { nickname, email, profileImageUrl, treeImageUrl, treeLevelId, treeLevelName } = data
         const userInfo: UserInfo = {
           nickname,
+          email,
           imageUrl: profileImageUrl,
           treeState: {
             level: treeLevelId,
@@ -86,7 +89,7 @@ const AuthGuard = ({ children }: Props) => {
     }
 
     validate()
-  }, [pathname, isProtectedRoute, userInfo, setUserInfo, clearUserInfo, router])
+  }, [pathname, isProtectedRoute])
 
   if (!isVerified) return null
 

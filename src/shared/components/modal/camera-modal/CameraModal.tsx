@@ -258,7 +258,7 @@ const CameraModal = () => {
 export default CameraModal
 
 const Overlay = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
 
@@ -422,6 +422,7 @@ const CloseButton = styled(LucideIcon)`
 const ShootButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
 `
 

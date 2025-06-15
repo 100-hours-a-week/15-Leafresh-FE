@@ -40,7 +40,7 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/personal/${challengeId}/verification/result`,
     }),
 
-    // 규칙
+    // 규약 조회
     RULES: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/personal/${challengeId}/rules`,
@@ -73,42 +73,105 @@ const CHALLENGE_ENDPOINTS = {
       path: `/api/challenges/group/${challengeId}`,
     }),
 
-    // 참여
+    // 인증 규약 조회
+    RULES: (challengeId: number) => ({
+      method: HttpMethod.GET,
+      path: `/api/challenges/group/${challengeId}/rules`,
+    }),
+
+    // 참여 이력 생성
     PARTICIPATE: (challengeId: number) => ({
       method: HttpMethod.POST,
       path: `/api/challenges/group/${challengeId}/participations`,
     }),
 
-    // 참여한 단체 챌린지 카운트 조회 (인증 페이지)
-    COUNT: {
-      method: HttpMethod.GET,
-      path: `/api/members/challenges/group/participations/count`,
+    // 인증 관련
+    VERIFICATION: {
+      // 특정 단체 챌린지 인증 내역 목록 조회
+      LIST: (challengeId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verifications`,
+      }),
+
+      // 인증 제출 (생성)
+      SUBMIT: (challengeId: number) => ({
+        method: HttpMethod.POST,
+        path: `/api/challenges/group/${challengeId}/verifications`,
+      }),
+
+      // 인증 결과 조회 (롱폴링)
+      RESULT: (challengeId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verification/result`,
+      }),
+
+      LIKES: {
+        // 좋아요 추가
+        CREATE: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.POST,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/likes`,
+        }),
+        // 좋아요 삭제
+        DELETE: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.DELETE,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/likes`,
+        }),
+      },
+
+      //인증 상세 조회
+      DETAILS: (challengeId: number, verificationId: number) => ({
+        method: HttpMethod.GET,
+        path: `/api/challenges/group/${challengeId}/verifications/${verificationId}`,
+      }),
+      //인증 상세 댓글
+      COMMENT: {
+        //댓글 조회
+        LIST: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.GET,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments`,
+        }),
+        //댓글 생성
+        CREATE: (challengeId: number, verificationId: number) => ({
+          method: HttpMethod.POST,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments`,
+        }),
+        //댓글/대댓글 수정
+        MODIFY: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.PUT,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}`,
+        }),
+        //댓글/대댓글 삭제
+        DELETE: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.DELETE,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}`,
+        }),
+        //대댓글 생성
+        REPLY: (challengeId: number, verificationId: number, commentId: number) => ({
+          method: HttpMethod.POST,
+          path: `/api/challenges/group/${challengeId}/verifications/${verificationId}/comments/${commentId}/replies`,
+        }),
+      },
     },
 
-    // 특정 단체 챌린지 인증 내역 목록 조회
-    VERIFICATIONS: (challengeId: number) => ({
+    // 인증 내역 목록 조회 (피드) - 무작위 챌린지
+    FEED: {
       method: HttpMethod.GET,
-      path: `/api/challenges/group/${challengeId}/verifications`,
-    }),
-
-    // 인증 제출 (생성)
-    VERIFY: (challengeId: number) => ({
-      method: HttpMethod.POST,
-      path: `/api/challenges/group/${challengeId}/verifications`,
-    }),
-
-    // 인증 결과 조회 (롱폴링)
-    VERIFICATION_RESULT: (challengeId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/challenges/group/${challengeId}/verification/result`,
-    }),
-
-    // 규약
-    RULES: (challengeId: number) => ({
-      method: HttpMethod.GET,
-      path: `/api/challenges/group/${challengeId}/rules`,
-    }),
+      path: `/api/challenges/group/verifications`,
+    },
   },
+
+  ETC: {
+    COUNT: {
+      // 누적 사용자 인증수 조회
+      VERIFICATION: { method: HttpMethod.GET, path: `/api/challenges/verifications/count` },
+    },
+  },
+}
+
+const a = {
+  1: 2,
+  2: 3,
+  3: 4,
 }
 
 const MEMBER_ENDPOINTS = {
@@ -119,22 +182,31 @@ const MEMBER_ENDPOINTS = {
       method: HttpMethod.DELETE,
       path: `/oauth/${provider}/token`,
     }),
-    RE_ISSUE: { method: HttpMethod.POST, path: '/auth/token/reissue' }, // 토큰 재발급
+    RE_ISSUE: { method: HttpMethod.POST, path: '/oauth/token/reissue' }, // 토큰 재발급
   },
 
   DUPLICATE_NICKNAME: { method: HttpMethod.GET, path: '/api/members/nickname' }, // 닉네임 중복 검사
 
   // CRUD
   SIGNUP: { method: HttpMethod.POST, path: '/api/members' }, // 회원가입
-  DETAILS: { method: HttpMethod.GET, path: '/api/members' }, // 내 정보 조회
+  DETAILS: { method: HttpMethod.GET, path: '/api/members' }, // 회원 정보 조회
   MODIFY: { method: HttpMethod.PATCH, path: '/api/members' }, // 회원정보 수정
   UNREGISTER: { method: HttpMethod.DELETE, path: '/api/members' }, // 회원 탈퇴
 
   // 회원 정보
   PROFILE_CARD: { method: HttpMethod.GET, path: '/api/members/profilecard' }, // 프로필 카드 조회
-  BADGES: { method: HttpMethod.GET, path: '/api/members/badges' }, // 뱃지 조회
-  LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves' }, // 나뭇잎 개수 조회
-  FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
+  LEAVES: { method: HttpMethod.GET, path: '/api/members/leaves' }, // 나뭇잎 보유량 조회
+
+  FEEDBACK: {
+    GET_FEEDBACK: { method: HttpMethod.GET, path: '/api/members/feedback' }, // 챌린지 피드백 조회
+    POST_FEEDBACK: { method: HttpMethod.POST, path: '/api/members/feedback' }, //피드백 생성 요청
+    RESULT: { method: HttpMethod.GET, path: '/api/members/feedback/result' }, //피드백 결과 조회(롱폴링)
+  },
+
+  BADGES: {
+    LIST: { method: HttpMethod.GET, path: '/api/members/badges' }, // 뱃지 조회
+    RECENT: { method: HttpMethod.GET, path: '/api/members/badges/recent' }, //최근 획득 뱃지 조회
+  },
 
   // 알림
   NOTIFICATION: {
@@ -143,21 +215,31 @@ const MEMBER_ENDPOINTS = {
   },
 
   // 나뭇잎 상점
-  PRODUCT: {
-    LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
+  STORE: {
+    ORDERS: {
+      LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
+    },
   },
 
   /** 챌린지 */
   CHALLENGE: {
     GROUP: {
       CREATIONS: { method: HttpMethod.GET, path: '/api/members/challenges/group/creations' }, // 생성한 챌린지
-      PARTICIPATIONS: { method: HttpMethod.GET, path: '/api/members/challenges/group/participations' }, // 내가 참여한 챌린지
+      PARTICIPATIONS: {
+        method: HttpMethod.GET,
+        path: '/api/members/challenges/group/participations',
+      }, // 참여한 단체 챌린지 목록 조회
 
-      // 챌린지 인증 내역
+      // 참여한 단체 챌린지 인증 내역을 일별로 조회
       VERIFICATIONS: (challengeId: number) => ({
         method: HttpMethod.GET,
         path: `/api/members/challenges/group/participations/${challengeId}/verifications`,
       }),
+      // 참여한 단체 챌린지 카운트 조회 (인증 페이지)
+      COUNT: {
+        method: HttpMethod.GET,
+        path: `/api/members/challenges/group/participations/count`,
+      },
     },
   },
 }
@@ -171,78 +253,6 @@ const S3_ENDPOINTS = {
   // UPLOAD: { method: HttpMethod.PUT, path: '/s3/images' },
 }
 
-/** 게시글 (v2 개발)*/
-// const POST_ENDPOINTS = {
-//   // 목록 조회
-//   LIST: { method: HttpMethod.GET, path: '/api/posts' },
-
-//   // 상세 조회
-//   DETAILS: (postId: number) => ({
-//     method: HttpMethod.GET,
-//     path: `/api/posts/${postId}`,
-//   }),
-
-//   // 작성
-//   CREATE: { method: HttpMethod.POST, path: '/api/posts' },
-
-//   // 수정
-//   UPDATE: (postId: number) => ({
-//     method: HttpMethod.PATCH,
-//     path: `/api/posts/${postId}`,
-//   }),
-
-//   // 삭제
-//   DELETE: (postId: number) => ({
-//     method: HttpMethod.DELETE,
-//     path: `/api/posts/${postId}`,
-//   }),
-
-//   COMMENTS: {
-//     // 댓글 목록 조회
-//     LIST: (postId: number) => ({
-//       method: HttpMethod.GET,
-//       path: `/api/posts/${postId}/comments`,
-//     }),
-
-//     // 댓글 작성
-//     CREATE: (postId: number) => ({
-//       method: HttpMethod.POST,
-//       path: `/api/posts/${postId}/comments`,
-//     }),
-
-//     // 댓글 수정
-//     UPDATE: (postId: number, commentId: number) => ({
-//       method: HttpMethod.PUT,
-//       path: `/api/posts/${postId}/comments/${commentId}`,
-//     }),
-//     // 댓글 삭제
-//     DELETE: (postId: number, commentId: number) => ({
-//       method: HttpMethod.DELETE,
-//       path: `/api/posts/${postId}/comments/${commentId}`,
-//     }),
-
-//     // 대댓글 작성
-//     REPLY: (postId: number, commentId: number) => ({
-//       method: HttpMethod.POST,
-//       path: `/api/posts/${postId}/comments/${commentId}/replies`,
-//     }),
-//   },
-
-//   /** 좋아요 */
-//   LIKES: {
-//     // 생성
-//     CREATE: (postId: number) => ({
-//       method: HttpMethod.POST,
-//       path: `/api/posts/${postId}/likes`,
-//     }),
-//     // 개수
-//     COUNT: (postId: number) => ({
-//       method: HttpMethod.GET,
-//       path: `/api/posts/${postId}/likes/count`,
-//     }),
-//   },
-// }
-
 const STORE_ENDPOINTS = {
   TIME_DEAL: {
     // 타임딜 상품 목록
@@ -250,7 +260,7 @@ const STORE_ENDPOINTS = {
     // 타임딜 상품 주문
     ORDER: (dealId: number) => ({
       method: HttpMethod.POST,
-      path: `/api/orders/${dealId}`,
+      path: `/api/orders/timedeals/${dealId}`,
     }),
   },
   PRODUCTS: {
@@ -259,8 +269,14 @@ const STORE_ENDPOINTS = {
     // 상품 주문
     ORDER: (productId: number) => ({
       method: HttpMethod.POST,
-      path: `/api/orders/${productId}`,
+      path: `/api/orders/products/${productId}`,
     }),
+  },
+  ETC: {
+    COUNT: {
+      // 누적 나뭇잎 수 조회
+      LEAVES: { method: HttpMethod.GET, path: '/api/leaves/count' },
+    },
   },
 }
 
@@ -271,73 +287,10 @@ const CHATBOT_ENDPOINTS = {
   CHATTING: { method: HttpMethod.POST, path: '/api/chatbot/recommendation/free-text' },
 }
 
-/** 관리자 (v3 개발)*/
-// const ADMIN_ENDPOINTS = {
-//   CHALLENGE: {
-//     EVENT: {
-//       // 이벤트 챌린지 생성
-//       CREATE: { method: HttpMethod.POST, path: '/api/admin/challenges/event' },
-//     },
-//     PERSONAL: {
-//       // 템플릿
-//       TEMPLATE: {
-//         GET: { method: HttpMethod.GET, path: '/api/admin/challenges/personal' }, // 조회
-//         CREATE: { method: HttpMethod.POST, path: '/api/admin/challenges/personal' }, // 생성
-//         // 개인 챌린지 템플릿 수정
-//         UPDATE: (templateId: number) => ({
-//           method: HttpMethod.PATCH,
-//           path: `/api/admin/challenges/personal/${templateId}`,
-//         }),
-//         // 개인 챌린지 템플릿 삭제
-//         DELETE: (templateId: number) => ({
-//           method: HttpMethod.DELETE,
-//           path: `/api/admin/challenges/personal/${templateId}`,
-//         }),
-//       },
-//       PRODUCT: {
-//         // 일반 상품
-//         STORE: {
-//           // 등록
-//           CREATE: { method: HttpMethod.POST, path: '/api/admin/products' },
-
-//           // 수정
-//           UPDATE: (productId: number) => ({
-//             method: HttpMethod.PATCH,
-//             path: `/api/admin/products/${productId}`,
-//           }),
-
-//           // 삭제
-//           DELETE: (productId: number) => ({
-//             method: HttpMethod.DELETE,
-//             path: `/api/admin/products/${productId}`,
-//           }),
-//         },
-//         // 타임딜
-//         TIME_DEAL: {
-//           // 등록ㄴ
-//           CREATE: { method: HttpMethod.POST, path: '/api/admin/timedeals' },
-//           // 수정
-//           UPDATE: (dealId: number) => ({
-//             method: HttpMethod.PATCH,
-//             path: `/api/admin/timedeals/${dealId}`,
-//           }),
-//           // 삭제
-//           DELETE: (dealId: number) => ({
-//             method: HttpMethod.DELETE,
-//             path: `/api/admin/timedeals/${dealId}`,
-//           }),
-//         },
-//       },
-//     },
-//   },
-// }
-
 export const ENDPOINTS = {
   CHALLENGE: CHALLENGE_ENDPOINTS,
   MEMBERS: MEMBER_ENDPOINTS,
-  // POSTS: POST_ENDPOINTS,
   STORE: STORE_ENDPOINTS,
   CHATBOT: CHATBOT_ENDPOINTS,
   S3: S3_ENDPOINTS,
-  // ADMIN: ADMIN_ENDPOINTS,
 } as const

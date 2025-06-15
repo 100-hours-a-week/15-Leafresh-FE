@@ -1,6 +1,8 @@
+import { ChallengeCategoryType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
+import { DateFormatString } from '@shared/types/date'
 
 /**
  * 요청 파라미터 타입
@@ -10,6 +12,7 @@ export interface FetchGroupChallengesParams {
   category?: string
   cursorId?: number
   cursorTimestamp?: string
+  size?: number
 }
 
 /**
@@ -18,10 +21,12 @@ export interface FetchGroupChallengesParams {
 export interface GroupChallengeItem {
   id: number
   title: string
+  category: ChallengeCategoryType
+  description: string
   thumbnailUrl: string
   leafReward: number
-  startDate: string
-  endDate: string
+  startDate: DateFormatString
+  endDate: DateFormatString
   remainingDay: number
   currentParticipantCount: number
 }
@@ -40,7 +45,7 @@ export type FetchGroupChallengesResponse = InfiniteScrollResponse<{
 export const fetchGroupChallenges = (params: FetchGroupChallengesParams) => {
   // query 객체에 undefined 값은 제외하고 문자열/숫자 타입으로만 전환
   const query: Record<string, string | number> = {}
-  if (params.category) query.category = params.category
+  if (params.category && params.category !== 'ALL') query.category = params.category // (API SPEC) "전체" 인 경우에는 카테고리 쿼리 없이 요청
   if (params.input) query.input = params.input
   if (params.cursorId !== undefined) query.cursorId = params.cursorId
   if (params.cursorTimestamp) query.cursorTimestamp = params.cursorTimestamp

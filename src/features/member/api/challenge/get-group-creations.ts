@@ -1,8 +1,8 @@
 import { ChallengeCategoryType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
-import { ISOFormatString } from '@shared/types/date'
+import { DateFormatString, ISOFormatString } from '@shared/types/date'
 
 interface MemberGroupChallengeCreationsParams {
   cursorId?: number
@@ -13,8 +13,8 @@ export type GroupChallengeResponse = {
   id: number
   name: string
   description: string
-  startDate: string
-  endDate: string
+  startDate: DateFormatString // YYYY-mm-dd
+  endDate: DateFormatString
   imageUrl: string
   currentParticipantCount: number
   category: ChallengeCategoryType

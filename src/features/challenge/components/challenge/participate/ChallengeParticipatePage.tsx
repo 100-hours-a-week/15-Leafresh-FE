@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { useEffect, useRef, useState } from 'react'
@@ -10,10 +9,11 @@ import ChallengeCard from '@features/challenge/components/challenge/participate/
 import CardList from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCardList'
 import { useGroupParticipationsCount } from '@features/challenge/hook/useGroupParticipationsCount'
 import { useInfiniteGroupParticipations } from '@features/challenge/hook/useInfiniteGroupParticipations'
-import Chatbot from '@shared/components/chatbot/Chatbot'
+import Loading from '@shared/components/loading'
+import NoContent from '@shared/components/no-content/no-content'
 import SwitchTap from '@shared/components/switchtap/SwitchTap'
 import { URL } from '@shared/constants/route/route'
-import { theme } from '@shared/styles/theme'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 const statusMap: Record<number, ChallengeStatus> = {
   0: 'not_started',
@@ -69,7 +69,39 @@ export default function ChallengeParticipatePage() {
     }
   }, [hasError, hasNextPage, isFetchingNextPage, fetchNextPage])
 
-  if (isLoading && !hasError) return <div>Loading challenges…</div>
+  let challengeContents
+  const isChallengeExists: boolean = realChallenges && realChallenges.length > 0
+  if (isChallengeExists) {
+    challengeContents = (
+      <CardList>
+        {realChallenges.map(challenge => {
+          const { id, title, thumbnailUrl, startDate, endDate, achievement } = challenge
+          return (
+            <ChallengeCard
+              key={id}
+              title={title}
+              imageUrl={thumbnailUrl}
+              startDate={new Date(startDate)}
+              endDate={new Date(endDate)}
+              successCount={achievement.success}
+              maxCount={achievement.total}
+              onClick={() => router.push(URL.CHALLENGE.PARTICIPATE.DETAILS.value(id))}
+            />
+          )
+        })}
+      </CardList>
+    )
+  } else {
+    challengeContents = (
+      <NoContent
+        title='챌린지가 없습니다'
+        buttonText='참여하러 가기'
+        clickHandler={() => {
+          router.push(URL.MAIN.INDEX.value)
+        }}
+      />
+    )
+  }
 
   return (
     <Container>
@@ -77,71 +109,48 @@ export default function ChallengeParticipatePage() {
         <SwitchTap tabs={tabLabels} currentIndex={tab} onChange={setTab} />
       </SwitchTapContainer>
 
-      <CardListContainer>
-        <CardList>
-          {realChallenges.length > 0 ? (
-            realChallenges.map(c => (
-              <ChallengeCard
-                key={c.id}
-                title={c.title}
-                imageUrl={c.thumbnailUrl}
-                startDate={new Date(c.startDate)}
-                endDate={new Date(c.endDate)}
-                successCount={c.achievement.success}
-                maxCount={c.achievement.total}
-                onClick={() => router.push(URL.CHALLENGE.PARTICIPATE.DETAILS.value(c.id))}
-              />
-            ))
-          ) : (
-            <EmptySection>
-              <Image src='/image/main-icon.svg' alt='Leafresh' width={80} height={60} style={{ alignSelf: 'center' }} />
-              <EmptyState>참여 중인 챌린지가 없습니다.</EmptyState>
-              <EmptyButton
-                onClick={() => {
-                  router.push(URL.CHALLENGE.INDEX.value)
-                }}
-              >
-                챌린지 참여하러 가기
-              </EmptyButton>
-            </EmptySection>
-          )}
-          {/* API 정상일 때만 무한 스크롤 트리거 */}
-          {!hasError && hasNextPage && isLoading && (
-            <ObserverTrigger ref={loadMoreRef}>{isFetchingNextPage ? '불러오는 중…' : ''}</ObserverTrigger>
-          )}
-        </CardList>
+      <CardListContainer isChallengeExists={isChallengeExists}>
+        {challengeContents}
+        {isFetchingNextPage && <Loading />}
+        {!hasNextPage && !isLoading && realChallenges.length > 0 && <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>}
+        {!hasError && hasNextPage && isLoading && (
+          <ObserverTrigger ref={loadMoreRef}>{isFetchingNextPage ? '불러오는 중…' : ''}</ObserverTrigger>
+        )}
       </CardListContainer>
-      <Chatbot />
     </Container>
   )
 }
 
 // 전체 페이지 컨테이너
 const Container = styled.div`
+  ${responsiveHorizontalPadding};
+
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 100dvh;
-  max-width: 500px;
   margin: 0 auto;
-  padding: 0;
+
+  height: 100%;
 `
 
 // 상단 탭 컨테이너
 const SwitchTapContainer = styled.div`
-  padding: 20px 20px 16px 20px;
+  width: 100%;
+
   align-self: center;
   flex-shrink: 0; /* 헤더 크기 고정 */
 `
 
 // 카드 리스트 컨테이너
-const CardListContainer = styled.div`
-  flex: 1; /* 남은 공간 모두 차지하도록 변경 */
-  margin-left: 8px;
+const CardListContainer = styled.div<{ isChallengeExists: boolean }>`
+  width: 100%;
+  height: ${({ isChallengeExists }) => (!isChallengeExists ? '100%' : 'fit-content')};
+
   display: flex;
   align-self: center;
   flex-direction: column; /* 세로 방향으로 설정 */
   overflow: hidden; /* 내부 스크롤만 보이도록 설정 */
-  padding: 0 20px;
+  gap: 24px;
 `
 
 const ObserverTrigger = styled.div`
@@ -149,29 +158,9 @@ const ObserverTrigger = styled.div`
   padding: 0 20px;
   flex-shrink: 0; /* 크기 고정 */
 `
-const EmptySection = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
 
-const EmptyState = styled.div`
+const EndMessage = styled.div`
   text-align: center;
-  padding: 20px;
-  color: ${theme.colors.lfBlack.base};
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const EmptyButton = styled.button`
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
-  width: 220px;
-  height: 40px;
-  align-self: center;
-  border-radius: ${theme.radius.md};
-  box-shadow: ${theme.shadow.lfPrime};
-  cursor: pointer;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.lfDarkGray.base};
 `

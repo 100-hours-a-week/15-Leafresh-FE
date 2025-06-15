@@ -2,7 +2,7 @@
 
 import { DayType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { fetchRequest } from '@shared/lib/api'
 
 type GetPersonalChallengeListQuery = {
   dayOfWeek: DayType

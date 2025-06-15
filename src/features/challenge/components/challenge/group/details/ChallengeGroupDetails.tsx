@@ -29,6 +29,7 @@ import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
+import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
 
@@ -160,7 +161,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
 
   /** 단체 챌린지 참여 이력 페이지로 이동 */
   const handleRouteToVerificationsPage = () => {
-    router.push(URL.CHALLENGE.GROUP.PARTICIPATE_LIST.value(challengeId))
+    router.push(URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId))
   }
   return (
     <Wrapper className={className}>
@@ -264,10 +265,11 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
 export default ChallengeGroupDetails
 
 const Wrapper = styled.div`
+  ${responsiveHorizontalPadding};
+
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 20px 0px;
 `
 
 const DescriptionSection = styled.section`
@@ -287,7 +289,6 @@ const ThumbnailImageWrapper = styled.div`
 `
 
 const Thumbnail = styled(Image)`
-  width: 100%;
   object-fit: cover;
   border-radius: ${theme.radius.base};
 `

@@ -1,6 +1,6 @@
 import { DAYS, DAYS_KOR } from '@entities/challenge/constant'
 import { DayType } from '@entities/challenge/type'
-import { DateFormatString } from '@shared/types/date'
+import { DateFormatString, ISOFormatString } from '@shared/types/date'
 
 /**
  * 요일 인덱스(일: 0, 월: 1, … 토: 6)를 통해 한글 요일로 반환
@@ -47,4 +47,58 @@ export const formatDateToDateFormatString = (date: Date): DateFormatString => {
  */
 export const getDayOfWeek = (date: Date): DayType => {
   return DAYS[date.getDay()]
+}
+
+/**
+ * 초(second) 를 "00:00:00" 형식으로 변환
+ */
+export const formatSecondToTime = (second: number): string => {
+  const hours = String(Math.floor(second / 3600)).padStart(2, '0')
+  const minutes = String(Math.floor((second % 3600) / 60)).padStart(2, '0')
+  const seconds = String(second % 60).padStart(2, '0')
+  return `${hours}:${minutes}:${seconds}`
+}
+
+/**
+ * ISOFormat 형식의 시간 데이터를 기준으로 몇분 전인지 표시해주는 유틸 함수
+ * @param dateString
+ * @returns
+ */
+export const getTimeDiff = (dateString: ISOFormatString): string => {
+  const now = new Date()
+  const target = new Date(dateString)
+
+  const diffMs = now.getTime() - target.getTime()
+  const diffMin = Math.floor(diffMs / (1000 * 60))
+  const diffHour = Math.floor(diffMs / (1000 * 60 * 60))
+  const diffDay = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+  const diffWeek = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 7))
+  const diffMonth = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 7 * 30))
+  const diffYear = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 7 * 30 * 12))
+
+  // 1시간 이내
+  if (diffMin < 60) {
+    return `${diffMin}분 전`
+  }
+
+  // 하루 이내
+  if (diffHour < 24) {
+    return `${diffHour}시간 전`
+  }
+
+  // 일주일 이내
+  if (diffDay < 7) {
+    return `${diffDay}일 전`
+  }
+
+  //한달 이내
+  if (diffWeek < 4) {
+    return `${diffWeek}주 전`
+  }
+
+  if (diffMonth < 12) {
+    return `${diffMonth}달 전`
+  }
+
+  return `${diffYear}년 전`
 }
