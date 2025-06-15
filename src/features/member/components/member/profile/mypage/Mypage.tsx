@@ -171,7 +171,7 @@ const Mypage = () => {
           onClick={handleProfileCardOpen}
         />
         <FeedbackBox>
-          <FeedbackText>나의 친환경 활동 점수는?</FeedbackText>
+          <FeedbackText>나의 친환경 활동 피드백</FeedbackText>
           {isPolling && <Loading />}
 
           {/* 피드백 */}
@@ -255,6 +255,7 @@ const FeedbackBox = styled.div`
   width: 100%;
   margin-top: 20px;
   display: flex;
+  padding: 15px;
   flex-direction: column;
   background-color: #eff9e8;
 
@@ -263,14 +264,14 @@ const FeedbackBox = styled.div`
   justify-self: center;
   text-align: start;
 
-  padding: 10px 0;
   border-radius: ${theme.radius.base};
   box-shadow: ${theme.shadow.lfPrime};
 `
 
 const FeedbackText = styled.p`
-  font-size: ${theme.fontSize.sm};
-  padding-left: 20px;
+  font-size: ${theme.fontSize.md};
+  /* padding-left: 20px; */
+  font-weight: ${theme.fontWeight.semiBold};
   align-self: flex-start;
 `
 const Feedback = styled.p`
