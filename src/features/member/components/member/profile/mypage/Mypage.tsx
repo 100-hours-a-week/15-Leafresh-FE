@@ -5,7 +5,10 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { useUserStore } from '@entities/member/context/UserStore'
 import { slideRotateIn } from '@entities/member/style'
+import { LogoutResponse, LogoutVariables } from '@features/member/api/logout'
 import { FeedbackResponse, getFeedback } from '@features/member/api/profile/get-member-feedback'
 import { pollFeedbackResult } from '@features/member/api/profile/get-member-feedback-result'
 import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
@@ -17,6 +20,8 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
+import { ToastType } from '@shared/context/toast/type'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
@@ -31,6 +36,10 @@ const Mypage = () => {
   const [isPolling, setIsPolling] = useState(false)
   const [pollError, setPollError] = useState<string | null>(null)
   const [showProfileCard, setShowProfileCard] = useState(false)
+
+  const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
+  const { clearUserInfo } = useUserStore()
+  const openToast = useToast()
 
   const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK)
 
@@ -88,13 +97,16 @@ const Mypage = () => {
     ...QUERY_OPTIONS.MEMBER.FEEDBACK,
   })
 
+  const { mutate: LogoutMutate, isPending: isLoggingOut } = useMutationStore<LogoutResponse, LogoutVariables>(
+    MUTATION_KEYS.MEMBER.AUTH.LOGOUT,
+  )
+
   if (!profileData) return null //로딩, fallback 처리
 
   const profile: ProfileResponse = profileData.data ?? ({} as ProfileResponse)
   const profileCard: ProfileCardResponse = profileCardData?.data ?? ({} as ProfileCardResponse)
   const recentbadges: Badge[] = recentBadgesData?.data.badges ?? []
   const feedback: FeedbackResponse | null = feedbackData?.data ?? null
-  console.log(feedback?.content)
 
   function handleProfileCardOpen() {
     setShowProfileCard(true)
@@ -126,6 +138,26 @@ const Mypage = () => {
         }
       },
     })
+  }
+
+  /** 로그아웃 로직 */
+  const handleLogout = () => {
+    if (!OAuthUserInfo) {
+      // TODO: 유효한 로그인 정보 확인해서 분기 처리
+      return
+    }
+    const provider = OAuthUserInfo.provider
+    LogoutMutate(
+      { provider },
+      {
+        onSuccess: response => {
+          clearOAuthUserInfo()
+          clearUserInfo()
+          openToast(ToastType.Success, '로그아웃 성공')
+          router.push(URL.MAIN.INDEX.value)
+        },
+      },
+    )
   }
 
   return (
@@ -165,18 +197,18 @@ const Mypage = () => {
       </BadgeSection>
 
       <RouteSection>
-        <SectionTitle>나의 활동</SectionTitle>
+        <SectionTitle>나의 이용 내역</SectionTitle>
         <MenuList>
           <MenuItem onClick={() => router.push(URL.MEMBER.CHALLENGES.CREATED.value)}>
             <MenuText>생성한 챌린지</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.BADGE.value)}>
-            <MenuText>나의 활동 뱃지</MenuText>
+            <MenuText>활동 뱃지</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.STORE.PURCHASED.value)}>
-            <MenuText>나의 상점 구매 목록</MenuText>
+            <MenuText>구매 목록</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
         </MenuList>
@@ -186,6 +218,10 @@ const Mypage = () => {
         <MenuList>
           <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.MODIFY.value)}>
             <MenuText>프로필 수정</MenuText>
+            <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
+          </MenuItem>
+          <MenuItem onClick={handleLogout}>
+            <MenuText style={{ color: 'red' }}>로그아웃</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
         </MenuList>
