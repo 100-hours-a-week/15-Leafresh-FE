@@ -31,7 +31,7 @@ export type ParticipantChallengeResponse = InfiniteScrollResponse<{
   status: number
 }>
 
-export const fetchGroupParticipations = ({ status, cursorId, cursorTimestamp }: FetchGroupParticipationsParams) => {
+export const getGroupParticipations = ({ status, cursorId, cursorTimestamp }: FetchGroupParticipationsParams) => {
   return fetchRequest<ParticipantChallengeResponse>(ENDPOINTS.MEMBERS.CHALLENGE.GROUP.PARTICIPATIONS, {
     query: {
       status,

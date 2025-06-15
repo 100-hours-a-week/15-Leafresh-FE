@@ -3,15 +3,18 @@ import { useRouter } from 'next/navigation'
 
 import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 import type { ChallengeStatus, ParticipantChallengeItem } from '@features/challenge/api/participate/group-participant'
+import { getGroupParticipationsCount } from '@features/challenge/api/participate/group-participant-count'
 import ChallengeCard from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCard'
 import CardList from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCardList'
-import { useGroupParticipationsCount } from '@features/challenge/hook/useGroupParticipationsCount'
 import { useInfiniteGroupParticipations } from '@features/challenge/hook/useInfiniteGroupParticipations'
 import Loading from '@shared/components/loading'
 import NoContent from '@shared/components/no-content/no-content'
 import SwitchTap from '@shared/components/switchtap/SwitchTap'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
@@ -36,21 +39,26 @@ export default function ChallengeParticipatePage() {
     isFetchingNextPage,
   } = useInfiniteGroupParticipations(status)
 
-  const { data: CountData } = useGroupParticipationsCount()
+  const { data: countData } = useQuery({
+    queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT,
+    queryFn: getGroupParticipationsCount,
+    ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.COUNT,
+  })
 
-  const CountObj = CountData?.data.count
+  const counts = countData?.data.count
 
   // API 오류 여부
   const hasError = Boolean(error)
 
-  const realChallenges: ParticipantChallengeItem[] =
+  const challenges: ParticipantChallengeItem[] =
     challengeData?.pages.flatMap(page => (Array.isArray(page.data?.challenges) ? page.data.challenges : [])) ?? []
   // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
-    `참여 전 (${CountObj?.notStarted ?? 0})`,
-    `참여 중 (${CountObj?.ongoing ?? 0})`,
-    `참여 완료 (${CountObj?.completed ?? 0})`,
+    `참여 전 (${counts?.notStarted ?? 0})`,
+    `참여 중 (${counts?.ongoing ?? 0})`,
+    `참여 완료 (${counts?.completed ?? 0})`,
   ]
+
   // 무한 스크롤
   const loadMoreRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -70,10 +78,10 @@ export default function ChallengeParticipatePage() {
   }, [hasError, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   let challengeContents
-  if (realChallenges && realChallenges.length > 0) {
+  if (challenges && challenges.length > 0) {
     challengeContents = (
       <CardList>
-        {realChallenges.map(challenge => {
+        {challenges.map(challenge => {
           const { id, title, thumbnailUrl, startDate, endDate, achievement } = challenge
           return (
             <ChallengeCard
@@ -91,7 +99,7 @@ export default function ChallengeParticipatePage() {
       </CardList>
     )
   } else {
-    challengeContents = (
+    challengeContents = !isLoading && (
       <NoContent
         title='챌린지가 없습니다'
         buttonText='참여하러 가기'
@@ -110,8 +118,8 @@ export default function ChallengeParticipatePage() {
 
       <CardListContainer>
         {challengeContents}
-        {isFetchingNextPage && <Loading />}
-        {!hasNextPage && !isLoading && realChallenges.length > 0 && <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>}
+        {(isFetchingNextPage || isLoading) && <Loading />}
+        {!hasNextPage && !isLoading && challenges.length > 0 && <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>}
         {!hasError && hasNextPage && isLoading && (
           <ObserverTrigger ref={loadMoreRef}>{isFetchingNextPage ? '불러오는 중…' : ''}</ObserverTrigger>
         )}

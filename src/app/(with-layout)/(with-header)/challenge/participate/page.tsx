@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
-import { ChallengeStatus, GetGroupParticipations } from '@features/challenge/api/participate/group-participant'
-import { GetGroupParticipationsCount } from '@features/challenge/api/participate/group-participant-count'
+import { ChallengeStatus, getGroupParticipations } from '@features/challenge/api/participate/group-participant'
+import { getGroupParticipationsCount } from '@features/challenge/api/participate/group-participant-count'
 import ChallengeParticipatePage from '@features/challenge/components/challenge/participate/ChallengeParticipatePage'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
@@ -16,13 +16,13 @@ export default async function Page() {
     await Promise.all([
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.COUNT,
-        queryFn: GetGroupParticipationsCount,
+        queryFn: getGroupParticipationsCount,
         ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.COUNT,
       }),
 
       queryClient.prefetchInfiniteQuery({
         queryKey: [...QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS, status] as const,
-        queryFn: async ({ pageParam = {} }) => GetGroupParticipations({ status, ...pageParam }),
+        queryFn: async ({ pageParam = {} }) => getGroupParticipations({ status, ...pageParam }),
         initialPageParam: {},
         ...QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
       }),
