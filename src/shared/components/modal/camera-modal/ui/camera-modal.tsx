@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { CheckIcon, SwitchTap } from '@shared/components'
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'

@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 
 import { CHALLENGE_VERIFICATION_RESULT, ChallengeVerificationResultType } from '@entities/challenge/model'
-import { ImageZoomModalData, useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
+import { ImageZoomModalData, useImageZoomStore } from '@shared/context/modal/image-zoom-modal-store'
 
 import VerificationImageInput from '../../verification-image-input/ui/verification-image-input'
 import { ChallengeVerifyExamplesProps, VerificationImageData } from '../model/types'

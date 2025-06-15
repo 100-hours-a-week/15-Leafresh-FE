@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/model'
 import { ASPECT_RATIOS, AspectRatioType } from '@shared/constants/image-size'
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { ThemeColorType, ThemeFontSizeType } from '@shared/styles/theme/type'
 

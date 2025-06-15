@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 
-import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
+import { useInfoModalStore } from '@shared/context/modal/info-modal-store'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'

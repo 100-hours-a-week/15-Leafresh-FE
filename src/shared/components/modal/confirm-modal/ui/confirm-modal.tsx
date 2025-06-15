@@ -1,7 +1,7 @@
 'use client'
 import { useRef } from 'react'
 
-import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'

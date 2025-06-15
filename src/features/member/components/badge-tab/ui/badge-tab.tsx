@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
+import { useInfoModalStore } from '@shared/context/modal/info-modal-store'
 
 import { BadgeTabProps } from '../model/types'
 import * as S from './styles'

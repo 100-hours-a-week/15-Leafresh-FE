@@ -3,7 +3,7 @@
 import { useOAuthUserStore } from '@entities/member/model/oauth-user-store'
 import { useUserStore } from '@entities/member/model/user-store'
 import { URL } from '@shared/constants/route'
-import { useToastStore } from '@shared/context/toast/ToastStore'
+import { useToastStore } from '@shared/context/toast/toast-store'
 import { ToastType } from '@shared/context/toast/type'
 import { ErrorResponse } from '@shared/lib/api/type'
 

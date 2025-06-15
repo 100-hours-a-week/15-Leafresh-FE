@@ -3,10 +3,10 @@
 import { useEffect } from 'react'
 
 import { CameraModal, ConfirmModal, ImageZoomModal, InfoModal } from '@shared/components'
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
-import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
-import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
-import { useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
+import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
+import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
+import { useImageZoomStore } from '@shared/context/modal/image-zoom-modal-store'
+import { useInfoModalStore } from '@shared/context/modal/info-modal-store'
 
 export const ModalProvider = () => {
   const { isOpen: isCameraOpen, close: closeCameraModal } = useCameraModalStore()

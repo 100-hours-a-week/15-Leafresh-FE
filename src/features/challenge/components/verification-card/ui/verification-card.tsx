@@ -14,7 +14,7 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/m
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route'
-import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'

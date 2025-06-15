@@ -9,7 +9,7 @@ import { useGroupVerificationResult } from '@features/challenge/hook/useGroupVer
 import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
 
 import { MemberChallengeVerificationStatusPageProps } from '../model/types'
 import * as S from './styles'

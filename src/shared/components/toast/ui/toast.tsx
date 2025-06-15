@@ -2,7 +2,7 @@
 import { AnimatePresence } from 'motion/react'
 import { useEffect } from 'react'
 
-import { useToastStore } from '@shared/context/toast/ToastStore'
+import { useToastStore } from '@shared/context/toast/toast-store'
 import { ToastType } from '@shared/context/toast/type'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 

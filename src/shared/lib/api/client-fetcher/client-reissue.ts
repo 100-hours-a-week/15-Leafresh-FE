@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@shared/constants/endpoint'
-import { useToastStore } from '@shared/context/toast/ToastStore'
+import { useToastStore } from '@shared/context/toast/toast-store'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
