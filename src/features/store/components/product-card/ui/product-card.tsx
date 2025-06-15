@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
+import { Product } from '@entities/store/api'
 import {
   OrderProductBody,
   OrderProductHeaders,
@@ -11,14 +12,16 @@ import {
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route'
-import { useIdempotencyKeyStore } from '@shared/context'
+import { ToastType, useIdempotencyKeyStore } from '@shared/context'
 import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
-import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
 
-import { ProductCardProps } from '../model/types'
 import * as S from './styles'
+
+interface ProductCardProps {
+  product: Product
+}
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const router = useRouter()

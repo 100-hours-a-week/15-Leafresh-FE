@@ -9,7 +9,6 @@ import { ISOFormatString } from '@shared/type/date'
 import { getTimeDealProducts, TimeDealProduct } from '../../../../../entities/store/api/timedeal/get-timedeal-list'
 import { OngoingTimeDealCard } from '../../ongoing-timedeal-card'
 import { UpcomingTimeDealCard } from '../../upcoming-timedeal-card'
-import { TimeDealListProps } from '../model/types'
 import * as S from './styles'
 
 import { useQuery } from '@tanstack/react-query'
@@ -102,6 +101,9 @@ const dummyTimeDealProducts: TimeDealProduct[] = [
     timeDealStatus: 'UPCOMING',
   },
 ]
+interface TimeDealListProps {
+  className?: string
+}
 
 export const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
   // 타임딜 상품 목록 조회

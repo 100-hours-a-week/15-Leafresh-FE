@@ -2,12 +2,11 @@
 
 import { ReactNode, useEffect, useRef, useState } from 'react'
 
-import ApologizeContent from '@shared/components/apologize/ui/apologize'
+import { ApologizeContent } from '@shared/components'
 
 import { Product } from '../../../../../entities/store/api/product/get-product-list'
 import { useInfiniteProducts } from '../../../api/use-get-product-list'
 import { ProductCard } from '../../product-card'
-import { ProductListProps } from '../model/types'
 import * as S from './styles'
 
 const dummyProducts: Product[] = [
@@ -87,6 +86,10 @@ const dummyProducts: Product[] = [
   },
 ]
 // const dummyProducts: Product[] = []
+
+interface ProductListProps {
+  className?: string
+}
 
 export const ProductList = ({ className }: ProductListProps): ReactNode => {
   const [input, setInput] = useState<string>('') // 트래킹 용

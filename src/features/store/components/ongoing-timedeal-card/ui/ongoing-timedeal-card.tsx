@@ -10,20 +10,22 @@ import {
   OrderTimeDealProductResponse,
   OrderTimeDealProductVariables,
 } from '@entities/store/api/timedeal/order-timedeal'
-import ApologizeContent from '@shared/components/apologize/ui/apologize'
-import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { ApologizeContent, LucideIcon } from '@shared/components'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route'
-import { useIdempotencyKeyStore } from '@shared/context'
+import { ToastType, useIdempotencyKeyStore } from '@shared/context'
 import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
-import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
 import { formatSecondToTime } from '@shared/lib/date/lib'
 
-import { OngoingTimeDealCardProps } from '../model/types'
 import * as S from './styles'
+
+interface OngoingTimeDealCardProps {
+  data: TimeDealProduct[]
+  className?: string
+}
 
 export const OngoingTimeDealCard = ({ data, className }: OngoingTimeDealCardProps): ReactNode => {
   const router = useRouter()
