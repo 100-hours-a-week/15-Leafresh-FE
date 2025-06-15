@@ -4,9 +4,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { GroupChallengeItem } from '@entities/challenge/api/group/get-group-list'
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/common/consts'
-import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
-import { URL } from '@shared/constants/route/route'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model'
+import { useInfiniteGroupChallenges } from '@features/challenge/api'
+import { URL } from '@shared/constants/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import { categoryBannerMap } from '../model/constants'

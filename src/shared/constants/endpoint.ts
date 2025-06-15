@@ -1,6 +1,6 @@
 import { LowercaseOAuthType } from '@entities/member/type'
 
-import { HttpMethod } from '../http'
+import { HttpMethod } from './http'
 
 export type EndpointType = {
   method: HttpMethod

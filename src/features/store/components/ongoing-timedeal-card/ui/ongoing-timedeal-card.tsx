@@ -13,7 +13,7 @@ import {
 import ApologizeContent from '@shared/components/apologize/ui/apologize'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { useIdempotencyKeyStore } from '@shared/context'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'

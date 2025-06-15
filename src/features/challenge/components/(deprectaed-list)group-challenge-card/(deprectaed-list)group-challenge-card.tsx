@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'
 
@@ -22,7 +22,7 @@ interface GroupChallengeProps {
   className?: string
 }
 
-const GroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge, className }) => {
+export const DeprecatedGroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge, className }) => {
   const router = useRouter()
   return (
     <CardContainer onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(challenge.id))} className={className}>
@@ -57,8 +57,6 @@ const GroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge, classNam
     </CardContainer>
   )
 }
-
-export default GroupChallengeCard
 
 const CardContainer = styled.div`
   cursor: pointer;

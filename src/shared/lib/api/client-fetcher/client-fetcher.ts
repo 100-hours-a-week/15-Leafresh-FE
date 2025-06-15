@@ -1,5 +1,5 @@
 import { handleAuthError } from '@shared/config/tanstack-query/utils'
-import { EndpointType } from '@shared/constants/endpoint/endpoint'
+import { EndpointType } from '@shared/constants/endpoint'
 
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshClientAccessToken } from './client-reissue'

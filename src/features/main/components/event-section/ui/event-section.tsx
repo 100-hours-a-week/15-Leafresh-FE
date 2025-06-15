@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 
 import { EventChallenge } from '@entities/challenge/api/event/get-event-list'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 
 import { EventSectionProps } from '../model/types'
 import * as S from './styles'

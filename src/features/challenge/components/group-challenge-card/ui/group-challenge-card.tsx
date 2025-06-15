@@ -5,7 +5,7 @@ import { DeleteGroupChallengeResponse, DeleteGroupChallengeVariables } from '@en
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/model'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'

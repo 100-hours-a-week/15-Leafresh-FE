@@ -1,4 +1,4 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ENDPOINTS } from '@shared/constants/endpoint'
 import { useToastStore } from '@shared/context/toast/ToastStore'
 
 let isRefreshing = false

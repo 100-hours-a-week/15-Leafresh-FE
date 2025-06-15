@@ -1,5 +1,6 @@
-import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard' // TODO: 같은 이름의 컴포넌트가 있음. 수정필요
-import GridBox from '@shared/components/grid/ui/grid'
+// TODO: 같은 이름의 컴포넌트가 있음. 수정필요
+import { DeprecatedGroupChallengeCard } from '@features/challenge/components'
+import { GridBox } from '@shared/components'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 import styled from '@emotion/styled'
@@ -119,7 +120,7 @@ export const EmptyState = styled.div`
   font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
-export const StyledGroupChallengeCard = styled(GroupChallengeCard)`
+export const StyledGroupChallengeCard = styled(DeprecatedGroupChallengeCard)`
   width: 100%;
 `
 

@@ -1,6 +1,6 @@
 import { icons } from 'lucide-react'
 
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 
 type Navbar_Tab = {
   label: string

@@ -1,4 +1,4 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 
 import { GetGroupVerificationResultResponse } from './create-group-verification'

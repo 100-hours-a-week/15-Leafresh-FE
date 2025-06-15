@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ENDPOINTS } from '@shared/constants/endpoint'
 import { HttpMethod } from '@shared/constants/http'
 import { fetchRequest } from '@shared/lib/api'
 

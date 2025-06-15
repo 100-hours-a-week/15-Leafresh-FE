@@ -13,7 +13,7 @@ import { useMutationStore } from '@shared/config/tanstack-query/mutation-default
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
 import { useToast } from '@shared/hooks/useToast/useToast'

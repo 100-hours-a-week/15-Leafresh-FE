@@ -9,7 +9,7 @@ import CardList from '@features/challenge/components/challenge/participate/Group
 import { useGroupParticipationsCount } from '@features/challenge/hook/useGroupParticipationsCount'
 import { useInfiniteGroupParticipations } from '@features/challenge/hook/useInfiniteGroupParticipations'
 import SwitchTap from '@shared/components/switchtap/ui/switch-tab'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 
 import { statusMap } from '../model/constants'
 import * as S from './styles'

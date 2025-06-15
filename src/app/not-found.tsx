@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 import NotFoundImage from '@public/image/404.svg'

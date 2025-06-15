@@ -1,5 +1,5 @@
 import { OAuthType } from '@entities/member/type'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 
 export type SignUpResponse = {

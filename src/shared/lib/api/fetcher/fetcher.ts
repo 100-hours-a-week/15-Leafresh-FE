@@ -1,4 +1,4 @@
-import { EndpointType } from '@shared/constants/endpoint/endpoint'
+import { EndpointType } from '@shared/constants/endpoint'
 
 import { clientFetchRequest } from '../client-fetcher'
 import { serverFetchRequest } from '../server-fetcher'

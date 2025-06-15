@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 

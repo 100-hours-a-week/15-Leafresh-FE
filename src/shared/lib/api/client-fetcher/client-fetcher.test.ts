@@ -1,7 +1,7 @@
 // src/shared/lib/fetcher.test.ts
 import { beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest'
 
-import type { EndpointType } from '../../../constants/endpoint/endpoint'
+import type { EndpointType } from '../../../constants/endpoint'
 import { HttpMethod, HttpStatusCode } from '../../../constants/http'
 import { ApiResponse, ErrorResponse } from '../type'
 import { clientFetchRequest } from './client-fetcher'

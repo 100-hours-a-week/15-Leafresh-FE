@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 
 import { ButtonIcon, Container } from './styles'
 

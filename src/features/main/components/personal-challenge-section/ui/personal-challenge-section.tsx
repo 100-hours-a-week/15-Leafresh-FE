@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
 import { PersonalChallengeType } from '@entities/challenge/api/personal/get-personal-list'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 
 import { PersonalChallengeSectionProps } from '../model/types'
 import * as S from './styles'

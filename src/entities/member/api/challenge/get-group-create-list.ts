@@ -1,5 +1,5 @@
 import { ChallengeCategoryType } from '@entities/common/type'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
 import { DateFormatString, ISOFormatString } from '@shared/types/date'

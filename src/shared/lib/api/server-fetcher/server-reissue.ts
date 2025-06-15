@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ENDPOINTS } from '@shared/constants/endpoint'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null

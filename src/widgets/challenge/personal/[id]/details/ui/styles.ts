@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
+import { ChallengeVerifyExamples } from '@features/challenge/components'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 import styled from '@emotion/styled'

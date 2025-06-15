@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import LogoImage from '@public/image/logo.svg'
 

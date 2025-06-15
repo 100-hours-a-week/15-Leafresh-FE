@@ -1,5 +1,5 @@
 import { ChallengeType } from '@entities/challenge/model'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
 import { ISOFormatString } from '@shared/types/date'

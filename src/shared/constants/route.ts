@@ -1,8 +1,9 @@
-import { ChallengeCategoryType } from '@entities/common/type'
-
 /**
  * FE라우트 엔드포인트 입니다
  */
+
+import { ChallengeCategoryType } from '@entities/challenge/model'
+
 // 레이아웃 체크 필요 ✅  TODO: 뱃지 목록 페이지, 마이페이지, 프로필 수정
 const MAIN_URL = {
   INDEX: {

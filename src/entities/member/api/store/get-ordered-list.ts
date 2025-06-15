@@ -1,4 +1,4 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ENDPOINTS } from '@shared/constants/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 import { InfiniteScrollResponse } from '@shared/types/api'
 import { ISOFormatString } from '@shared/types/date'

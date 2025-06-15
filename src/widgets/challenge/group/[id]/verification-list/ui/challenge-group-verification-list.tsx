@@ -9,7 +9,7 @@ import VerificationCard from '@features/challenge/components/challenge/participa
 import { useInfiniteGroupChallengeVerifications } from '@features/challenge/hook/useInfiniteGroupChallengeVerifications'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { ISOFormatString } from '@shared/types/date'
 

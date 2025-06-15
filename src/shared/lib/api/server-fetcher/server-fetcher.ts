@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 
-import { EndpointType } from '@shared/constants/endpoint/endpoint'
+import { EndpointType } from '@shared/constants/endpoint'
 
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshServerAccessToken } from './server-reissue'

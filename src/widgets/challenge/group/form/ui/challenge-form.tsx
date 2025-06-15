@@ -22,7 +22,7 @@ import DetailStep from '@features/challenge/components/challenge/group/create/De
 import MetaDataStep from '@features/challenge/components/challenge/group/create/MetadataStep'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { formatDateToDateFormatString } from '@shared/lib/date/utils'
