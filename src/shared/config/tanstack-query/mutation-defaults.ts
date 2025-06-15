@@ -233,10 +233,6 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMME
     queryClient.invalidateQueries({
       queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
     })
-
-    queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
-    })
   },
 })
 

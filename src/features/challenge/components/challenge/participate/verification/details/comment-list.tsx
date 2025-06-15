@@ -10,7 +10,7 @@ import CommentItem from '@features/challenge/components/challenge/participate/ve
 import { theme } from '@shared/styles/theme'
 
 interface CommentListProps {
-  comments: CommentResponse['comment']
+  comments: CommentResponse['comments']
   onSubmit: (content: string) => void
   onReplySubmit: (id: number, content: string) => void
   onUpdate: (id: number, content: string) => void
@@ -180,7 +180,7 @@ const CommentListWrapper = styled.div`
 const ToggleReplyButton = styled.button`
   display: flex;
   flex-direction: row;
-  margin: 4px 0 10px 20px;
+  margin: 4px 0 10px 5px;
   font-size: 13px;
   color: ${theme.colors.lfGreenMain.base};
   background: none;
@@ -189,7 +189,7 @@ const ToggleReplyButton = styled.button`
 `
 
 const ReplyBox = styled.div`
-  margin: 0 0 10px 40px;
+  margin: 0 0 10px 10px;
   padding: 10px;
   background: ${theme.colors.lfInputBackground.base};
   border-radius: 8px;

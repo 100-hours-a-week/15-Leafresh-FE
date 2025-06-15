@@ -66,7 +66,7 @@ const CHALLENGE_QUERY_DEFAULTS = {
       RESULT: DEFAULT,
 
       //인증 상세
-      DETAILS: NO_CACHE,
+      DETAILS: DEFAULT,
       //인증 댓글
       COMMENT: DEFAULT,
     },
