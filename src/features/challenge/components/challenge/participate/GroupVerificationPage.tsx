@@ -1,41 +1,56 @@
 'use client'
 
 import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 import {
   PostGroupVerificationBody,
   PostGroupVerificationResponse,
 } from '@features/challenge/api/participate/verification/group-verification'
+import { getGroupVerifications } from '@features/challenge/api/participate/verification/group-verification-list'
 import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
 import { useGroupVerificationResult } from '@features/challenge/hook/useGroupVerification'
-import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
+import Loading from '@shared/components/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-export default function GroupVerificationPage({ participateId }: { participateId: string }) {
-  const challengeId = Number(participateId)
+export default function GroupVerificationPage({ participateId }: { participateId: number }) {
+  const { open: openCameraModal } = useCameraModalStore()
 
-  const { data, isLoading, error } = useGroupVerifications(challengeId)
+  const challengeId = participateId
+
+  //tanstack query
+  const {
+    data: verificationData,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS(challengeId),
+    queryFn: () => getGroupVerifications(challengeId),
+    ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS,
+  })
+
+  //mutation 사진 인증 요청
   const postMutation = useMutationStore<
     PostGroupVerificationResponse,
     { challengeId: number; body: PostGroupVerificationBody }
   >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT)
   const resultQuery = useGroupVerificationResult(challengeId)
 
-  const { open: openCameraModal } = useCameraModalStore()
-
-  if (isLoading) return <Message>Loading...</Message>
+  if (isPending) return <Loading />
   if (error) return <Message>Error: {error.message}</Message>
 
-  const { title, achievement, verifications, todayStatus } = data!.data
+  const verifications = verificationData!.data
 
   const handleCapture = () => {
     openCameraModal(
       // 1. 제목
-      `${title} 인증`,
+      `${verifications.title} 인증`,
       // 2. 완료 콜백: imageUrl → Blob → FormData → mutate
       async ({ imageUrl, description }) => {
         postMutation.mutate({
@@ -52,24 +67,24 @@ export default function GroupVerificationPage({ participateId }: { participateId
   }
   return (
     <Container>
-      <Title>{title} 챌린지</Title>
+      <Title>{verifications.title} 챌린지</Title>
       <Stats>
         <Stat>
           <Label>인증 성공</Label>
-          <Count>{achievement.success}회</Count>
+          <Count>{verifications.achievement.success}회</Count>
         </Stat>
         <Stat>
           <Label>인증 실패</Label>
-          <Count>{achievement.failure}회</Count>
+          <Count>{verifications.achievement.failure}회</Count>
         </Stat>
         <Stat>
           <Label>남은 인증</Label>
-          <Count>{achievement.remaining}회</Count>
+          <Count>{verifications.achievement.remaining}회</Count>
         </Stat>
       </Stats>
       <GridWrapper>
-        {verifications.length !== 0 ? (
-          <VerificationCarousel verifications={verifications} />
+        {verifications.verifications.length !== 0 ? (
+          <VerificationCarousel verifications={verifications.verifications} />
         ) : (
           <NoneContent>인증 목록이 없습니다.</NoneContent>
         )}
@@ -77,11 +92,11 @@ export default function GroupVerificationPage({ participateId }: { participateId
 
       <ButtonGroup>
         <QuestionButton>문의하기</QuestionButton>
-        {todayStatus === 'NOT_SUBMITTED' && <ActionButton onClick={handleCapture}>인증하기</ActionButton>}
+        {verifications.todayStatus === 'NOT_SUBMITTED' && <ActionButton onClick={handleCapture}>인증하기</ActionButton>}
 
-        {todayStatus === 'PENDING_APPROVAL' && <DisabledButton>인증 중</DisabledButton>}
+        {verifications.todayStatus === 'PENDING_APPROVAL' && <DisabledButton>인증 중</DisabledButton>}
 
-        {todayStatus === 'DONE' && <DisabledButton>금일 참여 완료</DisabledButton>}
+        {verifications.todayStatus === 'DONE' && <DisabledButton>금일 참여 완료</DisabledButton>}
       </ButtonGroup>
 
       {resultQuery.data?.data.status === 'APPROVED' && <ResultMessage>인증이 승인되었습니다!</ResultMessage>}
