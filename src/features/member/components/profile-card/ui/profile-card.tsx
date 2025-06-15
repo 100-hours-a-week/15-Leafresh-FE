@@ -3,13 +3,38 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
-import { treeLevelMap } from '@entities/member/constant'
+import { treeLevelMap } from '@entities/member/model'
 import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 
 import { GuideOverlay } from '../../guide-overlay'
 import { DRAG_THRESHOLD } from '../model/consts'
-import { ProfileCardProps } from '../model/types'
 import * as S from './styles'
+
+interface Badge {
+  id: number
+  name: string
+  imageUrl: string
+}
+
+interface ProfileCardData {
+  nickname: string
+  profileImageUrl: string
+  treeLevelId: number
+  treeLevelName: string
+  treeImageUrl: string
+  nextTreeLevelName: string
+  nextTreeImageUrl: string
+  totalLeafPoints: number
+  leafPointsToNextLevel: number
+  totalSuccessfulVerifications: number
+  completedGroupChallengesCount: number
+  badges: Badge[]
+}
+
+interface ProfileCardProps {
+  data: ProfileCardData
+  onDismiss?: () => void
+}
 
 export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null)

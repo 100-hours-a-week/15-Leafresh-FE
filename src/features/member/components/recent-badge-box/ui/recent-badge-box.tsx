@@ -1,7 +1,13 @@
 import { ReactNode } from 'react'
 
-import { RecentBadgeBoxProps } from '../model/types'
+import { Badge } from '@entities/member/api'
+
 import * as S from './styles'
+
+interface RecentBadgeBoxProps {
+  className?: string
+  badges: Badge[]
+}
 
 export const RecentBadgeBox = ({ className, badges }: RecentBadgeBoxProps): ReactNode => {
   return (

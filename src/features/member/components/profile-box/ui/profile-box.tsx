@@ -1,9 +1,17 @@
 import { ReactNode } from 'react'
 
-import { treeLevelMap } from '@entities/member/constant'
+import { treeLevelMap } from '@entities/member/model'
 
-import { ProfileBoxProps } from '../model/types'
 import * as S from './styles'
+
+interface ProfileBoxProps {
+  className?: string
+  nickName: string
+  profileImageUrl: string
+  level: number
+  treeImageUrl: string
+  onClick?: () => void
+}
 
 export const ProfileBox = ({
   className,

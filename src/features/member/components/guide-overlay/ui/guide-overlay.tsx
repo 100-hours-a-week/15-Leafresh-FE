@@ -2,8 +2,11 @@
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-import { GuideOverlayProps } from '../model/types'
 import * as S from './styles'
+
+interface GuideOverlayProps {
+  visible: boolean
+}
 
 export const GuideOverlay = ({ visible }: GuideOverlayProps) => {
   const [shouldRender, setShouldRender] = useState(true)

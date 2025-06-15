@@ -2,10 +2,16 @@
 
 import { useState } from 'react'
 
+import { BadgeData } from '@entities/member/api'
+import { Category } from '@entities/member/model'
 import { useInfoModalStore } from '@shared/context/modal/info-modal-store'
 
-import { BadgeTabProps } from '../model/types'
 import * as S from './styles'
+
+interface BadgeTabProps {
+  categories: Category[]
+  badgeData: BadgeData
+}
 
 export const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
