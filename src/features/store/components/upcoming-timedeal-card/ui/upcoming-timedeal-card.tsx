@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { ReactNode, useRef } from 'react'
 
-import ApologizeContent from '@shared/components/apologize/apologize'
+import ApologizeContent from '@shared/components/apologize/ui/apologize'
 
 import { UpcomingTimeDealCardProps } from '../model/types'
 import * as S from './styles'

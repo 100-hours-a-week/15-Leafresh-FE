@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect, useRef, useState } from 'react'
 
-import ApologizeContent from '@shared/components/apologize/apologize'
+import ApologizeContent from '@shared/components/apologize/ui/apologize'
 
 import { Product } from '../../../../../entities/store/api/product/get-product-list'
 import { useInfiniteProducts } from '../../../api/use-get-product-list'

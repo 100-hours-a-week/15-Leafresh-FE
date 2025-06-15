@@ -8,7 +8,7 @@ import {
   GroupChallengeCard,
 } from '@features/challenge/components/common/group-challenge-card/GroupChallengeCard'
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/api/use-get-group-create-list'
-import Loading from '@shared/components/loading'
+import Loading from '@shared/components/loading/ui/loading'
 import { URL } from '@shared/constants/route/route'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 

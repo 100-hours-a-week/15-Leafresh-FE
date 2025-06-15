@@ -10,7 +10,7 @@ import { getMemberProfileCard, ProfileCardResponse } from '@entities/member/api/
 import ProfileBox from '@features/member/components/profile/mypage/ProfileBox'
 import ProfileCard from '@features/member/components/profile/mypage/ProfileCard'
 import RecentBadgeBox from '@features/member/components/profile/mypage/RecentBadgeBox'
-import Loading from '@shared/components/loading'
+import Loading from '@shared/components/loading/ui/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

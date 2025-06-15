@@ -9,7 +9,7 @@ import { ChallengeCategoryType } from '@entities/challenge/model'
 import { useInfiniteGroupChallenges } from '@features/challenge/api'
 import { GroupChallengeCard } from '@features/challenge/components'
 import { GroupChallenge } from '@features/challenge/components/group-challenge-card/model/types'
-import Loading from '@shared/components/loading'
+import Loading from '@shared/components/loading/ui/loading'
 import { URL } from '@shared/constants/route/route'
 
 import { GroupChallengeSectionsProps } from '../model/types'

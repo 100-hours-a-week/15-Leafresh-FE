@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 
-import ErrorText from '@shared/components/errortext'
-import Loading from '@shared/components/loading'
+import { Loading } from '@shared/components'
+import ErrorText from '@shared/components/errortext/ui/error-text'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import { CHALLENGE_DETAILS_WARNINGS } from '../model/consts'

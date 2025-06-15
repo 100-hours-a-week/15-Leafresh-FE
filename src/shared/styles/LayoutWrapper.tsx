@@ -2,7 +2,7 @@
 'use client'
 import { ReactNode } from 'react'
 
-import Introduce from '@shared/components/introduce/Introduce'
+import Introduce from '@shared/components/introduce/ui/Introduce'
 
 import { theme } from './theme'
 

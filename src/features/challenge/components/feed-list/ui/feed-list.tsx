@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useRef } from 'react'
 
 import { VerificationData } from '@entities/challenge/api/group/feed/get-feed-list'
 import { useInfiniteGroupChallengeFeedList } from '@features/challenge/api'
-import Loading from '@shared/components/loading'
+import Loading from '@shared/components/loading/ui/loading'
 import { ISOFormatString } from '@shared/types/date'
 
 import VerificationCard from '../../verification-card/ui/verification-card'

@@ -10,7 +10,7 @@ import {
   OrderTimeDealProductResponse,
   OrderTimeDealProductVariables,
 } from '@entities/store/api/timedeal/order-timedeal'
-import ApologizeContent from '@shared/components/apologize/apologize'
+import ApologizeContent from '@shared/components/apologize/ui/apologize'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'

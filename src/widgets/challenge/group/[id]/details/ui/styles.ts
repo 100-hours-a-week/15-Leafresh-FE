@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
-import BackButton from '@shared/components/button/BackButton'
+import BackButton from '@shared/components/back-button/ui/back-button'
 import DatePicker from '@shared/components/datepicker/DatePicker'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 

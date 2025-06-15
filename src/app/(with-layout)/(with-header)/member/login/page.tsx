@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react'
 
 import { Login } from '@entities/member/api/login-oauth'
 import { LowercaseOAuthType } from '@entities/member/type'
-import Loading from '@shared/components/loading'
+import Loading from '@shared/components/loading/ui/loading'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ToastType } from '@shared/context/toast/type'

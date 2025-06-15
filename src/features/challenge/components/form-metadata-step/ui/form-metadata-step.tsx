@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { Controller } from 'react-hook-form'
 
 import { CHALLENGE_CATEGORIES_KOR } from '@entities/challenge/model'
-import ErrorText from '@shared/components/errortext'
-import Input from '@shared/components/input'
+import ErrorText from '@shared/components/errortext/ui/error-text'
+import Input from '@shared/components/input/ui/input'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 import { VerificationImageData } from '../../challenge-verify-examples/model/types'

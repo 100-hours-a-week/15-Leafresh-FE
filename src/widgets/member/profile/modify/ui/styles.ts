@@ -1,4 +1,4 @@
-import ErrorText from '@shared/components/errortext'
+import ErrorText from '@shared/components/errortext/ui/error-text'
 
 import styled from '@emotion/styled'
 

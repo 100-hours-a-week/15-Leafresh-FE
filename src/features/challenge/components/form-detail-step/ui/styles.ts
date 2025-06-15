@@ -1,4 +1,4 @@
-import ImageInput from '@shared/components/image-input'
+import ImageInput from '@shared/components/image-input/ui/image-input'
 
 import styled from '@emotion/styled'
 

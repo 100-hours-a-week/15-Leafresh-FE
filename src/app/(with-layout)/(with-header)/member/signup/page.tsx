@@ -9,7 +9,7 @@ import { SignUpBody, SignUpResponse, SignUpVariables } from '@entities/member/ap
 import { useOAuthUserStore } from '@entities/member/model/oauth-user-store'
 import { OAuthType } from '@entities/member/type'
 import { SignupFormType, signupSchema } from '@features/member/signup/schema'
-import ErrorText from '@shared/components/errortext'
+import ErrorText from '@shared/components/errortext/ui/error-text'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

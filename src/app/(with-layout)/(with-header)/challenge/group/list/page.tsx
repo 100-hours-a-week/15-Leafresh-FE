@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 
-import Loading from '@shared/components/loading'
+import Loading from '@shared/components/loading/ui/loading'
 
 import { ChallengeGroupListPage } from '@widgets/challenge'
 

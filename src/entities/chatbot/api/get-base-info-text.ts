@@ -7,7 +7,7 @@ import { fetchRequest } from '@shared/lib/api'
 export type CategoryRecommendationRequestDTO = {
   sessionId: string
   location: string /** 위치 정보 (필수) */
-  workType: string /** 업무 타입 (필수) *=/
+  workType: string /** 업무 타입 (필수) */
   category: string /** 카테고리 (필수) */
 }
 

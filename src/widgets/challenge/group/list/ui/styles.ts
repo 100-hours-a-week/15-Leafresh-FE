@@ -1,5 +1,5 @@
 import GroupChallengeCard from '@features/challenge/components/challenge/group/list/GroupChallengeCard' // TODO: 같은 이름의 컴포넌트가 있음. 수정필요
-import GridBox from '@shared/components/wrapper/GridBox'
+import GridBox from '@shared/components/grid/ui/grid'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 import styled from '@emotion/styled'
