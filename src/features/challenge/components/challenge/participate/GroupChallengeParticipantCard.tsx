@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
+import { AchievementRecord } from '@features/challenge/api/participate/group-participant'
+import { FeedVerificationStatusType } from '@entities/challenge/type'
 
 interface ChallengeProps {
   className?: string
@@ -12,6 +14,7 @@ interface ChallengeProps {
   endDate: Date
   successCount: number
   maxCount: number
+  record?: AchievementRecord[]
   onClick?: () => void
 }
 
@@ -23,15 +26,32 @@ const GroupChallengeParticipantCard = ({
   endDate,
   successCount,
   maxCount,
+  record = [],
   onClick,
 }: ChallengeProps): ReactNode => {
-  // Format dates to YYYY-MM-DD
   const formatDate = (date: Date): string => {
     return date.toISOString().split('T')[0]
   }
 
-  // 진행률 계산
-  const progressPercentage = (successCount / maxCount) * 100
+  const getColor = (status: FeedVerificationStatusType): string => {
+    switch (status) {
+      case 'SUCCESS':
+        return '#4caf50' // 초록
+      case 'FAILURE':
+        return '#e53935' // 빨강
+      case 'PENDING_APPROVE':
+        return 'gray' // 검정
+      default:
+        return 'lightgray'
+    }
+  }
+
+  const segments = Array.from({ length: maxCount }, (_, idx) => {
+    const rec = record.find(r => r.day === idx + 1)
+    return {
+      color: rec ? getColor(rec.status) : 'lightgray', // 미인증은 회색
+    }
+  })
 
   return (
     <CardContainer className={className} onClick={onClick}>
@@ -55,14 +75,25 @@ const GroupChallengeParticipantCard = ({
           </ProgressItem>
         </InfoSection>
 
-        {/* 프로그레스 바 추가 */}
-        <ProgressBarContainer>
-          <ProgressBarFill width={progressPercentage} />
-        </ProgressBarContainer>
+        <RateWrapper>
+          {/* 프로그레스 바 추가 */}
+          {/* <ProgressBarContainer>
+            <ProgressBarFill width={progressPercentage} />
+          </ProgressBarContainer> */}
+          <SegmentedBar>
+            {segments.map((seg, i) => (
+              <Segment
+                key={i}
+                color={seg.color}
+                hasBorder={i !== 0} // 첫 칸은 선 없음
+              />
+            ))}
+          </SegmentedBar>
 
-        <SuccessRate>
-          {successCount}/{maxCount}
-        </SuccessRate>
+          <SuccessRate>
+            {successCount}/{maxCount}
+          </SuccessRate>
+        </RateWrapper>
       </RightSection>
     </CardContainer>
   )
@@ -124,13 +155,19 @@ const TitleSection = styled.div`
 
 const Title = styled.h3`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: ${theme.fontWeight.semiBold};
   margin: 0;
-  color: #333;
+  color: ${theme.colors.lfBlack.base};
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; /* 한 줄로 제한 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 `
 
 const ArrowIcon = styled(LucideIcon)`
-  color: #999;
+  color: ${theme.colors.lfBlack.base};
 `
 
 const DateRange = styled.div`
@@ -143,7 +180,7 @@ const InfoSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 `
 
 const ProgressItem = styled.div`
@@ -162,25 +199,27 @@ const ProgressText = styled.span`
   font-size: 11px;
 `
 
-// 프로그레스 바 스타일 추가
-const ProgressBarContainer = styled.div`
-  width: 100%;
-  height: 6px;
-  background-color: #f0f0f0;
-  border-radius: 3px;
-  overflow: hidden;
-  position: absolute;
-  bottom: 16px;
-  left: 12px;
-  width: calc(100% - 52px);
+const RateWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 `
 
-const ProgressBarFill = styled.div<{ width: number }>`
-  height: 100%;
-  width: ${props => props.width}%;
-  background-color: #4caf50;
-  border-radius: 3px;
-  transition: width 0.3s ease;
+const SegmentedBar = styled.div`
+  display: flex;
+  width: 100%;
+  height: 13px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+`
+
+const Segment = styled.div<{ color: string; hasBorder: boolean }>`
+  flex: 1;
+  background-color: ${({ color }) => color};
+  ${({ hasBorder }) => (hasBorder ? `border-left: 1px solid white;` : '')}
+  transition: background-color 0.3s ease;
 `
 
 const SuccessRate = styled.div`

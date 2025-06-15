@@ -8,7 +8,6 @@ import { useQuery } from '@tanstack/react-query'
 import type { ChallengeStatus, ParticipantChallengeItem } from '@features/challenge/api/participate/group-participant'
 import { getGroupParticipationsCount } from '@features/challenge/api/participate/group-participant-count'
 import ChallengeCard from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCard'
-import CardList from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCardList'
 import { useInfiniteGroupParticipations } from '@features/challenge/hook/useInfiniteGroupParticipations'
 import Loading from '@shared/components/loading'
 import NoContent from '@shared/components/no-content/no-content'
@@ -80,9 +79,9 @@ export default function ChallengeParticipatePage() {
   let challengeContents
   if (challenges && challenges.length > 0) {
     challengeContents = (
-      <CardList>
+      <ListWrapper>
         {challenges.map(challenge => {
-          const { id, title, thumbnailUrl, startDate, endDate, achievement } = challenge
+          const { id, title, thumbnailUrl, startDate, endDate, achievement, achievementRecords } = challenge
           return (
             <ChallengeCard
               key={id}
@@ -92,11 +91,12 @@ export default function ChallengeParticipatePage() {
               endDate={new Date(endDate)}
               successCount={achievement.success}
               maxCount={achievement.total}
+              record={achievementRecords}
               onClick={() => router.push(URL.CHALLENGE.PARTICIPATE.DETAILS.value(id))}
             />
           )
         })}
-      </CardList>
+      </ListWrapper>
     )
   } else {
     challengeContents = !isLoading && (
@@ -157,6 +157,15 @@ const CardListContainer = styled.div`
   align-self: center;
   flex-direction: column; /* 세로 방향으로 설정 */
   overflow: hidden; /* 내부 스크롤만 보이도록 설정 */
+`
+
+const ListWrapper = styled.div`
+  margin-top: 10px;
+  flex: 1;
+
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto; /* 내부 스크롤 활성화 */
 `
 
 const ObserverTrigger = styled.div`
