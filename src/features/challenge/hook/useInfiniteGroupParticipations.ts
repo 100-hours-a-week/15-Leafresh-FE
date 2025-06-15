@@ -6,8 +6,8 @@ import { ApiResponse } from '@shared/lib/api/type'
 import type { ParticipantChallengeResponse } from '../api/participate/group-participant'
 import {
   type ChallengeStatus,
-  fetchGroupParticipations,
   type FetchGroupParticipationsParams,
+  getGroupParticipations,
 } from '../api/participate/group-participant'
 
 export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
@@ -22,7 +22,7 @@ export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
     queryFn: async ({ pageParam = {} }) => {
       // pageParam 타입은 Partial<FetchGroupParticipationsParams>
       const { cursorId, cursorTimestamp } = pageParam as FetchGroupParticipationsParams
-      return fetchGroupParticipations({ status, cursorId, cursorTimestamp })
+      return getGroupParticipations({ status, cursorId, cursorTimestamp })
     },
 
     getNextPageParam: lastPage => {
@@ -36,5 +36,4 @@ export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
     },
 
     initialPageParam: {}, // 첫 호출에서는 cursorId / cursorTimestamp 모두 undefined
-    staleTime: 5 * 60 * 1000, // 5분
   })

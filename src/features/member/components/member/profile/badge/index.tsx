@@ -17,12 +17,13 @@ const BadgePage = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [QUERY_KEYS.MEMBER.BADGES.LIST],
+    queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
     queryFn: getBadgeList,
+    ...QUERY_KEYS.MEMBER.BADGES.LIST,
     refetchOnWindowFocus: true, //포커스 시 api 호출
   })
 
-  // if (isError || !badgeListData?.data?.badges) return <div>뱃지를 불러오는 데 실패했습니다.</div>
+  if (isError || !badgeListData?.data?.badges) return <div>뱃지를 불러오는 데 실패했습니다.</div>
 
   // const badgeList: BadgeListResponse = badgeListdata?.data ?? ({} as BadgeListResponse)
   const badgeData: BadgeData =
