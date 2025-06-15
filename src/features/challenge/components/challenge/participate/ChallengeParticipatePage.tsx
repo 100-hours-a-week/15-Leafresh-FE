@@ -54,9 +54,9 @@ export default function ChallengeParticipatePage() {
     challengeData?.pages.flatMap(page => (Array.isArray(page.data?.challenges) ? page.data.challenges : [])) ?? []
   // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
-    `참여 전 (${counts?.notStarted ?? 0})`,
-    `참여 중 (${counts?.ongoing ?? 0})`,
-    `참여 완료 (${counts?.completed ?? 0})`,
+    `인증 대기 (${counts?.notStarted ?? 0})`,
+    `진행 중 (${counts?.ongoing ?? 0})`,
+    `완료/종료 (${counts?.completed ?? 0})`,
   ]
 
   // 무한 스크롤
