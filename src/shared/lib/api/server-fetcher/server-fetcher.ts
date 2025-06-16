@@ -16,7 +16,10 @@ export async function serverFetchRequest<T>(
   isRetry = false,
 ): Promise<ApiResponse<T>> {
   const { method, path } = endpoint
-  const url = new URL(BASE_URL + path)
+  const url = new URL(
+    BASE_URL + path,
+    process.env.NODE_ENV === 'production' ? 'http://localhost:3000' : 'https://local.dev-leafresh.app',
+  )
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
