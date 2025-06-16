@@ -2,18 +2,21 @@ export type RecommendationEvent = {
   event?: string
   status: number
   message: string
-  data: {
-    // 토큰 스트리밍
-    token?: string
-    // 최종 데이터
-    recommend?: string
-    challenges?: Array<{
-      title: string
-      description: string
-      category: string
-      label: string
-    }>
-  } | null
+  data:
+    | {
+        // 최종 데이터
+        recommend?: string
+        challenges?: ChatChallenge[]
+      }
+    | null
+    //토큰 스트리밍 data: string으로 적용용
+    | string
+}
+
+export type ChatChallenge = {
+  title: string
+  description: string
+  category: string
 }
 
 // SSE 스트림 생성 함수 (카테고리 기반)
@@ -27,6 +30,9 @@ export function createCategoryStream(
   return new EventSource(`https://springboot.dev-leafresh.app/api/chatbot/recommendation/base-info?${params}`, {
     withCredentials: true,
   })
+  // return new EventSource(`http://35.216.82.57:8000/ai/chatbot/recommendation/base-info?${params}`, {
+  //   withCredentials: true,
+  // })
   // return new EventSource(`http://35.216.82.57:8000/ai/chatbot/recommendation/base-info?${params}`)
 }
 

@@ -18,9 +18,11 @@ export type ChatHistoryItem = {
   text?: React.ReactNode
   selectionProps?: ChatSelectionProps
   subDescription?: string
-  buttonText?: string
   isAnswer?: boolean
-  onClick?: () => void
+  actions?: {
+    buttonText: string
+    onClick: () => void
+  }[]
 }
 
 export const LOCATION_OPSIONS: ChatOption[] = [

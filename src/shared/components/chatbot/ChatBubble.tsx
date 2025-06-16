@@ -10,12 +10,14 @@ export interface ChatBubbleProps {
   loading?: boolean
   children: ReactNode
   subDescription?: string
-  buttonText?: string
   isAnswer?: boolean
-  onClick?: () => void
+  actions?: {
+    buttonText: string
+    onClick: () => void
+  }[]
 }
 
-const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAnswer, onClick }: ChatBubbleProps) => (
+const ChatBubble = ({ role, loading, children, subDescription, isAnswer, actions }: ChatBubbleProps) => (
   <Container role={role}>
     {role === 'bot' && (
       <Avatar role={role}>
@@ -36,7 +38,11 @@ const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAns
               ))
             : children}
         {subDescription && <SubDescription role={role}>{subDescription}</SubDescription>}
-        {buttonText && onClick && <RetryButton onClick={onClick}>{buttonText}</RetryButton>}
+        {actions?.map((act, i) => (
+          <ActionButton key={i} onClick={act.onClick}>
+            {act.buttonText}
+          </ActionButton>
+        ))}
       </Bubble>
     </BubbleWrapper>
   </Container>
@@ -102,7 +108,7 @@ const SubDescription = styled.div<{ role: 'bot' | 'user' }>`
   max-width: 235px;
 `
 
-const RetryButton = styled.button`
+const ActionButton = styled.button`
   width: 164px;
   height: 37px;
   align-self: center;

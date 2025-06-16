@@ -24,7 +24,8 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { useChatHistory } from '../../../features/chatbot/hooks/useChatHistory'
 import { formatChallengeResponse } from '@shared/components/chatbot/formatChallengeResponse'
 import { useRecommendationStream } from '@features/chatbot/hooks/useStreamApi'
-import { RecommendationEvent } from '@features/chatbot/stream-api'
+import { ChatChallenge, RecommendationEvent } from '@features/chatbot/stream-api'
+import { useRouter } from 'next/navigation'
 
 export interface ChatFrameProps {
   step: FrameStep
@@ -44,6 +45,8 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [selectedWorkType, setSelectedWorkType] = useState<string | null>(null)
 
   const [streamingText, setStreamingText] = useState<string | null>(null)
+  const [finalChallenges, setFinalChallenges] = useState<ChatChallenge[]>([])
+  const [finalActions, setFinalActions] = useState<{ buttonText: string; onClick: () => void }[] | undefined>(undefined)
 
   const [liveImage] = useState(() => getRandomLiveImage())
   const [workImage] = useState(() => getRandomWorkImage())
@@ -57,6 +60,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const sessionId = useChatSession()
   const messagesEndRef = useScrollToBottom(chatHistory)
 
+  const router = useRouter()
   // mount 시 초기 메시지
   useEffect(() => {
     if (!hasInitializedRef.current) {
@@ -159,93 +163,91 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     setSelectedWorkType(value)
     updateChatSelections({ workType: value })
   }
-  const appendStream = useCallback((token: string) => {
-    setStreamingText(prev => (prev ?? '') + token)
-  }, [])
+
+  const appendStream = (fragment: string) => {
+    setStreamingText(prev => (prev ?? '') + ' ' + fragment)
+  }
 
   // 챌린지 카테고리 선택 핸들러
-  // const handleChallengeSelect = async (value: string) => {
-  //   if (loading) return
-  //   setLoading(true)
-
-  //   // 사용자 메시지 추가
-  //   addChatItem({ type: 'message', role: 'user', text: getDisplayLabel(value) })
-  //   updateChatSelections({ category: value })
-
-  //   try {
-  //     const response = await requestCategoryBasedRecommendation({
-  //       sessionId: sessionId || '',
-  //       location: chatSelections.location || '',
-  //       workType: chatSelections.workType || '',
-  //       category: value,
-  //     })
-  //     const data = response.data as RecommendationResponse
-  //     const { recommend, challenges } = data
-
-  //     const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
-
-  //     addChatItem({
-  //       type: 'message',
-  //       role: 'bot',
-  //       text: responseMessage,
-  //       subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
-  //       buttonText: '카테고리 재선택',
-  //       isAnswer: true,
-  //       onClick: handleRetry,
-  //     })
-
-  //     onSelect(value, 2)
-  //   } catch (err) {
-  //     const msg =
-  //       err && typeof err === 'object' && 'message' in err
-  //         ? String((err as { message: string }).message)
-  //         : '추천 중 오류가 발생했습니다. 다시 시도해주세요.'
-  //     addChatItem({
-  //       type: 'message',
-  //       role: 'bot',
-  //       text: `죄송합니다. ${msg}`,
-  //       buttonText: '다시 시도',
-  //       isAnswer: true,
-  //       onClick: handleRetry,
-  //     })
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
   const handleChallengeSelect = useCallback(
     (category: string) => {
       if (loading) return
       setLoading(true)
+
+      // 1) 유저 메시지
       addChatItem({ type: 'message', role: 'user', text: getDisplayLabel(category) })
       updateChatSelections({ category })
       onSelect(category, 2)
 
+      // 2) 스트리밍 텍스트 초기화
       setStreamingText('')
+
+      // 3) SSE 시작 (challenge, error, close only)
       startCategory(
         sessionId!,
         chatSelections.location ?? '',
         chatSelections.workType ?? '',
         category,
+
+        // onChallenge: 토큰 단편 누적
         (evt: RecommendationEvent) => {
-          console.log('이벤트 수신', evt)
-          appendStream(evt.data?.token ?? '')
+          const frag = evt.data ?? ''
+          if (typeof frag === 'string') {
+            appendStream(frag)
+          }
         },
-        evt => {
-          addChatItem({ type: 'message', role: 'bot', text: evt.message })
-          console.log(evt)
-          // setStreamingText(null)
-          setLoading(false)
-        },
-        evt => {
+
+        // onError: 에러 뱉고 로딩 해제
+        (evt: RecommendationEvent) => {
           addChatItem({ type: 'message', role: 'bot', text: `오류: ${evt.message}` })
           setStreamingText(null)
-          // console.log(evt)
           setLoading(false)
         },
-        () => {
-          setStreamingText(null)
+
+        // onClose: final JSON payload로부터 액션 생성
+        (finalEvt: RecommendationEvent) => {
           setLoading(false)
+
+          const payload = finalEvt.data
+          // payload 가 문자열이 아니고 챌린지 배열이 있으면
+          if (payload !== null && typeof payload !== 'string' && Array.isArray(payload.challenges)) {
+            const actions = payload.challenges.map((ch, i) => ({
+              buttonText: `챌린지 생성 ${i + 1}`,
+              onClick: () => {
+                const url = `/create-challenge?title=${encodeURIComponent(ch.title)}&desc=${encodeURIComponent(ch.description)}&category=${encodeURIComponent(ch.category)}`
+                router.push(url)
+              },
+            }))
+            setFinalActions(actions)
+            addChatItem({
+              type: 'message',
+              role: 'bot',
+              text: streamingText!,
+              isAnswer: true,
+              actions,
+            })
+          } else {
+            console.warn('onClose payload error:', payload)
+          }
+
+          setTimeout(() => {
+            addChatItem({
+              type: 'selection',
+              selectionProps: {
+                title: '챌린지 선택',
+                subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
+                imageUrl: '/image/chatbot/chatbotcategory.png',
+                options: CHAT_CHALLENGE_OPTIONS,
+                selectionType: 'challenge',
+                buttonText: '카테고리 설명',
+                onExplainClick: handleExplainCategory,
+                onSelect: handleChallengeSelect,
+              },
+            })
+          }, 2000)
+
+          // 스트림 텍스트 버리고
+          setStreamingText(null)
         },
       )
     },
@@ -259,6 +261,8 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       onSelect,
       startCategory,
       appendStream,
+      streamingText,
+      router,
     ],
   )
 
@@ -290,8 +294,6 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         },
       })
     }, 2000)
-
-    onRetry()
   }
 
   // 재선택 핸들러
@@ -317,59 +319,89 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     onRetry()
   }
 
-  // 자유 텍스트 전송 핸들러
-  const handleSendMessage = async (txt: string) => {
-    if (!txt.trim() || loading) return
-    setLoading(true)
-    addChatItem({ type: 'message', role: 'user', text: txt })
+  //자유 채팅 SSE 핸들러
+  const handleSendMessage = useCallback(
+    (txt: string) => {
+      if (!txt.trim() || loading) return
+      setLoading(true)
 
-    const formatMultilineText = (t: string): React.ReactNode[] =>
-      t.split('\n').flatMap((line: string, i: number) => [line, <br key={`line-${i}`} />])
+      // 1) 유저 메시지
+      addChatItem({ type: 'message', role: 'user', text: txt })
 
-    try {
-      const response = await requestFreetextBasedRecommendation({
-        sessionId: sessionId || '',
-        location: chatSelections.location || '',
-        workType: chatSelections.workType || '',
-        message: txt,
-      })
-      const data = response.data as RecommendationResponse
-      const { recommend, challenges } = data
+      // 2) 스트리밍 텍스트 초기화
+      setStreamingText('')
 
-      const responseMessage = [recommend, <br key='r1' />, <br key='r2' />, ...formatChallengeResponse(challenges)]
+      // 3) SSE 시작
+      startFreeText(
+        sessionId!,
+        txt,
+        (evt: RecommendationEvent) => {
+          const frag = evt.data ?? ''
+          if (typeof frag === 'string') {
+            appendStream(frag) // 내부에서 setStreamingText(t => t + frag)
+          }
+        },
+        (evt: RecommendationEvent) => {
+          let errorMessage = '오류가 발생했습니다. 다시 시도해주세요.'
+          if (evt.status === 422) errorMessage = '메시지는 최소 5글자 이상 입력해주세요.'
+          else if (evt.status === 400) errorMessage = '메시지를 입력해주세요.'
+          else if (evt.status === 502) errorMessage = 'AI 서버 연결에 실패했습니다.'
+          else if (evt.status === 500) errorMessage = '서버 오류가 발생했습니다.'
 
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text: responseMessage,
-        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
-        buttonText: '카테고리 재선택',
-        isAnswer: true,
-        onClick: handleRetry,
-      })
-    } catch (err) {
-      let errorMessage = '오류가 발생했습니다. 다시 시도해주세요.'
-      if (err && typeof err === 'object' && 'status' in err) {
-        const status = (err as { status: number }).status
-        if (status === 422) errorMessage = '메시지는 최소 5글자 이상 입력해주세요.'
-        else if (status === 400) errorMessage = '메시지를 입력해주세요.'
-        else if (status === 502) errorMessage = 'AI 서버 연결에 실패했습니다.'
-        else if (status === 500) errorMessage = '서버 오류가 발생했습니다.'
-      }
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text: `죄송합니다. ${errorMessage}`,
-        subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
-        buttonText: '카테고리 재선택',
-        isAnswer: true,
-        onClick: handleRetry,
-      })
-    } finally {
-      setLoading(false)
+          addChatItem({
+            type: 'message',
+            role: 'bot',
+            text: `죄송합니다. ${errorMessage}`,
+          })
+          setStreamingText(null)
+          setLoading(false)
+        },
+        // onClose: 최종 payload 로부터 액션 생성 및 말풍선 추가
+        (finalEvt: RecommendationEvent) => {
+          setLoading(false)
+
+          const payload = finalEvt.data
+          if (payload !== null && typeof payload !== 'string' && Array.isArray(payload.challenges)) {
+            // streamingText 에 누적된 텍스트
+            const text = streamingText!
+
+            // 버튼 액션들 생성
+            const actions = payload.challenges.map((ch, i) => ({
+              buttonText: `챌린지 생성 ${i + 1}`,
+              onClick: () => {
+                const url = `/create-challenge?title=${encodeURIComponent(
+                  ch.title,
+                )}&desc=${encodeURIComponent(ch.description)}&category=${encodeURIComponent(ch.category)}`
+                router.push(url)
+              },
+            }))
+
+            addChatItem({
+              type: 'message',
+              role: 'bot',
+              text,
+              isAnswer: true,
+              actions,
+            })
+            setFinalActions(actions)
+          } else {
+            console.warn('onClose payload error:', payload)
+            addChatItem({
+              type: 'message',
+              role: 'bot',
+              text: '죄송합니다. 결과를 처리하는 중 오류가 발생했습니다.',
+            })
+          }
+
+          setStreamingText(null)
+        },
+      )
+
+      // 4) 입력창 초기화
       setInputText('')
-    }
-  }
+    },
+    [loading, sessionId, addChatItem, appendStream, startFreeText, streamingText, router],
+  )
 
   return (
     <Container>
@@ -380,9 +412,8 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
               <ChatBubble
                 role={item.role}
                 subDescription={item.subDescription}
-                buttonText={item.buttonText}
                 isAnswer={item.isAnswer}
-                onClick={item.onClick}
+                actions={item.actions}
               >
                 {item.text}
               </ChatBubble>
@@ -399,7 +430,12 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             )}
           </div>
         ))}
-        {streamingText !== null && <ChatBubble role='bot'>{streamingText}</ChatBubble>}
+
+        {streamingText !== null && (
+          <ChatBubble role='bot' loading={!loading} actions={loading ? finalActions : undefined}>
+            {streamingText}
+          </ChatBubble>
+        )}
 
         <div ref={messagesEndRef} />
       </MessagesContainer>

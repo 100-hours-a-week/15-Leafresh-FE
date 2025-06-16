@@ -12,73 +12,88 @@ export function useRecommendationStream() {
     workType: string,
     category: string,
     onChallenge: Handler,
-    onFallback: Handler,
     onError: Handler,
-    onClose: () => void,
+    onClose: (finalEvent: RecommendationEvent) => void,
   ) {
+    // 기존 연결 닫기
     esRef.current?.close()
+
+    // 새 EventSource 생성
     const es = createCategoryStream(sessionId, location, workType, category)
     esRef.current = es
-    let count = 0
 
-    console.log('[SSE] 카테고리 기반 스트림 연결 시작')
-
+    // 토큰 단위로 오는 챌린지 이벤트 수신
     es.addEventListener('challenge', e => {
-      onChallenge(JSON.parse(e.data))
-      count++
-      console.log(`[SSE] challenge #${count}:`, e)
-      // console.log(es)
-      // console.log(e)
+      const evt = JSON.parse(e.data) as RecommendationEvent
+      onChallenge(evt)
     })
-    es.addEventListener('null', e => console.log(e))
-    es.addEventListener('fallback', e => onFallback(JSON.parse(e.data)))
-    es.addEventListener('null', e => {
-      console.warn('[SSE] null event received:', e)
-    })
-    es.addEventListener('unknown', e => {
-      console.warn('[SSE] unknown event received:', e.data)
-    })
+
+    // 에러 발생 시
     es.addEventListener('error', e => {
-      // evt.data는 string 혹은 undefined
       try {
-        onError(JSON.parse((e as any).message))
+        const evt = JSON.parse((e as any).data) as RecommendationEvent
+        onError(evt)
       } catch {
-        // console.log(es)
-        // console.log(e)
-        onError({ status: 0, message: '스트림 오류', data: null })
+        onError({ status: 0, message: '스트림 처리 중 에러', data: null })
       }
-    })
-    es.addEventListener('close', () => {
       es.close()
-      onClose()
+    })
+
+    // 마지막 close 이벤트 (final JSON payload)
+    es.addEventListener('close', e => {
+      const finalEvent = JSON.parse(e.data) as RecommendationEvent
+      onClose(finalEvent)
+      es.close()
     })
   }
 
+  /** 자유 텍스트 기반 스트림 시작 */
   /** 자유 텍스트 기반 스트림 시작 */
   function startFreeText(
     sessionId: string,
     message: string,
     onChallenge: Handler,
-    onFallback: Handler,
     onError: Handler,
-    onClose: () => void,
+    onClose: (finalEvent: RecommendationEvent) => void, // onClose 콜백 추가
   ) {
+    // 이전 스트림 닫기
     esRef.current?.close()
+
+    // 새 EventSource 생성
     const es = createFreeTextStream(sessionId, message)
     esRef.current = es
 
-    es.addEventListener('challenge', e => onChallenge(JSON.parse(e.data)))
-    es.addEventListener('fallback', e => onFallback(JSON.parse(e.data)))
+    let count = 0
+
+    // 토큰 단위로 오는 챌린지 이벤트
+    es.addEventListener('challenge', e => {
+      const evt = JSON.parse(e.data) as RecommendationEvent
+      onChallenge(evt)
+      count++
+      console.log(`[SSE] challenge #${count}:`, evt)
+    })
+
+    // 에러 발생 시
     es.addEventListener('error', e => {
       try {
-        onError(JSON.parse((e as any).data))
+        const evt = JSON.parse((e as any).data) as RecommendationEvent
+        onError(evt)
       } catch {
-        onError({ status: 0, message: '스트림 오류', data: null })
+        onError({ status: 0, message: '스트림 처리 중 에러', data: null })
       }
-    })
-    es.addEventListener('close', () => {
+      console.warn('[SSE] error event, closing stream')
       es.close()
-      onClose()
+    })
+
+    // 마지막 close 이벤트 (final JSON payload)
+    es.addEventListener('close', e => {
+      try {
+        const finalEvent = JSON.parse(e.data) as RecommendationEvent
+        onClose(finalEvent) // 최종 결과 콜백 호출
+      } catch {
+        console.warn('[SSE] close event parsing failed')
+      }
+      es.close()
     })
   }
 
