@@ -10,6 +10,7 @@ export async function refreshClientAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()
 
   isRefreshing = true
+
   refreshPromise = (async () => {
     try {
       const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE.path}`, {
