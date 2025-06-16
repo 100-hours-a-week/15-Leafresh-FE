@@ -30,13 +30,9 @@ export type ParticipantChallengeItem = {
 }
 
 export type ParticipantChallengeResponse = InfiniteScrollResponse<{
-  data: {
-    challenges: ParticipantChallengeItem[]
-    hasNext: boolean
-    cursorInfo: FetchGroupParticipationsParams
-  }
-  message: string
-  status: number
+  challenges: ParticipantChallengeItem[]
+  hasNext: boolean
+  cursorInfo: FetchGroupParticipationsParams
 }>
 
 export const getGroupParticipations = ({ status, cursorId, cursorTimestamp }: FetchGroupParticipationsParams) => {

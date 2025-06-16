@@ -21,7 +21,7 @@ export default async function Page() {
       }),
 
       queryClient.prefetchInfiniteQuery({
-        queryKey: [...QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS, status] as const,
+        queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS(status),
         queryFn: async ({ pageParam = {} }) => getGroupParticipations({ status, ...pageParam }),
         initialPageParam: {},
         ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,

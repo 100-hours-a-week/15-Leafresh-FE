@@ -26,6 +26,7 @@ import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
 import { handleError } from './utils'
+import { ChallengeStatus } from '@features/challenge/api/participate/group-participant'
 
 const queryClient = getQueryClient()
 
@@ -135,7 +136,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
     const { challengeId } = variables
 
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId) }) // 단체 챌린지 상세 조회
-    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS }) // member - 참여한 단체 챌린지 목록 조회
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS(status as ChallengeStatus),
+    }) // member - 참여한 단체 챌린지 목록 조회
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -175,7 +178,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMI
 
     //참여한 단체 챌린지 목록 -> 성공률
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS(status as ChallengeStatus),
     })
 
     //알림 목록

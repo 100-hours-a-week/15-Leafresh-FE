@@ -46,11 +46,8 @@ export default function ChallengeParticipatePage() {
 
   const counts = countData?.data.count
 
-  // API 오류 여부
-  const hasError = Boolean(error)
+  const challenges = (challengeData?.pages ?? []).flatMap(page => page?.data?.challenges ?? [])
 
-  const challenges: ParticipantChallengeItem[] =
-    challengeData?.pages.flatMap(page => (Array.isArray(page.data?.challenges) ? page.data.challenges : [])) ?? []
   // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
     `인증 대기 (${counts?.notStarted ?? 0})`,
@@ -61,7 +58,7 @@ export default function ChallengeParticipatePage() {
   // 무한 스크롤
   const loadMoreRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (hasError || !hasNextPage || !loadMoreRef.current) return
+    if (error || !hasNextPage || !loadMoreRef.current) return
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !isFetchingNextPage) {
@@ -74,7 +71,7 @@ export default function ChallengeParticipatePage() {
     return () => {
       obs.disconnect()
     }
-  }, [hasError, hasNextPage, isFetchingNextPage, fetchNextPage])
+  }, [error, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   let challengeContents
   if (challenges && challenges.length > 0) {
@@ -120,7 +117,7 @@ export default function ChallengeParticipatePage() {
         {challengeContents}
         {(isFetchingNextPage || isLoading) && <Loading />}
         {!hasNextPage && !isLoading && challenges.length > 0 && <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>}
-        {!hasError && hasNextPage && isLoading && (
+        {!error && hasNextPage && isLoading && (
           <ObserverTrigger ref={loadMoreRef}>{isFetchingNextPage ? '불러오는 중…' : ''}</ObserverTrigger>
         )}
       </CardListContainer>
