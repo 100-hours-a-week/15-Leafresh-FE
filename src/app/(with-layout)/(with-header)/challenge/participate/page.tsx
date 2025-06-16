@@ -24,7 +24,7 @@ export default async function Page() {
         queryKey: [...QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS, status] as const,
         queryFn: async ({ pageParam = {} }) => getGroupParticipations({ status, ...pageParam }),
         initialPageParam: {},
-        ...QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
+        ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
       }),
     ])
 

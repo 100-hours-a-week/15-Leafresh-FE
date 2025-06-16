@@ -10,6 +10,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { theme } from '@shared/styles/theme'
 
 import BadgeTabs from './BadgeTab'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
 const BadgePage = () => {
   const {
@@ -19,7 +20,7 @@ const BadgePage = () => {
   } = useQuery({
     queryKey: QUERY_KEYS.MEMBER.BADGES.LIST,
     queryFn: getBadgeList,
-    ...QUERY_KEYS.MEMBER.BADGES.LIST,
+    ...QUERY_OPTIONS.MEMBER.BADGES.LIST,
     refetchOnWindowFocus: true, //포커스 시 api 호출
   })
 

@@ -5,6 +5,7 @@ import { getVerificationDetails } from '@features/challenge/api/participate/veri
 import VerificationDetails from '@features/challenge/components/challenge/participate/verification/details/VerificationDetails'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
 interface PageProps {
   params: Promise<{
@@ -26,13 +27,13 @@ const Page = async ({ params }: PageProps) => {
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeIdNum, verificationIdNum),
         queryFn: () => getVerificationDetails(challengeIdNum, verificationIdNum),
-        ...QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
+        ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
       }),
 
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeIdNum, verificationIdNum),
         queryFn: () => getVerificationCommemtList(challengeIdNum, verificationIdNum),
-        ...QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT,
+        ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.COMMENT,
       }),
     ])
 

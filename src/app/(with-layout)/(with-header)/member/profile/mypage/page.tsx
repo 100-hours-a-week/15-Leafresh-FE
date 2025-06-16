@@ -5,6 +5,7 @@ import { getMemberProfileCard } from '@features/member/api/profile/get-member-pr
 import Mypage from '@features/member/components/member/profile/mypage/Mypage'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
 const Page = async () => {
   const queryClient = getQueryClient()
@@ -14,13 +15,13 @@ const Page = async () => {
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.MEMBER.DETAILS,
         queryFn: getMemberProfile,
-        ...QUERY_KEYS.MEMBER.DETAILS,
+        ...QUERY_OPTIONS.MEMBER.DETAILS,
       }),
 
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.MEMBER.PROFILE_CARD,
         queryFn: getMemberProfileCard,
-        ...QUERY_KEYS.MEMBER.PROFILE_CARD,
+        ...QUERY_OPTIONS.MEMBER.PROFILE_CARD,
       }),
     ])
 

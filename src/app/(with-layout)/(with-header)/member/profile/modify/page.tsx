@@ -4,6 +4,7 @@ import { getMemberProfile } from '@features/member/api/profile/get-member-profil
 import ProfileModifyPage from '@features/member/components/member/profile/modify/ProfileModifyPage'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
 const Page = async () => {
   const queryClient = getQueryClient()
@@ -11,7 +12,7 @@ const Page = async () => {
     await queryClient.prefetchQuery({
       queryKey: QUERY_KEYS.MEMBER.DETAILS,
       queryFn: getMemberProfile,
-      ...QUERY_KEYS.MEMBER.DETAILS,
+      ...QUERY_OPTIONS.MEMBER.DETAILS,
     })
 
     const dehydratedState = dehydrate(queryClient)
