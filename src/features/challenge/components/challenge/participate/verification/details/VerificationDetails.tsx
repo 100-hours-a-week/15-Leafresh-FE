@@ -66,6 +66,8 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
     refetchOnWindowFocus: false,
   })
 
+  console.log('verificaiton Data: ', verificationData)
+
   const { data: commentData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
     queryFn: () => getVerificationCommemtList(challengeId, verificationId),
@@ -114,7 +116,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
   const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
   const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
-  const [localComments, setLocalComments] = useState<CommentType[]>(comments.comments ?? [])
+  const [localComments, setLocalComments] = useState<CommentType[]>(comments?.comments ?? [])
 
   /** 좋아요 핸들러 */
   const handleLikeToggle = () => {
@@ -384,7 +386,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
       </Header>
 
       <ImageWrapper>
-        <ContentImage src={verifications.imageUrl} alt='Leafresh' />
+        <ContentImage src={verifications.imageUrl} alt='Leafresh' fill />
       </ImageWrapper>
 
       <Content>{verifications.content}</Content>
@@ -403,7 +405,8 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
             <LucideIcon name='SquareArrowOutUpRight' size={16} strokeWidth={1.5} />
           </Stat>
         </LeftStat>
-        <Stat>조회수 {verifications.counts.view}</Stat>
+        <Stat>조회수 {verifications.counts?.view ?? 0}</Stat>
+        {/* <Stat>조회수 {verifications.counts.view}</Stat> */}
       </Stats>
       <CommentList
         comments={localComments ?? []}
@@ -462,18 +465,17 @@ const Time = styled.div`
 
 const ImageWrapper = styled.div`
   width: 100%;
-  height: 200px;
+  aspect-ratio: 5 / 3;
   border-radius: ${theme.radius.md};
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+  position: relative;
   overflow: hidden;
 `
 
-const ContentImage = styled.img`
+const ContentImage = styled(Image)`
   position: relative;
-  aspect-ratio: 5 / 3;
-  overflow: hidden;
+  object-fit: cover;
+  object-position: center;
 `
 
 const Content = styled.p`
