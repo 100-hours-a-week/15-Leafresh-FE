@@ -201,7 +201,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
         onError: () => {
           setLocalComments(prev) // rollback
           setCommentCount(prevComment)
-          openToast(ToastType.Error, '댓글 작성에 실패했어요😢')
+          openToast(ToastType.Error, '댓글 작성에 실패했습니다.')
         },
       },
     )
@@ -273,7 +273,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
         onError: () => {
           setCommentCount(prevComment)
           setLocalComments(prev) // rollback
-          openToast(ToastType.Error, '답글 작성에 실패했어요😢')
+          openToast(ToastType.Error, '답글 작성에 실패했습니다.')
         },
       },
     )
@@ -307,7 +307,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
       {
         onError: () => {
           setLocalComments(prev) // rollback
-          openToast(ToastType.Error, '수정에 실패했어요😢')
+          openToast(ToastType.Error, '수정에 실패했습니다.')
         },
       },
     )
@@ -365,7 +365,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
             onError: () => {
               setCommentCount(prevComment)
               setLocalComments(prev) // rollback
-              openToast(ToastType.Error, '삭제에 실패했어요😢')
+              openToast(ToastType.Error, '삭제에 실패했습니다.')
             },
           },
         )
