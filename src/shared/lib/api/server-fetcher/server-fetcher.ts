@@ -22,7 +22,6 @@ export async function serverFetchRequest<T>(
     BASE_URL + path,
     process.env.NODE_ENV === 'production' ? 'http://localhost:3000' : 'https://local.dev-leafresh.app',
   )
-  console.log('✅ 서버 페치 실행됨', url)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
