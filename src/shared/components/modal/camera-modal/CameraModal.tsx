@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
@@ -233,7 +235,11 @@ const CameraModal = () => {
           {title}
         </Header>
         <CameraWrapper>
-          {previewUrl ? <ImagePreview src={previewUrl} /> : <CameraView ref={videoRef} autoPlay playsInline />}
+          {previewUrl ? (
+            <ImagePreview src={previewUrl} alt='촬영된 이미지' fill />
+          ) : (
+            <CameraView ref={videoRef} autoPlay playsInline />
+          )}
         </CameraWrapper>
         <canvas ref={canvasRef} style={{ display: 'none' }} />
 
@@ -317,13 +323,11 @@ const CameraWrapper = styled.div`
 
 const CameraView = styled.video`
   width: 100%;
-  aspect-ratio: 4/3;
   object-fit: cover;
 `
 
-const ImagePreview = styled.img`
-  width: 100%;
-  height: 100%;
+const ImagePreview = styled(Image)`
+  object-position: center;
   object-fit: cover;
 `
 
