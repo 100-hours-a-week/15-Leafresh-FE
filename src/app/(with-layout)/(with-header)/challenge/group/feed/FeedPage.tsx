@@ -29,7 +29,7 @@ const FeedPage = ({ className }: FeedPageProps): ReactNode => {
   // 상수
   const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
 
-  const [category, setCategory] = useState<ChallengeCategoryType>(categories[0].category) // 영어
+  const [category, setCategory] = useState<ChallengeCategoryType>(categories[0]?.category) // 영어
 
   /** 이벤트 핸들러 */
   /** 카테고리 전환 */
