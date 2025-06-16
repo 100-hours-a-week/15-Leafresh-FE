@@ -4,7 +4,7 @@ import { fetchRequest } from '@shared/lib/api/fetcher'
 import { CommentResponse } from './get-verification-comment-list'
 
 export type PostReplytBody = {
-  comment: string
+  content: string
 }
 
 export type PostReplyVariables = {

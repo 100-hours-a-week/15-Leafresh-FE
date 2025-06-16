@@ -129,7 +129,7 @@ const AlarmTitle = styled.div`
   font-size: ${theme.fontSize.base};
   font-weight: ${theme.fontWeight.semiBold};
   display: -webkit-box;
-  -webkit-line-clamp: 1; /* 한 줄 말줄임 */
+  -webkit-line-clamp: 2; /* 한 줄 말줄임 */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

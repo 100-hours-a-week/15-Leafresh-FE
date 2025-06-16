@@ -1,33 +1,11 @@
 import { useEffect } from 'react'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { useToast } from '@shared/hooks/useToast/useToast'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
-import {
-  getGroupVerificationResult,
-  PostGroupVerification,
-  PostGroupVerificationBody,
-  type PostGroupVerificationResponse,
-} from '../api/participate/verification/group-verification'
+import { getGroupVerificationResult } from '../api/participate/verification/group-verification'
 // import { showNotification } from '@/libs/showNotification'
-
-/** 인증 제출 뮤테이션 */
-export const usePostGroupVerification = (challengeId: number) => {
-  const openToast = useToast()
-
-  const qc = useQueryClient()
-  return useMutation<ApiResponse<PostGroupVerificationResponse>, ErrorResponse, PostGroupVerificationBody>({
-    mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT],
-    mutationFn: body => PostGroupVerification({ challengeId, body }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.RESULT(challengeId) })
-    },
-  })
-}
 
 /** 인증 결과 롱폴링 훅 */
 export const useGroupVerificationResult = (challengeId: number) => {
@@ -54,7 +32,7 @@ export const useGroupVerificationResult = (challengeId: number) => {
       // showNotification(msg, `/challenges/group/${challengeId}`)
 
       // 관련 쿼리 무효화
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS })
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS('completed') })
       qc.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS(challengeId) })
 
       // 폴링 중지
