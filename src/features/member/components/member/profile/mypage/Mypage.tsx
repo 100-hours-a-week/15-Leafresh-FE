@@ -21,6 +21,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
@@ -39,6 +40,8 @@ const Mypage = () => {
 
   const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
   const { clearUserInfo } = useUserStore()
+  const { isLoggedIn } = useAuth()
+
   const openToast = useToast()
 
   const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK)
@@ -141,22 +144,31 @@ const Mypage = () => {
 
   /** 로그아웃 로직 */
   const handleLogout = () => {
-    if (!OAuthUserInfo) {
-      // TODO: 유효한 로그인 정보 확인해서 분기 처리
+    console.log('로그아웃')
+
+    if (!isLoggedIn) {
+      window.location.reload()
       return
     }
-    const provider = OAuthUserInfo.provider
-    LogoutMutate(
-      { provider },
-      {
-        onSuccess: response => {
-          clearOAuthUserInfo()
-          clearUserInfo()
-          openToast(ToastType.Success, '로그아웃 성공')
-          router.push(URL.MAIN.INDEX.value)
+
+    const provider = OAuthUserInfo?.provider
+    console.log('provider: ', provider)
+
+    if (provider) {
+      // console.log('provider: ', provider)
+
+      LogoutMutate(
+        { provider },
+        {
+          onSuccess: response => {
+            clearOAuthUserInfo()
+            clearUserInfo()
+            openToast(ToastType.Success, '로그아웃 성공')
+            router.push(URL.MAIN.INDEX.value)
+          },
         },
-      },
-    )
+      )
+    }
   }
 
   return (
