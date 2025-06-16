@@ -5,12 +5,13 @@ import { useQuery } from '@tanstack/react-query'
 
 import { badgeCategory } from '@entities/member/constant'
 import { BadgeData, getBadgeList } from '@features/member/api/profile/get-badge'
+import ApologizeContent from '@shared/components/apologize/apologize'
 import Loading from '@shared/components/loading'
+import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { theme } from '@shared/styles/theme'
 
 import BadgeTabs from './BadgeTab'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 
 const BadgePage = () => {
   const {
@@ -24,7 +25,8 @@ const BadgePage = () => {
     refetchOnWindowFocus: true, //포커스 시 api 호출
   })
 
-  if (isError || !badgeListData?.data?.badges) return <div>뱃지를 불러오는 데 실패했습니다.</div>
+  if (isError || !badgeListData?.data?.badges)
+    return <ApologizeContent title='뱃지를 불러올 수 없습니다.' description='다시 시도해 주세요.' />
 
   // const badgeList: BadgeListResponse = badgeListdata?.data ?? ({} as BadgeListResponse)
   const badgeData: BadgeData =
