@@ -26,6 +26,7 @@ export type PersonalChallengeDetail = {
 
 type PersonalChallengeDetailResponse = PersonalChallengeDetail
 
+/** 개인 챌린지 인증 결과 */
 export const getPersonalChallengeDetails = (id: number) => {
   return fetchRequest<PersonalChallengeDetailResponse>(ENDPOINTS.CHALLENGE.PERSONAL.DETAILS(id))
 }
