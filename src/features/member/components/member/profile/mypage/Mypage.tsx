@@ -161,7 +161,7 @@ const Mypage = () => {
   }
 
   return (
-    <Container>
+    <Container isScroll={showProfileCard}>
       <ProfileSection>
         <ProfileBox
           nickName={profile.nickname}
@@ -237,13 +237,14 @@ const Mypage = () => {
 
 export default Mypage
 
-const Container = styled.div`
+const Container = styled.div<{ isScroll: boolean }>`
   ${responsiveHorizontalPadding};
 
   display: flex;
   flex-direction: column;
 
   gap: 20px;
+  overflow: ${({ isScroll }) => (isScroll ? 'hidden' : 'auto')};
 `
 
 const ProfileSection = styled.div`
@@ -306,9 +307,10 @@ const BadgeSection = styled.div`
 `
 const AnimatedCardWrapper = styled.div`
   animation: ${slideRotateIn} 1.6s ease forwards;
-  position: absolute;
+  position: fixed; /* ✅ 수정 */
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%); /* ✅ 중앙 정렬 */
   transform-origin: center center;
   z-index: 1000;
 `
@@ -319,6 +321,10 @@ const RouteSection = styled.div`
   border-radius: ${theme.radius.base};
   box-shadow: ${theme.shadow.lfPrime};
   overflow: hidden;
+
+  :last-child {
+    margin-bottom: 10px;
+  }
 `
 
 const SectionTitle = styled.h3`
