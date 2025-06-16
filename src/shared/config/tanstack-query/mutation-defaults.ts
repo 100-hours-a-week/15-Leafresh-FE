@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
+import { ChallengeStatus } from '@features/challenge/api/participate/group-participant'
 import { deleteVerificationComment } from '@features/challenge/api/participate/verification/delete-verification-comment'
 import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
 import { CreateVerificationLike } from '@features/challenge/api/participate/verification/likes/create-like'
@@ -26,7 +27,6 @@ import { MUTATION_KEYS } from './mutation-keys'
 import { QUERY_KEYS } from './query-keys'
 import { getQueryClient } from './queryClient'
 import { handleError } from './utils'
-import { ChallengeStatus } from '@features/challenge/api/participate/group-participant'
 
 const queryClient = getQueryClient()
 

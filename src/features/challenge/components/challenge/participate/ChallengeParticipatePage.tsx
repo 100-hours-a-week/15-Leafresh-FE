@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import type { ChallengeStatus, ParticipantChallengeItem } from '@features/challenge/api/participate/group-participant'
+import type { ChallengeStatus } from '@features/challenge/api/participate/group-participant'
 import { getGroupParticipationsCount } from '@features/challenge/api/participate/group-participant-count'
 import ChallengeCard from '@features/challenge/components/challenge/participate/GroupChallengeParticipantCard'
 import { useInfiniteGroupParticipations } from '@features/challenge/hook/useInfiniteGroupParticipations'

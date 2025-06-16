@@ -5,12 +5,12 @@ import { ChevronDown, ChevronUp, Send } from 'lucide-react'
 import { useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import { CommentType } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import CommentItem from '@features/challenge/components/challenge/participate/verification/details/comment-item'
 import { theme } from '@shared/styles/theme'
 
 interface CommentListProps {
-  comments: CommentResponse['comments']
+  comments: CommentType[]
   onSubmit: (content: string) => void
   onReplySubmit: (id: number, content: string) => void
   onUpdate: (id: number, content: string) => void
