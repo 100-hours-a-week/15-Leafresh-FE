@@ -4,7 +4,7 @@ import { fetchRequest } from '@shared/lib/api/fetcher'
 import { ISOFormatString } from '@shared/types/date'
 
 export type VerificationDetailResponse = {
-  id: 0
+  id: number
   nickname: string
   profileImageUrl: string
   isLiked: boolean // 로그인한 사용자의 좋아요 여부. 로그인하지 않은 사용자는 false 고정
@@ -22,7 +22,12 @@ export type VerificationDetailResponse = {
   updatedAt: ISOFormatString
 }
 
-export const getVerificationDetails = (challengeId: number, verificationId: number) => {
+export type VerificationDetailVariables = {
+  challengeId: number
+  verificationId: number
+}
+
+export const getVerificationDetails = ({ challengeId, verificationId }: VerificationDetailVariables) => {
   return fetchRequest<VerificationDetailResponse>(
     ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
   )

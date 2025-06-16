@@ -64,7 +64,9 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
   )
 
   /** 좋아요 핸들러 */
-  const toggleLike = () => {
+  const toggleLike = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+
     // #0. 로그인 상태가 아닐 때
     if (!isLoggedIn) {
       openConfirmModal({
@@ -100,6 +102,10 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
     const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
     copyToClipboard(url)
   }
+
+  const handleDetailsRoute = () => {
+    router.push(URL.CHALLENGE.GROUP.VERIFICATION.DETAILS.value(challengeId, verificationId))
+  }
   return (
     <Wrapper className={className}>
       <HeaderWrapper>
@@ -112,7 +118,7 @@ const VerificationCard = ({ challengeId, verificationData, className }: Verifica
         </ProfileWrapper>
       </HeaderWrapper>
 
-      <VerificationWrapper>
+      <VerificationWrapper onClick={handleDetailsRoute}>
         <ImageWrapper>
           <VerificationImage src={verificationImageUrl} alt='인증 이미지' fill />
           <Badge className='badge'>{category_kor}</Badge>

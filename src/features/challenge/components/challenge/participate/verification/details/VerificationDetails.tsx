@@ -60,7 +60,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
 
   const { data: verificationData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
-    queryFn: () => getVerificationDetails(challengeId, verificationId),
+    queryFn: () => getVerificationDetails({ challengeId, verificationId }),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -106,7 +106,10 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   )
 
   const verifications: VerificationDetailResponse = verificationData?.data ?? ({} as VerificationDetailResponse)
+  console.log(verifications)
+
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
+  console.log(comments)
 
   const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
   const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)

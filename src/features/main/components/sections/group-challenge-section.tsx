@@ -27,13 +27,7 @@ interface GroupChallengeSectionsProps {
 export const GroupChallengeSections = ({ categories, className }: GroupChallengeSectionsProps): ReactNode => {
   const router = useRouter()
 
-  console.log('groupchallengesections : categoires', categories)
-  console.log('categories[0]: ', categories[0])
-  console.log('categories[0]: ', categories[0]?.imageUrl)
-
   const [category, setCategory] = useState<FilterChallengeCategoryType>(categories[0]?.category) // 영어
-
-  console.log('카테고리 : ', category)
 
   const [input, setInput] = useState('') // 유저의 검색값
 
@@ -108,15 +102,25 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
   } else {
     /** 검색값이 있는 경우 */
     contents = groupChallenges.map(challenge => {
-      const { id, title, leafReward, currentParticipantCount, endDate, startDate, remainingDay, thumbnailUrl } =
-        challenge
+      const {
+        id,
+        title,
+        category,
+        description,
+        leafReward,
+        currentParticipantCount,
+        endDate,
+        startDate,
+        remainingDay,
+        thumbnailUrl,
+      } = challenge
       const data: GroupChallenge = {
         id,
         name: title,
-        description: '더미 데이터', //TODO: 백엔드에서 description 데이터 추가해주면 넣기
+        description,
         startDate,
         endDate,
-        category, //TODO: 백엔드에서 description 데이터 추가해주면 넣기
+        category,
         currentParticipantCount,
         imageUrl: thumbnailUrl,
         leafReward,

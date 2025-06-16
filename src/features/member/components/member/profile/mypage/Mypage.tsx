@@ -133,7 +133,6 @@ const Mypage = () => {
       },
       onError: err => {
         if (isMountedRef.current) {
-          console.log(err)
           setPollError('피드백 요청에 실패했어요.')
         }
       },

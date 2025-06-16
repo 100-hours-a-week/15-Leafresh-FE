@@ -137,7 +137,7 @@ const Count = styled.div`
 `
 const GridWrapper = styled.div`
   width: 100%;
-  display: flex;
+  display: grid;
   justify-content: center;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
