@@ -62,6 +62,8 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
     queryFn: () => getVerificationDetails(challengeId, verificationId),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   })
 
   const { data: commentData } = useQuery({
