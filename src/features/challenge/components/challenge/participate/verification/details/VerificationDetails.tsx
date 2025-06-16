@@ -70,8 +70,6 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.COMMENT,
   })
 
-  // console.log(commentData)
-
   // 댓글 작성
   const { mutate: commentMutation } = useMutationStore<CommentType, PostCommentVariables>(
     MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.CREATE,
@@ -114,8 +112,6 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
   const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
   const [localComments, setLocalComments] = useState<CommentType[]>(comments.comments ?? [])
-
-  console.log(userInfo)
 
   /** 좋아요 핸들러 */
   const handleLikeToggle = () => {
