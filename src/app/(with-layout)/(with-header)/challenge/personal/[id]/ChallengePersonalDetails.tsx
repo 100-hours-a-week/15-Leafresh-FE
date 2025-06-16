@@ -10,7 +10,6 @@ import { useQuery } from '@tanstack/react-query'
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import {
   getPersonalChallengeDetails,
-  PersonalChallengeDetail,
 } from '@features/challenge/api/get-personal-challenge-details'
 import {
   VerifyGroupChallengeResponse,
@@ -28,50 +27,14 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { usePollingStore } from '@shared/context/polling/PollingStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
-import { TimeFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
-
-export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {
-  id: 1,
-  title: '제로 웨이스트 실천하기',
-  description:
-    '하루 동안 일회용품 사용을 줄이고, 텀블러와 장바구니를 활용해보세요.\n실천하는 모습의 인증샷을 업로드해주세요!',
-  thumbnailUrl: '/icon/category_zero_waste.png',
-  dayOfWeek: 'MONDAY',
-  verificationStartTime: '08:00' as TimeFormatString,
-  verificationEndTime: '22:00' as TimeFormatString,
-  leafReward: 15,
-  exampleImages: [
-    {
-      id: 1,
-      imageUrl: '/icon/category_zero_waste.png',
-      type: 'SUCCESS',
-      description: '텀블러 사용 장면',
-      sequenceNumber: 1,
-    },
-    {
-      id: 2,
-      imageUrl: '/icon/category_zero_waste.png',
-      type: 'SUCCESS',
-      description: '장바구니 사용 장면',
-      sequenceNumber: 2,
-    },
-    {
-      id: 3,
-      imageUrl: '/icon/category_zero_waste.png',
-      type: 'FAILURE',
-      description: '일회용 컵을 사용한 장면',
-      sequenceNumber: 3,
-    },
-  ],
-  status: 'NOT_SUBMITTED',
-}
 
 type WarningType = {
   isWarning: boolean
@@ -97,6 +60,8 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   const { open: openCameraModal } = useCameraModalStore()
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
+
+  const { addChallengeId } = usePollingStore()
 
   /** 개인 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
@@ -136,7 +101,11 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   /** 제출 버튼 비활성화 여부 */
   const isButtonDisabled: boolean = status !== 'NOT_SUBMITTED'
   const getSubmitButtonLabel = (status: ChallengeVerificationStatusType): string => {
-    if (status === 'PENDING_APPROVAL') return '인증여부 판단 중'
+    if (status === 'PENDING_APPROVAL') {
+      // TODO: 인증이 올바르게 AI펍섭에 들어가지 않은 경우 핸들링 필요 (협업)
+      // addChallengeId(challengeId)
+      return '인증여부 판단 중'
+    }
     if (status === 'SUCCESS' || status === 'FAILURE' || status === 'DONE') return '참여 완료'
     return '참여하기'
   }
@@ -216,6 +185,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
       },
       {
         onSuccess: () => {
+          addChallengeId(challengeId) // 인증 결과 롱폴링 시작
           openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
         },
       },
@@ -425,6 +395,42 @@ const Warning = styled.div<{ isWarning: boolean }>`
 `
 
 // export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {
+//   id: 1,
+//   title: '제로 웨이스트 실천하기',
+//   description:
+//     '하루 동안 일회용품 사용을 줄이고, 텀블러와 장바구니를 활용해보세요.\n실천하는 모습의 인증샷을 업로드해주세요!',
+//   thumbnailUrl: '/icon/category_zero_waste.png',
+//   dayOfWeek: 'MONDAY',
+//   verificationStartTime: '08:00' as TimeFormatString,
+//   verificationEndTime: '22:00' as TimeFormatString,
+//   leafReward: 15,
+//   exampleImages: [
+//     {
+//       id: 1,
+//       imageUrl: '/icon/category_zero_waste.png',
+//       type: 'SUCCESS',
+//       description: '텀블러 사용 장면',
+//       sequenceNumber: 1,
+//     },
+//     {
+//       id: 2,
+//       imageUrl: '/icon/category_zero_waste.png',
+//       type: 'SUCCESS',
+//       description: '장바구니 사용 장면',
+//       sequenceNumber: 2,
+//     },
+//     {
+//       id: 3,
+//       imageUrl: '/icon/category_zero_waste.png',
+//       type: 'FAILURE',
+//       description: '일회용 컵을 사용한 장면',
+//       sequenceNumber: 3,
+//     },
+//   ],
+//   status: 'NOT_SUBMITTED',
+// }
+
+// const dummyPersonalChallengeDetail: PersonalChallengeDetail = {
 //   id: 1,
 //   title: '제로 웨이스트 실천하기',
 //   description:
