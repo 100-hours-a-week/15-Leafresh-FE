@@ -3,12 +3,14 @@ import Image from 'next/image'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
-import { CommentResponse } from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import {
+  CommentType,
+} from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 
 interface CommentItemProps {
-  comment: CommentResponse['comment'][number]
+  comment: CommentType
   onUpdate: (id: number, content: string) => void
   onDelete: (id: number) => void
 }

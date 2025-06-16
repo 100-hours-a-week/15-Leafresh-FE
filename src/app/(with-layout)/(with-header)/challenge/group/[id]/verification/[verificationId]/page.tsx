@@ -26,7 +26,7 @@ const Page = async ({ params }: PageProps) => {
     await Promise.all([
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeIdNum, verificationIdNum),
-        queryFn: () => getVerificationDetails(challengeIdNum, verificationIdNum),
+        queryFn: () => getVerificationDetails({ challengeId: challengeIdNum, verificationId: verificationIdNum }),
         ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
       }),
 

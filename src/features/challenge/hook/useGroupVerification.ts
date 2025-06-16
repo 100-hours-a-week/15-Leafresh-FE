@@ -4,9 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-import {
-  getGroupVerificationResult,
-} from '../api/participate/verification/group-verification'
+import { getGroupVerificationResult } from '../api/participate/verification/group-verification'
 // import { showNotification } from '@/libs/showNotification'
 
 /** 인증 결과 롱폴링 훅 */
@@ -34,7 +32,7 @@ export const useGroupVerificationResult = (challengeId: number) => {
       // showNotification(msg, `/challenges/group/${challengeId}`)
 
       // 관련 쿼리 무효화
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS })
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS('completed') })
       qc.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS(challengeId) })
 
       // 폴링 중지
