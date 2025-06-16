@@ -11,8 +11,6 @@ const proxyToBackend = async (method: string, req: NextRequest) => {
   const search = req.nextUrl.search
   const url = `${BACKEND_ORIGIN}/${backendPath}${search}`
 
-  console.log('🔥프록시에서의 URL : ', url)
-
   // 🟢 요청 헤더 복사
   const headers = new Headers()
   req.headers.forEach((value, key) => {

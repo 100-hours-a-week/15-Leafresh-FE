@@ -15,8 +15,6 @@ export async function serverFetchRequest<T>(
   options: OptionsType = {},
   isRetry = false,
 ): Promise<ApiResponse<T>> {
-  console.log('✅ endpoint : ', endpoint)
-
   const { method, path } = endpoint
   const url = new URL(
     BASE_URL + path,

@@ -45,8 +45,6 @@ export async function clientFetchRequest<T>(
   if (!response.ok) {
     // ✅ Access Token 만료 추정 시 재시도
     if ((response.status === 401 || response.status === 403) && !isRetry) {
-      console.log('🏴 재발급 요청 해야함')
-
       try {
         await refreshClientAccessToken()
 
