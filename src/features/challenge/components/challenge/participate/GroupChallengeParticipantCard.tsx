@@ -1,10 +1,10 @@
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
+import { FeedVerificationStatusType } from '@entities/challenge/type'
+import { AchievementRecord } from '@features/challenge/api/participate/group-participant'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
-import { AchievementRecord } from '@features/challenge/api/participate/group-participant'
-import { FeedVerificationStatusType } from '@entities/challenge/type'
 
 interface ChallengeProps {
   className?: string
