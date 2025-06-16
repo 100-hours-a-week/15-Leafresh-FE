@@ -139,7 +139,7 @@ const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdit }: De
           이전
         </BackButton>
         <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
-          {!isCreating ? BUTTON_TEXT : <Loading />}
+          {!isCreating ? BUTTON_TEXT : <StyledLoading hasText={false} />}
         </SubmitButton>
       </ButtonWrapper>
     </Container>
@@ -263,4 +263,8 @@ const SubmitButton = styled.button<{ $active: boolean; disabled?: boolean }>`
 const StyledImageInput = styled(ImageInput)`
   width: 100%;
   border: 1px solid ${theme.colors.lfGray.base};
+`
+
+const StyledLoading = styled(Loading)`
+  margin: 0;
 `
