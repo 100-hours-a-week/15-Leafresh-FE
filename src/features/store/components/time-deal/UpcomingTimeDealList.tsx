@@ -11,12 +11,12 @@ import ApologizeContent from '@shared/components/apologize/apologize'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 
-interface UpcomingTimeDealCardProps {
+interface UpcomingTimeDealListProps {
   data: TimeDealProduct[]
   className?: string
 }
 
-const UpcomingTimeDealCard = ({ data, className }: UpcomingTimeDealCardProps): ReactNode => {
+const UpcomingTimeDealList = ({ data, className }: UpcomingTimeDealListProps): ReactNode => {
   const autoplay = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }))
   const [emblaRef] = useEmblaCarousel({ loop: true }, [autoplay.current])
 
@@ -66,7 +66,7 @@ const UpcomingTimeDealCard = ({ data, className }: UpcomingTimeDealCardProps): R
     </UpcomingSection>
   )
 }
-export default UpcomingTimeDealCard
+export default UpcomingTimeDealList
 
 const CarouselWrapper = styled.div`
   overflow: hidden;

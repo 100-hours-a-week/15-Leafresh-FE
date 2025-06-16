@@ -28,7 +28,7 @@ export const useOAuthUserStore = create<OAuthUserState>()(
     }),
     {
       name: 'oauth-user-info', // localStorage key
-      partialize: state => ({ userInfo: state.OAuthUserInfo }), // 선택적 저장
+      partialize: state => ({ OAuthUserInfo: state.OAuthUserInfo }), // 선택적 저장
     },
   ),
 )

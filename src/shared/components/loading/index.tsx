@@ -6,10 +6,11 @@ import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 
 interface LoadingProps {
+  hasText?: boolean
   className?: string
 }
 
-const Loading = ({ className }: LoadingProps): ReactNode => {
+const Loading = ({ hasText = true, className }: LoadingProps): ReactNode => {
   return (
     <Container className={className}>
       <DotWrapper>
@@ -17,9 +18,11 @@ const Loading = ({ className }: LoadingProps): ReactNode => {
         <Dot delay='0.2s' />
         <Dot delay='0.4s' />
       </DotWrapper>
-      <TextWrapper>
-        <span>잠시만 기다려주세요</span>
-      </TextWrapper>
+      {hasText && (
+        <TextWrapper>
+          <span>잠시만 기다려주세요</span>
+        </TextWrapper>
+      )}
     </Container>
   )
 }

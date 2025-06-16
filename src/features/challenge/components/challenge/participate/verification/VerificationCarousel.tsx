@@ -78,7 +78,7 @@ const VerificationCarousel = ({ verifications }: Props) => {
   }, [emblaApi, onInit, onSelect])
 
   return (
-    <div>
+    <Wrapper>
       <CarouselViewport ref={emblaRef}>
         <CarouselContainer>
           {chunks.map((group, index) => (
@@ -105,13 +105,17 @@ const VerificationCarousel = ({ verifications }: Props) => {
           />
         ))}
       </Dots>
-    </div>
+    </Wrapper>
   )
 }
 
 export default VerificationCarousel
 
 // === 스타일 ===
+const Wrapper = styled.div`
+  width: 100%;
+`
+
 const CarouselViewport = styled.div`
   overflow: hidden;
   /* width: 100%; */
