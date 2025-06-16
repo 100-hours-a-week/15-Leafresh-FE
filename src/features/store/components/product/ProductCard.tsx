@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+import { useState } from 'react'
 import styled from '@emotion/styled'
 
 import { Product } from '@features/store/api/get-products'
@@ -36,7 +37,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const { id, description, imageUrl, price, stock, title } = product
 
-  const isSoldOut: boolean = stock <= 0
+  const [localStock, setLocalStock] = useState(product.stock)
+
+  const isSoldOut: boolean = localStock <= 0 // 품절 여부
 
   /** 일반 상품 구매 이력 생성 */
   const { mutate: PurchaseMutate, isPending: isPurchasing } = useMutationStore<
@@ -70,25 +73,26 @@ const ProductCard = ({ product }: ProductCardProps) => {
       title: `${title}를 구매하시겠습니까?`,
       description: `가격은 나뭇잎 ${price}개 입니다`,
       onConfirm: () => {
-        regenerateIdempotencyKey() // 새 멱등키 발급
-        const body: OrderProductBody = {
-          quantity: 1,
-        }
-        const headers: OrderProductHeaders = {
-          'Idempotency-Key': IdempotencyKey,
-        }
+        regenerateIdempotencyKey()
+        const body: OrderProductBody = { quantity: 1 }
+        const headers: OrderProductHeaders = { 'Idempotency-Key': IdempotencyKey }
 
-        return PurchaseMutate(
+        // 낙관적 업데이트
+        const prevStock = localStock
+        setLocalStock(prev => prev - 1)
+
+        PurchaseMutate(
           { productId: id, headers, body },
           {
             onSuccess: () => {
               openToast(ToastType.Success, '구매가 완료되었습니다')
             },
             onError: () => {
+              setLocalStock(prevStock) // 실패 시 롤백
               openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
-              regenerateIdempotencyKey() // 멱등키 초기화 (재발급)
+              regenerateIdempotencyKey()
             },
           },
         )
