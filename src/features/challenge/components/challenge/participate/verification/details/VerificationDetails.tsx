@@ -107,8 +107,6 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
 
   const verifications: VerificationDetailResponse = verificationData?.data ?? ({} as VerificationDetailResponse)
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
-  // const verifications: VerificationDetailResponse = verificationData?.data ?? (dummypost as VerificationDetailResponse)
-  // const comments: CommentResponse = commentData?.data ?? (dummycomments as CommentResponse)
 
   const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
   const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
@@ -178,10 +176,12 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
       deleted: false,
       replies: [],
     }
-
-    setLocalComments(prev => [...prev, optimisticComment])
-
     const prevComment = commentCount
+
+    //낙관적 업데이트
+    setLocalComments(prev => [...prev, optimisticComment])
+    setCommentCount(prevComment + 1)
+
     commentMutation(
       {
         challengeId,
@@ -191,9 +191,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
       {
         onSuccess: response => {
           const realId = response.data.id
-
-          setCommentCount(prevComment + 1)
-
+          //댓글 id만 변경
           setLocalComments(prev => prev.map(comment => (comment.id === tempId ? { ...comment, id: realId } : comment)))
         },
         onError: () => {
@@ -232,7 +230,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
       deleted: false,
     }
 
-    // optimistic update
+    // 낙관적 업데이트
     setLocalComments(prev =>
       prev.map(comment =>
         comment.id === parentCommentId
@@ -243,6 +241,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
           : comment,
       ),
     )
+    setCommentCount(prevComment + 1)
 
     replyMutation(
       {
@@ -255,7 +254,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
         onSuccess: response => {
           const realId = response.data.id
 
-          setCommentCount(prevComment + 1)
+          //마찬가지로 답글(대댓글)의 id만 변경
           setLocalComments(prev =>
             prev.map(comment => {
               if (comment.id !== parentCommentId) return comment
