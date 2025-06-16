@@ -36,20 +36,20 @@ const GroupChallengeParticipantCard = ({
   const getColor = (status: FeedVerificationStatusType): string => {
     switch (status) {
       case 'SUCCESS':
-        return '#4caf50' // 초록
+        return `${theme.colors.lfGreenMain.base}` // 초록
       case 'FAILURE':
-        return '#e53935' // 빨강
+        return `${theme.colors.lfRed.base}` // 빨강
       case 'PENDING_APPROVE':
-        return 'gray' // 검정
+        return `${theme.colors.lfDarkGray.base}` // 진한 회색
       default:
-        return 'lightgray'
+        return `${theme.colors.lfLightGray.base}`
     }
   }
 
   const segments = Array.from({ length: maxCount }, (_, idx) => {
     const rec = record.find(r => r.day === idx + 1)
     return {
-      color: rec ? getColor(rec.status) : 'lightgray', // 미인증은 회색
+      color: rec ? getColor(rec.status) : `${theme.colors.lfLightGray.base}`, // 미인증은 회색
     }
   })
 
