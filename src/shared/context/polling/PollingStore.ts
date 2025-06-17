@@ -8,7 +8,6 @@ type PollingData = {
       personalChallengeIdList: number[] // 개인 챌린지 인증
       groupChallengeIdList: number[] // 단체 챌린지 인증
     }
-    pendingApprovalChallengeIdList: number[] // 단체 챌린지 생성
   }
   member: {
     feedback: boolean
@@ -26,10 +25,6 @@ type PollingStore = {
   addGroupChallengeId: (id: number) => void
   removeGroupChallengeId: (id: number) => void
 
-  // 단체 챌린지 생성 검열
-  addPendingApprovalChallengeIdList: (id: number) => void
-  removePendingApprovalChallengeIdList: (id: number) => void
-
   // 피드백 폴링
   setFeedbackPolling: () => void
   clearFeedbackPolling: () => void
@@ -41,7 +36,6 @@ const INITIAL_STATE: PollingData = {
       personalChallengeIdList: [],
       groupChallengeIdList: [],
     },
-    pendingApprovalChallengeIdList: [],
   },
   member: {
     feedback: false,
@@ -122,38 +116,6 @@ export const usePollingStore = create<PollingStore>()(
                 ...get().polling.challenge.verification,
                 groupChallengeIdList: removed,
               },
-            },
-          },
-        })
-      },
-
-      // 단체 챌린지 생성 검열
-      addPendingApprovalChallengeIdList: id => {
-        const current = get().polling.challenge.pendingApprovalChallengeIdList
-        if (current.includes(id)) return
-
-        const appended: number[] = [...current, id]
-        set({
-          polling: {
-            ...get().polling,
-            challenge: {
-              ...get().polling.challenge,
-              pendingApprovalChallengeIdList: appended,
-            },
-          },
-        })
-      },
-
-      removePendingApprovalChallengeIdList: id => {
-        const current = get().polling.challenge.pendingApprovalChallengeIdList
-
-        const removed: number[] = current.filter(chId => chId !== id)
-        set({
-          polling: {
-            ...get().polling,
-            challenge: {
-              ...get().polling.challenge,
-              pendingApprovalChallengeIdList: removed,
             },
           },
         })

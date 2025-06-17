@@ -10,7 +10,6 @@ enum PollingTarget {
   PERSONAL_CHALLENGE_VERIFICATION_RESULT, // 개인 챌린지 인증 결과 조회
   GROUP_CHALLENGE_VERIFICATION_RESULT, // 단체 챌린지 인증 결과 조회
   FEEDBACK, // 개인 피드백
-  GROUP_CHALLENGE_CREATE, // 단체 챌린지 생성 검열
 }
 
 const PollingWatcher = () => {
