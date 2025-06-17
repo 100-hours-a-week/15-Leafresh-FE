@@ -10,7 +10,6 @@ type PollingData = {
     }
     pendingApprovalChallengeIdList: number[] // 단체 챌린지 생성
   }
-  //
   member: {
     feedback: boolean
   }
