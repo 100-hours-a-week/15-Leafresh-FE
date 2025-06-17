@@ -82,7 +82,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
         setLocalStock(prev => prev - 1) // 낙관적 업데이트
 
         return PurchaseMutate(
-          { productId: deal.productId, headers, body },
+          { productId: deal.dealId, headers, body },
           {
             onSuccess: () => openToast(ToastType.Success, '구매가 완료되었습니다'),
             onError: () => {
