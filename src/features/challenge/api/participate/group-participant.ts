@@ -1,15 +1,22 @@
+import { FeedVerificationStatusType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
 
 export type ChallengeStatus = 'not_started' | 'ongoing' | 'completed'
 
-export interface FetchGroupParticipationsParams {
+export type FetchGroupParticipationsParams = {
   status: ChallengeStatus
   cursorId?: number
   cursorTimestamp?: string
 }
-export interface ParticipantChallengeItem {
+
+export interface AchievementRecord {
+  day: number
+  status: FeedVerificationStatusType
+}
+
+export type ParticipantChallengeItem = {
   id: number
   title: string
   thumbnailUrl: string
@@ -19,19 +26,16 @@ export interface ParticipantChallengeItem {
     success: number
     total: number
   }
+  achievementRecords: AchievementRecord[]
 }
 
 export type ParticipantChallengeResponse = InfiniteScrollResponse<{
-  data: {
-    challenges: ParticipantChallengeItem[]
-    hasNext: boolean
-    cursorInfo: FetchGroupParticipationsParams
-  }
-  message: string
-  status: number
+  challenges: ParticipantChallengeItem[]
+  hasNext: boolean
+  cursorInfo: FetchGroupParticipationsParams
 }>
 
-export const fetchGroupParticipations = ({ status, cursorId, cursorTimestamp }: FetchGroupParticipationsParams) => {
+export const getGroupParticipations = ({ status, cursorId, cursorTimestamp }: FetchGroupParticipationsParams) => {
   return fetchRequest<ParticipantChallengeResponse>(ENDPOINTS.MEMBERS.CHALLENGE.GROUP.PARTICIPATIONS, {
     query: {
       status,

@@ -1,4 +1,5 @@
 import { FeedbackResponse } from '@features/member/api/profile/get-member-feedback'
+import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher'
@@ -11,8 +12,11 @@ export async function pollFeedbackResult(): Promise<void> {
       if (response.status != 200) throw new Error('Failed polling')
 
       if (response.status === 200 && response.data?.content) {
-        // 쿼리 캐시를 직접 업데이트
-        queryClient.setQueryData(['member', 'feedback'], { response })
+        queryClient.setQueryData(QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK, {
+          data: response.data,
+          message: '피드백 수신 완료',
+          status: 200,
+        })
         break
       }
 

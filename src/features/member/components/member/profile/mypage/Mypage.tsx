@@ -5,7 +5,10 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
+import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
+import { useUserStore } from '@entities/member/context/UserStore'
 import { slideRotateIn } from '@entities/member/style'
+import { LogoutResponse, LogoutVariables } from '@features/member/api/logout'
 import { FeedbackResponse, getFeedback } from '@features/member/api/profile/get-member-feedback'
 import { pollFeedbackResult } from '@features/member/api/profile/get-member-feedback-result'
 import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
@@ -17,6 +20,9 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
+import { ToastType } from '@shared/context/toast/type'
+import { useAuth } from '@shared/hooks/useAuth/useAuth'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
@@ -31,6 +37,12 @@ const Mypage = () => {
   const [isPolling, setIsPolling] = useState(false)
   const [pollError, setPollError] = useState<string | null>(null)
   const [showProfileCard, setShowProfileCard] = useState(false)
+
+  const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
+  const { clearUserInfo } = useUserStore()
+  const { isLoggedIn } = useAuth()
+
+  const openToast = useToast()
 
   const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK)
 
@@ -88,13 +100,16 @@ const Mypage = () => {
     ...QUERY_OPTIONS.MEMBER.FEEDBACK,
   })
 
+  const { mutate: LogoutMutate, isPending: isLoggingOut } = useMutationStore<LogoutResponse, LogoutVariables>(
+    MUTATION_KEYS.MEMBER.AUTH.LOGOUT,
+  )
+
   if (!profileData) return null //로딩, fallback 처리
 
   const profile: ProfileResponse = profileData.data ?? ({} as ProfileResponse)
   const profileCard: ProfileCardResponse = profileCardData?.data ?? ({} as ProfileCardResponse)
   const recentbadges: Badge[] = recentBadgesData?.data.badges ?? []
   const feedback: FeedbackResponse | null = feedbackData?.data ?? null
-  console.log(feedback?.content)
 
   function handleProfileCardOpen() {
     setShowProfileCard(true)
@@ -127,8 +142,37 @@ const Mypage = () => {
     })
   }
 
+  /** 로그아웃 로직 */
+  const handleLogout = () => {
+    console.log('로그아웃')
+
+    if (!isLoggedIn) {
+      window.location.reload()
+      return
+    }
+
+    const provider = OAuthUserInfo?.provider
+    console.log('provider: ', provider)
+
+    if (provider) {
+      // console.log('provider: ', provider)
+
+      LogoutMutate(
+        { provider },
+        {
+          onSuccess: response => {
+            clearOAuthUserInfo()
+            clearUserInfo()
+            openToast(ToastType.Success, '로그아웃 성공')
+            router.push(URL.MAIN.INDEX.value)
+          },
+        },
+      )
+    }
+  }
+
   return (
-    <Container>
+    <Container isScroll={showProfileCard}>
       <ProfileSection>
         <ProfileBox
           nickName={profile.nickname}
@@ -138,7 +182,7 @@ const Mypage = () => {
           onClick={handleProfileCardOpen}
         />
         <FeedbackBox>
-          <FeedbackText>나의 친환경 활동 점수는?</FeedbackText>
+          <FeedbackText>나의 친환경 활동 피드백</FeedbackText>
           {isPolling && <Loading />}
 
           {/* 피드백 */}
@@ -164,18 +208,18 @@ const Mypage = () => {
       </BadgeSection>
 
       <RouteSection>
-        <SectionTitle>나의 활동</SectionTitle>
+        <SectionTitle>나의 이용 내역</SectionTitle>
         <MenuList>
           <MenuItem onClick={() => router.push(URL.MEMBER.CHALLENGES.CREATED.value)}>
             <MenuText>생성한 챌린지</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.BADGE.value)}>
-            <MenuText>나의 활동 뱃지</MenuText>
+            <MenuText>활동 뱃지</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
           <MenuItem onClick={() => router.push(URL.MEMBER.STORE.PURCHASED.value)}>
-            <MenuText>나의 상점 구매 목록</MenuText>
+            <MenuText>구매 목록</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
         </MenuList>
@@ -185,6 +229,10 @@ const Mypage = () => {
         <MenuList>
           <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.MODIFY.value)}>
             <MenuText>프로필 수정</MenuText>
+            <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
+          </MenuItem>
+          <MenuItem onClick={handleLogout}>
+            <MenuText style={{ color: 'red' }}>로그아웃</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>
         </MenuList>
@@ -200,13 +248,14 @@ const Mypage = () => {
 
 export default Mypage
 
-const Container = styled.div`
+const Container = styled.div<{ isScroll: boolean }>`
   ${responsiveHorizontalPadding};
 
   display: flex;
   flex-direction: column;
 
   gap: 20px;
+  overflow: ${({ isScroll }) => (isScroll ? 'hidden' : 'auto')};
 `
 
 const ProfileSection = styled.div`
@@ -218,6 +267,7 @@ const FeedbackBox = styled.div`
   width: 100%;
   margin-top: 20px;
   display: flex;
+  padding: 15px;
   flex-direction: column;
   background-color: #eff9e8;
 
@@ -226,14 +276,14 @@ const FeedbackBox = styled.div`
   justify-self: center;
   text-align: start;
 
-  padding: 10px 0;
   border-radius: ${theme.radius.base};
   box-shadow: ${theme.shadow.lfPrime};
 `
 
 const FeedbackText = styled.p`
-  font-size: ${theme.fontSize.sm};
-  padding-left: 20px;
+  font-size: ${theme.fontSize.md};
+  /* padding-left: 20px; */
+  font-weight: ${theme.fontWeight.semiBold};
   align-self: flex-start;
 `
 const Feedback = styled.p`
@@ -268,9 +318,10 @@ const BadgeSection = styled.div`
 `
 const AnimatedCardWrapper = styled.div`
   animation: ${slideRotateIn} 1.6s ease forwards;
-  position: absolute;
+  position: fixed; /* ✅ 수정 */
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%); /* ✅ 중앙 정렬 */
   transform-origin: center center;
   z-index: 1000;
 `
@@ -281,6 +332,10 @@ const RouteSection = styled.div`
   border-radius: ${theme.radius.base};
   box-shadow: ${theme.shadow.lfPrime};
   overflow: hidden;
+
+  :last-child {
+    margin-bottom: 10px;
+  }
 `
 
 const SectionTitle = styled.h3`

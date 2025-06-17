@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
 import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
 import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
+import { ChallengeStatus } from '@features/challenge/api/participate/group-participant'
 import { deleteVerificationComment } from '@features/challenge/api/participate/verification/delete-verification-comment'
 import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
 import { CreateVerificationLike } from '@features/challenge/api/participate/verification/likes/create-like'
@@ -135,7 +136,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
     const { challengeId } = variables
 
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId) }) // 단체 챌린지 상세 조회
-    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS }) // member - 참여한 단체 챌린지 목록 조회
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS(status as ChallengeStatus),
+    }) // member - 참여한 단체 챌린지 목록 조회
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -175,7 +178,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMI
 
     //참여한 단체 챌린지 목록 -> 성공률
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS(status as ChallengeStatus),
     })
 
     //알림 목록

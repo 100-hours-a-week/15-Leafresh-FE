@@ -3,7 +3,7 @@ import { fetchRequest } from '@shared/lib/api/fetcher'
 import { ISOFormatString } from '@shared/types/date'
 
 export type CommentResponse = {
-  comment: CommentType[]
+  comments: CommentType[]
 }
 
 export type CommentType = {

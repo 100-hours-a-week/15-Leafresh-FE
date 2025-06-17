@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { useToast } from '@shared/hooks/useToast/useToast'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
 import {
@@ -14,8 +13,6 @@ import {
 
 /** 인증 제출 뮤테이션 */
 export const usePostGroupVerification = (challengeId: number) => {
-  const openToast = useToast()
-
   const qc = useQueryClient()
   return useMutation<ApiResponse<PostGroupVerificationResponse>, ErrorResponse, PostGroupVerificationBody>({
     mutationKey: [MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT],

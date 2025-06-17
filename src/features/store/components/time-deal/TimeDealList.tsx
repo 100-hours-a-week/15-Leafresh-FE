@@ -9,8 +9,8 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 
 import { getTimeDealProducts, TimeDealProduct } from '../../api/get-timedeals'
-import OngoingTimeDealCard from './OngoingTimeDealCard'
-import UpcomingTimeDealCard from './UpcomingTimeDealCard'
+import OngoingTimeDealList from './OngoingTimeDealList'
+import UpcomingTimeDealList from './UpcomingTimeDealList'
 
 interface TimeDealListProps {
   className?: string
@@ -32,8 +32,8 @@ const TimeDealList = ({ className }: TimeDealListProps): ReactNode => {
 
   return (
     <Container className={className}>
-      <OngoingTimeDealCard data={ongoing} />
-      <UpcomingTimeDealCard data={upcoming} />
+      <OngoingTimeDealList data={ongoing} />
+      <UpcomingTimeDealList data={upcoming} />
     </Container>
   )
 }
