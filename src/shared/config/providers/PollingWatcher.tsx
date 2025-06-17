@@ -14,24 +14,28 @@ enum PollingTarget {
 
 const PollingWatcher = () => {
   const openToast = useToast()
-  const { personalChallengeIds, removeChallengeId } = usePollingStore()
+  const { polling, removePersonalChallengeId } = usePollingStore()
+
+  const { challenge, member } = polling
+
+  const personalChallengeIdList: number[] = challenge.verification.personalChallengeIdList // 개인 챌린지 롱폴링ID
 
   /** 이벤트 핸들러 */
   // TODO: type=단체 챌린지 인증 제출 핸들링
   const handleOnCompleteChallenge = (type: PollingTarget, challengeId: number) => {
-    // #1. 챌린지 제거
-    removeChallengeId(challengeId)
-
-    // #2.토스트 띄우기
-    openToast(ToastType.Success, `인증 결과 도착!\n알림창을 확인해주세요`)
+    // #1. 개인 챌린지 인증 제출
+    if (type === PollingTarget.PERSONAL_CHALLENGE_VERIFICATION_RESULT) {
+      removePersonalChallengeId(challengeId) // 챌린지 제거
+      openToast(ToastType.Success, `개인 챌린지 인증 결과 도착!\n알림창을 확인해주세요`) // 토스트 띄우기
+    }
   }
   return (
     <>
-      {personalChallengeIds.map(id => (
+      {personalChallengeIdList.map(challengeId => (
         <PollingChallengeResult
-          key={id}
+          key={challengeId}
           type={PollingTarget.PERSONAL_CHALLENGE_VERIFICATION_RESULT}
-          challengeId={id}
+          challengeId={challengeId}
           onComplete={handleOnCompleteChallenge}
         />
       ))}
