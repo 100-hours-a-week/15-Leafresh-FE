@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const isUnderMaintenance = process.env.NEXT_PUBLIC_MAINTENANCE === 'true'
   const url = request.nextUrl
+
+  // 점검 여부
+  const isUnderMaintenance: boolean = false
 
   // 점검중일 때, /maintenance로 rewrite
   if (isUnderMaintenance && !url.pathname.startsWith('/maintenance')) {
