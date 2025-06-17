@@ -7,23 +7,28 @@ import {
   PostGroupVerificationResponse,
 } from '@features/challenge/api/participate/verification/group-verification'
 import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
-import { useGroupVerificationResult } from '@features/challenge/hook/useGroupVerification'
 import { useGroupVerifications } from '@features/challenge/hook/useGroupVerificationList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
+import { usePollingStore } from '@shared/context/polling/PollingStore'
+import { ToastType } from '@shared/context/toast/type'
+import { useToast } from '@shared/hooks/useToast/useToast'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
 export default function GroupVerificationPage({ participateId }: { participateId: string }) {
-  const challengeId = Number(participateId)
+  const queryClient = getQueryClient()
+  const openToast = useToast()
+  const { addGroupChallengeId } = usePollingStore()
 
+  const challengeId = Number(participateId)
   const { data, isLoading, error } = useGroupVerifications(challengeId)
-  const postMutation = useMutationStore<
+  const { mutate: VerifyMutate } = useMutationStore<
     PostGroupVerificationResponse,
     { challengeId: number; body: PostGroupVerificationBody }
   >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT)
-  const resultQuery = useGroupVerificationResult(challengeId)
 
   const { open: openCameraModal } = useCameraModalStore()
 
@@ -38,18 +43,27 @@ export default function GroupVerificationPage({ participateId }: { participateId
       `${title} 인증`,
       // 2. 완료 콜백: imageUrl → Blob → FormData → mutate
       async ({ imageUrl, description }) => {
-        postMutation.mutate({
-          challengeId,
-          body: {
-            imageUrl,
-            content: description,
+        VerifyMutate(
+          {
+            challengeId,
+            body: {
+              imageUrl,
+              content: description,
+            },
           },
-        })
+          {
+            onSuccess: () => {
+              addGroupChallengeId(challengeId) // 인증 결과 롱폴링 시작
+              openToast(ToastType.Success, `인증 제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+            },
+          },
+        )
       },
       /* 3. hasDescription */ true,
       //   /* 4. type */ 'SUCCESS',
     )
   }
+
   return (
     <Container>
       <Title>{title} 챌린지</Title>
@@ -83,9 +97,6 @@ export default function GroupVerificationPage({ participateId }: { participateId
 
         {todayStatus === 'DONE' && <DisabledButton>금일 참여 완료</DisabledButton>}
       </ButtonGroup>
-
-      {resultQuery.data?.data.status === 'APPROVED' && <ResultMessage>인증이 승인되었습니다!</ResultMessage>}
-      {resultQuery.data?.data.status === 'REJECTED' && <ResultMessage>인증이 거절되었습니다.</ResultMessage>}
     </Container>
   )
 }
