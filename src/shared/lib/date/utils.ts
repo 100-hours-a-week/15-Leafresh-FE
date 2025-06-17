@@ -102,3 +102,23 @@ export const getTimeDiff = (dateString: ISOFormatString): string => {
 
   return `${diffYear}년 전`
 }
+
+/**
+ * KST 기준 자정을 UTC ISO 문자열로 변환
+ * @param date 로컬 Date 객체
+ * @returns ISO 문자열 (ex: "2025-06-17T00:00:00Z" ← 한국 기준 자정)
+ */
+export function getKstMidnightToUtcISOString(date: Date): ISOFormatString {
+  // 1. 연/월/일 추출
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
+
+  // 2. 한국(KST) 자정 문자열 생성
+  const kstDateTimeString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T00:00:00+09:00`
+
+  // 3. Date 객체 생성 후 UTC로 변환
+  const utcDate = new Date(kstDateTimeString)
+
+  return utcDate.toISOString() as ISOFormatString
+}

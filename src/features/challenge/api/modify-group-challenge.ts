@@ -1,7 +1,7 @@
 import { ChallengeCategoryType, ChallengeVerificationResultType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { DateFormatString, TimeFormatString } from '@shared/types/date'
+import { ISOFormatString, TimeFormatString } from '@shared/types/date'
 
 export type KeepImage = {
   id: number
@@ -20,8 +20,8 @@ export type ModifyChallengeBody = {
   category: ChallengeCategoryType // enum 값으로 관리
   maxParticipantCount: number
   thumbnailImageUrl: string
-  startDate: DateFormatString
-  endDate: DateFormatString
+  startDate: ISOFormatString
+  endDate: ISOFormatString
   verificationStartTime: TimeFormatString
   verificationEndTime: TimeFormatString
   exampleImages: {
