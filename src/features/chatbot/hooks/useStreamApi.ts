@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+
 import { createCategoryStream, createFreeTextStream, RecommendationEvent } from '../stream-api'
 
 type Handler = (evt: RecommendationEvent) => void
@@ -29,9 +30,9 @@ export function useRecommendationStream() {
     })
 
     // 에러 발생 시
-    es.addEventListener('error', e => {
+    es.addEventListener('error', (e: MessageEvent) => {
       try {
-        const evt = JSON.parse((e as any).data) as RecommendationEvent
+        const evt = JSON.parse(e.data) as RecommendationEvent
         onError(evt)
       } catch {
         onError({ status: 0, message: '스트림 처리 중 에러', data: null })
@@ -74,9 +75,9 @@ export function useRecommendationStream() {
     })
 
     // 에러 발생 시
-    es.addEventListener('error', e => {
+    es.addEventListener('error', (e: MessageEvent) => {
       try {
-        const evt = JSON.parse((e as any).data) as RecommendationEvent
+        const evt = JSON.parse(e.data) as RecommendationEvent
         onError(evt)
       } catch {
         onError({ status: 0, message: '스트림 처리 중 에러', data: null })
