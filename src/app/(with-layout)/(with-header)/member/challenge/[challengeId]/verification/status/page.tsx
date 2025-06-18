@@ -1,10 +1,11 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getGroupVerifications } from '@features/challenge/api/participate/verification/group-verification-list'
-import GroupVerificationPage from '@features/challenge/components/challenge/participate/GroupVerificationPage'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+
+import GroupVerificationPage from '../../../../../../../../widgets/member/challenge/verification/status/ui/GroupVerificationPage'
 
 export default async function Page({ params }: { params: Promise<{ participateId: string }> }) {
   const { participateId } = await params

@@ -27,9 +27,9 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 
-import ProfileBox from './ProfileBox'
-import ProfileCard from './ProfileCard'
-import RecentBadgeBox from './RecentBadgeBox'
+import ProfileBox from '../../../../../features/member/components/member/profile/mypage/ProfileBox'
+import ProfileCard from '../../../../../features/member/components/member/profile/mypage/ProfileCard'
+import RecentBadgeBox from '../../../../../features/member/components/member/profile/mypage/RecentBadgeBox'
 
 const Mypage = () => {
   const router = useRouter()

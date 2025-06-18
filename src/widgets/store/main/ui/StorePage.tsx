@@ -6,8 +6,8 @@ import styled from '@emotion/styled'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 
-import ProductList from './components/product/ProductList'
-import TimeDealList from './components/time-deal/TimeDealList'
+import ProductList from '../../../../features/store/components/product/ProductList'
+import TimeDealList from '../../../../features/store/components/time-deal/TimeDealList'
 
 type TabState = 'time-deal' | 'product'
 
