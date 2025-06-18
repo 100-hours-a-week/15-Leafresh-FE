@@ -122,3 +122,14 @@ export function getKstMidnightToUtcISOString(date: Date): ISOFormatString {
 
   return utcDate.toISOString() as ISOFormatString
 }
+
+/**
+ * ISO 형식의 데이터에서 날짜만을 추출하는 방식
+ * @param iso ISO 형식 시간 (2025-06-17T00:00:00Z)
+ * @returns 날짜 (YYYY-MM-dd)
+ */
+export function extractDateFromISOInKST(iso: ISOFormatString): string {
+  return new Date(iso).toLocaleDateString('sv-SE', {
+    timeZone: 'Asia/Seoul',
+  })
+}

@@ -1,7 +1,7 @@
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { DateFormatString, TimeFormatString } from '@shared/types/date'
+import { ISOFormatString, TimeFormatString } from '@shared/types/date'
 
 type ExampleImage = {
   id: number
@@ -13,8 +13,8 @@ type ExampleImage = {
 
 export type GroupChallengeRulesListResponse = {
   certificationPeriod: {
-    startDate: DateFormatString
-    endDate: DateFormatString
+    startDate: ISOFormatString
+    endDate: ISOFormatString
     startTime: TimeFormatString
     endTime: TimeFormatString
   }

@@ -24,7 +24,6 @@ export default function GroupVerificationPage({ participateId }: { participateId
 
   const challengeId = participateId
 
-  //tanstack query
   const {
     data: verificationData,
     isPending,
@@ -61,8 +60,17 @@ export default function GroupVerificationPage({ participateId }: { participateId
           },
         })
       },
-      /* 3. hasDescription */ true,
-      //   /* 4. type */ 'SUCCESS',
+      // #3. 이미지에 대한 설명을 받을지 여부
+      true,
+
+      // #4. 어떤 인증인지 여부
+      'DONE' /** TODO: SUCCESS / FAILURE가 아닌걸로 설정하기 위해 더미값 넣어둠, 구별 필요 */,
+
+      // #5. 챌린지 정보 명시
+      {
+        id: challengeId,
+        type: 'GROUP',
+      },
     )
   }
   return (
