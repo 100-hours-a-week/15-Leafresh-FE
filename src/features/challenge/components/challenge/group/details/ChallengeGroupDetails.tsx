@@ -91,7 +91,7 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
     status,
   } = challengeData
 
-  const totalDays = differenceInCalendarDays(endDate, startDate) + 1 /** 지속일 */
+  const totalDays = differenceInCalendarDays(new Date(endDate), new Date(startDate)) + 1 /** 지속일 */
   const verificationExampleImages: VerificationImageData[] = exampleImages.map(img => ({
     url: img.imageUrl,
     description: img.description,
@@ -122,28 +122,32 @@ const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetails
       })
       return
     }
+
     const now = new Date()
+    const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
 
-    const startDateTime = new Date(`${startDate}T${verificationStartTime}`)
-    const endDateTime = new Date(`${endDate}T${verificationEndTime}`)
+    const localStartDate: Date = new Date(startDate)
+    const startDateOnly = new Date(localStartDate.getFullYear(), localStartDate.getMonth(), localStartDate.getDate())
 
-    /** #예외1 : 챌린지 기간이 아님 */
-    if (now < startDateTime || now > endDateTime) {
-      openToast(ToastType.Error, '챌린지 기간이 아닙니다!')
+    const localEndDate: Date = new Date(endDate)
+    const endDateOnly = new Date(localEndDate.getFullYear(), localEndDate.getMonth(), localEndDate.getDate())
+
+    // 1. 오늘이 챌린지 날짜 범위 내에 있는지 확인
+    if (todayDateOnly < startDateOnly || todayDateOnly > endDateOnly) {
+      openToast(ToastType.Error, '챌린지 진행 기간이 아닙니다!')
       return
     }
 
-    const startTime = verificationStartTime.split(':').map(Number)
-    const endTime = verificationEndTime.split(':').map(Number)
-    const currentTime = [now.getHours(), now.getMinutes()]
+    // 2. 현재 시간이 인증 가능 시간 범위 내에 있는지 확인
+    const nowMinutes = now.getHours() * 60 + now.getMinutes()
 
-    const currentMinutes = currentTime[0] * 60 + currentTime[1]
-    const startMinutes = startTime[0] * 60 + startTime[1]
-    const endMinutes = endTime[0] * 60 + endTime[1]
+    const [startHour, startMinute] = verificationStartTime.split(':').map(Number)
+    const [endHour, endMinute] = verificationEndTime.split(':').map(Number)
+    const startMinutes = startHour * 60 + startMinute
+    const endMinutes = endHour * 60 + endMinute
 
-    /** #예외2 : 기간은 맞으나, 시간이 아님 */
-    if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
-      openToast(ToastType.Error, '참여 가능한 시간이 아닙니다')
+    if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
+      openToast(ToastType.Error, '현재는 인증 가능한 시간이 아닙니다!')
       return
     }
 

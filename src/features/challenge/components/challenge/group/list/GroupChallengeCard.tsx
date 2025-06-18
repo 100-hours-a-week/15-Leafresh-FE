@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 
 import { URL } from '@shared/constants/route/route'
 import { theme } from '@shared/styles/theme'
+import { ISOFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
 
 interface GroupChallengeProps {
@@ -14,8 +15,8 @@ interface GroupChallengeProps {
     title: string
     thumbnailUrl: string
     leafReward: number
-    startDate: string
-    endDate: string
+    startDate: ISOFormatString
+    endDate: ISOFormatString
     remainingDay: number
     currentParticipantCount: number
   }

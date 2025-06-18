@@ -53,15 +53,19 @@ const CHALLENGE_ENDPOINTS = {
     CATEGORIES: { method: HttpMethod.GET, path: '/api/challenges/group/categories' },
 
     // 상세
+    // TODO: UTC 체크
     DETAILS: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/group/${challengeId}`,
     }),
-    // 목록
+    //목록
+    // TODO: UTC 체크
     LIST: { method: HttpMethod.GET, path: '/api/challenges/group' },
     // 생성
+    // TODO: UTC 체크
     CREATE: { method: HttpMethod.POST, path: '/api/challenges/group' },
     // 수정
+    // TODO: UTC 체크
     MODIFY: (challengeId: number) => ({
       method: HttpMethod.PATCH,
       path: `/api/challenges/group/${challengeId}`,
@@ -74,6 +78,7 @@ const CHALLENGE_ENDPOINTS = {
     }),
 
     // 인증 규약 조회
+    // TODO: UTC 체크
     RULES: (challengeId: number) => ({
       method: HttpMethod.GET,
       path: `/api/challenges/group/${challengeId}/rules`,
@@ -210,6 +215,7 @@ const MEMBER_ENDPOINTS = {
 
   // 알림
   NOTIFICATION: {
+    // TODO: UTC 체크
     LIST: { method: HttpMethod.GET, path: '/api/members/notifications' }, // 알림 조회
     READ: { method: HttpMethod.PATCH, path: '/api/members/notifications' }, // 알림 읽음 처리
   },
@@ -217,6 +223,7 @@ const MEMBER_ENDPOINTS = {
   // 나뭇잎 상점
   STORE: {
     ORDERS: {
+      // TODO: UTC 체크
       LIST: { method: HttpMethod.GET, path: '/api/members/products/list' }, // 구매 내역
     },
   },
@@ -224,11 +231,15 @@ const MEMBER_ENDPOINTS = {
   /** 챌린지 */
   CHALLENGE: {
     GROUP: {
+      // TODO: UTC 체크
       CREATIONS: { method: HttpMethod.GET, path: '/api/members/challenges/group/creations' }, // 생성한 챌린지
+
+      // 참여한 단체 챌린지 목록 조회
+      // TODO: UTC 체크
       PARTICIPATIONS: {
         method: HttpMethod.GET,
         path: '/api/members/challenges/group/participations',
-      }, // 참여한 단체 챌린지 목록 조회
+      },
 
       // 참여한 단체 챌린지 인증 내역을 일별로 조회
       VERIFICATIONS: (challengeId: number) => ({
@@ -256,6 +267,7 @@ const S3_ENDPOINTS = {
 const STORE_ENDPOINTS = {
   TIME_DEAL: {
     // 타임딜 상품 목록
+    // TODO: UTC 체크
     LIST: { method: HttpMethod.GET, path: '/api/store/products/timedeals' },
     // 타임딜 상품 주문
     ORDER: (dealId: number) => ({

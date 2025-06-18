@@ -6,31 +6,9 @@ import styled from '@emotion/styled'
 import { useInfiniteMemberAlarmList } from '@features/member/hooks/useInfiniteMemberAlarmList'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
+import { getTimeDiff } from '@shared/lib/date/utils'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
-import { ISOFormatString } from '@shared/types/date'
-
-export const toISOFormatString = (date: Date): ISOFormatString => date.toISOString() as ISOFormatString
-
-export function formatRelativeTime(target: Date): string {
-  const now = new Date()
-  const diffMs = now.getTime() - target.getTime()
-
-  const minutes = Math.floor(diffMs / (1000 * 60))
-  if (minutes < 60) return `${minutes}분 전`
-
-  const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}시간 전`
-
-  const days = Math.floor(hours / 24)
-  if (days < 7) return `${days}일 전`
-
-  return target.toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
 
 const MemberAlarmList = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
@@ -68,7 +46,7 @@ const MemberAlarmList = () => {
               <Content>
                 <AlarmTitle>{alarm.title}</AlarmTitle>
                 <AlarmDesc>{alarm.content}</AlarmDesc>
-                <CreatedAt>{formatRelativeTime(new Date(alarm.createdAt))}</CreatedAt>
+                <CreatedAt>{getTimeDiff(alarm.createdAt)}</CreatedAt>
               </Content>
             </AlarmCard>
           ))

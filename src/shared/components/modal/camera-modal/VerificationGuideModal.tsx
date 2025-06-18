@@ -21,6 +21,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ChallengeDataType } from '@shared/context/modal/CameraModalStore'
 import { ApiResponse } from '@shared/lib/api/type'
+import { extractDateFromISOInKST } from '@shared/lib/date/utils'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
@@ -67,7 +68,7 @@ const VerificationGuideModal = ({ isOpen, challengeData, onClose }: Verification
     let periodText = ''
     if (type === 'GROUP') {
       const groupPeriod = certificationPeriod as GroupChallengeRulesListResponse['certificationPeriod']
-      periodText = `${groupPeriod.startDate.slice(2)} ~ ${groupPeriod.endDate.slice(2)}`
+      periodText = `${extractDateFromISOInKST(groupPeriod.startDate).slice(2, -1)} ~ ${extractDateFromISOInKST(groupPeriod.endDate).slice(2, -1)}`
     } else {
       const personalPeriod = certificationPeriod as PersonalChallengeRulesListResponse['certificationPeriod']
       periodText = convertLanguage(DAY_PAIRS, 'eng', 'kor')(personalPeriod.dayOfWeek) as string

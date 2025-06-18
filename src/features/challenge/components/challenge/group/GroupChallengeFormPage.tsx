@@ -30,7 +30,7 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { formatDateToDateFormatString } from '@shared/lib/date/utils'
+import { getKstMidnightToUtcISOString } from '@shared/lib/date/utils'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import { TimeFormatString } from '@shared/types/date'
@@ -143,12 +143,14 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
       category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
       maxParticipantCount: maxParticipant,
       thumbnailImageUrl: thumbnailUrl,
-      startDate: formatDateToDateFormatString(startDate),
-      endDate: formatDateToDateFormatString(endDate),
+      startDate: getKstMidnightToUtcISOString(startDate),
+      endDate: getKstMidnightToUtcISOString(endDate),
       verificationStartTime: startTime as TimeFormatString,
       verificationEndTime: endTime as TimeFormatString,
       exampleImages: exampleImages,
     }
+    console.log('단체 챌린지 생성 바디: ', body)
+
     CreateChallengeMutate(
       { body },
       {
@@ -217,8 +219,8 @@ const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: 
       category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
       maxParticipantCount: maxParticipant,
       thumbnailImageUrl: thumbnailUrl,
-      startDate: formatDateToDateFormatString(startDate),
-      endDate: formatDateToDateFormatString(endDate),
+      startDate: getKstMidnightToUtcISOString(startDate),
+      endDate: getKstMidnightToUtcISOString(endDate),
       verificationStartTime: startTime as TimeFormatString,
       verificationEndTime: endTime as TimeFormatString,
       exampleImages: {

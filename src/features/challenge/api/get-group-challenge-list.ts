@@ -2,7 +2,7 @@ import { ChallengeCategoryType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
-import { DateFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/types/date'
 
 /**
  * 요청 파라미터 타입
@@ -25,8 +25,8 @@ export interface GroupChallengeItem {
   description: string
   thumbnailUrl: string
   leafReward: number
-  startDate: DateFormatString
-  endDate: DateFormatString
+  startDate: ISOFormatString
+  endDate: ISOFormatString
   remainingDay: number
   currentParticipantCount: number
 }

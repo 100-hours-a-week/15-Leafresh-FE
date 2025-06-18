@@ -18,14 +18,14 @@ import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { DateFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/types/date'
 
 export type GroupChallenge = {
   id: number
   name: string
   description: string
-  startDate: DateFormatString // YYYY-mm-dd
-  endDate: DateFormatString
+  startDate: ISOFormatString
+  endDate: ISOFormatString
   imageUrl: string
   currentParticipantCount: number
   category: ChallengeCategoryType
@@ -140,7 +140,7 @@ export const GroupChallengeCard = ({
     })
   }
 
-  const { id, imageUrl, name, description, currentParticipantCount, category, endDate, startDate, leafReward } = data
+  const { id, imageUrl, name, description, currentParticipantCount, category, leafReward } = data
   const KOR_category = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(category) // 카테고리를 한글로 변경
 
   return (
