@@ -14,8 +14,8 @@ import {
   GroupChallengeCard,
 } from '@features/challenge/components/common/group-challenge-card/GroupChallengeCard'
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
-import Loading from '@shared/components/loading'
-import NoContent from '@shared/components/no-content/no-content'
+import Loading from '@shared/components/loading/ui/loading'
+import NoContent from '@shared/components/no-content/ui/no-content'
 import { URL } from '@shared/constants/route/route'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 

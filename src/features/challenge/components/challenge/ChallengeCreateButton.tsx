@@ -5,10 +5,10 @@ import { usePathname, useRouter } from 'next/navigation'
 import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { URL } from '@shared/constants/route/route'
 import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 
 const ChallengeCreateButton = () => {
   const router = useRouter()

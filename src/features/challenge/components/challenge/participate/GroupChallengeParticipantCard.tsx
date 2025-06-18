@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 
 import { FeedVerificationStatusType } from '@entities/challenge/type'
 import { AchievementRecord } from '@features/challenge/api/participate/group-participant'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/styles/theme'
 
 interface ChallengeProps {

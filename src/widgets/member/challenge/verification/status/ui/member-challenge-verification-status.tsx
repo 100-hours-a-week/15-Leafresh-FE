@@ -9,7 +9,7 @@ import {
 } from '@features/challenge/api/participate/verification/group-verification'
 import { getGroupVerifications } from '@features/challenge/api/participate/verification/group-verification-list'
 import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
-import Loading from '@shared/components/loading'
+import Loading from '@shared/components/loading/ui/loading'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

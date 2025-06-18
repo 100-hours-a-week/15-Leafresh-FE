@@ -17,7 +17,8 @@ import {
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
-import Loading from '@shared/components/loading'
+import Loading from '@shared/components/loading/ui/loading'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
@@ -29,7 +30,6 @@ import { usePollingStore } from '@shared/context/polling/PollingStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
 import { theme } from '@shared/styles/theme'
 import LeafIcon from '@public/icon/leaf.png'

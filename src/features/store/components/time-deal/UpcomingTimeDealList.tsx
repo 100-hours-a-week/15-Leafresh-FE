@@ -7,7 +7,7 @@ import { ReactNode, useRef } from 'react'
 import styled from '@emotion/styled'
 
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
-import ApologizeContent from '@shared/components/apologize/apologize'
+import ApologizeContent from '@shared/components/apologize/ui/apologize'
 import { media } from '@shared/styles/emotion/media'
 import { theme } from '@shared/styles/theme'
 

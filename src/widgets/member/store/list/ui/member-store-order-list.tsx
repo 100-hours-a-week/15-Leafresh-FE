@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 
 import { PurchaseProduct } from '@features/member/api/store/get-order-list'
 import { useInfiniteMemberStoreOrderList } from '@features/member/hooks/useInfiniteMemberStoreOrderList'
-import NoContent from '@shared/components/no-content/no-content'
+import NoContent from '@shared/components/no-content/ui/no-content'
 import { URL } from '@shared/constants/route/route'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'

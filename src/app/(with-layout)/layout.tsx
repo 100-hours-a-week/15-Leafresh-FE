@@ -1,6 +1,6 @@
-import ModalProvider from '@shared/components/modal/ModalProvider'
-import Toast from '@shared/components/toast/Toast'
+import Toast from '@shared/components/toast/ui/toast'
 import AuthGuard from '@shared/config/providers/AuthGaurd'
+import ModalProvider from '@shared/config/providers/ModalProvider'
 import PollingWatcher from '@shared/config/providers/PollingWatcher'
 import LayoutWrapper from '@shared/styles/LayoutWrapper'
 

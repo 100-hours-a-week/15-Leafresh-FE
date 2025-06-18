@@ -15,6 +15,7 @@ import {
   DeleteVerificationLikeResponse,
   DeleteVerificationLikeVariables,
 } from '@features/challenge/api/participate/verification/likes/delete-like'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
@@ -24,7 +25,6 @@ import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { copyToClipboard } from '@shared/lib/ui/copy-clipboard'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 import ActiveLikeIcon from '@public/icon/like_active.svg'
 import InActiveLikeIcon from '@public/icon/like_inactive.svg'
 

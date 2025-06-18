@@ -10,6 +10,7 @@ import {
   DeleteGroupChallengeVariables,
 } from '@features/challenge/api/delete-group-challenge'
 import { LeafReward } from '@shared/components'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route/route'
@@ -17,7 +18,6 @@ import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { ISOFormatString } from '@shared/types/date'
 
 export type GroupChallenge = {

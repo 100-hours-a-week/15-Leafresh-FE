@@ -3,8 +3,8 @@
 import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import ImageInput from '@shared/components/image-input'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import ImageInput from '@shared/components/image-input/ui/image-input'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/styles/theme'
 import { ThemeColorType } from '@shared/styles/theme/type'
 import { getThemeColor } from '@shared/styles/theme/utils'

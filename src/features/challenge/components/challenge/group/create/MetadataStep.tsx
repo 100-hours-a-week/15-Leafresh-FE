@@ -11,12 +11,12 @@ import { CHALLENGE_CATEGORIES_KOR, PARTICIPANT_RANGE } from '@entities/challenge
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'
-import DatePicker from '@shared/components/datepicker/DatePicker'
-import Dropdown, { DropdownProps } from '@shared/components/dropdown'
-import ErrorText from '@shared/components/errortext'
-import Input from '@shared/components/input'
-import TimePicker from '@shared/components/timepicker/TimePicker'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
+import DatePicker from '@shared/components/datepicker/ui/date-picker'
+import Dropdown, { DropdownProps } from '@shared/components/dropdown/ui/dropdown'
+import ErrorText from '@shared/components/errortext/ui/error-text'
+import Input from '@shared/components/input/ui/input'
+import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import TimePicker from '@shared/components/timepicker/picker/ui/time-picker'
 import { StyledGeneric } from '@shared/styles/emotion/utils'
 import { theme } from '@shared/styles/theme'
 

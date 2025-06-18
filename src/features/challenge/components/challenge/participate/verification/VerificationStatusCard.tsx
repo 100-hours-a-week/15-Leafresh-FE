@@ -4,7 +4,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 
-import LucideIcon, { LucideIconProps } from '@shared/lib/ui/LucideIcon'
+import LucideIcon, { LucideIconProps } from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/styles/theme'
 import { ThemeColorType } from '@shared/styles/theme/type'
 
