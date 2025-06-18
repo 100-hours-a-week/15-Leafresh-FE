@@ -25,6 +25,7 @@ type FacingMode = 'user' | 'environment'
 const CameraModal = () => {
   const openToast = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
+
   const { uploadFile, loading: uploading, error: uploadError } = useImageUpload()
 
   const videoRef = useRef<HTMLVideoElement>(null)
