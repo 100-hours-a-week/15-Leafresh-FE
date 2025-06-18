@@ -3,9 +3,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
-import {
-  CommentType,
-} from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import { CommentType } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
 
@@ -24,6 +22,24 @@ const CommentItem = ({ comment, onUpdate, onDelete }: CommentItemProps) => {
     onUpdate(comment.id, editedText)
     setIsEditing(false)
   }
+
+  const handleKeyDownUpdateComment = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      const content = editedText.trim()
+      if (content) {
+        handleUpdate()
+      }
+    }
+  }
+
+  const formatMultilineText = (text: string) =>
+    text.split('\n').map((line, idx) => (
+      <span key={idx}>
+        {line}
+        <br />
+      </span>
+    ))
 
   return (
     <CommentItemWrapper>
@@ -50,6 +66,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }: CommentItemProps) => {
             <EditField
               value={editedText}
               onChange={e => setEditedText(e.target.value)}
+              onKeyDown={handleKeyDownUpdateComment}
               placeholder='댓글을 작성하세요'
             />
             <ActionRow>
@@ -58,7 +75,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }: CommentItemProps) => {
             </ActionRow>
           </>
         ) : (
-          <Text>{comment.content}</Text>
+          <Text>{formatMultilineText(comment.content)}</Text>
         )}
       </ContentArea>
     </CommentItemWrapper>

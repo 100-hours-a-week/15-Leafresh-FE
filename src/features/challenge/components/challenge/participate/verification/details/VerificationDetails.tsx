@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -10,7 +10,8 @@ import { DeleteCommentVariables } from '@features/challenge/api/participate/veri
 import {
   CommentResponse,
   CommentType,
-  getVerificationCommemtList,
+  getVerificationCommentList,
+  RepliesType,
 } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import {
   getVerificationDetails,
@@ -57,20 +58,20 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   const { isLoggedIn, userInfo } = useAuth()
   const openToast = useToast()
   const router = useRouter()
+  const isClient = typeof window !== 'undefined'
 
   const { data: verificationData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
     queryFn: () => getVerificationDetails({ challengeId, verificationId }),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
+    enabled: isClient,
+    // refetchOnMount: false,
+    // refetchOnWindowFocus: false,
   })
-
-  console.log('verificaiton Data: ', verificationData)
 
   const { data: commentData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
-    queryFn: () => getVerificationCommemtList(challengeId, verificationId),
+    queryFn: () => getVerificationCommentList(challengeId, verificationId),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.COMMENT,
   })
 
@@ -81,7 +82,7 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   )
 
   // 대댓글 작성
-  const { mutate: replyMutation } = useMutationStore<CommentType, PostReplyVariables>(
+  const { mutate: replyMutation } = useMutationStore<RepliesType, PostReplyVariables>(
     MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY.CREATE,
     // mutationFn: postVerificationReply,
   )
@@ -108,15 +109,19 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   )
 
   const verifications: VerificationDetailResponse = verificationData?.data ?? ({} as VerificationDetailResponse)
-  console.log(verifications)
 
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
-  console.log(comments)
 
   const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
   const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
   const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
   const [localComments, setLocalComments] = useState<CommentType[]>(comments?.comments ?? [])
+
+  useEffect(() => {
+    if (comments?.comments) {
+      setLocalComments(comments.comments)
+    }
+  }, [comments])
 
   /** 좋아요 핸들러 */
   const handleLikeToggle = () => {
@@ -195,9 +200,8 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
       },
       {
         onSuccess: response => {
-          const realId = response.data.id
-          //댓글 id만 변경
-          setLocalComments(prev => prev.map(comment => (comment.id === tempId ? { ...comment, id: realId } : comment)))
+          const updatedComment = response.data
+          setLocalComments(prev => prev.map(comment => (comment.id === tempId ? updatedComment : comment)))
         },
         onError: () => {
           setLocalComments(prev) // rollback
@@ -257,21 +261,21 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
       },
       {
         onSuccess: response => {
-          const realId = response.data.id
+          const updatedReply = response.data as RepliesType
 
-          //마찬가지로 답글(대댓글)의 id만 변경
           setLocalComments(prev =>
             prev.map(comment => {
               if (comment.id !== parentCommentId) return comment
 
-              const updatedReplies = comment.replies?.map(reply =>
-                reply.id === tempId ? { ...reply, id: realId } : reply,
-              )
+              const updatedReplies = (comment.replies ?? []).map(reply =>
+                reply.id === tempId ? updatedReply : reply,
+              ) as RepliesType[] // ✅ 명확히 캐스팅
 
               return { ...comment, replies: updatedReplies }
             }),
           )
         },
+
         onError: () => {
           setCommentCount(prevComment)
           setLocalComments(prev) // rollback

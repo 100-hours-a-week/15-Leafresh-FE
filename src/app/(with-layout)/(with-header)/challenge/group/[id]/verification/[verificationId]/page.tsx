@@ -1,6 +1,6 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
-import { getVerificationCommemtList } from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import { getVerificationCommentList } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import { getVerificationDetails } from '@features/challenge/api/participate/verification/get-verifycation-details'
 import VerificationDetails from '@features/challenge/components/challenge/participate/verification/details/VerificationDetails'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
@@ -32,7 +32,7 @@ const Page = async ({ params }: PageProps) => {
 
       queryClient.prefetchQuery({
         queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeIdNum, verificationIdNum),
-        queryFn: () => getVerificationCommemtList(challengeIdNum, verificationIdNum),
+        queryFn: () => getVerificationCommentList(challengeIdNum, verificationIdNum),
         ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.COMMENT,
       }),
     ])
