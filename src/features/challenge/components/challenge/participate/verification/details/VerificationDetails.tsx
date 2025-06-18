@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -10,7 +10,7 @@ import { DeleteCommentVariables } from '@features/challenge/api/participate/veri
 import {
   CommentResponse,
   CommentType,
-  getVerificationCommemtList,
+  getVerificationCommentList,
 } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import {
   getVerificationDetails,
@@ -66,11 +66,9 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
     refetchOnWindowFocus: false,
   })
 
-  console.log('verificaiton Data: ', verificationData)
-
   const { data: commentData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
-    queryFn: () => getVerificationCommemtList(challengeId, verificationId),
+    queryFn: () => getVerificationCommentList(challengeId, verificationId),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.COMMENT,
   })
 
@@ -108,15 +106,19 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   )
 
   const verifications: VerificationDetailResponse = verificationData?.data ?? ({} as VerificationDetailResponse)
-  console.log(verifications)
 
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
-  console.log(comments)
 
   const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
   const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
   const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
   const [localComments, setLocalComments] = useState<CommentType[]>(comments?.comments ?? [])
+
+  useEffect(() => {
+    if (comments?.comments) {
+      setLocalComments(comments.comments)
+    }
+  }, [comments])
 
   /** 좋아요 핸들러 */
   const handleLikeToggle = () => {
