@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
+import { FeedBackButton } from '@shared/components/button/FeedBackButton'
 import Introduce from '@shared/components/introduce/Introduce'
 
 import { theme } from './theme'
@@ -12,6 +13,7 @@ const LayoutWrapper = ({ children }: { children: ReactNode }) => {
     <EntirePageLayout>
       <Introduce />
       <ContentWrapper>{children}</ContentWrapper>
+      <FeedBackButton />
     </EntirePageLayout>
   )
 }
