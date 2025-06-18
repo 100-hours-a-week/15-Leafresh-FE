@@ -58,13 +58,15 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
   const { isLoggedIn, userInfo } = useAuth()
   const openToast = useToast()
   const router = useRouter()
+  const isClient = typeof window !== 'undefined'
 
   const { data: verificationData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
     queryFn: () => getVerificationDetails({ challengeId, verificationId }),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
+    enabled: isClient,
+    // refetchOnMount: false,
+    // refetchOnWindowFocus: false,
   })
 
   const { data: commentData } = useQuery({
