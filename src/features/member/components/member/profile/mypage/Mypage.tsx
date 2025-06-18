@@ -19,6 +19,7 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route/route'
+import { usePollingStore } from '@shared/context/polling/PollingStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
@@ -29,7 +30,6 @@ import { theme } from '@shared/styles/theme'
 import ProfileBox from './ProfileBox'
 import ProfileCard from './ProfileCard'
 import RecentBadgeBox from './RecentBadgeBox'
-import { usePollingStore } from '@shared/context/polling/PollingStore'
 
 const Mypage = () => {
   const router = useRouter()
