@@ -3,10 +3,11 @@ import { notFound } from 'next/navigation'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
-import ChallengeGroupDetails from '@features/challenge/components/challenge/group/details/ChallengeGroupDetails'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
+
+import ChallengeGroupDetails from '../../../../../../widgets/challenge/group/[id]/details/ui/ChallengeGroupDetails'
 
 interface GroupChallengeDetailsPageProps {
   params: Promise<{ id: string }>

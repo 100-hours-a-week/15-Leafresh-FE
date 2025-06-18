@@ -9,7 +9,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { getDayOfWeek } from '@shared/lib/date/utils'
 
-import MainPage from './MainPage'
+import MainPage from '../../../widgets/main/ui/main'
 
 const Page = async () => {
   try {
