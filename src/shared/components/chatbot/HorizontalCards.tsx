@@ -1,8 +1,9 @@
 'use client'
 
 import React from 'react'
-import SlideArea from '@shared/components/slidearea/SlideArea'
 import styled from '@emotion/styled'
+
+import SlideArea from '@shared/components/slidearea/SlideArea'
 
 interface HorizontalCardsProps {
   visibleIndex: number

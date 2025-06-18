@@ -1,4 +1,5 @@
 import type React from 'react'
+
 import { ChatSelectionProps } from '../../shared/components/chatbot/ChatSelection'
 
 export type ChatOption = {
@@ -42,7 +43,7 @@ export const WORKTYPE_OPTIONS: ChatOption[] = [
 export const CHAT_CHALLENGE_OPTIONS: ChatOption[] = [
   { label: '제로웨이스트', value: 'ZERO_WASTE' },
   { label: '플로깅', value: 'PLOGGING' },
-  { label: '탄소발자국', value: 'CATBON_FOOTPRINT' },
+  { label: '탄소발자국', value: 'CARBON_FOOTPRINT' },
   { label: '에너지 절약', value: 'ENERGY_SAVING' },
   { label: '업사이클', value: 'UPCYCLE' },
   { label: '문화 공유', value: 'MEDIA' },

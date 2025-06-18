@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
+import { useCallback,useState } from 'react'
+
 import type { ChatHistoryItem } from '@entities/chatbot/type'
 
 /**
@@ -6,17 +7,11 @@ import type { ChatHistoryItem } from '@entities/chatbot/type'
  */
 export function useChatHistory() {
   const [history, setHistory] = useState<ChatHistoryItem[]>([])
-  const historyRef = useRef(history)
-
-  // history가 바뀔 때마다 ref 갱신
-  useEffect(() => {
-    historyRef.current = history
-  }, [history])
 
   // 새로운 ChatHistoryItem 을 배열 끝에 추가
-  function addItem(item: ChatHistoryItem) {
+  const addItem = useCallback((item: ChatHistoryItem) => {
     setHistory(prev => [...prev, item])
-  }
+  }, [])
 
   return { history, addItem }
 }
