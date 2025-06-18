@@ -2,6 +2,7 @@ import { FeedVerificationStatusType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
 import { InfiniteScrollResponse } from '@shared/types/api'
+import { ISOFormatString } from '@shared/types/date'
 
 export type ChallengeStatus = 'not_started' | 'ongoing' | 'completed'
 
@@ -20,8 +21,8 @@ export type ParticipantChallengeItem = {
   id: number
   title: string
   thumbnailUrl: string
-  startDate: string
-  endDate: string
+  startDate: ISOFormatString
+  endDate: ISOFormatString
   achievement: {
     success: number
     total: number
