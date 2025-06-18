@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { liveImages, workImages, type ChatSelections } from './type'
 
-export function useScrollToBottom(trigger: any) {
+import { type ChatSelections, liveImages, workImages } from './type'
+
+export function useScrollToBottom(trigger: unknown) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
