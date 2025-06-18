@@ -1,5 +1,3 @@
-// @features/challenge/api/getGroupChallengeDetails.ts
-
 import {
   ChallengeCategoryType,
   ChallengeVerificationResultType,
@@ -7,7 +5,7 @@ import {
 } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { DateFormatString, TimeFormatString } from '@shared/types/date'
+import { ISOFormatString, TimeFormatString } from '@shared/types/date'
 
 export type GroupChallengeDetail = {
   id: number
@@ -15,8 +13,8 @@ export type GroupChallengeDetail = {
   category: ChallengeCategoryType
   title: string
   description: string
-  startDate: DateFormatString
-  endDate: DateFormatString
+  startDate: ISOFormatString
+  endDate: ISOFormatString
   verificationStartTime: TimeFormatString
   verificationEndTime: TimeFormatString
   leafReward: number
