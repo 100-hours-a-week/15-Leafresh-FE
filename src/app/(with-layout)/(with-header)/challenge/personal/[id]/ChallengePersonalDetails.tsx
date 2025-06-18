@@ -8,9 +8,7 @@ import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
-import {
-  getPersonalChallengeDetails,
-} from '@features/challenge/api/get-personal-challenge-details'
+import { getPersonalChallengeDetails } from '@features/challenge/api/get-personal-challenge-details'
 import {
   VerifyGroupChallengeResponse,
   VerifyPersonalChallengeBody,
@@ -61,7 +59,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
 
-  const { addChallengeId } = usePollingStore()
+  const { addPersonalChallengeId } = usePollingStore()
 
   /** 개인 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
@@ -185,7 +183,7 @@ const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalD
       },
       {
         onSuccess: () => {
-          addChallengeId(challengeId) // 인증 결과 롱폴링 시작
+          addPersonalChallengeId(challengeId) // 인증 결과 롱폴링 시작
           openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
         },
       },
