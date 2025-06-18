@@ -31,6 +31,6 @@ export type RepliesType = {
   deleted: boolean
 }
 
-export const getVerificationCommemtList = (challengeId: number, verificationId: number) => {
+export const getVerificationCommentList = (challengeId: number, verificationId: number) => {
   return fetchRequest<CommentResponse>(ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.COMMENT.LIST(challengeId, verificationId))
 }
