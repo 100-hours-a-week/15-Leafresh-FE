@@ -13,7 +13,7 @@ import {
   getRandomWorkImage,
 } from '../../../entities/chatbot/utils'
 import { CHAT_CHALLENGE_OPTIONS, categoryDescriptions } from '../../../entities/chatbot/type'
-import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
+// import { requestCategoryBasedRecommendation, requestFreetextBasedRecommendation } from '@features/chatbot'
 
 import ChatBubble from './ChatBubble'
 import ChatSelection from './ChatSelection'
@@ -22,10 +22,10 @@ import HorizontalCards from './HorizontalCards'
 import { RecommendationResponse } from '@features/chatbot/chatbot-base-info'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { useChatHistory } from '../../../features/chatbot/hooks/useChatHistory'
-import { formatChallengeResponse } from '@shared/components/chatbot/formatChallengeResponse'
 import { useRecommendationStream } from '@features/chatbot/hooks/useStreamApi'
 import { ChatChallenge, RecommendationEvent } from '@features/chatbot/stream-api'
 import { useRouter } from 'next/navigation'
+import { URL } from '@shared/constants/route/route'
 
 export interface ChatFrameProps {
   step: FrameStep
@@ -45,6 +45,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [selectedWorkType, setSelectedWorkType] = useState<string | null>(null)
 
   const [streamingText, setStreamingText] = useState<string | null>(null)
+  const streamRef = useRef<string>('')
   const [finalChallenges, setFinalChallenges] = useState<ChatChallenge[]>([])
   const [finalActions, setFinalActions] = useState<{ buttonText: string; onClick: () => void }[] | undefined>(undefined)
 
@@ -58,7 +59,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const hasInitializedRef = useRef(false)
 
   const sessionId = useChatSession()
-  const messagesEndRef = useScrollToBottom(chatHistory)
+  const messagesEndRef = useScrollToBottom([chatHistory, streamRef])
 
   const router = useRouter()
   // mount 시 초기 메시지
@@ -163,15 +164,47 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     setSelectedWorkType(value)
     updateChatSelections({ workType: value })
   }
-
+  {
+    /* 텍스트 추가만
   const appendStream = (fragment: string) => {
-    setStreamingText(prev => (prev ?? '') + ' ' + fragment)
+    if (streamRef.current) {
+      streamRef.current = ${streamRef.current} ${fragment}
+    } else {
+      streamRef.current = fragment
+    }
+    setStreamingText(streamRef.current)
+  }
+    */
+  }
+
+  //텍스트 추가 + ' ', '\n' 추가
+  const appendStream = (fragment: string) => {
+    // 1) 마침표·물음표·느낌표 뒤에 줄바꿈 삽입
+    const processed = fragment.replace(/([.?!])\s*/g, '$1\n')
+
+    // 1. 모든 </s> 토큰을 지운다
+    const cleaned = fragment.replace(/<\/s>/g, '').trim()
+    // 2. 비어있으면 무시
+    if (!cleaned) return
+
+    // 2) 이전 스트림에 공백 + processed 누적
+    if (streamRef.current) {
+      streamRef.current += ' ' + processed
+    } else {
+      streamRef.current = processed
+    }
+
+    // 3) 상태 업데이트
+    setStreamingText(streamRef.current)
   }
 
   // 챌린지 카테고리 선택 핸들러
   const handleChallengeSelect = useCallback(
     (category: string) => {
       if (loading) return
+
+      streamRef.current = ''
+      setFinalActions(undefined)
       setLoading(true)
 
       // 1) 유저 메시지
@@ -211,18 +244,24 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           const payload = finalEvt.data
           // payload 가 문자열이 아니고 챌린지 배열이 있으면
           if (payload !== null && typeof payload !== 'string' && Array.isArray(payload.challenges)) {
+            const text = streamRef.current
             const actions = payload.challenges.map((ch, i) => ({
               buttonText: `챌린지 생성 ${i + 1}`,
               onClick: () => {
-                const url = `/create-challenge?title=${encodeURIComponent(ch.title)}&desc=${encodeURIComponent(ch.description)}&category=${encodeURIComponent(ch.category)}`
-                router.push(url)
+                const params = new URLSearchParams()
+                params.set('category', ch.category)
+                params.set('title', ch.title)
+                params.set('description', ch.description)
+                const base = URL.CHALLENGE.GROUP.CREATE.value()
+                router.push(`${base}?${params.toString()}`)
               },
             }))
-            setFinalActions(actions)
+            setLoading(false)
+
             addChatItem({
               type: 'message',
               role: 'bot',
-              text: streamingText!,
+              text: text!,
               isAnswer: true,
               actions,
             })
@@ -245,8 +284,8 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
               },
             })
           }, 2000)
-
-          // 스트림 텍스트 버리고
+          streamRef.current = ''
+          // 스트림 텍스트 초기화
           setStreamingText(null)
         },
       )
@@ -294,6 +333,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         },
       })
     }, 2000)
+    onRetry()
   }
 
   // 재선택 핸들러
@@ -323,6 +363,10 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const handleSendMessage = useCallback(
     (txt: string) => {
       if (!txt.trim() || loading) return
+
+      streamRef.current = ''
+      setFinalActions(undefined)
+
       setLoading(true)
 
       // 1) 유저 메시지
@@ -342,16 +386,12 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           }
         },
         (evt: RecommendationEvent) => {
-          let errorMessage = '오류가 발생했습니다. 다시 시도해주세요.'
-          if (evt.status === 422) errorMessage = '메시지는 최소 5글자 이상 입력해주세요.'
-          else if (evt.status === 400) errorMessage = '메시지를 입력해주세요.'
-          else if (evt.status === 502) errorMessage = 'AI 서버 연결에 실패했습니다.'
-          else if (evt.status === 500) errorMessage = '서버 오류가 발생했습니다.'
+          let errorMessage = evt.message ?? ''
 
           addChatItem({
             type: 'message',
             role: 'bot',
-            text: `죄송합니다. ${errorMessage}`,
+            text: `${errorMessage}`,
           })
           setStreamingText(null)
           setLoading(false)
@@ -363,16 +403,18 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           const payload = finalEvt.data
           if (payload !== null && typeof payload !== 'string' && Array.isArray(payload.challenges)) {
             // streamingText 에 누적된 텍스트
-            const text = streamingText!
+            const text = streamRef.current
 
             // 버튼 액션들 생성
             const actions = payload.challenges.map((ch, i) => ({
               buttonText: `챌린지 생성 ${i + 1}`,
               onClick: () => {
-                const url = `/create-challenge?title=${encodeURIComponent(
-                  ch.title,
-                )}&desc=${encodeURIComponent(ch.description)}&category=${encodeURIComponent(ch.category)}`
-                router.push(url)
+                const params = new URLSearchParams()
+                params.set('category', ch.category)
+                params.set('title', ch.title)
+                params.set('description', ch.description)
+                const base = URL.CHALLENGE.GROUP.CREATE.value()
+                router.push(`${base}?${params.toString()}`)
               },
             }))
 
@@ -392,15 +434,17 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
               text: '죄송합니다. 결과를 처리하는 중 오류가 발생했습니다.',
             })
           }
-
+          // 스트리밍 버블 지우기
           setStreamingText(null)
+          // (선택) ref도 초기화
+          streamRef.current = ''
         },
       )
 
       // 4) 입력창 초기화
       setInputText('')
     },
-    [loading, sessionId, addChatItem, appendStream, startFreeText, streamingText, router],
+    [loading, sessionId, addChatItem, appendStream, startFreeText, router],
   )
 
   return (
@@ -432,7 +476,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         ))}
 
         {streamingText !== null && (
-          <ChatBubble role='bot' loading={!loading} actions={loading ? finalActions : undefined}>
+          <ChatBubble role='bot' isAnswer actions={finalActions}>
             {streamingText}
           </ChatBubble>
         )}
@@ -499,7 +543,6 @@ const SlideWrapper = styled.div`
   padding-left: 40px;
   width: 100%;
 `
-
 const InputContainer = styled.div`
   display: flex;
   background: #ffffff;
