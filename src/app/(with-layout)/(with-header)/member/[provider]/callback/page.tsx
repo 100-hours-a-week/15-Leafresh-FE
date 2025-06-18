@@ -1,6 +1,6 @@
 import { LowercaseOAuthType } from '@entities/member/type'
 
-import CallbackPage from './CallbackPage'
+import CallbackPage from '../../../../../../widgets/member/oauth-callback/ui/callback'
 
 interface Props {
   params: Promise<{ provider: LowercaseOAuthType }>

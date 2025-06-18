@@ -7,7 +7,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import ChallengePersonalDetails from '../../../../../../widgets/challenge/personal/[id]/details/ui/ChallengePersonalDetails'
+import ChallengePersonalDetails from '../../../../../../widgets/challenge/personal/[id]/details/ui/challenge-personal-details'
 
 interface PersonalChallengeDetailsProps {
   params: Promise<{ id: string }>

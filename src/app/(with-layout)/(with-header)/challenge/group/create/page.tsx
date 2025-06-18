@@ -6,7 +6,7 @@ import Loading from '@shared/components/loading'
 
 import GroupChallengeFormPage, {
   FullFormValues,
-} from '../../../../../../widgets/challenge/group/form/ui/GroupChallengeFormPage'
+} from '../../../../../../widgets/challenge/group/form/ui/challenge-form'
 
 const Page = async () => {
   const defaultMetaFormValues: MetaFormValues = {

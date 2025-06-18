@@ -6,7 +6,7 @@ import { getMemberAlarmList } from '@features/member/api/get-alarm'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import MemberAlarmList from '../../../../../widgets/member/alarm/list/ui/MemberAlramList'
+import MemberAlarmList from '../../../../../widgets/member/alarm/list/ui/member-alarm-list'
 
 const MemberAlarmPage = async () => {
   const queryClient = getQueryClient()

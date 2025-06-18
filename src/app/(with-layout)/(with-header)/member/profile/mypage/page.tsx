@@ -6,7 +6,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import Mypage from '../../../../../../widgets/member/profile/mypage/ui/Mypage'
+import Mypage from '../../../../../../widgets/member/profile/mypage/ui/member-profile-mypage'
 
 const Page = async () => {
   const queryClient = getQueryClient()

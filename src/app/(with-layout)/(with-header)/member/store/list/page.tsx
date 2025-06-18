@@ -5,7 +5,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import MemberOrderListPage from '../../../../../../widgets/member/store/list/ui/order-list-page'
+import MemberOrderListPage from '../../../../../../widgets/member/store/list/ui/member-store-order-list'
 
 const Page = async () => {
   try {

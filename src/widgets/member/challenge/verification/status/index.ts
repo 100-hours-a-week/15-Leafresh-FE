@@ -1,1 +1,1 @@
-export * from './ui/GroupVerificationPage'
+export * from './ui/member-challenge-verification-status'

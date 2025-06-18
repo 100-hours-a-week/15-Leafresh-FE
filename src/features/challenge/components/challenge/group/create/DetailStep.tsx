@@ -12,7 +12,7 @@ import Loading from '@shared/components/loading'
 import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { theme } from '@shared/styles/theme'
 
-import { FullFormValues } from '../../../../../../widgets/challenge/group/form/ui/GroupChallengeFormPage'
+import { FullFormValues } from '../../../../../../widgets/challenge/group/form/ui/challenge-form'
 
 export const detailSchema = z.object({
   description: z.string().min(1, '챌린지 설명을 입력해주세요'),

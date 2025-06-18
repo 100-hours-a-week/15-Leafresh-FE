@@ -20,7 +20,7 @@ import LucideIcon from '@shared/lib/ui/LucideIcon'
 import { StyledGeneric } from '@shared/styles/emotion/utils'
 import { theme } from '@shared/styles/theme'
 
-import { FullFormValues } from '../../../../../../widgets/challenge/group/form/ui/GroupChallengeFormPage'
+import { FullFormValues } from '../../../../../../widgets/challenge/group/form/ui/challenge-form'
 
 const PARTICIPANT_OPTIONS = Array.from(
   { length: Math.floor((PARTICIPANT_RANGE.MAX - PARTICIPANT_RANGE.MIN) / PARTICIPANT_RANGE.RANGE) + 1 },

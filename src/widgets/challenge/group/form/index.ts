@@ -1,1 +1,1 @@
-export * from './ui/GroupChallengeFormPage'
+export * from './ui/challenge-form'

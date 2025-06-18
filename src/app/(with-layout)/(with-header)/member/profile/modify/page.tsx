@@ -5,7 +5,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import ProfileModifyPage from '../../../../../../widgets/member/profile/modify/ui/ProfileModifyPage'
+import ProfileModifyPage from '../../../../../../widgets/member/profile/modify/ui/member-profile-modify'
 
 const Page = async () => {
   const queryClient = getQueryClient()

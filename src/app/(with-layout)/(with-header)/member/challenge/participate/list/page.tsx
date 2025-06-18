@@ -6,7 +6,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import ChallengeParticipatePage from '../../../../../../../widgets/member/challenge/participate/list/ui/ChallengeParticipatePage'
+import ChallengeParticipatePage from '../../../../../../../widgets/member/challenge/participate/list/ui/member-challenge-participate-list'
 
 export default async function Page() {
   try {

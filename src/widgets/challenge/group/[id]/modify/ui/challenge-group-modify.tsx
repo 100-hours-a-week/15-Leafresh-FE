@@ -9,7 +9,7 @@ import { getGroupChallengeDetails } from '@features/challenge/api/get-group-chal
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-import GroupChallengeFormPage, { FullFormValues } from '../../../form/ui/GroupChallengeFormPage'
+import GroupChallengeFormPage, { FullFormValues } from '../../../form/ui/challenge-form'
 
 interface ChallengeGroupModifyPageProps {
   challengeId: number

@@ -10,7 +10,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import ChallengeGroupParticipateList from '../../../../../../../../widgets/challenge/group/[id]/verification/list/ui/ChallengeGroupParticipateList'
+import ChallengeGroupParticipateList from '../../../../../../../../widgets/challenge/group/[id]/verification/list/ui/challenge-group-verification-list'
 
 interface GroupChallengePageProps {
   params: Promise<{ id: string }>

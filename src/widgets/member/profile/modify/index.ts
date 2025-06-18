@@ -1,1 +1,1 @@
-export * from './ui/ProfileModifyPage'
+export * from './ui/member-profile-modify'

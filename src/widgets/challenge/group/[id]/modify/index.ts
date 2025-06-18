@@ -1,1 +1,1 @@
-export * from './ui/ChallengeGroupModifyPage'
+export * from './ui/challenge-group-modify'

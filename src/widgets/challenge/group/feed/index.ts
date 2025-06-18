@@ -1,1 +1,1 @@
-export * from './ui/FeedPage'
+export * from './ui/challenge-group-feed'

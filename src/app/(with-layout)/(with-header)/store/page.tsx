@@ -8,7 +8,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { ApiResponse } from '@shared/lib/api/type'
 
-import StorePage from '../../../../widgets/store/main/ui/StorePage'
+import StorePage from '../../../../widgets/store/main/ui/store'
 
 const Page = async () => {
   const queryClient = getQueryClient()

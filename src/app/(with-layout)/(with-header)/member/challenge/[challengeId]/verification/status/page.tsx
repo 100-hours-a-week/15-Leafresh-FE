@@ -5,7 +5,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import GroupVerificationPage from '../../../../../../../../widgets/member/challenge/verification/status/ui/GroupVerificationPage'
+import GroupVerificationPage from '../../../../../../../../widgets/member/challenge/verification/status/ui/member-challenge-verification-status'
 
 export default async function Page({ params }: { params: Promise<{ participateId: string }> }) {
   const { participateId } = await params

@@ -7,7 +7,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
-import ChallengeGroupModifyPage from '../../../../../../../widgets/challenge/group/[id]/modify/ui/ChallengeGroupModifyPage'
+import ChallengeGroupModifyPage from '../../../../../../../widgets/challenge/group/[id]/modify/ui/challenge-group-modify'
 
 interface GroupChallengeModifyPageProps {
   params: Promise<{ id: string }>
