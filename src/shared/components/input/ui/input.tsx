@@ -11,7 +11,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   required?: boolean // 👉 명시적 required prop
 }
 
-const Input = ({ label, className, value, onFocus, onBlur, required, ...rest }: InputProps) => {
+export const Input = ({ label, className, value, onFocus, onBlur, required, ...rest }: InputProps) => {
   const [isFocused, setIsFocused] = useState(false)
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -45,8 +45,6 @@ const Input = ({ label, className, value, onFocus, onBlur, required, ...rest }: 
     </Wrapper>
   )
 }
-
-export default Input
 
 // === Styles ===
 const Wrapper = styled.div`

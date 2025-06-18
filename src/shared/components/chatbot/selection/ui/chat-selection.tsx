@@ -27,7 +27,7 @@ export interface ChatSelectionProps {
   selectionType?: SelectionType // 선택 타입 추가
 }
 
-const ChatSelection: React.FC<ChatSelectionProps> = ({
+export const ChatSelection: React.FC<ChatSelectionProps> = ({
   title,
   description,
   subtitle,
@@ -69,8 +69,6 @@ const ChatSelection: React.FC<ChatSelectionProps> = ({
     </Card>
   )
 }
-
-export default ChatSelection
 
 // 기본 카드 스타일
 const Card = styled.div`

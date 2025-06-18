@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
 
-const CheckIcon = () => {
+export const CheckIcon = () => {
   return (
     <CheckSvg
       xmlns='http://www.w3.org/2000/svg'
@@ -31,5 +31,3 @@ const CheckSvg = styled.svg`
 
   color: ${theme.colors.lfBlack.base};
 `
-
-export default CheckIcon

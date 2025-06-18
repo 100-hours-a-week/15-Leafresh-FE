@@ -30,7 +30,7 @@ interface VerificationGuideModalProps {
   challengeData: ChallengeDataType
   onClose: () => void
 }
-const VerificationGuideModal = ({ isOpen, challengeData, onClose }: VerificationGuideModalProps) => {
+export const VerificationGuideModal = ({ isOpen, challengeData, onClose }: VerificationGuideModalProps) => {
   const [isHovering, setIsHovering] = useState<boolean>(false)
 
   const { id: challengeId, type } = challengeData
@@ -253,5 +253,3 @@ const InfoItem = styled.div`
     font-weight: ${theme.fontWeight.medium};
   }
 `
-
-export default VerificationGuideModal

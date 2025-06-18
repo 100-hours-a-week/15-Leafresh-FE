@@ -1,13 +1,13 @@
 import styled from '@emotion/styled'
 
-import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { LucideIcon } from '@shared/components'
 
 export interface BackButtonProps {
   onClick?: () => void
   className?: string
 }
 
-const BackButton = ({ onClick, className }: BackButtonProps) => {
+export const BackButton = ({ onClick, className }: BackButtonProps) => {
   const handleClick = () => {
     onClick?.()
     if (typeof window !== 'undefined') {
@@ -22,8 +22,6 @@ const BackButton = ({ onClick, className }: BackButtonProps) => {
     </Button>
   )
 }
-
-export default BackButton
 
 // ===== Styled =====
 const Button = styled.button`

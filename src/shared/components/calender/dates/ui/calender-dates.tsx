@@ -26,7 +26,7 @@ interface CalendarDatesProps {
   onDateSelect: (date: Date) => void
 }
 
-const CalendarDates = ({ currentMonth, startDate, endDate, onDateSelect }: CalendarDatesProps) => {
+export const CalendarDates = ({ currentMonth, startDate, endDate, onDateSelect }: CalendarDatesProps) => {
   const today = startOfToday()
   const isPastMonth = isBefore(currentMonth, startOfMonth(today))
 
@@ -75,8 +75,6 @@ const CalendarDates = ({ currentMonth, startDate, endDate, onDateSelect }: Calen
     </Dates>
   )
 }
-
-export default CalendarDates
 
 const Dates = styled.div`
   display: flex;

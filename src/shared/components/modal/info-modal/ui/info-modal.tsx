@@ -9,7 +9,7 @@ import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { theme } from '@shared/styles/theme'
 
-const InfoModal = () => {
+export const InfoModal = () => {
   const { isOpen, title, description, variant, onClose, closeInfoModal } = useInfoModalStore()
 
   const modalRef = useRef<HTMLDivElement>(null)
@@ -41,8 +41,6 @@ const InfoModal = () => {
     </Overlay>
   )
 }
-
-export default InfoModal
 
 // 스타일
 

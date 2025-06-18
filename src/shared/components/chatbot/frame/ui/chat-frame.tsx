@@ -29,7 +29,7 @@ interface ChatSelections {
   category?: string
 }
 
-export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
+export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [inputText, setInputText] = useState('')
   const [chatHistory, setChatHistory] = useState<
     Array<{

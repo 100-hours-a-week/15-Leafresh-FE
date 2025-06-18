@@ -16,7 +16,7 @@ export interface SwitchTapProps {
   className?: string
 }
 
-const SwitchTap = ({ tabs, currentIndex, onChange, className }: SwitchTapProps) => {
+export const SwitchTap = ({ tabs, currentIndex, onChange, className }: SwitchTapProps) => {
   return (
     <Container role='tablist' tabsCount={tabs.length} currentIndex={currentIndex} className={className}>
       {tabs.map((label, i) => (
@@ -34,8 +34,6 @@ const SwitchTap = ({ tabs, currentIndex, onChange, className }: SwitchTapProps) 
     </Container>
   )
 }
-
-export default SwitchTap
 
 // ===== Styles =====
 const Container = styled.div<{ tabsCount: number; currentIndex: number }>`

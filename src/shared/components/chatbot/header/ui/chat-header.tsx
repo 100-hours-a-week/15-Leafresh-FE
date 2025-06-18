@@ -10,7 +10,7 @@ interface ChatHeaderProps {
   close: () => void
 }
 
-const ChatHeader = ({ close }: ChatHeaderProps): ReactNode => {
+export const ChatHeader = ({ close }: ChatHeaderProps): ReactNode => {
   return (
     <HeaderWrapper>
       <IconWrapper>
@@ -23,8 +23,6 @@ const ChatHeader = ({ close }: ChatHeaderProps): ReactNode => {
     </HeaderWrapper>
   )
 }
-
-export default ChatHeader
 
 const HeaderWrapper = styled.div`
   display: flex;

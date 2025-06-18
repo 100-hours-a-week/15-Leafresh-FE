@@ -5,15 +5,15 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import ChatFrame, { FrameStep } from '../../frame/ui/chat-frame'
-import Header from '../../header/ui/chat-header'
+import { ChatFrame, FrameStep } from '../../frame'
+import { ChatHeader } from '../../header'
 
 export interface ChatWindowProps {
   open: boolean
   onClose: () => void
 }
 
-export default function ChatWindow({ open, onClose }: ChatWindowProps) {
+export function ChatWindow({ open, onClose }: ChatWindowProps) {
   // 선택 내용 저장
   const [selections, setSelections] = useState<{
     location?: string
@@ -127,7 +127,7 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
             ease: [0.19, 1, 0.22, 1],
           }}
         >
-          <Header close={handleReset} />
+          <ChatHeader close={handleReset} />
           <Body>
             <ChatFrame key={resetCount} step={currentStep} onSelect={handleSelect} onRetry={handleRetry} />
           </Body>

@@ -11,7 +11,7 @@ import { useCountUp } from '@features/main/hook/useCountUp'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-const Introduce = () => {
+export const Introduce = () => {
   const { data: verificationCountData, isLoading: isVerificationLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.ETC.COUNT.VERIFICATION,
     queryFn: getVerificationAccumulateCount,
@@ -51,8 +51,6 @@ const Introduce = () => {
     </Wrapper>
   )
 }
-
-export default Introduce
 
 const Wrapper = styled.section`
   display: flex;

@@ -31,7 +31,7 @@ interface ImageInputProps {
   className?: string
 }
 
-const ImageInput = ({
+export const ImageInput = ({
   icon,
   label,
   fontSize = 'xs',
@@ -100,8 +100,6 @@ const ImageInput = ({
     </Wrapper>
   )
 }
-
-export default ImageInput
 
 interface EmptyImageViewProps {
   onClick: () => void

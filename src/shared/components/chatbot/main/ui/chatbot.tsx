@@ -12,7 +12,7 @@ import { useToggle } from '@shared/hooks/useToggle/useToggle'
 
 import ChatWindow from '../../window/ui/chat-window'
 
-const Chatbot = () => {
+export const Chatbot = () => {
   const pathname = usePathname()
 
   const { value: isOpen, setValue: setOpen } = useToggle(false)
@@ -50,7 +50,6 @@ const Chatbot = () => {
     </>
   )
 }
-export default Chatbot
 
 const StyledImage = styled(Image)`
   position: absolute;

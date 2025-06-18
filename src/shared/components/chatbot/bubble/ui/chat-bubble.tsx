@@ -17,7 +17,15 @@ export interface ChatBubbleProps {
   onClick?: () => void
 }
 
-const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAnswer, onClick }: ChatBubbleProps) => (
+export const ChatBubble = ({
+  role,
+  loading,
+  children,
+  subDescription,
+  buttonText,
+  isAnswer,
+  onClick,
+}: ChatBubbleProps) => (
   <Container role={role}>
     {role === 'bot' && (
       <Avatar>
@@ -43,8 +51,6 @@ const ChatBubble = ({ role, loading, children, subDescription, buttonText, isAns
     </BubbleWrapper>
   </Container>
 )
-
-export default ChatBubble
 
 const Container = styled.div<{ role: 'bot' | 'user' }>`
   display: flex;

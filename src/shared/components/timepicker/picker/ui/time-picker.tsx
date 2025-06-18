@@ -16,7 +16,7 @@ export interface TimePickerProps {
   labelClassName?: string
 }
 
-const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd, className }: TimePickerProps) => {
+export const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd, className }: TimePickerProps) => {
   const { value: startOpen, toggle: toggleStart, setValue: setStartOpen } = useToggle(false)
   const { value: endOpen, toggle: toggleEnd, setValue: setEndOpen } = useToggle(false)
 
@@ -65,7 +65,6 @@ const TimePicker = ({ label, startValue, endValue, onChangeStart, onChangeEnd, c
     </Wrapper>
   )
 }
-export default TimePicker
 
 /* ===== 스타일 ===== */
 const Wrapper = styled.div`

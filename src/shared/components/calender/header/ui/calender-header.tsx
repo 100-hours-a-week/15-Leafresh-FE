@@ -5,7 +5,7 @@ import { ko } from 'date-fns/locale'
 
 import styled from '@emotion/styled'
 
-import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { LucideIcon } from '@shared/components/lucide-icon'
 import { theme } from '@shared/styles/theme'
 
 interface CalendarHeaderProps {
@@ -14,7 +14,7 @@ interface CalendarHeaderProps {
   onNext: () => void
 }
 
-const CalendarHeader = ({ currentMonth, onPrev, onNext }: CalendarHeaderProps) => (
+export const CalendarHeader = ({ currentMonth, onPrev, onNext }: CalendarHeaderProps) => (
   <Header>
     <ArrowButton onClick={onPrev}>
       <LucideIcon name='ChevronLeft' size={16} />
@@ -25,8 +25,6 @@ const CalendarHeader = ({ currentMonth, onPrev, onNext }: CalendarHeaderProps) =
     </ArrowButton>
   </Header>
 )
-
-export default CalendarHeader
 
 const Header = styled.div`
   display: flex;

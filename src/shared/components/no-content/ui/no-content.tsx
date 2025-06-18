@@ -13,7 +13,7 @@ interface NoContentProps {
   className?: string
 }
 
-const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProps): ReactNode => {
+export const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProps): ReactNode => {
   return (
     <EmptyWrapper className={className}>
       <Image src={LogoCharacterImage} alt='로고 캐릭터' />
@@ -22,8 +22,6 @@ const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProp
     </EmptyWrapper>
   )
 }
-
-export default NoContent
 
 const EmptyWrapper = styled.div`
   width: 100%;

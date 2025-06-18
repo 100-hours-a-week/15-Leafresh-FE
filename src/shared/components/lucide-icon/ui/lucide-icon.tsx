@@ -19,7 +19,7 @@ export interface LucideIconProps extends Omit<React.SVGProps<SVGSVGElement>, 're
   className?: string
 }
 
-const LucideIcon = ({
+export const LucideIcon = ({
   name,
   color = 'lfBlack',
   fill,
@@ -46,8 +46,6 @@ const LucideIcon = ({
     </Wrapper>
   )
 }
-
-export default LucideIcon
 
 // === Styles ===
 

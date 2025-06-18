@@ -10,7 +10,7 @@ interface LoadingProps {
   className?: string
 }
 
-const Loading = ({ hasText = true, className }: LoadingProps): ReactNode => {
+export const Loading = ({ hasText = true, className }: LoadingProps): ReactNode => {
   return (
     <Container className={className}>
       <DotWrapper>
@@ -26,8 +26,6 @@ const Loading = ({ hasText = true, className }: LoadingProps): ReactNode => {
     </Container>
   )
 }
-
-export default Loading
 // 애니메이션 정의
 const opacityFade = keyframes`
   0% { opacity: 1 }

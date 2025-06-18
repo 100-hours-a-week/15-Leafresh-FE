@@ -9,7 +9,7 @@ import { useToastStore } from '@shared/context/toast/ToastStore'
 import { ToastType } from '@shared/context/toast/type'
 import { theme } from '@shared/styles/theme'
 
-const Toast = () => {
+export const Toast = () => {
   const { isOpen, type, description, close: closeToast } = useToastStore()
 
   useEffect(() => {
@@ -46,8 +46,6 @@ const Toast = () => {
     </AnimatePresence>
   )
 }
-
-export default Toast
 
 const MotionContainer = styled(motion.div)<{ toastType: ToastType }>`
   position: absolute;

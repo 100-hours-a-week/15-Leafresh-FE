@@ -11,7 +11,7 @@ interface CalendarWeekdaysProps {
   startDayOfWeek: DayType
 }
 
-const CalendarWeekdays = ({ startDayOfWeek }: CalendarWeekdaysProps) => {
+export const CalendarWeekdays = ({ startDayOfWeek }: CalendarWeekdaysProps) => {
   const getOrderedDays = () => {
     const startIndex = DAYS.indexOf(startDayOfWeek)
     return [...DAYS.slice(startIndex), ...DAYS.slice(0, startIndex)]
@@ -25,8 +25,6 @@ const CalendarWeekdays = ({ startDayOfWeek }: CalendarWeekdaysProps) => {
     </Weekdays>
   )
 }
-
-export default CalendarWeekdays
 
 const Weekdays = styled.div`
   display: grid;

@@ -42,7 +42,7 @@ const BACK_BUTTON_ROUTES = extractBackButtonRoutes(URL).map(path =>
   path.includes('[') ? path.replace(/\[.*?\]/g, '\\d+') : path,
 )
 
-const Header = ({ padding }: HeaderProps) => {
+export const Header = ({ padding }: HeaderProps) => {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -69,8 +69,6 @@ const Header = ({ padding }: HeaderProps) => {
     </HeaderContainer>
   )
 }
-
-export default Header
 
 const HeaderContainer = styled.header`
   width: 100%;

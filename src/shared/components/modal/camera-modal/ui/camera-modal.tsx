@@ -22,7 +22,7 @@ const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
 
 type FacingMode = 'user' | 'environment'
-const CameraModal = () => {
+export const CameraModal = () => {
   const openToast = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
 
@@ -261,8 +261,6 @@ const CameraModal = () => {
     </Overlay>
   )
 }
-
-export default CameraModal
 
 const Overlay = styled.div`
   position: absolute;

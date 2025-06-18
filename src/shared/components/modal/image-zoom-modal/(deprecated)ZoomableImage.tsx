@@ -12,7 +12,7 @@ interface ZoomableImageProps {
   targetIndex: number
 }
 
-const ZoomableImage = ({ src, alt, width, height, verificationData, targetIndex }: ZoomableImageProps) => {
+export const ZoomableImage = ({ src, alt, width, height, verificationData, targetIndex }: ZoomableImageProps) => {
   const { open } = useImageZoomStore()
 
   /** 이미지 확대 모달 열기 */
@@ -25,5 +25,3 @@ const ZoomableImage = ({ src, alt, width, height, verificationData, targetIndex 
     </div>
   )
 }
-
-export default ZoomableImage

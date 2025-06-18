@@ -24,7 +24,7 @@ export interface DropdownProps<OptionType> {
   required?: boolean
 }
 
-const Dropdown = <OptionType,>({
+export const Dropdown = <OptionType,>({
   label,
   options,
   selected,
@@ -85,8 +85,6 @@ const Dropdown = <OptionType,>({
     </Wrapper>
   )
 }
-
-export default Dropdown
 
 // === Styles ===
 

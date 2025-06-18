@@ -8,7 +8,7 @@ import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { theme } from '@shared/styles/theme'
 
-const ConfirmModal = () => {
+export const ConfirmModal = () => {
   const { isOpen, title, description, onConfirm, onCancel, closeConfirmModal } = useConfirmModalStore()
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -41,8 +41,6 @@ const ConfirmModal = () => {
     </Overlay>
   )
 }
-
-export default ConfirmModal
 
 // === 스타일 ===
 const Overlay = styled.div`

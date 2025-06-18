@@ -13,7 +13,7 @@ export interface TimeDropdownProps {
   onCancel?: () => void
 }
 
-export default function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpenChange }: TimeDropdownProps) {
+export function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpenChange }: TimeDropdownProps) {
   const [initH, initM] = value.split(':').map(s => parseInt(s, 10))
   const [hour, setHour] = useState(isNaN(initH) ? 0 : initH)
   const [minute, setMinute] = useState(isNaN(initM) ? 0 : initM)

@@ -5,10 +5,9 @@ import { format } from 'date-fns'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
+import { Calendar } from '@shared/components/calender'
 import { dayToString } from '@shared/lib/date/utils'
 import { theme } from '@shared/styles/theme'
-
-import Calendar from '../../calender/main/ui/calender'
 
 interface DatePickerProps {
   icon: React.JSX.Element
@@ -22,7 +21,7 @@ interface DatePickerProps {
   className?: string
 }
 
-const DatePicker = ({
+export const DatePicker = ({
   icon,
   label,
   startDate,
@@ -103,8 +102,6 @@ const DatePicker = ({
     </Wrapper>
   )
 }
-
-export default DatePicker
 
 const Wrapper = styled.div`
   width: 100%;

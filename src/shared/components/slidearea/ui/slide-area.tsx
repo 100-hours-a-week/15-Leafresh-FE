@@ -10,7 +10,7 @@ interface SlideAreaProps {
   onItemSelect?: (index: number) => void // 아이템 선택 시 콜백
 }
 
-export default function SlideArea({ children, className, visibleIndex, onItemSelect }: SlideAreaProps) {
+export function SlideArea({ children, className, visibleIndex, onItemSelect }: SlideAreaProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)

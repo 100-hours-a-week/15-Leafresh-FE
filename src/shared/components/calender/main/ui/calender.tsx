@@ -9,9 +9,9 @@ import { DayType } from '@entities/challenge/type'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { theme } from '@shared/styles/theme'
 
-import CalendarDates from '../../dates/ui/calender-dates'
-import CalendarHeader from '../../header/ui/calender-header'
-import CalendarWeekdays from '../../weekdays/ui/calender-weekdays'
+import { CalendarDates } from '../../dates'
+import { CalendarHeader } from '../../header'
+import { CalendarWeekdays } from '../../weekdays'
 
 interface CalendarProps {
   startDate?: Date
@@ -22,7 +22,7 @@ interface CalendarProps {
   className?: string
 }
 
-const Calendar = ({
+export const Calendar = ({
   startDate,
   endDate,
   onDateSelect,
@@ -47,8 +47,6 @@ const Calendar = ({
     </Wrapper>
   )
 }
-
-export default Calendar
 
 const Wrapper = styled.div`
   width: 100%;

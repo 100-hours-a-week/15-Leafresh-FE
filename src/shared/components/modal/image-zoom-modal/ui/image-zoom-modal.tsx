@@ -13,7 +13,7 @@ import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { theme } from '@shared/styles/theme'
 
-const ImageZoomModal = () => {
+export const ImageZoomModal = () => {
   const [isInitial, setIsInitial] = useState(true)
   const { isOpen, close, data, targetIndex, setTargetIndex } = useImageZoomStore()
 
@@ -75,8 +75,6 @@ const ImageZoomModal = () => {
     </Wrapper>
   )
 }
-
-export default ImageZoomModal
 
 const Wrapper = styled.div`
   position: absolute;
