@@ -1,8 +1,8 @@
 'use client'
 import styled from '@emotion/styled'
 
-import { useToggle } from '@shared/hooks/useToggle/useToggle'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import { useToggle } from '@shared/hooks/use-toggle/useToggle'
 
 import TimeDropdown from '../../dropdown/ui/time-dropdown'
 

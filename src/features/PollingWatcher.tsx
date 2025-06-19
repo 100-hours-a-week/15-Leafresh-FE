@@ -4,7 +4,7 @@ import { useGroupChallengeVerificationResult } from '@features/challenge/hook/us
 import { usePersonalChallengeVerificationResult } from '@features/challenge/hook/use-personal-verification-result'
 import { usePollingStore } from '@shared/context/polling/long-polling-store'
 import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { useToast } from '@shared/hooks/use-toast/useToast'
 
 enum PollingTarget {
   PERSONAL_CHALLENGE_VERIFICATION_RESULT, // 개인 챌린지 인증 결과 조회

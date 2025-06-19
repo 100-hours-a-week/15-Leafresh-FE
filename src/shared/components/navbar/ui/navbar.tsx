@@ -8,7 +8,7 @@ import { sendGAEvent } from '@next/third-parties/google'
 
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/config/style/theme'
-import { useAuth } from '@shared/hooks/useAuth/useAuth'
+import { useAuth } from '@shared/hooks/use-auth/useAuth'
 
 import { NAVBAR_TABS } from '../model/consts'
 

@@ -10,8 +10,8 @@ import styled from '@emotion/styled'
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 import { theme } from '@shared/config/style/theme'
 import { useImageZoomStore } from '@shared/context/modal/image-zoom-modal-store'
-import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import { useKeyClose } from '@shared/hooks/use-key-close/useKeyClose'
+import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 
 export const ImageZoomModal = () => {
   const [isInitial, setIsInitial] = useState(true)

@@ -24,7 +24,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { useToast } from '@shared/hooks/use-toast/useToast'
 import { fetchRequest } from '@shared/lib/api'
 
 const SignupPage = () => {

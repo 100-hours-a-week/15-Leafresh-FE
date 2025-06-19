@@ -18,7 +18,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
 import { usePollingStore } from '@shared/context/polling/long-polling-store'
 import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { useToast } from '@shared/hooks/use-toast/useToast'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 export default function GroupVerificationPage({ participateId }: { participateId: number }) {

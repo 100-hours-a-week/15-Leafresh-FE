@@ -5,9 +5,9 @@ import styled from '@emotion/styled'
 
 import { theme } from '@shared/config/style/theme'
 import { useInfoModalStore } from '@shared/context/modal/info-modal-store'
-import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
-import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import { useKeyClose } from '@shared/hooks/use-key-close/useKeyClose'
+import { useOutsideClick } from '@shared/hooks/use-outside-click/useOutsideClick'
+import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 
 export const InfoModal = () => {
   const { isOpen, title, description, variant, onClose, closeInfoModal } = useInfoModalStore()

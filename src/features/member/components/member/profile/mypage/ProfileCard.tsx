@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { treeLevelMap } from '@entities/member/constant'
-import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 
 import GuideOverlay from './GuideOverlay'
 

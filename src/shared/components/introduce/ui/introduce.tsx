@@ -7,9 +7,9 @@ import { useQuery } from '@tanstack/react-query'
 
 import { getLeafAccumulateCount } from '@features/main/api/get-acuumulate-leaf'
 import { getVerificationAccumulateCount } from '@features/main/api/get-acuumulate-verification'
-import { useCountUp } from '@features/main/hook/useCountUp'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
+import { useCountUp } from '@shared/hooks/use-count-up/useCountUp'
 
 export const Introduce = () => {
   const { data: verificationCountData, isLoading: isVerificationLoading } = useQuery({

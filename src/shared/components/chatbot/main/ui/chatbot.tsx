@@ -7,8 +7,8 @@ import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
 import { URL } from '@shared/constants/route'
-import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
-import { useToggle } from '@shared/hooks/useToggle/useToggle'
+import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
+import { useToggle } from '@shared/hooks/use-toggle/useToggle'
 
 import ChatWindow from '../../window/ui/chat-window'
 

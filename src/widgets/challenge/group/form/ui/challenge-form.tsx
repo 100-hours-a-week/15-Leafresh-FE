@@ -30,7 +30,7 @@ import { useMutationStore } from '@shared/config/tanstack-query/mutation-default
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { useToast } from '@shared/hooks/use-toast/useToast'
 import { getKstMidnightToUtcISOString } from '@shared/lib/date/utils'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 import { TimeFormatString } from '@shared/types/date'

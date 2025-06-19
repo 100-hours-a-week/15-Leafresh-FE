@@ -5,9 +5,9 @@ import styled from '@emotion/styled'
 
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/config/style/theme'
-import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
-import { useToggle } from '@shared/hooks/useToggle/useToggle'
+import { useKeyClose } from '@shared/hooks/use-key-close/useKeyClose'
+import { useOutsideClick } from '@shared/hooks/use-outside-click/useOutsideClick'
+import { useToggle } from '@shared/hooks/use-toggle/useToggle'
 
 export interface DropdownProps<OptionType> {
   label: string

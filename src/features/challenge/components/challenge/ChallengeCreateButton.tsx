@@ -8,7 +8,7 @@ import { sendGAEvent } from '@next/third-parties/google'
 import { LucideIcon } from '@shared/components'
 import { URL } from '@shared/constants/route'
 import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
-import { useAuth } from '@shared/hooks/useAuth/useAuth'
+import { useAuth } from '@shared/hooks/use-auth/useAuth'
 
 const ChallengeCreateButton = () => {
   const router = useRouter()

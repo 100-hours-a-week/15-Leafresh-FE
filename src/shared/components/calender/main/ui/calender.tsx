@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 
 import { DayType } from '@entities/challenge/type'
 import { theme } from '@shared/config/style/theme'
-import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
+import { useOutsideClick } from '@shared/hooks/use-outside-click/useOutsideClick'
 
 import { CalendarDates } from '../../dates'
 import { CalendarHeader } from '../../header'

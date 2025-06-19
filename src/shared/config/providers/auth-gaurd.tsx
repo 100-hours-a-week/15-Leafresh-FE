@@ -10,7 +10,7 @@ import { ProfileResponse } from '@features/member/api/profile/get-member-profile
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { useToast } from '@shared/hooks/use-toast/useToast'
 import { fetchRequest } from '@shared/lib/api'
 
 /** 보호가 필요한 경로 목록 */

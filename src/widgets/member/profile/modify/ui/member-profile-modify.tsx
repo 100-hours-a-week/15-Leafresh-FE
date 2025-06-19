@@ -22,8 +22,8 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
-import { useImageUpload } from '@shared/hooks/useImageUpload/useImageUpload'
-import { useToast } from '@shared/hooks/useToast/useToast'
+import { useImageUpload } from '@shared/hooks/use-image-uplaod/useImageUpload'
+import { useToast } from '@shared/hooks/use-toast/useToast'
 
 interface ProfileModifyPageProps {
   className?: string

@@ -4,9 +4,9 @@ import styled from '@emotion/styled'
 
 import { theme } from '@shared/config/style/theme'
 import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
-import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
-import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
-import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
+import { useKeyClose } from '@shared/hooks/use-key-close/useKeyClose'
+import { useOutsideClick } from '@shared/hooks/use-outside-click/useOutsideClick'
+import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 
 export const ConfirmModal = () => {
   const { isOpen, title, description, onConfirm, onCancel, closeConfirmModal } = useConfirmModalStore()
