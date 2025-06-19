@@ -164,7 +164,6 @@ const Mypage = () => {
       )
     }
   }
-
   return (
     <Container isScroll={showProfileCard}>
       <ProfileSection>
@@ -281,6 +280,7 @@ const FeedbackText = styled.p`
   align-self: flex-start;
 `
 const Feedback = styled.p`
+  white-space: pre-line;
   font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
 `
