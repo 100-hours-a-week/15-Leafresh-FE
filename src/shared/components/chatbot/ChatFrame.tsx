@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { categoryDescriptions, CHAT_CHALLENGE_OPTIONS } from '@entities/chatbot/type'
+import { categoryDescriptions, CHAT_CHALLENGE_OPTIONS, ChatHistoryItem, initialMessages } from '@entities/chatbot/type'
 import {
   getDisplayLabel,
   getRandomLiveImage,
@@ -42,7 +42,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [liveImage] = useState(() => getRandomLiveImage())
   const [workImage] = useState(() => getRandomWorkImage())
 
-  const { history: chatHistory, addItem: addChatItem } = useChatHistory()
+  const { history: chatHistory, addItem: addChatItem } = useChatHistory(initialMessages)
   const { startCategoryStream, startFreeTextStream } = useRecommendationStream()
 
   // ——— 카테고리 스트림 훅 ———
@@ -79,29 +79,8 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     }, 2000)
   })
 
-  //dev 모드에서 소개 2번 렌더링 방지
-  const hasInitializedRef = useRef(false)
-
   const sessionId = useChatSession()
   const messagesEndRef = useScrollToBottom([chatHistory, catText, freeText])
-
-  // mount 시 초기 메시지
-  useEffect(() => {
-    if (!hasInitializedRef.current) {
-      addChatItem({
-        type: 'message',
-        role: 'bot',
-        text:
-          '안녕하세요! 저는 Leafresh의 챗봇 수피입니다.\n' +
-          '저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n' +
-          '먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
-      })
-      addChatItem({ type: 'horizontal-cards' })
-
-      // 한 번만 실행되도록 플래그를 true로 바꾼다.
-      hasInitializedRef.current = true
-    }
-  }, [])
 
   // chatSelections가 바뀔 때마다 세션 스토리지에 저장
   useEffect(() => {
