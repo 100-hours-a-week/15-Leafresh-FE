@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@entities/challenge/api/group/get-categories'
 import { ChallengeCategoryType } from '@entities/challenge/type'
-import { FeedList } from '@features/challenge/components/challenge/group/feed/FeedList'
+import { FeedList } from '@features/challenge/components/feed-list/ui/feed-list'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 

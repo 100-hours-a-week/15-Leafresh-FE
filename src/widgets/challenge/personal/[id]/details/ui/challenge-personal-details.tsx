@@ -16,7 +16,7 @@ import {
 import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import ChallengeVerifyExamples, {
   VerificationImageData,
-} from '@features/challenge/components/common/ChallengeVerifyExamples'
+} from '@features/challenge/components/challenge-verify-examples/ui/challenge-verify-examples'
 import Loading from '@shared/components/loading/ui/loading'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/config/style/theme'

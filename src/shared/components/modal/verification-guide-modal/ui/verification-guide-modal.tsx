@@ -15,7 +15,7 @@ import {
   PersonalChallengeRulesListResponse,
 } from '@entities/challenge/api/personal/get-personal-rules'
 import { convertLanguage, DAY_PAIRS } from '@entities/challenge/constant'
-import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
+import ChallengeVerifyExamples from '@features/challenge/components/challenge-verify-examples/ui/challenge-verify-examples'
 import { Loading, LucideIcon } from '@shared/components'
 import { theme } from '@shared/config/style/theme'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

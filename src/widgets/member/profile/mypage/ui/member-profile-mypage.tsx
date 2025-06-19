@@ -27,9 +27,9 @@ import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
-import ProfileBox from '../../../../../features/member/components/member/profile/mypage/ProfileBox'
-import ProfileCard from '../../../../../features/member/components/member/profile/mypage/ProfileCard'
-import RecentBadgeBox from '../../../../../features/member/components/member/profile/mypage/RecentBadgeBox'
+import ProfileBox from '../../../../../features/member/components/profile-box/ui/profile-box'
+import ProfileCard from '../../../../../features/member/components/profile-card/ui/profile-card'
+import RecentBadgeBox from '../../../../../features/member/components/recent-badge-box/ui/recent-badge-box'
 
 const slideRotateIn = keyframes`
   0% {

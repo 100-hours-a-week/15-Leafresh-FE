@@ -27,7 +27,7 @@ import {
   DeleteVerificationLikeResponse,
   DeleteVerificationLikeVariables,
 } from '@entities/challenge/api/group/verification/likes/delete-like'
-import CommentList from '@features/challenge/components/challenge/participate/verification/details/comment-list'
+import CommentList from '@features/challenge/components/verification-comment-list/ui/verification-comment-list'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/config/style/theme'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'

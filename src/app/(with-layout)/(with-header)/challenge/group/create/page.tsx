@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 
-import { DetailFormValues } from '@features/challenge/components/challenge/group/create/DetailStep'
-import { MetaFormValues } from '@features/challenge/components/challenge/group/create/MetadataStep'
+import { DetailFormValues } from '@features/challenge/components/form-detail-step/ui/form-detail-step'
+import { MetaFormValues } from '@features/challenge/components/form-metadata-step/ui/form-metadata-step'
 import Loading from '@shared/components/loading/ui/loading'
 
 import GroupChallengeFormPage, {

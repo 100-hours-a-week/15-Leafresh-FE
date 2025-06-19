@@ -15,7 +15,7 @@ import {
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import ChallengeVerifyExamples, {
   VerificationImageData,
-} from '@features/challenge/components/common/ChallengeVerifyExamples'
+} from '@features/challenge/components/challenge-verify-examples/ui/challenge-verify-examples'
 import BackButton from '@shared/components/buttons/back-button/ui/back-button'
 import DatePicker from '@shared/components/datepicker/ui/date-picker'
 import Loading from '@shared/components/loading/ui/loading'
@@ -33,7 +33,7 @@ import { useToast } from '@shared/hooks/use-toast/useToast'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 import LeafIcon from '@public/icon/leaf.png'
 
-import ChallengeVerifyCarousel from '../../../../../../features/challenge/components/challenge/group/details/ChallengeVerifyCarousel'
+import ChallengeVerifyCarousel from '../../../../../../features/challenge/components/challenge-verify-carousel/ui/challenge-verify-carousel'
 
 type WarningType = {
   isWarning: boolean

@@ -11,7 +11,7 @@ import { theme } from '@shared/config/style/theme'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-import BadgeTabs from '../../../../../features/member/components/member/profile/badge/BadgeTab'
+import BadgeTabs from '../../../../../features/member/components/badge-tab/ui/badge-tab'
 
 const BadgePage = () => {
   const {

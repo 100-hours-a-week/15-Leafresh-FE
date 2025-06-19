@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import {
   GroupChallenge,
   GroupChallengeCard,
-} from '@features/challenge/components/common/group-challenge-card/GroupChallengeCard'
+} from '@features/challenge/components/group-challenge-card/ui/group-challenge-card'
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/api/use-get-group-create-list'
 import Loading from '@shared/components/loading/ui/loading'
 import NoContent from '@shared/components/no-content/ui/no-content'

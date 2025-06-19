@@ -18,7 +18,7 @@ import { URL } from '@shared/constants/route'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 import { ISOFormatString } from '@shared/type/date'
 
-import VerificationCard from '../../../../../../../features/challenge/components/challenge/participate/verification/verification-card'
+import VerificationCard from '../../../../../../../features/challenge/components/verification-card/ui/verification-card'
 
 interface ChallengeGroupParticipateListProps {
   challengeId: number
