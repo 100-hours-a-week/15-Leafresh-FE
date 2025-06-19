@@ -18,7 +18,7 @@ import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
-import { ISOFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/type/date'
 
 export type GroupChallenge = {
   id: number

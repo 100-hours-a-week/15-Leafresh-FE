@@ -1,7 +1,7 @@
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { ISOFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/type/date'
 
 export type VerifyGroupChallengeResponse = {
   submittedAt: ISOFormatString

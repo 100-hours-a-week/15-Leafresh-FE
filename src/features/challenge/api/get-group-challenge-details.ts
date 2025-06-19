@@ -5,7 +5,7 @@ import {
 } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { ISOFormatString, TimeFormatString } from '@shared/types/date'
+import { ISOFormatString, TimeFormatString } from '@shared/type/date'
 
 export type GroupChallengeDetail = {
   id: number

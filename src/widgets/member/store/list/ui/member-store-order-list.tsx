@@ -13,7 +13,7 @@ import { theme } from '@shared/config/style/theme'
 import { URL } from '@shared/constants/route'
 import { getTimeDiff } from '@shared/lib/date/utils'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
-import { ISOFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/type/date'
 import LeafIcon from '@public/icon/leaf.png'
 
 /** 더미 데이터 */

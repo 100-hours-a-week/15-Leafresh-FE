@@ -1,7 +1,7 @@
 import { ChallengeVerificationResultType, ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { TimeFormatString } from '@shared/types/date'
+import { TimeFormatString } from '@shared/type/date'
 
 export type PersonalChallengeDetail = {
   id: number

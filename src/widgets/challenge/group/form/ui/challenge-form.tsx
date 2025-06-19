@@ -33,7 +33,7 @@ import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/use-toast/useToast'
 import { getKstMidnightToUtcISOString } from '@shared/lib/date/utils'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
-import { TimeFormatString } from '@shared/types/date'
+import { TimeFormatString } from '@shared/type/date'
 
 const fullSchema = metaSchema
   .merge(detailSchema)

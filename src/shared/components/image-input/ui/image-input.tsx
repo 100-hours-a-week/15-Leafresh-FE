@@ -11,7 +11,7 @@ import { theme } from '@shared/config/style/theme'
 import { ThemeColorType, ThemeFontSizeType } from '@shared/config/style/type'
 import { ASPECT_RATIOS, AspectRatioType } from '@shared/constants/image-size'
 import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
-import { getThemeColor, getThemeFontSize } from '@shared/styles/theme/theme-utils'
+import { getThemeColor, getThemeFontSize } from '@shared/lib/utils/theme-utils'
 
 interface ImageInputProps {
   icon: React.ReactNode

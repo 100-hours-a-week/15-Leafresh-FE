@@ -1,11 +1,6 @@
 import { LowercaseOAuthType } from '@entities/member/type'
 
-import { HttpMethod } from '../http'
-
-export type EndpointType = {
-  method: HttpMethod
-  path: string
-}
+import { HttpMethod } from './http'
 
 export const BASE_API_URL = '/api/proxy'
 

@@ -24,7 +24,7 @@ import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
 import { getTimeDiff } from '@shared/lib/date/utils'
-import { copyToClipboard } from '@shared/lib/ui/copy-clipboard'
+import { copyToClipboard } from '@shared/lib/utils/copy-clipboard'
 import ActiveLikeIcon from '@public/icon/like_active.svg'
 import InActiveLikeIcon from '@public/icon/like_inactive.svg'
 

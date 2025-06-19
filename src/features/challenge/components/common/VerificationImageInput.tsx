@@ -7,7 +7,7 @@ import ImageInput from '@shared/components/image-input/ui/image-input'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/config/style/theme'
 import { ThemeColorType } from '@shared/config/style/type'
-import { getThemeColor } from '@shared/styles/theme/theme-utils'
+import { getThemeColor } from '@shared/lib/utils/theme-utils'
 
 const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.ReactNode; color: ThemeColorType }> = {
   SUCCESS: {

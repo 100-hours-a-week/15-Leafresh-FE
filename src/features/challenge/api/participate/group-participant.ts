@@ -1,8 +1,8 @@
 import { FeedVerificationStatusType } from '@entities/challenge/type'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api'
-import { InfiniteScrollResponse } from '@shared/types/api'
-import { ISOFormatString } from '@shared/types/date'
+import { InfiniteScrollResponse } from '@shared/type/api'
+import { ISOFormatString } from '@shared/type/date'
 
 export type ChallengeStatus = 'not_started' | 'ongoing' | 'completed'
 

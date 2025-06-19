@@ -11,7 +11,7 @@ import Loading from '@shared/components/loading/ui/loading'
 import NoContent from '@shared/components/no-content/ui/no-content'
 import { URL } from '@shared/constants/route'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
-import { ISOFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/type/date'
 
 import VerificationCard from '../../participate/verification/verification-card'
 

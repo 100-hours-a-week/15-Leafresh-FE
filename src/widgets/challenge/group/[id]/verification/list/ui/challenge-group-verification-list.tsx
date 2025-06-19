@@ -16,7 +16,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
-import { ISOFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/type/date'
 
 import VerificationCard from '../../../../../../../features/challenge/components/challenge/participate/verification/verification-card'
 

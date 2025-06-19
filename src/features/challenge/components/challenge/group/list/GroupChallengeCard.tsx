@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 
 import { theme } from '@shared/config/style/theme'
 import { URL } from '@shared/constants/route'
-import { ISOFormatString } from '@shared/types/date'
+import { ISOFormatString } from '@shared/type/date'
 import LeafIcon from '@public/icon/leaf.png'
 
 interface GroupChallengeProps {
