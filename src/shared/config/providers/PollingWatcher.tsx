@@ -21,7 +21,7 @@ const PollingWatcher = () => {
 
   const personalChallengeIdList: number[] = challenge.verification.personalChallengeIdList // 개인 챌린지 롱폴링ID
   const groupChallengeIdList: number[] = challenge.verification.groupChallengeIdList // 단체 챌린지 롱폴링ID
-  const feedbackWhether: boolean = member.feedback
+  const isFeedbackReceived: boolean = member.feedback
 
   /** 이벤트 핸들러 */
   // TODO: type=단체 챌린지 인증 제출 핸들링
@@ -65,7 +65,9 @@ const PollingWatcher = () => {
         />
       ))}
 
-      {feedbackWhether && <PollingFeedbackResult type={PollingTarget.FEEDBACK} onComplete={handleCompleteFeedback} />}
+      {isFeedbackReceived && (
+        <PollingFeedbackResult type={PollingTarget.FEEDBACK} onComplete={handleCompleteFeedback} />
+      )}
     </>
   )
 }
@@ -105,7 +107,7 @@ interface FeedbackResultProps {
 }
 const PollingFeedbackResult = ({ type, onComplete }: FeedbackResultProps) => {
   const FeedbackQuery = useFeedbackPolling({
-    enabled: type === PollingTarget.FEEDBACK,
+    enabled: true,
   })
 
   const data = FeedbackQuery.data
