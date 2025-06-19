@@ -42,38 +42,46 @@ function ChatSelection({
   }, [selectionType])
 
   return (
-    <Card data-type={selectionType}>
-      {/* cardImageUrl이 있을 때만 Image 컴포넌트를 렌더링 */}
-      {imageUrl && (
-        <ImageWrapper data-type={selectionType}>
-          <CardImage
-            src={imageUrl}
-            alt={title}
-            width={selectionType === 'challenge' ? 250 : 175}
-            height={selectionType === 'challenge' ? 120 : 110}
-          />
-        </ImageWrapper>
-      )}
+    <SelectionWrapper>
+      <Card data-type={selectionType}>
+        {/* cardImageUrl이 있을 때만 Image 컴포넌트를 렌더링 */}
+        {imageUrl && (
+          <ImageWrapper data-type={selectionType}>
+            <CardImage
+              src={imageUrl}
+              alt={title}
+              width={selectionType === 'challenge' ? 250 : 175}
+              height={selectionType === 'challenge' ? 120 : 110}
+            />
+          </ImageWrapper>
+        )}
 
-      <CardContent data-type={selectionType}>
-        {title && <CardTitle data-type={selectionType}>{title}</CardTitle>}
-        {subtitle && <CardSubtitle data-type={selectionType}>{subtitle}</CardSubtitle>}
+        <CardContent data-type={selectionType}>
+          {title && <CardTitle data-type={selectionType}>{title}</CardTitle>}
+          {subtitle && <CardSubtitle data-type={selectionType}>{subtitle}</CardSubtitle>}
 
-        <OptionsGrid data-type={selectionType}>
-          {options.map((opt: ChatOption) => (
-            <OptionButton key={opt.value} data-type={selectionType} onClick={() => onSelect(opt.label)}>
-              {opt.label}
-            </OptionButton>
-          ))}
-        </OptionsGrid>
+          <OptionsGrid data-type={selectionType}>
+            {options.map((opt: ChatOption) => (
+              <OptionButton key={opt.value} data-type={selectionType} onClick={() => onSelect(opt.label)}>
+                {opt.label}
+              </OptionButton>
+            ))}
+          </OptionsGrid>
 
-        {buttonText && <ExplainButton onClick={onExplainClick}>{buttonText}</ExplainButton>}
-      </CardContent>
-    </Card>
+          {buttonText && <ExplainButton onClick={onExplainClick}>{buttonText}</ExplainButton>}
+        </CardContent>
+      </Card>
+    </SelectionWrapper>
   )
 }
 
 export default ChatSelection
+
+const SelectionWrapper = styled.div`
+  margin: 8px 0;
+  padding-left: 40px;
+  width: 100%;
+`
 
 // 기본 카드 스타일
 const Card = styled.div`

@@ -42,6 +42,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [liveImage] = useState(() => getRandomLiveImage())
   const [workImage] = useState(() => getRandomWorkImage())
 
+  //초기 세팅
   const { history: chatHistory, addItem: addChatItem } = useChatHistory(initialMessages)
   const { startCategoryStream, startFreeTextStream } = useRecommendationStream()
 
@@ -251,11 +252,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
               </ChatBubble>
             )}
 
-            {item.type === 'selection' && item.selectionProps && (
-              <SelectionWrapper>
-                <ChatSelection {...item.selectionProps} />
-              </SelectionWrapper>
-            )}
+            {item.type === 'selection' && item.selectionProps && <ChatSelection {...item.selectionProps} />}
 
             {item.type === 'horizontal-cards' && (
               <HorizontalCards visibleIndex={visibleCardIndex} renderCards={renderHorizontalCards} />
@@ -317,12 +314,6 @@ const MessagesContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   margin-left: 10px;
-`
-
-const SelectionWrapper = styled.div`
-  margin: 8px 0;
-  padding-left: 40px;
-  width: 100%;
 `
 
 const InputContainer = styled.div`
