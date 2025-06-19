@@ -14,8 +14,8 @@ import NoContent from '@shared/components/no-content/ui/no-content'
 import SwitchTap from '@shared/components/switchtap/ui/switch-tab'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { URL } from '@shared/constants/route/route'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { URL } from '@shared/constants/route'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 const statusMap: Record<number, ChallengeStatus> = {
   0: 'not_started',

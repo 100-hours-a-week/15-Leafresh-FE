@@ -5,8 +5,8 @@ import styled from '@emotion/styled'
 
 import { CHALLENGE_VERIFICATION_RESULT } from '@entities/challenge/constant'
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
-import { ImageZoomModalData, useImageZoomStore } from '@shared/context/zoom-modal/ImageZoomStore'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import { ImageZoomModalData, useImageZoomStore } from '@shared/context/modal/image-zoom-modal-store'
 
 import VerificationImageInput from './VerificationImageInput'
 

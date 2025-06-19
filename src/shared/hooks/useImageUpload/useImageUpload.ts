@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { HttpMethod } from '@shared/constants/http'
 import { fetchRequest } from '@shared/lib/api'
+import { HttpMethod } from '@shared/lib/api/consts/http'
 
 type PresignedUrlResponse = {
   uploadUrl: string // GCS로 PUT 요청을 보낼 PreSigned URL

@@ -7,6 +7,8 @@ export type EndpointType = {
   path: string
 }
 
+export const BASE_API_URL = '/api/proxy'
+
 const CHALLENGE_ENDPOINTS = {
   /** 이벤트 챌린지 */
   EVENT: {

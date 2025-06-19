@@ -1,9 +1,9 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { MemberGroupChallengeCreations } from '@features/member/api/challenge/get-group-creations'
+import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
 import MemberChallengeCreationsPage from '../../../../../../../widgets/member/challenge/create-list/ui/member-challenge-create-list'
 

@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { pretendard } from '@shared/config/font'
-import { Providers } from '@shared/config/providers/Providers'
+import { Providers } from '@shared/config/providers/providers'
 
 export const metadata: Metadata = {
   title: 'Leafresh',

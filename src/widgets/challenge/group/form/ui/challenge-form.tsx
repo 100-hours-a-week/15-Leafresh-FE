@@ -25,14 +25,14 @@ import {
 } from '@features/challenge/api/modify-group-challenge'
 import DetailStep, { detailSchema } from '@features/challenge/components/challenge/group/create/DetailStep'
 import MetaDataStep, { metaSchema } from '@features/challenge/components/challenge/group/create/MetadataStep'
+import { theme } from '@shared/config/style/theme'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { getKstMidnightToUtcISOString } from '@shared/lib/date/utils'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 import { TimeFormatString } from '@shared/types/date'
 
 const fullSchema = metaSchema

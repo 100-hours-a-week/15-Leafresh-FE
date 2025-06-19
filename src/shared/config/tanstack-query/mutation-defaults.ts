@@ -23,10 +23,10 @@ import { OrderProduct } from '@features/store/api/order-proudcts'
 import { OrderTimeDealProduct } from '@features/store/api/order-timedeal'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 
+import { handleError } from '../../lib/api/error-handler/handle-auth-error'
 import { MUTATION_KEYS } from './mutation-keys'
+import { getQueryClient } from './query-client'
 import { QUERY_KEYS } from './query-keys'
-import { getQueryClient } from './queryClient'
-import { handleError } from './utils'
 
 const queryClient = getQueryClient()
 

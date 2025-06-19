@@ -5,7 +5,7 @@ import Image from 'next/image'
 import React from 'react'
 import styled from '@emotion/styled'
 
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
 
 // 선택 타입 정의
 export type SelectionType = 'location' | 'workType' | 'challenge' | 'retry'

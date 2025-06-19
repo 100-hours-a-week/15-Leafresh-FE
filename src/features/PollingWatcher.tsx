@@ -2,7 +2,7 @@
 
 import { useGroupChallengeVerificationResult } from '@features/challenge/hook/use-group-verification-result'
 import { usePersonalChallengeVerificationResult } from '@features/challenge/hook/use-personal-verification-result'
-import { usePollingStore } from '@shared/context/polling/PollingStore'
+import { usePollingStore } from '@shared/context/polling/long-polling-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 

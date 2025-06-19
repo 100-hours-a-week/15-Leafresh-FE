@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
 
 interface ChatHeaderProps {
   close: () => void

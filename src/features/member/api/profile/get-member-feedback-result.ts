@@ -1,6 +1,6 @@
 import { FeedbackResponse } from '@features/member/api/profile/get-member-feedback'
+import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher'
 

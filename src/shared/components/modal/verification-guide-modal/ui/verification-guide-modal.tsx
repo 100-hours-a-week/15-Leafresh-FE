@@ -18,12 +18,12 @@ import {
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
 import Loading from '@shared/components/loading/ui/loading'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { theme } from '@shared/config/style/theme'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ChallengeDataType } from '@shared/context/modal/CameraModalStore'
+import { ChallengeDataType } from '@shared/context/modal/camera-modal-store'
 import { ApiResponse } from '@shared/lib/api/type'
 import { extractDateFromISOInKST } from '@shared/lib/date/utils'
-import { theme } from '@shared/styles/theme'
 
 interface VerificationGuideModalProps {
   isOpen: boolean

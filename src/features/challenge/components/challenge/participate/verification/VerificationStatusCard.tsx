@@ -5,8 +5,8 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 import LucideIcon, { LucideIconProps } from '@shared/components/lucide-icon/ui/lucide-icon'
-import { theme } from '@shared/styles/theme'
-import { ThemeColorType } from '@shared/styles/theme/type'
+import { theme } from '@shared/config/style/theme'
+import { ThemeColorType } from '@shared/config/style/type'
 
 export type VerificationStatus = 'SUCCESS' | 'FAILURE' | 'PENDING_APPROVAL'
 

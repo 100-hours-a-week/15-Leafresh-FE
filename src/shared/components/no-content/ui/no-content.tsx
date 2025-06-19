@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
 import LogoCharacterImage from '@public/image/main-icon.svg'
 
 interface NoContentProps {

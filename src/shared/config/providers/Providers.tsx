@@ -3,11 +3,11 @@
 import { ReactNode } from 'react'
 import { ThemeProvider } from '@emotion/react'
 
-import GlobalStyle from '@shared/styles/GlobalStyle'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import GlobalStyle from '@shared/styles/global-style'
 
-import { ChakraUseProvider } from './ChakraProvider'
-import TanstackQueryProvider from './QueryClientProvider'
+import { ChakraUseProvider } from './chakra-provider'
+import TanstackQueryProvider from './tanstack-provider'
 
 /**
  * 전역 Layout.tsx에 지정되는 Provider를 모아두는 저장소입니다.

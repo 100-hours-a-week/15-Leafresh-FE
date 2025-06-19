@@ -16,8 +16,8 @@ import {
 import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import Loading from '@shared/components/loading/ui/loading'
 import NoContent from '@shared/components/no-content/ui/no-content'
-import { URL } from '@shared/constants/route/route'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { URL } from '@shared/constants/route'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 interface GroupChallengeSectionsProps {
   categories: GroupChallengeCategory[]

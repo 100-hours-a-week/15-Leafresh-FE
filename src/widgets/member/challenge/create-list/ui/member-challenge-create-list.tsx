@@ -12,10 +12,10 @@ import {
 import { useInfiniteMemberGroupChallengeCreations } from '@features/member/hooks/useInfiniteMemberChallengeCreationsList'
 import Loading from '@shared/components/loading/ui/loading'
 import NoContent from '@shared/components/no-content/ui/no-content'
-import { URL } from '@shared/constants/route/route'
+import { theme } from '@shared/config/style/theme'
+import { URL } from '@shared/constants/route'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 const MemberChallengeCreationsPage = (): ReactNode => {
   const router = useRouter()

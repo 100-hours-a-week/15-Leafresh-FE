@@ -5,9 +5,9 @@ import styled from '@emotion/styled'
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import ImageInput from '@shared/components/image-input/ui/image-input'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
-import { theme } from '@shared/styles/theme'
-import { ThemeColorType } from '@shared/styles/theme/type'
-import { getThemeColor } from '@shared/styles/theme/utils'
+import { theme } from '@shared/config/style/theme'
+import { ThemeColorType } from '@shared/config/style/type'
+import { getThemeColor } from '@shared/styles/theme/theme-utils'
 
 const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.ReactNode; color: ThemeColorType }> = {
   SUCCESS: {

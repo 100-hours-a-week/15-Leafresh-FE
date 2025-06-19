@@ -1,5 +1,5 @@
-import { theme } from '.'
-import { ThemeColorType, ThemeFontSizeType } from './type'
+import { theme } from '../../config/style/theme'
+import { ThemeColorType, ThemeFontSizeType } from '../../config/style/type'
 
 export const getThemeColor = (key?: ThemeColorType) => {
   if (!key) return undefined

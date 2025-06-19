@@ -10,16 +10,16 @@ import {
 import { getGroupVerifications } from '@features/challenge/api/participate/verification/group-verification-list'
 import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
 import Loading from '@shared/components/loading/ui/loading'
+import { theme } from '@shared/config/style/theme'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
-import { usePollingStore } from '@shared/context/polling/PollingStore'
+import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
+import { usePollingStore } from '@shared/context/polling/long-polling-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 export default function GroupVerificationPage({ participateId }: { participateId: number }) {
   const openToast = useToast()

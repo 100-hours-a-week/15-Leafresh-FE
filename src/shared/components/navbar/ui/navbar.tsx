@@ -7,8 +7,8 @@ import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { theme } from '@shared/config/style/theme'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
-import { theme } from '@shared/styles/theme'
 
 import { NAVBAR_TABS } from '../model/consts'
 

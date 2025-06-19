@@ -6,8 +6,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import styled from '@emotion/styled'
 
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
-import { URL } from '@shared/constants/route/route'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import { URL } from '@shared/constants/route'
 import LogoImage from '@public/image/logo.svg'
 
 import BackButton from '../../buttons/back-button/ui/back-button'

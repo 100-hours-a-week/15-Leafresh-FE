@@ -1,8 +1,8 @@
+import PollingWatcher from '@features/PollingWatcher'
 import Toast from '@shared/components/toast/ui/toast'
-import AuthGuard from '@shared/config/providers/AuthGaurd'
-import ModalProvider from '@shared/config/providers/ModalProvider'
-import PollingWatcher from '@shared/config/providers/PollingWatcher'
-import LayoutWrapper from '@shared/styles/LayoutWrapper'
+import AuthGuard from '@shared/config/providers/auth-gaurd'
+import ModalProvider from '@shared/config/providers/modal-provider'
+import LayoutWrapper from '@shared/styles/global-wrapper'
 
 const RootLayout = ({
   children,

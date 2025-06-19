@@ -8,8 +8,8 @@ import styled from '@emotion/styled'
 
 import { TimeDealProduct } from '@features/store/api/get-timedeals'
 import ApologizeContent from '@shared/components/apologize/ui/apologize'
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
+import { media } from '@shared/config/style/media'
+import { theme } from '@shared/config/style/theme'
 
 interface UpcomingTimeDealListProps {
   data: TimeDealProduct[]

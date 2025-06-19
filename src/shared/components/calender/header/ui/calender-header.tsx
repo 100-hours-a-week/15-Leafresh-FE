@@ -6,7 +6,7 @@ import { ko } from 'date-fns/locale'
 import styled from '@emotion/styled'
 
 import { LucideIcon } from '@shared/components/lucide-icon'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
 
 interface CalendarHeaderProps {
   currentMonth: Date

@@ -3,8 +3,8 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getMemberAlarmList } from '@features/member/api/get-alarm'
+import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
 import MemberAlarmList from '../../../../../widgets/member/alarm/list/ui/member-alarm-list'
 

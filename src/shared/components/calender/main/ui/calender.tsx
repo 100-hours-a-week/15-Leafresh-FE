@@ -6,8 +6,8 @@ import { useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { DayType } from '@entities/challenge/type'
+import { theme } from '@shared/config/style/theme'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
-import { theme } from '@shared/styles/theme'
 
 import { CalendarDates } from '../../dates'
 import { CalendarHeader } from '../../header'

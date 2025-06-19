@@ -5,9 +5,9 @@ import Link from 'next/link'
 
 import styled from '@emotion/styled'
 
-import { URL } from '@shared/constants/route/route'
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
+import { media } from '@shared/config/style/media'
+import { theme } from '@shared/config/style/theme'
+import { URL } from '@shared/constants/route'
 import NotFoundImage from '@public/image/404.svg'
 
 export default function NotFound() {

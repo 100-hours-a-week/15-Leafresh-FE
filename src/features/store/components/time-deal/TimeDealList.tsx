@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 import { getTimeDealProducts, TimeDealProduct } from '../../api/get-timedeals'
 import OngoingTimeDealList from './OngoingTimeDealList'

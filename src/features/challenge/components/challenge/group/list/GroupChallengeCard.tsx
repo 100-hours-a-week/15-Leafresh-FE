@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import styled from '@emotion/styled'
 
-import { URL } from '@shared/constants/route/route'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import { URL } from '@shared/constants/route'
 import { ISOFormatString } from '@shared/types/date'
 import LeafIcon from '@public/icon/leaf.png'
 

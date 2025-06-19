@@ -2,12 +2,19 @@ import { create } from 'zustand'
 
 import { ChallengeVerificationResultType } from '@entities/challenge/type'
 
-import { ZoomModalStore } from './type'
-
 export type ImageZoomModalData = {
   result: ChallengeVerificationResultType
   imageSrc: string
   description: string
+}
+
+export interface ZoomModalStore<DataType> {
+  isOpen: boolean
+  data: DataType[]
+  targetIndex: number
+  open: (data: DataType[], targetIndex: number) => void
+  close: () => void
+  setTargetIndex: (targetIndex: number) => void
 }
 
 type ImageZoomModalStore = ZoomModalStore<ImageZoomModalData>

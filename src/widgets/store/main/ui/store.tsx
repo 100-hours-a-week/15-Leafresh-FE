@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
+import { media } from '@shared/config/style/media'
+import { theme } from '@shared/config/style/theme'
 
 import ProductList from '../../../../features/store/components/product/ProductList'
 import TimeDealList from '../../../../features/store/components/time-deal/TimeDealList'

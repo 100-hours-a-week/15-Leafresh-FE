@@ -9,8 +9,8 @@ import { sendGAEvent } from '@next/third-parties/google'
 import { PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
 import { LeafReward } from '@shared/components'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
-import { URL } from '@shared/constants/route/route'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
+import { URL } from '@shared/constants/route'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 interface PersonalChallengeSectionProps {
   personalChallenges: PersonalChallengeType[]

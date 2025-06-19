@@ -3,9 +3,9 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { getVerificationCommemtList } from '@features/challenge/api/participate/verification/get-verification-comment-list'
 import { getVerificationDetails } from '@features/challenge/api/participate/verification/get-verifycation-details'
 import VerificationDetails from '@features/challenge/components/challenge/participate/verification/details/VerificationDetails'
+import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
 interface PageProps {
   params: Promise<{

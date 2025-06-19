@@ -17,7 +17,7 @@ import ErrorText from '@shared/components/errortext/ui/error-text'
 import Input from '@shared/components/input/ui/input'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import TimePicker from '@shared/components/timepicker/picker/ui/time-picker'
-import { StyledGeneric } from '@shared/styles/emotion/utils'
+import { StyledGeneric } from '@shared/styles/styled-generic'
 import { theme } from '@shared/styles/theme'
 
 import { FullFormValues } from '../../../../../../widgets/challenge/group/form/ui/challenge-form'

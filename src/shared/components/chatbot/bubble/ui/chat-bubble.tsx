@@ -5,7 +5,7 @@ import Image from 'next/image'
 import React, { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
 
 export interface ChatBubbleProps {
   role: 'bot' | 'user'

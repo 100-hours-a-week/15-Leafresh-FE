@@ -16,16 +16,16 @@ import { ProfileResponse } from '@features/member/api/profile/get-member-profile
 import { SignUpBody, SignUpResponse, SignUpVariables } from '@features/member/api/signup'
 import { SignupFormType, signupSchema } from '@features/member/signup/schema'
 import ErrorText from '@shared/components/errortext/ui/error-text'
+import { theme } from '@shared/config/style/theme'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
 import { fetchRequest } from '@shared/lib/api'
-import { theme } from '@shared/styles/theme'
 
 const SignupPage = () => {
   const router = useRouter()

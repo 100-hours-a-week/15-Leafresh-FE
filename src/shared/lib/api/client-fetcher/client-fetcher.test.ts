@@ -2,7 +2,7 @@
 import { beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest'
 
 import type { EndpointType } from '../../../constants/endpoint/endpoint'
-import { HttpMethod, HttpStatusCode } from '../../../constants/http'
+import { HttpMethod, HttpStatusCode } from '../consts/http'
 import { ApiResponse, ErrorResponse } from '../type'
 import { clientFetchRequest } from './client-fetcher'
 

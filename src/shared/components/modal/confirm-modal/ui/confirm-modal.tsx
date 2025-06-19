@@ -2,11 +2,11 @@
 import { useRef } from 'react'
 import styled from '@emotion/styled'
 
-import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { theme } from '@shared/config/style/theme'
+import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
 import { useKeyClose } from '@shared/hooks/useKeyClose/useKeyClose'
 import { useOutsideClick } from '@shared/hooks/useOutsideClick/useOutsideClick'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
-import { theme } from '@shared/styles/theme'
 
 export const ConfirmModal = () => {
   const { isOpen, title, description, onConfirm, onCancel, closeConfirmModal } = useConfirmModalStore()

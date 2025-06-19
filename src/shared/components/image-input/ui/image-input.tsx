@@ -7,11 +7,11 @@ import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { theme } from '@shared/config/style/theme'
+import { ThemeColorType, ThemeFontSizeType } from '@shared/config/style/type'
 import { ASPECT_RATIOS, AspectRatioType } from '@shared/constants/image-size'
-import { useCameraModalStore } from '@shared/context/modal/CameraModalStore'
-import { theme } from '@shared/styles/theme'
-import { ThemeColorType, ThemeFontSizeType } from '@shared/styles/theme/type'
-import { getThemeColor, getThemeFontSize } from '@shared/styles/theme/utils'
+import { useCameraModalStore } from '@shared/context/modal/camera-modal-store'
+import { getThemeColor, getThemeFontSize } from '@shared/styles/theme/theme-utils'
 
 interface ImageInputProps {
   icon: React.ReactNode

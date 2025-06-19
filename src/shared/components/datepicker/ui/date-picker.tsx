@@ -6,8 +6,8 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 import { Calendar } from '@shared/components/calender'
+import { theme } from '@shared/config/style/theme'
 import { dayToString } from '@shared/lib/date/utils'
-import { theme } from '@shared/styles/theme'
 
 interface DatePickerProps {
   icon: React.JSX.Element

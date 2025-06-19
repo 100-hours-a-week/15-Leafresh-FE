@@ -2,9 +2,9 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { getMemberProfile } from '@features/member/api/profile/get-member-profile'
 import { getMemberProfileCard } from '@features/member/api/profile/get-member-profilecard'
+import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { getQueryClient } from '@shared/config/tanstack-query/queryClient'
 
 import Mypage from '../../../../../../widgets/member/profile/mypage/ui/member-profile-mypage'
 

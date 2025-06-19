@@ -6,7 +6,7 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { useScrollLock } from '@shared/hooks/useScrollLock/useScrollLock'
 import { useToggle } from '@shared/hooks/useToggle/useToggle'
 

@@ -7,9 +7,9 @@ import styled from '@emotion/styled'
 
 import { Category } from '@entities/member/constant'
 import { BadgeData } from '@features/member/api/profile/get-badge'
-import { useInfoModalStore } from '@shared/context/modal/InfoModalStore'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import { useInfoModalStore } from '@shared/context/modal/info-modal-store'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 interface BadgeTabProps {
   categories: Category[]

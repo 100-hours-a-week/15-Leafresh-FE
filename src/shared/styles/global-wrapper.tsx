@@ -1,4 +1,4 @@
-// components/LayoutWrapper.tsx
+// components/GlobalWrapper.tsx
 'use client'
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
@@ -6,9 +6,9 @@ import styled from '@emotion/styled'
 import { FeedBackButton } from '@shared/components/buttons/feedback-button/ui/feedback-button'
 import Introduce from '@shared/components/introduce/ui/introduce'
 
-import { theme } from './theme'
+import { theme } from '../config/style/theme'
 
-const LayoutWrapper = ({ children }: { children: ReactNode }) => {
+const GlobalWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <EntirePageLayout>
       <Introduce />
@@ -18,7 +18,7 @@ const LayoutWrapper = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export default LayoutWrapper
+export default GlobalWrapper
 
 const EntirePageLayout = styled.div`
   width: 100%;

@@ -5,9 +5,9 @@ import { useEffect } from 'react'
 import styled from '@emotion/styled'
 
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
-import { useToastStore } from '@shared/context/toast/ToastStore'
+import { theme } from '@shared/config/style/theme'
+import { useToastStore } from '@shared/context/toast/toast-store'
 import { ToastType } from '@shared/context/toast/type'
-import { theme } from '@shared/styles/theme'
 
 export const Toast = () => {
   const { isOpen, type, description, close: closeToast } = useToastStore()

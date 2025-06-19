@@ -5,8 +5,8 @@ import styled from '@emotion/styled'
 
 import ApologizeContent from '@shared/components/apologize/ui/apologize'
 import Loading from '@shared/components/loading/ui/loading'
-import { responsiveHorizontalPadding } from '@shared/styles/ResponsiveStyle'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
+import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
 import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
 import ProductCard from './ProductCard'

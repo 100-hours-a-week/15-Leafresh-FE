@@ -13,16 +13,16 @@ import {
   OrderProductResponse,
   OrderProductVariables,
 } from '@features/store/api/order-proudcts'
+import { media } from '@shared/config/style/media'
+import { theme } from '@shared/config/style/theme'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { URL } from '@shared/constants/route/route'
+import { URL } from '@shared/constants/route'
 import { useIdempotencyKeyStore } from '@shared/context'
-import { useConfirmModalStore } from '@shared/context/modal/ConfirmModalStore'
+import { useConfirmModalStore } from '@shared/context/modal/confirm-modal-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/useAuth/useAuth'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
 
 interface ProductCardProps {
   product: Product
