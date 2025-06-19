@@ -9,11 +9,11 @@ import { GroupChallengeCategory } from '@entities/challenge/api/group/get-catego
 import { GroupChallengeItem } from '@entities/challenge/api/group/get-group-list'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType, FilterChallengeCategoryType } from '@entities/challenge/type'
+import { useInfiniteGroupChallenges } from '@features/challenge/api/group/use-get-group-list'
 import {
   GroupChallenge,
   GroupChallengeCard,
 } from '@features/challenge/components/common/group-challenge-card/GroupChallengeCard'
-import { useInfiniteGroupChallenges } from '@features/challenge/hook/useGroupChallengeList'
 import Loading from '@shared/components/loading/ui/loading'
 import NoContent from '@shared/components/no-content/ui/no-content'
 import { URL } from '@shared/constants/route'

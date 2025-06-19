@@ -8,7 +8,7 @@ import Loading from '@shared/components/loading/ui/loading'
 import { theme } from '@shared/config/style/theme'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
-import { useInfiniteProducts } from '../../hook/useInfiniteProducts'
+import { useInfiniteProducts } from '../../api/use-get-product-list'
 import ProductCard from './ProductCard'
 
 interface ProductListProps {

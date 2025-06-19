@@ -3,12 +3,13 @@ import { useQuery } from '@tanstack/react-query'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-import { PersonalChallengeVerificationResult } from '../../../entities/challenge/api/personal/verification/verify-personal'
+import { PersonalChallengeVerificationResult } from '../../../../../entities/challenge/api/personal/verification/verify-personal'
 
 type PollingQueryOptions = {
   enabled: boolean // 실행 가능 여부 (불필요한 요청을 막기 위해)
 }
 
+// 롱폴링
 export const usePersonalChallengeVerificationResult = (
   challengeId: number,
   { enabled = false }: PollingQueryOptions,

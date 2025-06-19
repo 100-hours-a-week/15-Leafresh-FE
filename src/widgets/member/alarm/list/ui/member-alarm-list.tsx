@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
-import { useInfiniteMemberAlarmList } from '@features/member/hooks/useInfiniteMemberAlarmList'
+import { useInfiniteMemberAlarmList } from '@features/member/api/alarm/use-get-alarm-list'
 import { theme } from '@shared/config/style/theme'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'

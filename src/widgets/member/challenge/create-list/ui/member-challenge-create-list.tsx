@@ -9,7 +9,7 @@ import {
   GroupChallenge,
   GroupChallengeCard,
 } from '@features/challenge/components/common/group-challenge-card/GroupChallengeCard'
-import { useInfiniteMemberGroupChallengeCreations } from '@features/member/hooks/useInfiniteMemberChallengeCreationsList'
+import { useInfiniteMemberGroupChallengeCreations } from '@features/member/api/use-get-group-create-list'
 import Loading from '@shared/components/loading/ui/loading'
 import NoContent from '@shared/components/no-content/ui/no-content'
 import { theme } from '@shared/config/style/theme'

@@ -1,7 +1,7 @@
 'use client'
 
-import { useGroupChallengeVerificationResult } from '@features/challenge/hook/use-group-verification-result'
-import { usePersonalChallengeVerificationResult } from '@features/challenge/hook/use-personal-verification-result'
+import { useGroupChallengeVerificationResult } from '@features/challenge/api/group/verification/use-poll-group-verification'
+import { usePersonalChallengeVerificationResult } from '@features/challenge/api/personal/verification/use-poll-group-verification'
 import { usePollingStore } from '@shared/context/polling/long-polling-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/use-toast/useToast'

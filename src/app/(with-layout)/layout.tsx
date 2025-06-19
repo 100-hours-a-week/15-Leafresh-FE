@@ -1,4 +1,4 @@
-import PollingWatcher from '@features/PollingWatcher'
+import PollingWatcher from '@features/main/components/PollingWatcher'
 import Toast from '@shared/components/toast/ui/toast'
 import AuthGuard from '@shared/config/providers/auth-gaurd'
 import ModalProvider from '@shared/config/providers/modal-provider'

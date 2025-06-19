@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-group-details'
 import { Verification } from '@entities/challenge/api/group/verification/get-verification-list.ts'
-import { useInfiniteGroupChallengeVerifications } from '@features/challenge/hook/useInfiniteGroupChallengeVerifications'
+import { useInfiniteGroupChallengeVerifications } from '@features/challenge/api/group/verification/use-get-group-verification-list'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import NoContent from '@shared/components/no-content/ui/no-content'
 import { theme } from '@shared/config/style/theme'

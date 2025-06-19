@@ -9,7 +9,7 @@ import {
   getMemberAlarmList,
   MemberAlarmList,
   MemberAlarmListParams,
-} from '../../../entities/member/api/challenge/alarm/get-alarm-list'
+} from '../../../../entities/member/api/challenge/alarm/get-alarm-list'
 
 export const useInfiniteMemberAlarmList = () => {
   return useInfiniteQuery<

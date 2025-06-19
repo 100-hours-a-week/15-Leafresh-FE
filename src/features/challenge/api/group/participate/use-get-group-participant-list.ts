@@ -7,7 +7,7 @@ import {
   type ChallengeStatus,
   type FetchGroupParticipationsParams,
   getGroupParticipations,
-} from '../../../entities/member/api/challenge/participate/get-group-participant-list'
+} from '../../../../../entities/member/api/challenge/participate/get-group-participant-list'
 
 export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
   useInfiniteQuery({
