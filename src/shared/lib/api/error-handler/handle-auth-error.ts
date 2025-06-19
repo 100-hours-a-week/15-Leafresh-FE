@@ -1,8 +1,8 @@
 'use client'
 
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { useUserStore } from '@entities/member/context/UserStore'
 import { URL } from '@shared/constants/route'
+import { useOAuthUserStore } from '@shared/context/auth/oauth-user/oauth-user-store'
+import { useUserStore } from '@shared/context/auth/user/user-store'
 import { ErrorResponse } from '@shared/lib/api/type'
 
 let isHandlingAuth = false

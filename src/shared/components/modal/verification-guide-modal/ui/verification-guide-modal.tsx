@@ -6,18 +6,17 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import { convertLanguage, DAY_PAIRS } from '@entities/challenge/constant'
 import {
   getGroupChallengeRulesList,
   GroupChallengeRulesListResponse,
-} from '@features/challenge/api/get-group-challenge-rules'
+} from '@entities/challenge/api/group/get-group-rules'
 import {
   getPersonalChallengeRulesList,
   PersonalChallengeRulesListResponse,
-} from '@features/challenge/api/get-personal-challenge-rules'
+} from '@entities/challenge/api/personal/get-personal-rules'
+import { convertLanguage, DAY_PAIRS } from '@entities/challenge/constant'
 import ChallengeVerifyExamples from '@features/challenge/components/common/ChallengeVerifyExamples'
-import Loading from '@shared/components/loading/ui/loading'
-import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
+import { Loading, LucideIcon } from '@shared/components'
 import { theme } from '@shared/config/style/theme'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

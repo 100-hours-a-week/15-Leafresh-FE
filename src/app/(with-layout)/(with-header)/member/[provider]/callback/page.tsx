@@ -1,4 +1,4 @@
-import { LowercaseOAuthType } from '@entities/member/type'
+import { LowercaseOAuthType } from '@entities/member/model/type'
 
 import CallbackPage from '../../../../../../widgets/member/oauth-callback/ui/callback'
 

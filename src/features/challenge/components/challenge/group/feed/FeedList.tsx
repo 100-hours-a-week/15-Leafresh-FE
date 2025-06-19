@@ -3,9 +3,9 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
+import { VerificationType } from '@entities/challenge/api/group/feed/get-feed-list'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType } from '@entities/challenge/type'
-import { Verification } from '@features/challenge/api/feed/get-feed-list'
 import { useInfiniteGroupChallengeFeedList } from '@features/challenge/hook/useInfiniteFeedList'
 import Loading from '@shared/components/loading/ui/loading'
 import NoContent from '@shared/components/no-content/ui/no-content'
@@ -20,7 +20,7 @@ interface FeedListProps {
   className?: string
 }
 
-const verificationsDummy: Verification[] = [
+const verificationsDummy: VerificationType[] = [
   {
     id: 1,
     challengeId: 1,

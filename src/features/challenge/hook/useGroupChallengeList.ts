@@ -1,9 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 
-import {
-  fetchGroupChallenges,
-  type FetchGroupChallengesParams,
-} from '@features/challenge/api/get-group-challenge-list'
+import { fetchGroupChallenges, type FetchGroupChallengesParams } from '@entities/challenge/api/group/get-group-list'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 

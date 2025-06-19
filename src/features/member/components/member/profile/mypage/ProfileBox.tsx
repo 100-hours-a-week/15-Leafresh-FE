@@ -3,8 +3,8 @@ import Image from 'next/image'
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
-import { treeLevelMap } from '@entities/member/constant'
-import { theme } from '@shared/styles/theme'
+import { treeLevelMap } from '@entities/member/model/constant'
+import { theme } from '@shared/config/style/theme'
 
 interface ProfileBoxProps {
   className?: string

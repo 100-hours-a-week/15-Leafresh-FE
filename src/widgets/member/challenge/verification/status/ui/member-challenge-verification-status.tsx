@@ -6,8 +6,8 @@ import { useQuery } from '@tanstack/react-query'
 import {
   PostGroupVerificationBody,
   PostGroupVerificationResponse,
-} from '@features/challenge/api/participate/verification/group-verification'
-import { getGroupVerifications } from '@features/challenge/api/participate/verification/group-verification-list'
+} from '@entities/challenge/api/group/verification/create-group-verification'
+import { getGroupVerifications } from '@entities/challenge/api/group/verification/get-verification-status'
 import VerificationCarousel from '@features/challenge/components/challenge/participate/verification/VerificationCarousel'
 import Loading from '@shared/components/loading/ui/loading'
 import { theme } from '@shared/config/style/theme'

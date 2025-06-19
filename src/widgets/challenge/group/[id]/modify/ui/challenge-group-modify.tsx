@@ -3,9 +3,9 @@
 import { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
+import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-group-details'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryTypeKor } from '@entities/challenge/type'
-import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 

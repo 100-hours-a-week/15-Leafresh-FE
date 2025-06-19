@@ -8,7 +8,7 @@ import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 
-import { getTimeDealProducts, TimeDealProduct } from '../../api/get-timedeals'
+import { getTimeDealProducts, TimeDealProduct } from '../../../../entities/store/api/timedeal/get-timedeal-list'
 import OngoingTimeDealList from './OngoingTimeDealList'
 import UpcomingTimeDealList from './UpcomingTimeDealList'
 

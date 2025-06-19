@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { treeLevelMap } from '@entities/member/constant'
+import { treeLevelMap } from '@entities/member/model/constant'
 import { theme } from '@shared/config/style/theme'
 import { useScrollLock } from '@shared/hooks/use-scroll-lock/useScrollLock'
 

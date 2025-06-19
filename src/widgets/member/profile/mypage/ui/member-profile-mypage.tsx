@@ -2,18 +2,16 @@
 import { useRouter } from 'next/navigation'
 
 import { useEffect, useRef, useState } from 'react'
+import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { useUserStore } from '@entities/member/context/UserStore'
-import { slideRotateIn } from '@entities/member/style'
-import { LogoutResponse, LogoutVariables } from '@features/member/api/logout'
-import { FeedbackResponse, getFeedback } from '@features/member/api/profile/get-member-feedback'
-import { pollFeedbackResult } from '@features/member/api/profile/get-member-feedback-result'
-import { getMemberProfile, ProfileResponse } from '@features/member/api/profile/get-member-profile'
-import { getMemberProfileCard, ProfileCardResponse } from '@features/member/api/profile/get-member-profilecard'
-import { Badge, getRecentBadges } from '@features/member/api/profile/get-recent-badge'
+import { LogoutResponse, LogoutVariables } from '@entities/member/api/logout'
+import { Badge, getRecentBadges } from '@entities/member/api/profile/badge/get-recent-badge-list'
+import { FeedbackResponse, getFeedback } from '@entities/member/api/profile/feedback/get-feedback'
+import { pollFeedbackResult } from '@entities/member/api/profile/feedback/poll-feedback'
+import { getMemberProfile, ProfileResponse } from '@entities/member/api/profile/get-profile'
+import { getMemberProfileCard, ProfileCardResponse } from '@entities/member/api/profile/get-profilecard'
 import Loading from '@shared/components/loading/ui/loading'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/config/style/theme'
@@ -22,6 +20,8 @@ import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import { URL } from '@shared/constants/route'
+import { useOAuthUserStore } from '@shared/context/auth/oauth-user/oauth-user-store'
+import { useUserStore } from '@shared/context/auth/user/user-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useAuth } from '@shared/hooks/use-auth/useAuth'
 import { useToast } from '@shared/hooks/use-toast/useToast'
@@ -30,6 +30,17 @@ import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'
 import ProfileBox from '../../../../../features/member/components/member/profile/mypage/ProfileBox'
 import ProfileCard from '../../../../../features/member/components/member/profile/mypage/ProfileCard'
 import RecentBadgeBox from '../../../../../features/member/components/member/profile/mypage/RecentBadgeBox'
+
+const slideRotateIn = keyframes`
+  0% {
+    transform: translateX(-50%) translateY(200px) rotateY(0deg); /* 뷰포트 아래쪽에서 시작 */
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50%) rotateY(360deg); /* 화면 중앙 + 360도 회전 */
+    opacity: 1;
+  }
+`
 
 const Mypage = () => {
   const router = useRouter()

@@ -7,7 +7,7 @@ import { ApiResponse } from '@shared/lib/api/type'
 import {
   MemberGroupChallengeCreations,
   MemberGroupChallengeCreationsResponse,
-} from '../api/challenge/get-group-creations'
+} from '../../../entities/member/api/challenge/get-group-creations'
 
 export const useInfiniteMemberGroupChallengeCreations = () => {
   return useInfiniteQuery<

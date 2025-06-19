@@ -5,13 +5,12 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { useEffect, useState } from 'react'
 
-import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
-import { ProfileResponse } from '@features/member/api/profile/get-member-profile'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { ProfileResponse } from '@entities/member/api/profile/get-profile'
 import { URL } from '@shared/constants/route'
+import { UserInfo, useUserStore } from '@shared/context/auth/user/user-store'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/use-toast/useToast'
-import { fetchRequest } from '@shared/lib/api'
+import { ENDPOINTS, fetchRequest } from '@shared/lib/api'
 
 /** 보호가 필요한 경로 목록 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

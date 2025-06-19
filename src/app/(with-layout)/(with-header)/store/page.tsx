@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
-import { getProducts, ProductsResponse } from '@features/store/api/get-products'
-import { getTimeDealProducts } from '@features/store/api/get-timedeals'
+import { getProducts, ProductsResponse } from '@entities/store/api/product/get-product-list'
+import { getTimeDealProducts } from '@entities/store/api/timedeal/get-timedeal-list'
 import { Cursor } from '@features/store/hook/useInfiniteProducts'
 import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
-import { getGroupVerificationResult } from '../api/participate/verification/group-verification'
+import { getGroupVerificationResult } from '../../../entities/challenge/api/group/verification/create-group-verification'
 
 type PollingQueryOptions = {
   enabled: boolean // 실행 가능 여부 (불필요한 요청을 막기 위해)

@@ -6,13 +6,13 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
-import { Product } from '@features/store/api/get-products'
+import { Product } from '@entities/store/api/product/get-product-list'
 import {
   OrderProductBody,
   OrderProductHeaders,
   OrderProductResponse,
   OrderProductVariables,
-} from '@features/store/api/order-proudcts'
+} from '@entities/store/api/product/order-prouduct'
 import { media } from '@shared/config/style/media'
 import { theme } from '@shared/config/style/theme'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'

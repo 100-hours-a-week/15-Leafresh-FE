@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { TimeDealProduct } from '@features/store/api/get-timedeals'
+import { TimeDealProduct } from '@entities/store/api/timedeal/get-timedeal-list'
 import {
   OrderTimeDealProductBody,
   OrderTimeDealProductHeaders,
   OrderTimeDealProductResponse,
   OrderTimeDealProductVariables,
-} from '@features/store/api/order-timedeal'
+} from '@entities/store/api/timedeal/order-timedeal'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { media } from '@shared/config/style/media'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'

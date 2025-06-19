@@ -9,7 +9,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
-import { EventChallenge } from '@features/challenge/api/get-event-challenge-list'
+import { EventChallenge } from '@entities/challenge/api/event/get-event-list'
 import { media } from '@shared/config/style/media'
 import { URL } from '@shared/constants/route'
 import { responsiveHorizontalPadding } from '@shared/styles/responsive-style'

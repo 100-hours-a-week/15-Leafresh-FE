@@ -1,6 +1,6 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
-import { getGroupChallengeCategoryList } from '@features/challenge/api/get-group-challenge-categories'
+import { getGroupChallengeCategoryList } from '@entities/challenge/api/group/get-categories'
 import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

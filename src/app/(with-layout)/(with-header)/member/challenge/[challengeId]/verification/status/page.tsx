@@ -1,6 +1,6 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
-import { getGroupVerifications } from '@features/challenge/api/participate/verification/group-verification-list'
+import { getGroupVerifications } from '@entities/challenge/api/group/verification/get-verification-status'
 import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

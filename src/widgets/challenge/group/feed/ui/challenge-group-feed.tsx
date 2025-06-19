@@ -5,11 +5,8 @@ import { ReactNode, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
+import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@entities/challenge/api/group/get-categories'
 import { ChallengeCategoryType } from '@entities/challenge/type'
-import {
-  getGroupChallengeCategoryList,
-  GroupChallengeCategory,
-} from '@features/challenge/api/get-group-challenge-categories'
 import { FeedList } from '@features/challenge/components/challenge/group/feed/FeedList'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

@@ -5,9 +5,9 @@ import { ChevronDown, ChevronUp, Send } from 'lucide-react'
 import { useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { CommentType } from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import { CommentType } from '@entities/challenge/api/group/verification/comments/get-comment-list'
 import CommentItem from '@features/challenge/components/challenge/participate/verification/details/comment-item'
-import { theme } from '@shared/styles/theme'
+import { theme } from '@shared/config/style/theme'
 
 interface CommentListProps {
   comments: CommentType[]

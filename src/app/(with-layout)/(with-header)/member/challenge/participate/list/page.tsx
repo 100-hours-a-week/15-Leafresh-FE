@@ -1,7 +1,10 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
-import { ChallengeStatus, getGroupParticipations } from '@features/challenge/api/participate/group-participant'
-import { getGroupParticipationsCount } from '@features/challenge/api/participate/group-participant-count'
+import { getGroupParticipationsCount } from '@entities/member/api/challenge/participate/get-group-participant-count'
+import {
+  ChallengeStatus,
+  getGroupParticipations,
+} from '@entities/member/api/challenge/participate/get-group-participant-list'
 import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

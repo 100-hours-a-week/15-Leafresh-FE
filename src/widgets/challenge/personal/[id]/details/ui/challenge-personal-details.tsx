@@ -7,13 +7,13 @@ import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
-import { getPersonalChallengeDetails } from '@features/challenge/api/get-personal-challenge-details'
+import { getPersonalChallengeDetails } from '@entities/challenge/api/personal/get-personal-details'
 import {
   VerifyGroupChallengeResponse,
   VerifyPersonalChallengeBody,
   VerifyVariables,
-} from '@features/challenge/api/verify-personal-challenge'
+} from '@entities/challenge/api/personal/verification/verify-personal'
+import { ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'

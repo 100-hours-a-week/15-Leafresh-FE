@@ -8,7 +8,7 @@ import {
   PostGroupVerification,
   PostGroupVerificationBody,
   type PostGroupVerificationResponse,
-} from '../api/participate/verification/group-verification'
+} from '../../../entities/challenge/api/group/verification/create-group-verification'
 // import { showNotification } from '@/libs/showNotification'
 
 /** 인증 제출 뮤테이션 */

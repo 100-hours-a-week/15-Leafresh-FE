@@ -5,16 +5,16 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
-import { Verification } from '@features/challenge/api/participate/get-group-participant-list'
+import { Verification } from '@entities/challenge/api/group/verification/get-verification-list.ts'
 import {
   CreateVerificationLikeResponse,
   CreateVerificationLikeVariables,
-} from '@features/challenge/api/participate/verification/likes/create-like'
+} from '@entities/challenge/api/group/verification/likes/create-like'
 import {
   DeleteVerificationLikeResponse,
   DeleteVerificationLikeVariables,
-} from '@features/challenge/api/participate/verification/likes/delete-like'
+} from '@entities/challenge/api/group/verification/likes/delete-like'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
 import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'

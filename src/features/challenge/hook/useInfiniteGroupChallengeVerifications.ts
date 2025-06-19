@@ -6,7 +6,7 @@ import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 import {
   getGroupChallengeParticipateList,
   GroupChallengeParticipateListParams,
-} from '../api/participate/get-group-participant-list'
+} from '../../../entities/challenge/api/group/verification/get-verification-list.ts.js'
 
 export const useInfiniteGroupChallengeVerifications = (challengeId: number) =>
   useInfiniteQuery({

@@ -3,8 +3,8 @@
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
+import { Introduce } from '@shared/components'
 import { FeedBackButton } from '@shared/components/buttons/feedback-button/ui/feedback-button'
-import Introduce from '@shared/components/introduce/ui/introduce'
 
 import { theme } from '../config/style/theme'
 

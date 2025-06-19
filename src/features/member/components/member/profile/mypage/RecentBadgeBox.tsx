@@ -3,8 +3,8 @@ import Image from 'next/image'
 import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
-import { Badge } from '@features/member/api/profile/get-recent-badge'
-import { theme } from '@shared/styles/theme'
+import { Badge } from '@entities/member/api/profile/badge/get-recent-badge-list'
+import { theme } from '@shared/config/style/theme'
 
 interface RecentBadgeBoxProps {
   className?: string

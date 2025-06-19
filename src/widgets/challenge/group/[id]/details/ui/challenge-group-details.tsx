@@ -7,12 +7,12 @@ import { useRouter } from 'next/navigation'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import { getGroupChallengeDetails } from '@features/challenge/api/get-group-challenge-details'
+import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-group-details'
 import {
   ParticipateGroupChallengeResponse,
   ParticipateGroupChallengeVariables,
-} from '@features/challenge/api/participate-group-challenge'
+} from '@entities/challenge/api/group/participate/participate-group'
+import { ChallengeVerificationStatusType } from '@entities/challenge/type'
 import ChallengeVerifyExamples, {
   VerificationImageData,
 } from '@features/challenge/components/common/ChallengeVerifyExamples'

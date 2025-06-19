@@ -1,9 +1,9 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
+import { getEventChallengeList } from '@entities/challenge/api/event/get-event-list'
+import { getGroupChallengeCategoryList } from '@entities/challenge/api/group/get-categories'
+import { getPersonalChallengeList } from '@entities/challenge/api/personal/get-personal-list'
 import { DayType } from '@entities/challenge/type'
-import { getEventChallengeList } from '@features/challenge/api/get-event-challenge-list'
-import { getGroupChallengeCategoryList } from '@features/challenge/api/get-group-challenge-categories'
-import { getPersonalChallengeList } from '@features/challenge/api/get-personal-challenge-list'
 import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

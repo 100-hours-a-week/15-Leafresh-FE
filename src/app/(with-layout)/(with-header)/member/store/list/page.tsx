@@ -1,6 +1,6 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
-import { getMemberStoreOrderList } from '@features/member/api/store/get-order-list'
+import { getMemberStoreOrderList } from '@entities/member/api/store/get-ordered-list'
 import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

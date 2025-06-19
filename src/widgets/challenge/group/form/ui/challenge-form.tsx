@@ -9,20 +9,20 @@ import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { sendGAEvent } from '@next/third-parties/google'
 
-import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
-import { ChallengeCategoryType } from '@entities/challenge/type'
 import {
   CreateChallengeBody,
   CreateChallengeResponse,
   CreateChallengeVariables,
   ExampleImage,
-} from '@features/challenge/api/create-group-challenge'
+} from '@entities/challenge/api/group/create-group'
 import {
   KeepImage,
   ModifyChallengeBody,
   ModifyChallengeVariables,
   NewImage,
-} from '@features/challenge/api/modify-group-challenge'
+} from '@entities/challenge/api/group/modify-group'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
+import { ChallengeCategoryType } from '@entities/challenge/type'
 import DetailStep, { detailSchema } from '@features/challenge/components/challenge/group/create/DetailStep'
 import MetaDataStep, { metaSchema } from '@features/challenge/components/challenge/group/create/MetadataStep'
 import { theme } from '@shared/config/style/theme'

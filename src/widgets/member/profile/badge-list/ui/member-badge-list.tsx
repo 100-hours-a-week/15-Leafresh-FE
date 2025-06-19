@@ -3,13 +3,13 @@
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import { badgeCategory } from '@entities/member/constant'
-import { BadgeData, getBadgeList } from '@features/member/api/profile/get-badge'
+import { BadgeData, getBadgeList } from '@entities/member/api/profile/badge/get-badge-list'
+import { badgeCategory } from '@entities/member/model/constant'
 import ApologizeContent from '@shared/components/apologize/ui/apologize'
 import Loading from '@shared/components/loading/ui/loading'
+import { theme } from '@shared/config/style/theme'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { theme } from '@shared/styles/theme'
 
 import BadgeTabs from '../../../../../features/member/components/member/profile/badge/BadgeTab'
 

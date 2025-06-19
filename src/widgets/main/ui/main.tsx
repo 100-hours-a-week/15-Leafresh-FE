@@ -4,13 +4,10 @@ import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
+import { EventChallenge, getEventChallengeList } from '@entities/challenge/api/event/get-event-list'
+import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@entities/challenge/api/group/get-categories'
+import { getPersonalChallengeList, PersonalChallengeType } from '@entities/challenge/api/personal/get-personal-list'
 import { DayType } from '@entities/challenge/type'
-import { EventChallenge, getEventChallengeList } from '@features/challenge/api/get-event-challenge-list'
-import {
-  getGroupChallengeCategoryList,
-  GroupChallengeCategory,
-} from '@features/challenge/api/get-group-challenge-categories'
-import { getPersonalChallengeList, PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
 import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@features/main/components'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
 import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'

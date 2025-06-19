@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ReactNode, useRef } from 'react'
 import styled from '@emotion/styled'
 
-import { TimeDealProduct } from '@features/store/api/get-timedeals'
+import { TimeDealProduct } from '@entities/store/api/timedeal/get-timedeal-list'
 import ApologizeContent from '@shared/components/apologize/ui/apologize'
 import { media } from '@shared/config/style/media'
 import { theme } from '@shared/config/style/theme'

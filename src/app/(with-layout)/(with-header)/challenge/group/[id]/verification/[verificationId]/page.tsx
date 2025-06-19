@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
-import { getVerificationCommemtList } from '@features/challenge/api/participate/verification/get-verification-comment-list'
-import { getVerificationDetails } from '@features/challenge/api/participate/verification/get-verifycation-details'
+import { getVerificationCommemtList } from '@entities/challenge/api/group/verification/comments/get-comment-list'
+import { getVerificationDetails } from '@entities/challenge/api/group/verification/get-verification-details'
 import VerificationDetails from '@features/challenge/components/challenge/participate/verification/details/VerificationDetails'
 import { getQueryClient } from '@shared/config/tanstack-query/query-client'
 import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'

@@ -6,7 +6,7 @@ import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
-import { PersonalChallengeType } from '@features/challenge/api/get-personal-challenge-list'
+import { PersonalChallengeType } from '@entities/challenge/api/personal/get-personal-list'
 import { LeafReward } from '@shared/components'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { URL } from '@shared/constants/route'

@@ -3,7 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { TimeDealProduct } from '@features/store/api/get-timedeals'
+import { TimeDealProduct } from '@entities/store/api/timedeal/get-timedeal-list'
 import ApologizeContent from '@shared/components/apologize/ui/apologize'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { media } from '@shared/config/style/media'

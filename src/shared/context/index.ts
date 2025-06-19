@@ -1,3 +1,4 @@
+export * from './auth'
 export * from './back-button'
 export * from './idempotency-key'
 export * from './modal'

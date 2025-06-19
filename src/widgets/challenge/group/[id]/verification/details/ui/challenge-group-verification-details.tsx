@@ -6,27 +6,27 @@ import { ReactNode, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
-import { DeleteCommentVariables } from '@features/challenge/api/participate/verification/delete-verification-comment'
+import { PostCommentVariables } from '@entities/challenge/api/group/verification/comments/create-comment'
+import { PostReplyVariables } from '@entities/challenge/api/group/verification/comments/create-comment-reply'
+import { DeleteCommentVariables } from '@entities/challenge/api/group/verification/comments/delete-comment'
 import {
   CommentResponse,
   CommentType,
   getVerificationCommemtList,
-} from '@features/challenge/api/participate/verification/get-verification-comment-list'
+} from '@entities/challenge/api/group/verification/comments/get-comment-list'
+import { PutCommentVariables } from '@entities/challenge/api/group/verification/comments/modify-comment'
 import {
   getVerificationDetails,
   VerificationDetailResponse,
-} from '@features/challenge/api/participate/verification/get-verifycation-details'
+} from '@entities/challenge/api/group/verification/get-verification-details'
 import {
   CreateVerificationLikeResponse,
   CreateVerificationLikeVariables,
-} from '@features/challenge/api/participate/verification/likes/create-like'
+} from '@entities/challenge/api/group/verification/likes/create-like'
 import {
   DeleteVerificationLikeResponse,
   DeleteVerificationLikeVariables,
-} from '@features/challenge/api/participate/verification/likes/delete-like'
-import { PostCommentVariables } from '@features/challenge/api/participate/verification/post-verification-comment'
-import { PostReplyVariables } from '@features/challenge/api/participate/verification/post-verification-reply'
-import { PutCommentVariables } from '@features/challenge/api/participate/verification/put-verification-comment'
+} from '@entities/challenge/api/group/verification/likes/delete-like'
 import CommentList from '@features/challenge/components/challenge/participate/verification/details/comment-list'
 import LucideIcon from '@shared/components/lucide-icon/ui/lucide-icon'
 import { theme } from '@shared/config/style/theme'

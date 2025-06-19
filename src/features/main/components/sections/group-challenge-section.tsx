@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation'
 import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
+import { GroupChallengeCategory } from '@entities/challenge/api/group/get-categories'
+import { GroupChallengeItem } from '@entities/challenge/api/group/get-group-list'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@entities/challenge/constant'
 import { ChallengeCategoryType, FilterChallengeCategoryType } from '@entities/challenge/type'
-import { GroupChallengeCategory } from '@features/challenge/api/get-group-challenge-categories'
-import { GroupChallengeItem } from '@features/challenge/api/get-group-challenge-list'
 import {
   GroupChallenge,
   GroupChallengeCard,

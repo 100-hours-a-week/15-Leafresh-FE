@@ -3,11 +3,9 @@ import Image from 'next/image'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
-import {
-  CommentType,
-} from '@features/challenge/api/participate/verification/get-verification-comment-list'
+import { CommentType } from '@entities/challenge/api/group/verification/comments/get-comment-list'
+import { theme } from '@shared/config/style/theme'
 import { getTimeDiff } from '@shared/lib/date/utils'
-import { theme } from '@shared/styles/theme'
 
 interface CommentItemProps {
   comment: CommentType

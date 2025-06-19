@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 
-import { PurchaseProduct } from '@features/member/api/store/get-order-list'
+import { PurchaseProduct } from '@entities/member/api/store/get-ordered-list'
 import { useInfiniteMemberStoreOrderList } from '@features/member/hooks/useInfiniteMemberStoreOrderList'
 import NoContent from '@shared/components/no-content/ui/no-content'
 import { theme } from '@shared/config/style/theme'
