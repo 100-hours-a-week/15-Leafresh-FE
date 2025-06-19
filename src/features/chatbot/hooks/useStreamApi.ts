@@ -7,7 +7,7 @@ export function useRecommendationStream() {
   const esRef = useRef<EventSource | null>(null)
 
   /** 카테고리 기반 스트림 시작 */
-  function startCategory(
+  function startCategoryStream(
     sessionId: string,
     location: string,
     workType: string,
@@ -50,7 +50,7 @@ export function useRecommendationStream() {
 
   /** 자유 텍스트 기반 스트림 시작 */
   /** 자유 텍스트 기반 스트림 시작 */
-  function startFreeText(
+  function startFreeTextStream(
     sessionId: string,
     message: string,
     onChallenge: Handler,
@@ -105,5 +105,5 @@ export function useRecommendationStream() {
     }
   }, [])
 
-  return { startCategory, startFreeText }
+  return { startCategoryStream, startFreeTextStream }
 }

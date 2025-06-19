@@ -43,7 +43,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [workImage] = useState(() => getRandomWorkImage())
 
   const { history: chatHistory, addItem: addChatItem } = useChatHistory()
-  const { startCategory, startFreeText } = useRecommendationStream()
+  const { startCategoryStream, startFreeTextStream } = useRecommendationStream()
 
   // ——— 카테고리 스트림 훅 ———
   const {
@@ -51,7 +51,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     streamingText: catText,
     actions: catActions,
     start: startCatStream,
-  } = useChatbotSSE(startCategory, (text, actions) => {
+  } = useChatbotSSE(startCategoryStream, (text, actions) => {
     addChatItem({ type: 'message', role: 'bot', text, isAnswer: true, actions })
     //잠시 뒤 챌린지 선택창 재노출
     setTimeout(() => {
@@ -68,7 +68,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     streamingText: freeText,
     actions: freeActions,
     start: startFreeStream,
-  } = useChatbotSSE(startFreeText, (text, actions) => {
+  } = useChatbotSSE(startFreeTextStream, (text, actions) => {
     addChatItem({ type: 'message', role: 'bot', text, isAnswer: true, actions })
     //잠시 뒤 챌린지 선택창 재노출
     setTimeout(() => {
@@ -346,11 +346,6 @@ const SelectionWrapper = styled.div`
   width: 100%;
 `
 
-const SlideWrapper = styled.div`
-  margin: 8px 0;
-  padding-left: 40px;
-  width: 100%;
-`
 const InputContainer = styled.div`
   display: flex;
   background: #ffffff;
