@@ -1,2 +1,2 @@
 export * from './get-product-list'
-export * from './order-prouduct'
+export * from './order-product'

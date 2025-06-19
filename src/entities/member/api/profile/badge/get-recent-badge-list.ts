@@ -2,7 +2,7 @@ import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
 import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
 
 //뱃지 타입
-export type Badge = {
+export type RecentBadge = {
   id: number
   name: string
   condition: string
@@ -10,7 +10,7 @@ export type Badge = {
 }
 
 export interface RecentBadgesResponse {
-  badges: Badge[]
+  badges: RecentBadge[]
 }
 
 type RecentBadgesQuery = {

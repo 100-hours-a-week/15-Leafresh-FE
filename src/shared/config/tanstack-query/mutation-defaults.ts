@@ -19,7 +19,7 @@ import { RequestFeedback } from '@entities/member/api/profile/feedback/create-fe
 import { PatchMemberInfo } from '@entities/member/api/profile/update-profile'
 import { SignUp } from '@entities/member/api/register'
 import { Unregister } from '@entities/member/api/unregister'
-import { OrderProduct } from '@entities/store/api/product/order-prouduct'
+import { OrderProduct } from '@entities/store/api/product/order-product'
 import { OrderTimeDealProduct } from '@entities/store/api/timedeal/order-timedeal'
 import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
 

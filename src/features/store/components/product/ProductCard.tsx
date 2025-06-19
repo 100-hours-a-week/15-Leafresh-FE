@@ -12,7 +12,7 @@ import {
   OrderProductHeaders,
   OrderProductResponse,
   OrderProductVariables,
-} from '@entities/store/api/product/order-prouduct'
+} from '@entities/store/api/product/order-product'
 import { media } from '@shared/config/style/media'
 import { theme } from '@shared/config/style/theme'
 import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
