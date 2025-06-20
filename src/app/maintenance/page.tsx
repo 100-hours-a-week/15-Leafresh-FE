@@ -2,8 +2,6 @@
 
 import Image from 'next/image'
 
-import ServiceReadyImage from '@public/image/service_ready.svg'
-
 import { media, theme } from '@/shared/config'
 import styled from '@emotion/styled'
 
@@ -11,7 +9,7 @@ export default function ServiceReady() {
   return (
     <Wrapper>
       <ImageWrapper>
-        <Image src={ServiceReadyImage} alt='서비스 준비중 이미지' fill />
+        <Image src='/image/service_ready.svg' alt='서비스 준비중 이미지' fill />
       </ImageWrapper>
       <TitleWrapper>
         <Title>더 나은 서비스를 제공하기 위해</Title>

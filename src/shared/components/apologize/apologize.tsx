@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import ApologizeImage from '@public/image/apologize_character.svg'
-
 import { theme } from '@/shared/config'
 import styled from '@emotion/styled'
 
@@ -15,7 +13,7 @@ interface ApologizeContentProps {
 export const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
   return (
     <EmptySection className={className}>
-      <Image src={ApologizeImage} alt='사죄 이미지' width={140} height={140} />
+      <Image src='/image/apologize_character.svg' alt='사죄 이미지' width={140} height={140} />
       <EmptyTitle>{title}</EmptyTitle>
       <EmptyDescription>{description}</EmptyDescription>
       <EmptyDescription>감사합니다.</EmptyDescription>

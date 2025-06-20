@@ -3,8 +3,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import NotFoundImage from '@public/image/404.svg'
-
 import { media } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import styled from '@emotion/styled'
@@ -13,7 +11,7 @@ export default function NotFound() {
   return (
     <Wrapper>
       <ImageWrapper>
-        <Image src={NotFoundImage} alt='404 Not Found' fill />
+        <Image src='/image/404.svg' alt='404 Not Found' fill />
       </ImageWrapper>
       <Title>페이지를 찾을 수 없습니다</Title>
       <DescriptionWrapper>

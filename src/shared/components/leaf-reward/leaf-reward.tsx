@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import LeafIcon from '@public/icon/leaf.svg'
-
 import styled from '@emotion/styled'
 
 interface LeafRewardProps {
@@ -13,7 +11,7 @@ interface LeafRewardProps {
 export const LeafReward = ({ reward, className }: LeafRewardProps): ReactNode => {
   return (
     <LeafWrapper className={className}>
-      <Image src={LeafIcon} alt='나뭇잎 아이콘' width={24} height={24} />
+      <Image src='/icon/leaf.svg' alt='나뭇잎 아이콘' width={24} height={24} />
       <LeafLabel>{reward}</LeafLabel>
     </LeafWrapper>
   )

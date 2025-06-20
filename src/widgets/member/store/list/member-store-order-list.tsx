@@ -4,8 +4,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 
-import LeafIcon from '@public/icon/leaf.png'
-
 import { PurchaseProduct } from '@/entities/member/api'
 import { useInfiniteMemberStoreOrderList } from '@/features/member/api'
 import { NoContent } from '@/shared/components'
@@ -138,7 +136,7 @@ const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
       <ProductTitle>{title}</ProductTitle>
       <InfoRow>
         <PriceRow>
-          <Image src={LeafIcon} alt='leaf' width={24} height={24} />
+          <Image src='/icon/leaf.png' alt='leaf' width={24} height={24} />
           <Price>{price}</Price>
         </PriceRow>
         <TimeAgo>{getTimeDiff(purchasedAt)}</TimeAgo>

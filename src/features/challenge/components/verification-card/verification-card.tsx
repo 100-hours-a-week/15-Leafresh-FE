@@ -3,9 +3,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 
-import ActiveLikeIcon from '@public/icon/like_active.svg'
-import InActiveLikeIcon from '@public/icon/like_inactive.svg'
-
 import {
   CreateVerificationLikeResponse,
   CreateVerificationLikeVariables,
@@ -125,7 +122,7 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
             <LikeInteraction isLiked={isLiked} onClick={toggleLike}>
               <motion.img
                 key={isLiked ? 'liked' : 'unliked'}
-                src={isLiked ? ActiveLikeIcon.src : InActiveLikeIcon.src}
+                src={isLiked ? '/icon/like_active.svg' : '/icon/like_inactive.svg'}
                 alt='좋아요'
                 width={24}
                 height={24}

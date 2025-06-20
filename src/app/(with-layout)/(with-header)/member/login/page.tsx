@@ -4,9 +4,6 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
-import KakaoLoginButton from '@public/image/kakao_login.svg'
-import LogoImage from '@public/image/logo.svg'
-
 import { Login } from '@/entities/member/api'
 import { LowercaseOAuthType } from '@/entities/member/model'
 import { Loading } from '@/shared/components'
@@ -66,14 +63,14 @@ const LoginPage = () => {
 
   return (
     <Container>
-      <Logo src={LogoImage} alt='Leafresh' width={160} height={60} />
+      <Logo src='/image/logo.svg' alt='Leafresh' width={160} height={60} />
       <DividerWrapper>
         <Line />
         <Text>로그인 / 회원가입</Text>
         <Line />
       </DividerWrapper>
       {!isLoading ? (
-        <KakaoImage src={KakaoLoginButton} alt='kakao' onClick={() => handleLogin('kakao')} />
+        <KakaoImage src='/image/kakao_login.svg' alt='kakao' onClick={() => handleLogin('kakao')} />
       ) : (
         <Loading />
       )}

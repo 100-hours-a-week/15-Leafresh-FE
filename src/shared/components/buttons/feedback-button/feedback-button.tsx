@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import FeedBackIcon from '@public/icon/feedback_button.svg'
-
 import styled from '@emotion/styled'
 
 interface FeedBackButtonProps {
@@ -17,7 +15,7 @@ export const FeedBackButton = ({ className }: FeedBackButtonProps): ReactNode =>
       rel='noopener noreferrer'
       className={className}
     >
-      <Image src={FeedBackIcon} alt='피드백 남기기 버튼' />
+      <Image src='/icon/feedback_button.svg' alt='피드백 남기기 버튼' />
     </LinkWrapper>
   )
 }

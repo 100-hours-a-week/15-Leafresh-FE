@@ -4,8 +4,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
-import LeafIcon from '@public/icon/leaf.png'
-
 import {
   getPersonalChallengeDetails,
   VerifyGroupChallengeResponse,
@@ -209,7 +207,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
             <Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
-                인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
+                인증 성공시 <Image src='/icon/leaf.png' alt='나뭇잎 아이콘' /> {leafReward}개 지급
               </li>
             </Warning>
           </WarningList>

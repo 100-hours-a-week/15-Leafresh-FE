@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import LogoCharacterImage from '@public/image/main-icon.svg'
-
 import { theme } from '@/shared/config'
 import styled from '@emotion/styled'
 
@@ -16,7 +14,7 @@ interface NoContentProps {
 export const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProps): ReactNode => {
   return (
     <EmptyWrapper className={className}>
-      <Image src={LogoCharacterImage} alt='로고 캐릭터' />
+      <Image src='/image/main-icon.svg' alt='로고 캐릭터' />
       <NoChallengeMessage>{title}</NoChallengeMessage>
       <CreateButton onClick={clickHandler}>{buttonText}</CreateButton>
     </EmptyWrapper>

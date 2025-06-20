@@ -74,7 +74,7 @@ const eslintConfig = [
           allow: [
             '**/index.ts',
 
-            '@public/**',
+            // '/public/**',
             // 라이브러리
             'next/**',
             '@next/**',
@@ -110,7 +110,7 @@ const eslintConfig = [
           groups: [
             ['^node:', '^\\w'], // 1. node, builtin 모듈
             // ['^react', '^@?\\w'], // 2. 외부 라이브러리 (react 관련 우선)
-            ['^@app/', '^@entities/', '^@features/', '^@shared/', '^@public/'], // 3. 내부 alias 경로 - @app, @features 등
+            ['^@app/', '^@entities/', '^@features/', '^@shared/', '^/public/'], // 3. 내부 alias 경로 - @app, @features 등
             ['^\\u0000', '^\\.\\.(?!/?$)', '^\\.'], // 4. 상대경로 import
             ['^.+\\.s?css$'], // 5. 스타일 import
           ],

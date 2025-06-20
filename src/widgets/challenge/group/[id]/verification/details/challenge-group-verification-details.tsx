@@ -3,9 +3,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 
-import Like from '@public/icon/like.svg'
-import UnLike from '@public/icon/unLike.svg'
-
 import {
   CommentResponse,
   CommentType,
@@ -383,7 +380,7 @@ export const VerificationDetails = ({
       <Stats>
         <LeftStat>
           <LikeButton onClick={handleLikeToggle}>
-            {isLiked ? <LikeIcon src={Like} alt='♥' /> : <LikeIcon src={UnLike} alt='♥' />}
+            {isLiked ? <LikeIcon src='/icon/like.svg' alt='♥' /> : <LikeIcon src='/icon/unLike.svg' alt='♥' />}
             {likeCount}
           </LikeButton>
           <Stat>
