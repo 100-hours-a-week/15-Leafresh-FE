@@ -1,6 +1,5 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
-import { InfiniteScrollResponse } from '@shared/type/api'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+import { InfiniteScrollResponse } from '@/shared/type'
 
 export interface ProductListParams {
   input: string

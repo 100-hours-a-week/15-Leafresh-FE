@@ -1,10 +1,10 @@
-// src/shared/lib/fetcher.test.ts
 import { beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest'
 
-import type { EndpointType } from '../../../constants/endpoint/endpoint'
-import { HttpMethod, HttpStatusCode } from '../consts/http'
+import { EndpointType } from '../consts'
 import { ApiResponse, ErrorResponse } from '../type'
 import { clientFetchRequest } from './client-fetcher'
+
+import { HttpMethod, HttpStatusCode } from '@/shared/lib'
 
 describe('clientFetchRequest 유틸', () => {
   let fetchMock: MockedFunction<typeof fetch>

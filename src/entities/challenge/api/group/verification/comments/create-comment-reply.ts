@@ -1,7 +1,6 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher'
-
 import { CommentResponse } from './get-comment-list'
+
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type PostReplytBody = {
   content: string

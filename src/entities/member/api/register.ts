@@ -1,6 +1,6 @@
-import { OAuthType } from '@entities/member/model/type'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api'
+import { OAuthType } from '../model'
+
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type SignUpResponse = {
   nickname: string

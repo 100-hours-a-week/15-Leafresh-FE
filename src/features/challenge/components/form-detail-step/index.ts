@@ -1,1 +1,1 @@
-export * from './ui/form-detail-step'
+export * from './form-detail-step'

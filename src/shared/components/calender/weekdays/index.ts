@@ -1,1 +1,1 @@
-export * from './ui/calender-weekdays'
+export * from './calender-weekdays'

@@ -1,1 +1,1 @@
-export * from './ui/challenge-create-button'
+export * from './challenge-create-button'

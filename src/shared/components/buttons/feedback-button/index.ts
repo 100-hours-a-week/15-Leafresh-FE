@@ -1,1 +1,1 @@
-export * from './ui/feedback-button'
+export * from './feedback-button'

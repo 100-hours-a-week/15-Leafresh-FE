@@ -1,7 +1,5 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
-import { InfiniteScrollResponse } from '@shared/type/api'
-import { ISOFormatString } from '@shared/type/date'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+import { InfiniteScrollResponse, ISOFormatString } from '@/shared/type'
 
 export type MemberStoreOrderListParams = {
   cursorId?: number

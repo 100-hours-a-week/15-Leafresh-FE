@@ -1,1 +1,1 @@
-export * from './ui/profile-box'
+export * from './profile-box'

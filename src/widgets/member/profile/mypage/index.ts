@@ -1,1 +1,1 @@
-export * from './ui/member-profile-mypage'
+export * from './member-profile-mypage'

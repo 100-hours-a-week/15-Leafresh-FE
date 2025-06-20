@@ -1,1 +1,1 @@
-export * from './ui/camera-modal'
+export * from './camera-modal'

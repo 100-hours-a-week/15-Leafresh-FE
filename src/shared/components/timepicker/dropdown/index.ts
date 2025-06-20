@@ -1,1 +1,1 @@
-export * from './ui/time-dropdown'
+export * from './time-dropdown'

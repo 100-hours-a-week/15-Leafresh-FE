@@ -1,8 +1,13 @@
-import { LowercaseOAuthType } from '@entities/member/model/type'
-
 import { HttpMethod } from './http'
 
+import { LowercaseOAuthType } from '@/entities/member/model'
+
 export const BASE_API_URL = '/api/proxy'
+
+export type EndpointType = {
+  method: HttpMethod
+  path: string
+}
 
 const CHALLENGE_ENDPOINTS = {
   /** 이벤트 챌린지 */

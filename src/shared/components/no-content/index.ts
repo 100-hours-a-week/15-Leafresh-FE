@@ -1,1 +1,1 @@
-export * from './ui/no-content'
+export * from './no-content'

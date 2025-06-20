@@ -1,1 +1,1 @@
-export * from './ui/confirm-modal'
+export * from './confirm-modal'

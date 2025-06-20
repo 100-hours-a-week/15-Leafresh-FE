@@ -1,1 +1,1 @@
-export * from './ui/error-text'
+export * from './error-text'

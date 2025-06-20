@@ -1,1 +1,1 @@
-export * from './ui/info-modal'
+export * from './info-modal'

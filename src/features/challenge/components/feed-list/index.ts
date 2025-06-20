@@ -1,1 +1,1 @@
-export * from './ui/feed-list'
+export * from './feed-list'

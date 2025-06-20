@@ -1,7 +1,6 @@
 export * from './apologize'
 export * from './buttons'
 export * from './calender'
-export * from './chatbot'
 export * from './check-icon'
 export * from './datepicker'
 export * from './dropdown'

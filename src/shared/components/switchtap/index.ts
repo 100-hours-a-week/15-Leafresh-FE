@@ -1,1 +1,1 @@
-export * from './ui/switch-tab'
+export * from './switch-tab'

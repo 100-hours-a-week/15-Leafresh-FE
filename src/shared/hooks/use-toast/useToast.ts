@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 
-import { useToastStore } from '@shared/context/toast/toast-store'
-import { ToastType } from '@shared/context/toast/type'
+import { ToastType, useToastStore } from '@/shared/context'
 
 export function useToast() {
   const { open } = useToastStore()

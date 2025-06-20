@@ -1,6 +1,7 @@
-import { ChallengeVerificationResultType, ChallengeVerificationStatusType, DayType } from '@entities/challenge/type'
-import { ENDPOINTS, fetchRequest } from '@shared/lib/api'
-import { TimeFormatString } from '@shared/type/date'
+import { ChallengeVerificationResultType, ChallengeVerificationStatusType } from '../../model'
+
+import { DayType, ENDPOINTS, fetchRequest } from '@/shared/lib'
+import { TimeFormatString } from '@/shared/type'
 
 export type PersonalChallengeDetail = {
   id: number

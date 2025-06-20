@@ -1,15 +1,12 @@
+import {
+  getEventChallengeList,
+  getGroupChallengeCategoryList,
+  getPersonalChallengeList,
+} from '@/entities/challenge/api'
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { DayType, getDayOfWeek } from '@/shared/lib'
+import { MainPage } from '@/widgets/main'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-
-import { getEventChallengeList } from '@entities/challenge/api/event/get-event-list'
-import { getGroupChallengeCategoryList } from '@entities/challenge/api/group/get-categories'
-import { getPersonalChallengeList } from '@entities/challenge/api/personal/get-personal-list'
-import { DayType } from '@entities/challenge/type'
-import { getQueryClient } from '@shared/config/tanstack-query/query-client'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { getDayOfWeek } from '@shared/lib/date/utils'
-
-import MainPage from '../../../widgets/main/ui/main'
 
 const Page = async () => {
   try {

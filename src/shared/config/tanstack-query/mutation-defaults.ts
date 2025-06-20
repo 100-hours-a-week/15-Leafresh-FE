@@ -1,32 +1,33 @@
-import { useMutation } from '@tanstack/react-query'
-
-import { CreateChallenge } from '@entities/challenge/api/group/create-group'
-import { DeleteGroupChallenge } from '@entities/challenge/api/group/delete-group'
-import { ModifyChallenge } from '@entities/challenge/api/group/modify-group'
-import { ParticipateGroupChallenge } from '@entities/challenge/api/group/participate/participate-group'
-import { postVerificationComment } from '@entities/challenge/api/group/verification/comments/create-comment'
-import { postVerificationReply } from '@entities/challenge/api/group/verification/comments/create-comment-reply'
-import { deleteVerificationComment } from '@entities/challenge/api/group/verification/comments/delete-comment'
-import { putVerificationComment } from '@entities/challenge/api/group/verification/comments/modify-comment'
-import { PostGroupVerification } from '@entities/challenge/api/group/verification/create-group-verification'
-import { CreateVerificationLike } from '@entities/challenge/api/group/verification/likes/create-like'
-import { DeleteVerificationLike } from '@entities/challenge/api/group/verification/likes/delete-like'
-import { VerifyGroupChallenge } from '@entities/challenge/api/personal/verification/verify-personal'
-import { readAllAlarms } from '@entities/member/api/challenge/alarm/read-alarm-list'
-import { ChallengeStatus } from '@entities/member/api/challenge/participate/get-group-participant-list'
-import { Logout } from '@entities/member/api/logout'
-import { RequestFeedback } from '@entities/member/api/profile/feedback/create-feedback'
-import { PatchMemberInfo } from '@entities/member/api/profile/update-profile'
-import { SignUp } from '@entities/member/api/register'
-import { Unregister } from '@entities/member/api/unregister'
-import { OrderProduct } from '@entities/store/api/product/order-product'
-import { OrderTimeDealProduct } from '@entities/store/api/timedeal/order-timedeal'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
-
-import { handleError } from '../../lib/api/error-handler/handle-auth-error'
 import { MUTATION_KEYS } from './mutation-keys'
 import { getQueryClient } from './query-client'
 import { QUERY_KEYS } from './query-keys'
+
+import {
+  CreateChallenge,
+  CreateVerificationLike,
+  DeleteGroupChallenge,
+  deleteVerificationComment,
+  DeleteVerificationLike,
+  ModifyChallenge,
+  ParticipateGroupChallenge,
+  PostGroupVerification,
+  postVerificationComment,
+  postVerificationReply,
+  putVerificationComment,
+  VerifyGroupChallenge,
+} from '@/entities/challenge/api'
+import {
+  ChallengeStatus,
+  Logout,
+  PatchMemberInfo,
+  readAllAlarms,
+  RequestFeedback,
+  SignUp,
+  Unregister,
+} from '@/entities/member/api'
+import { OrderProduct, OrderTimeDealProduct } from '@/entities/store/api'
+import { ApiResponse, ErrorResponse, handleError } from '@/shared/lib'
+import { useMutation } from '@tanstack/react-query'
 
 const queryClient = getQueryClient()
 

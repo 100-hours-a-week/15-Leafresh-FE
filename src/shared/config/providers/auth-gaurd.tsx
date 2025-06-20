@@ -2,15 +2,13 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-
 import { useEffect, useState } from 'react'
 
-import { ProfileResponse } from '@entities/member/api/profile/get-profile'
-import { URL } from '@shared/constants/route'
-import { UserInfo, useUserStore } from '@shared/context/auth/user/user-store'
-import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/use-toast/useToast'
-import { ENDPOINTS, fetchRequest } from '@shared/lib/api'
+import { ProfileResponse } from '@/entities/member/api'
+import { URL } from '@/shared/constants'
+import { ToastType, UserInfo, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 /** 보호가 필요한 경로 목록 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,13 +35,12 @@ function extractProtectedRoutes(obj: any): string[] {
 const PROTECTED_ROUTES = extractProtectedRoutes(URL).map(path =>
   path.includes('[') ? path.replace(/\[.*?\]/g, '[^/]+') : path,
 )
-console.log(PROTECTED_ROUTES)
 
 interface Props {
   children: React.ReactNode
 }
 
-const AuthGuard = ({ children }: Props) => {
+export const AuthGuard = ({ children }: Props) => {
   const pathname = usePathname()
   const router = useRouter()
   const openToast = useToast()
@@ -94,5 +91,3 @@ const AuthGuard = ({ children }: Props) => {
 
   return <>{children}</>
 }
-
-export default AuthGuard

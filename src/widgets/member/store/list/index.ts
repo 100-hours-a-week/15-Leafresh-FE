@@ -1,1 +1,1 @@
-export * from './ui/member-store-order-list'
+export * from './member-store-order-list'

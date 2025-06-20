@@ -1,1 +1,1 @@
-export * from './ui/challenge-group-verification-list'
+export * from './challenge-group-verification-list'

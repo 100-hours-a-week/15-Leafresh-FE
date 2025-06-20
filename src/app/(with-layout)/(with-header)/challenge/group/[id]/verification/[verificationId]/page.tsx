@@ -1,11 +1,7 @@
+import { getVerificationCommemtList, getVerificationDetails } from '@/entities/challenge/api'
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { VerificationDetails } from '@/widgets/challenge'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-
-import { getVerificationCommemtList } from '@entities/challenge/api/group/verification/comments/get-comment-list'
-import { getVerificationDetails } from '@entities/challenge/api/group/verification/get-verification-details'
-import VerificationDetails from '@features/challenge/components/challenge/participate/verification/details/VerificationDetails'
-import { getQueryClient } from '@shared/config/tanstack-query/query-client'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
 
 interface PageProps {
   params: Promise<{

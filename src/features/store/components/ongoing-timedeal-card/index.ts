@@ -1,1 +1,1 @@
-export * from './ui/ongoing-timedeal-card'
+export * from './ongoing-timedeal-card'

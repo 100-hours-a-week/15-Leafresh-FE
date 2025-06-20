@@ -1,13 +1,9 @@
 import { notFound } from 'next/navigation'
 
+import { getGroupChallengeDetails } from '@/entities/challenge/api'
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { ChallengeGroupModifyPage } from '@/widgets/challenge'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-
-import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-group-details'
-import { getQueryClient } from '@shared/config/tanstack-query/query-client'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-
-import ChallengeGroupModifyPage from '../../../../../../../widgets/challenge/group/[id]/modify/ui/challenge-group-modify'
 
 interface GroupChallengeModifyPageProps {
   params: Promise<{ id: string }>

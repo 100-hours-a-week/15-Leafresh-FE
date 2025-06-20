@@ -1,9 +1,9 @@
 'use client'
 
-import { URL } from '@shared/constants/route'
-import { useOAuthUserStore } from '@shared/context/auth/oauth-user/oauth-user-store'
-import { useUserStore } from '@shared/context/auth/user/user-store'
-import { ErrorResponse } from '@shared/lib/api/type'
+import { ErrorResponse } from '../type'
+
+import { URL } from '@/shared/constants'
+import { useOAuthUserStore, useUserStore } from '@/shared/context'
 
 let isHandlingAuth = false
 

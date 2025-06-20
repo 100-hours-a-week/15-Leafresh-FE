@@ -3,7 +3,7 @@ import emotionReset from 'emotion-reset'
 
 import { css, Global, Theme, useTheme } from '@emotion/react'
 
-const GlobalStyle = () => {
+export const GlobalStyle = () => {
   const theme: Theme = useTheme()
 
   return (
@@ -77,5 +77,3 @@ const GlobalStyle = () => {
     />
   )
 }
-
-export default GlobalStyle

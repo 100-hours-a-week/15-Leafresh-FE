@@ -1,1 +1,1 @@
-export * from './ui/polling-watcher'
+export * from './polling-watcher'

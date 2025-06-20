@@ -1,12 +1,7 @@
+import { getMemberProfile, getMemberProfileCard } from '@/entities/member/api'
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { Mypage } from '@/widgets/member'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-
-import { getMemberProfile } from '@entities/member/api/profile/get-profile'
-import { getMemberProfileCard } from '@entities/member/api/profile/get-profilecard'
-import { getQueryClient } from '@shared/config/tanstack-query/query-client'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-
-import Mypage from '../../../../../../widgets/member/profile/mypage/ui/member-profile-mypage'
 
 const Page = async () => {
   const queryClient = getQueryClient()

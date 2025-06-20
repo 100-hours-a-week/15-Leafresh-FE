@@ -2,7 +2,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { LowercaseOAuthType } from '../../../../entities/member/model/type'
+import { LowercaseOAuthType } from '@/entities/member/model'
 
 export interface OAuthUserInfo {
   isMember: boolean

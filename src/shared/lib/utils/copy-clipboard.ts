@@ -1,5 +1,4 @@
-import { useToastStore } from '@shared/context/toast/toast-store'
-import { ToastType } from '@shared/context/toast/type'
+import { ToastType, useToastStore } from '@/shared/context'
 
 /**
  * 클립보드에 문자열을 복사하고, 공통 토스트 메시지를 출력합니다.

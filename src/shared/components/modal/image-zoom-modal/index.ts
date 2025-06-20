@@ -1,1 +1,1 @@
-export * from './ui/image-zoom-modal'
+export * from './image-zoom-modal'

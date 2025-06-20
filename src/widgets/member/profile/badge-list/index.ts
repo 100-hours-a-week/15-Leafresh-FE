@@ -1,1 +1,1 @@
-export * from './ui/member-badge-list'
+export * from './member-badge-list'

@@ -1,3 +1,7 @@
+import { z } from 'zod'
+
+import { CHALLENGE_CATEGORY_PAIRS, detailSchema, FEED_VERIFICATION_STAUS, fullSchema, metaSchema } from './consts'
+
 /** 챌린지 종류 */
 export type ChallengeType = 'GROUP' | 'PERSONAL'
 
@@ -11,3 +15,8 @@ export type FilterChallengeCategoryTypeKor = ChallengeCategoryType | '전체'
 
 /** 피드 인증 상태 */
 export type FeedVerificationStatusType = (typeof FEED_VERIFICATION_STAUS)[number]
+
+/** 챌린지 스키마 타입 */
+export type MetaFormValues = z.infer<typeof metaSchema>
+export type DetailFormValues = z.infer<typeof detailSchema>
+export type FullFormValues = z.infer<typeof fullSchema>

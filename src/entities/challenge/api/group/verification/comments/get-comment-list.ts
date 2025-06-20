@@ -1,6 +1,5 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher'
-import { ISOFormatString } from '@shared/type/date'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+import { ISOFormatString } from '@/shared/type'
 
 export type CommentResponse = {
   comments: CommentType[]

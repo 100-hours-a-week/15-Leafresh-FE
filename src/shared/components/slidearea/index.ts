@@ -1,1 +1,1 @@
-export * from './ui/slide-area'
+export * from './slide-area'

@@ -1,1 +1,1 @@
-export * from './ui/challenge-verify-carousel'
+export * from './challenge-verify-carousel'

@@ -1,16 +1,9 @@
-// app/(with-header)/challenge/group/[id]/page.tsx
-
 import { notFound } from 'next/navigation'
 
+import { getGroupChallengeDetails, getGroupChallengeParticipateList } from '@/entities/challenge/api'
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { ChallengeGroupParticipateList } from '@/widgets/challenge'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-
-import { getGroupChallengeDetails } from '@entities/challenge/api/group/get-group-details'
-import { getGroupChallengeParticipateList } from '@entities/challenge/api/group/verification/get-verification-list.ts'
-import { getQueryClient } from '@shared/config/tanstack-query/query-client'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-
-import ChallengeGroupParticipateList from '../../../../../../../../widgets/challenge/group/[id]/verification/list/ui/challenge-group-verification-list'
 
 interface GroupChallengePageProps {
   params: Promise<{ id: string }>

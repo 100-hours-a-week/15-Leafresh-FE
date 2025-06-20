@@ -1,8 +1,4 @@
-// @features/challenge/api/getPersonalChallengeList.ts
-
-import { DayType } from '@entities/challenge/type'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api'
+import { DayType, ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 type GetPersonalChallengeListQuery = {
   dayOfWeek: DayType

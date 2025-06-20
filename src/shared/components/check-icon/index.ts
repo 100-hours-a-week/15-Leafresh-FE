@@ -1,1 +1,1 @@
-export * from './ui/check-icon'
+export * from './check-icon'

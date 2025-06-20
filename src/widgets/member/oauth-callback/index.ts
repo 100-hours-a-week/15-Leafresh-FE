@@ -1,1 +1,1 @@
-export * from './ui/callback'
+export * from './callback'

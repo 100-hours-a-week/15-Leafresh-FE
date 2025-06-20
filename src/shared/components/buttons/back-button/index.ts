@@ -1,1 +1,1 @@
-export * from './ui/back-button'
+export * from './back-button'

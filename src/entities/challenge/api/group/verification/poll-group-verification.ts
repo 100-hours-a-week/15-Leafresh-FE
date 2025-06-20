@@ -1,5 +1,4 @@
-import { ENDPOINTS } from '@shared/constants/endpoint'
-import { fetchRequest } from '@shared/lib/api'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type GetGroupVerificationResultResponse = {
   verificationId: number

@@ -1,1 +1,1 @@
-export * from './ui/verification-guide-modal'
+export * from './verification-guide-modal'

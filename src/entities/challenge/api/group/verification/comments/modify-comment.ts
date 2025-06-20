@@ -1,11 +1,7 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher'
-
+import { PostCommentBody } from './create-comment'
 import { CommentResponse } from './get-comment-list'
 
-export type PostCommentBody = {
-  content: string
-}
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type PutCommentVariables = {
   challengeId: number

@@ -1,1 +1,1 @@
-export * from './ui/lucide-icon'
+export * from './lucide-icon'

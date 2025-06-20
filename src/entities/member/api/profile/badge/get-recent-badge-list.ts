@@ -1,5 +1,4 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher/fetcher'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 //뱃지 타입
 export type RecentBadge = {

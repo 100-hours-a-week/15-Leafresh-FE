@@ -1,1 +1,1 @@
-export * from './ui/recent-badge-box'
+export * from './recent-badge-box'

@@ -2,22 +2,19 @@
 
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-
 import { useEffect, useRef } from 'react'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
-import { Login } from '@entities/member/api/login-oauth'
-import { LowercaseOAuthType } from '@entities/member/model/type'
-import Loading from '@shared/components/loading/ui/loading'
-import { theme } from '@shared/config/style/theme'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { useOAuthStateStore } from '@shared/context/auth/oauth-state/oauth-state'
-import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/use-toast/useToast'
 import KakaoLoginButton from '@public/image/kakao_login.svg'
 import LogoImage from '@public/image/logo.svg'
+
+import { Login } from '@/entities/member/api'
+import { LowercaseOAuthType } from '@/entities/member/model'
+import { Loading } from '@/shared/components'
+import { QUERY_KEYS, QUERY_OPTIONS, theme } from '@/shared/config'
+import { ToastType, useOAuthStateStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 const LoginPage = () => {
   const openToast = useToast()

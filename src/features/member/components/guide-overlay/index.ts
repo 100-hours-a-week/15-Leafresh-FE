@@ -1,1 +1,1 @@
-export * from './ui/guide-overlay'
+export * from './guide-overlay'

@@ -2,9 +2,7 @@
 
 import { cookies } from 'next/headers'
 
-import { EndpointType } from '@shared/constants/endpoint/endpoint'
-import { BASE_API_URL } from '@shared/lib/api/consts/consts'
-
+import { BASE_API_URL, EndpointType } from '../consts'
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshServerAccessToken } from './server-reissue'
 

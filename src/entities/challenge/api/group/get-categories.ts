@@ -1,6 +1,6 @@
-import { FilterChallengeCategoryType, FilterChallengeCategoryTypeKor } from '@entities/challenge/type'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api'
+import { FilterChallengeCategoryType, FilterChallengeCategoryTypeKor } from '../../model'
+
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type GroupChallengeCategory = {
   category: FilterChallengeCategoryType

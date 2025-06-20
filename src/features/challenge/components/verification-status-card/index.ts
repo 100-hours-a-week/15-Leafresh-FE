@@ -1,1 +1,1 @@
-export * from './ui/verification-status-card'
+export * from './verification-status-card'

@@ -1,1 +1,1 @@
-export * from './ui/image-input'
+export * from './image-input'

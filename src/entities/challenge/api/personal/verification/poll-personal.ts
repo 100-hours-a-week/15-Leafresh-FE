@@ -1,5 +1,5 @@
-import { ChallengeVerificationStatusType } from '@entities/challenge/type'
-import { ENDPOINTS, fetchRequest } from '@shared/lib/api'
+import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type PersonalChallengeVerificationResultResponse = {
   status: ChallengeVerificationStatusType

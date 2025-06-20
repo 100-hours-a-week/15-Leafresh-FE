@@ -1,4 +1,5 @@
 export * from './alarm'
 export * from './challenge'
+export * from './oauth-callback'
 export * from './profile'
 export * from './store'

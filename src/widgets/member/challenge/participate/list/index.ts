@@ -1,1 +1,1 @@
-export * from './ui/member-challenge-participate-list'
+export * from './member-challenge-participate-list'

@@ -1,15 +1,7 @@
+import { ChallengeStatus, getGroupParticipations, getGroupParticipationsCount } from '@/entities/member/api'
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { ChallengeParticipatePage } from '@/widgets/member'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-
-import { getGroupParticipationsCount } from '@entities/member/api/challenge/participate/get-group-participant-count'
-import {
-  ChallengeStatus,
-  getGroupParticipations,
-} from '@entities/member/api/challenge/participate/get-group-participant-list'
-import { getQueryClient } from '@shared/config/tanstack-query/query-client'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-
-import ChallengeParticipatePage from '../../../../../../../widgets/member/challenge/participate/list/ui/member-challenge-participate-list'
 
 export default async function Page() {
   try {

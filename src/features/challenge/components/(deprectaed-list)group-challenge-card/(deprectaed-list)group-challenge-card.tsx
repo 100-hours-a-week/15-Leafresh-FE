@@ -1,13 +1,12 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import React from 'react'
-import styled from '@emotion/styled'
 
-import { theme } from '@shared/config/style/theme'
-import { URL } from '@shared/constants/route'
-import { ISOFormatString } from '@shared/type/date'
 import LeafIcon from '@public/icon/leaf.png'
+
+import { URL } from '@/shared/constants'
+import { ISOFormatString } from '@/shared/type'
+import styled from '@emotion/styled'
 
 interface GroupChallengeProps {
   challenge: {
@@ -23,7 +22,7 @@ interface GroupChallengeProps {
   className?: string
 }
 
-const DeprecatedGroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge, className }) => {
+export const DeprecatedGroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge, className }) => {
   const router = useRouter()
   return (
     <CardContainer onClick={() => router.push(URL.CHALLENGE.GROUP.DETAILS.value(challenge.id))} className={className}>
@@ -59,12 +58,10 @@ const DeprecatedGroupChallengeCard: React.FC<GroupChallengeProps> = ({ challenge
   )
 }
 
-export default DeprecatedGroupChallengeCard
-
 const CardContainer = styled.div`
   cursor: pointer;
   width: 180px;
-  border-radius: ${theme.radius.base};
+  border-radius: ${({ theme }) => theme.radius.base};
   overflow: hidden;
   cursor: pointer;
   box-shadow:
@@ -133,8 +130,8 @@ const RewardBadge = styled.div`
 `
 
 const RewardText = styled.span`
-  font-size: ${theme.fontSize.xss};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.fontSize.xss};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 
 const ContentContainer = styled.div`
@@ -146,8 +143,8 @@ const ContentContainer = styled.div`
 
 const Title = styled.div`
   margin-bottom: 10px;
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -164,6 +161,6 @@ const Tag = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: ${theme.fontSize.xss};
+  font-size: ${({ theme }) => theme.fontSize.xss};
   color: #3b82f6;
 `

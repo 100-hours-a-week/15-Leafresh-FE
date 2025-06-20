@@ -1,5 +1,4 @@
-import { fetchRequest } from '@shared/lib/api'
-import { HttpMethod } from '@shared/lib/api/consts/http'
+import { fetchRequest, HttpMethod } from '@/shared/lib'
 
 // 자유 텍스트 기반 챌린지 추천 요청 엔드포인트
 export const FREETEXT_RECOMMENDATION_ENDPOINT = {

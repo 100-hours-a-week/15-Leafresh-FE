@@ -1,1 +1,1 @@
-export * from './ui/apologize'
+export * from './apologize'

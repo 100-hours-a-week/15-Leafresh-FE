@@ -1,5 +1,4 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type GroupParticipationsCountResponse = {
   count: ParticipantStatus

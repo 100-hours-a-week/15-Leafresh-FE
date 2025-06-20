@@ -1,1 +1,1 @@
-export * from './ui/event-section'
+export * from './event-section'

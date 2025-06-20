@@ -1,7 +1,6 @@
-import { ChallengeCategoryType, FeedVerificationStatusType } from '@entities/challenge/type'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher'
-import { ISOFormatString } from '@shared/type/date'
+import { ChallengeCategoryType, FeedVerificationStatusType } from '@/entities/challenge/model'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+import { ISOFormatString } from '@/shared/type'
 
 export type VerificationDetailResponse = {
   id: number

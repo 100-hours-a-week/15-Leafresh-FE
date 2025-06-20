@@ -1,5 +1,4 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 /**
  * 단체 챌린지 참여자의 일별 인증 내역 조회

@@ -1,1 +1,1 @@
-export * from './ui/upcoming-timedeal-list'
+export * from './upcoming-timedeal-list'

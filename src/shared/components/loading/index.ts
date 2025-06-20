@@ -1,1 +1,1 @@
-export * from './ui/loading'
+export * from './loading'

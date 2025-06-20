@@ -1,1 +1,1 @@
-export * from './ui/form-metadata-step'
+export * from './form-metadata-step'

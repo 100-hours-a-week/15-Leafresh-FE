@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import { ImageZoomModalData, useImageZoomStore } from '@shared/context/modal/image-zoom-modal-store'
+import { ImageZoomModalData, useImageZoomStore } from '@/shared/context'
 
 interface ZoomableImageProps {
   src: string

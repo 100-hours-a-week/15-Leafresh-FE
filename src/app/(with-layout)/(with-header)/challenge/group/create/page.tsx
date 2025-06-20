@@ -1,12 +1,8 @@
 import { Suspense } from 'react'
 
-import { DetailFormValues } from '@features/challenge/components/form-detail-step/ui/form-detail-step'
-import { MetaFormValues } from '@features/challenge/components/form-metadata-step/ui/form-metadata-step'
-import Loading from '@shared/components/loading/ui/loading'
-
-import GroupChallengeFormPage, {
-  FullFormValues,
-} from '../../../../../../widgets/challenge/group/form/ui/challenge-form'
+import { DetailFormValues, FullFormValues, MetaFormValues } from '@/entities/challenge/model'
+import { Loading } from '@/shared/components'
+import { GroupChallengeFormPage } from '@/widgets/challenge'
 
 const Page = async () => {
   const defaultMetaFormValues: MetaFormValues = {

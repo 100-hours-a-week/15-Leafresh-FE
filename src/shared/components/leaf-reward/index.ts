@@ -1,1 +1,1 @@
-export * from './ui/leaf-reward'
+export * from './leaf-reward'

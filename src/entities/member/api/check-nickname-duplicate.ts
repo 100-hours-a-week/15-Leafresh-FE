@@ -1,7 +1,7 @@
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api'
-
 // TODO : isDuplicated -> isAvailable 로 변수명 저정
+
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+
 /**
  * false: 사용 가능 / true 사용 불가능
  */

@@ -1,8 +1,7 @@
-import { ChallengeCategoryType } from '@entities/challenge/type'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api'
-import { InfiniteScrollResponse } from '@shared/type/api'
-import { ISOFormatString } from '@shared/type/date'
+import { ChallengeCategoryType } from '../../model'
+
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+import { InfiniteScrollResponse, ISOFormatString } from '@/shared/type'
 
 /**
  * 요청 파라미터 타입

@@ -1,5 +1,5 @@
-import { ENDPOINTS, fetchRequest } from '@shared/lib/api'
-import { ISOFormatString } from '@shared/type/date'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+import { ISOFormatString } from '@/shared/type'
 
 export type VerifyGroupChallengeResponse = {
   submittedAt: ISOFormatString

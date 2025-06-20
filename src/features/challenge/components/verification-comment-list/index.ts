@@ -1,1 +1,1 @@
-export * from './ui/verification-comment-list'
+export * from './verification-comment-list'

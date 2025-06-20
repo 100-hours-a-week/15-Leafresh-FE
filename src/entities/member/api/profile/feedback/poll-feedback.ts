@@ -1,8 +1,7 @@
-import { FeedbackResponse } from '@entities/member/api/profile/feedback/get-feedback'
-import { getQueryClient } from '@shared/config/tanstack-query/query-client'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { fetchRequest } from '@shared/lib/api/fetcher'
+import { FeedbackResponse } from './get-feedback'
+
+import { getQueryClient, QUERY_KEYS } from '@/shared/config'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export async function pollFeedbackResult(): Promise<void> {
   const queryClient = getQueryClient()
@@ -14,6 +13,7 @@ export async function pollFeedbackResult(): Promise<void> {
       if (response.status === 200 && response.data?.content) {
         queryClient.setQueryData(QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK, {
           data: response.data,
+
           message: '피드백 수신 완료',
           status: 200,
         })

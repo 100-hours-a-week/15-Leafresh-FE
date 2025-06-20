@@ -1,1 +1,1 @@
-export * from './ui/verification-carousel'
+export * from './verification-carousel'

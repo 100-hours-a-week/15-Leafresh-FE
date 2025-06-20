@@ -1,4 +1,4 @@
-import { ENDPOINTS, fetchRequest } from '@shared/lib/api'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type EventChallenge = {
   id: number

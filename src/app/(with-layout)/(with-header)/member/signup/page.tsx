@@ -1,31 +1,20 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
+import { NicknameDuplicate, ProfileResponse, SignUpBody, SignUpResponse, SignUpVariables } from '@/entities/member/api'
+import { OAuthType, SignupFormType, signupSchema } from '@/entities/member/model'
+import { ErrorText } from '@/shared/components'
+import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
+import { URL } from '@/shared/constants'
+import { ToastType, useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
-
-import { NicknameDuplicate } from '@entities/member/api/check-nickname-duplicate'
-import { ProfileResponse } from '@entities/member/api/profile/get-profile'
-import { SignUpBody, SignUpResponse, SignUpVariables } from '@entities/member/api/register'
-import { OAuthType } from '@entities/member/model/type'
-import { SignupFormType, signupSchema } from '@features/member/signup/schema'
-import ErrorText from '@shared/components/errortext/ui/error-text'
-import { theme } from '@shared/config/style/theme'
-import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
-import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { URL } from '@shared/constants/route'
-import { useOAuthUserStore } from '@shared/context/auth/oauth-user/oauth-user-store'
-import { UserInfo, useUserStore } from '@shared/context/auth/user/user-store'
-import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/use-toast/useToast'
-import { fetchRequest } from '@shared/lib/api'
 
 const SignupPage = () => {
   const router = useRouter()

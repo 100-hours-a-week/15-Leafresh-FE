@@ -1,6 +1,7 @@
-import { ChallengeCategoryType, DayType } from '@entities/challenge/type'
-import { ChallengeStatus } from '@entities/member/api/challenge/participate/get-group-participant-list'
-import { LowercaseOAuthType } from '@entities/member/model/type'
+import { ChallengeCategoryType } from '@/entities/challenge/model'
+import { ChallengeStatus } from '@/entities/member/api'
+import { LowercaseOAuthType } from '@/entities/member/model'
+import { DayType } from '@/shared/lib'
 
 const CHALLENGE_QUERY_KEYS = {
   /** 이벤트 챌린지 */

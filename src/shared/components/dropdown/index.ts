@@ -1,1 +1,1 @@
-export * from './ui/dropdown'
+export * from './dropdown'

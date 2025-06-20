@@ -1,1 +1,1 @@
-export * from './ui/badge-tab'
+export * from './badge-tab'

@@ -1,1 +1,1 @@
-export * from './ui/challenge-verify-examples'
+export * from './challenge-verify-examples'

@@ -1,1 +1,1 @@
-export * from './ui/challenge-personal-details'
+export * from './challenge-personal-details'

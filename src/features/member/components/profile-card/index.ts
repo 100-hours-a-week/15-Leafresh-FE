@@ -1,1 +1,1 @@
-export * from './ui/profile-card'
+export * from './profile-card'

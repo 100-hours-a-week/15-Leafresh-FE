@@ -1,1 +1,1 @@
-export * from './ui/challenge-participant-card'
+export * from './challenge-participant-card'

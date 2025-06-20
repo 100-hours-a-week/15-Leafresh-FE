@@ -1,14 +1,9 @@
+import { getProducts, getTimeDealProducts, ProductsResponse } from '@/entities/store/api'
+import { Cursor } from '@/features/store/api'
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { ApiResponse } from '@/shared/lib'
+import { StorePage } from '@/widgets/store'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-
-import { getProducts, ProductsResponse } from '@entities/store/api/product/get-product-list'
-import { getTimeDealProducts } from '@entities/store/api/timedeal/get-timedeal-list'
-import { Cursor } from '@features/store/api/use-get-product-list'
-import { getQueryClient } from '@shared/config/tanstack-query/query-client'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ApiResponse } from '@shared/lib/api/type'
-
-import StorePage from '../../../../widgets/store/main/ui/store'
 
 const Page = async () => {
   const queryClient = getQueryClient()

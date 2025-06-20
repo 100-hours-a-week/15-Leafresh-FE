@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { ChallengeVerificationResultType } from '@entities/challenge/type'
+import { ChallengeVerificationResultType } from '@/entities/challenge/model'
 
 export type ImageZoomModalData = {
   result: ChallengeVerificationResultType
