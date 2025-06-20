@@ -239,26 +239,24 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   return (
     <Container>
       <MessagesContainer>
-        {chatHistory.map((item, idx) => (
-          <div key={idx}>
-            {item.type === 'message' && item.role && (
-              <ChatBubble
-                role={item.role}
-                subDescription={item.subDescription}
-                isAnswer={item.isAnswer}
-                actions={item.actions}
-              >
-                {item.text}
-              </ChatBubble>
-            )}
+        {chatHistory.map((item, idx) => {
+          const { type, role, text, subDescription, actions, isAnswer, selectionProps } = item
+          return (
+            <div key={idx}>
+              {type === 'message' && role && (
+                <ChatBubble role={role} subDescription={subDescription} isAnswer={isAnswer} actions={actions}>
+                  {text}
+                </ChatBubble>
+              )}
 
-            {item.type === 'selection' && item.selectionProps && <ChatSelection {...item.selectionProps} />}
+              {type === 'selection' && selectionProps && <ChatSelection {...selectionProps} />}
 
-            {item.type === 'horizontal-cards' && (
-              <HorizontalCards visibleIndex={visibleCardIndex} renderCards={renderHorizontalCards} />
-            )}
-          </div>
-        ))}
+              {type === 'horizontal-cards' && (
+                <HorizontalCards visibleIndex={visibleCardIndex} renderCards={renderHorizontalCards} />
+              )}
+            </div>
+          )
+        })}
         {(catText || freeText) != null && (
           <ChatBubble role='bot' isAnswer actions={step === 2 ? catActions : freeActions}>
             {catText ? catText : freeText}
