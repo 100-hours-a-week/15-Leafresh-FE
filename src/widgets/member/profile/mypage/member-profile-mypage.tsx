@@ -217,7 +217,7 @@ export const Mypage = () => {
       <RouteSection>
         <SectionTitle>나의 이용 내역</SectionTitle>
         <MenuList>
-          <MenuItem onClick={() => router.push(URL.MEMBER.CHALLENGES.CREATED.value)}>
+          <MenuItem onClick={() => router.push(URL.MEMBER.CHALLENGE.CREATE.LIST.value)}>
             <MenuText>생성한 챌린지</MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
           </MenuItem>

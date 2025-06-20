@@ -85,7 +85,7 @@ export function ChallengeParticipatePage() {
               successCount={achievement.success}
               maxCount={achievement.total}
               record={achievementRecords}
-              onClick={() => router.push(URL.CHALLENGE.PARTICIPATE.DETAILS.value(id))}
+              onClick={() => router.push(URL.MEMBER.CHALLENGE.VERIFICATION.STATUS.value(id))}
             />
           )
         })}

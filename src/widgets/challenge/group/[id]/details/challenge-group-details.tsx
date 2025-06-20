@@ -17,7 +17,7 @@ import {
   ChallengeVerifyExamples,
   VerificationImageData,
 } from '@/features/challenge/components'
-import { DatePicker, Loading, LucideIcon } from '@/shared/components'
+import { BackButton, DatePicker, Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -149,7 +149,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
       {
         onSuccess: () => {
           openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
-          router.replace(URL.CHALLENGE.PARTICIPATE.INDEX.value) // 참여중인 챌린지로 이동
+          router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value) // 참여중인 챌린지로 이동
         },
       },
     )

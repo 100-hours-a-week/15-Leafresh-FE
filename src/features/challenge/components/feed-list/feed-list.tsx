@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 
-import { VerificationCard } from '../../verification-card'
+import { VerificationCard } from '../verification-card'
 
 import { VerificationType } from '@/entities/challenge/api'
 import { CHALLENGE_CATEGORY_PAIRS, ChallengeCategoryType, convertLanguage } from '@/entities/challenge/model'
