@@ -102,7 +102,7 @@ const Mypage = () => {
     ...QUERY_OPTIONS.MEMBER.PROFILE_CARD,
   })
 
-  const { data: feedbackData } = useQuery({
+  const { data: feedbackData, isFetching } = useQuery({
     queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK,
     queryFn: getFeedback,
     ...QUERY_OPTIONS.MEMBER.FEEDBACK,
@@ -176,7 +176,7 @@ const Mypage = () => {
         />
         <FeedbackBox>
           <FeedbackText>나의 친환경 활동 피드백</FeedbackText>
-          {shouldPoll && <Loading />}
+          {(shouldPoll || isFetching) && <Loading />}
 
           {/* 피드백 */}
           {feedback?.content && !shouldPoll && <Feedback>{feedback.content}</Feedback>}

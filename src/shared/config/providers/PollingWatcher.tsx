@@ -6,6 +6,9 @@ import { useFeedbackPolling } from '@features/member/hooks/useFeedbackPolling'
 import { usePollingStore } from '@shared/context/polling/PollingStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
+import { useQueryClient } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import { QUERY_KEYS } from '../tanstack-query/query-keys'
 
 enum PollingTarget {
   PERSONAL_CHALLENGE_VERIFICATION_RESULT, // 개인 챌린지 인증 결과 조회
@@ -111,12 +114,14 @@ const PollingFeedbackResult = ({ type, onComplete }: FeedbackResultProps) => {
   })
 
   const data = FeedbackQuery.data
+  const queryClient = useQueryClient()
 
-  if (data) {
-    if (data.data.content !== null) {
+  useEffect(() => {
+    if (data?.data?.content) {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK })
       onComplete(type)
     }
-  }
+  }, [data?.data?.content, onComplete, type])
   return null
 }
 
