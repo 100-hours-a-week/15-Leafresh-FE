@@ -3,9 +3,9 @@
 import { addMonths, startOfMonth, startOfToday, subMonths } from 'date-fns'
 import { useRef, useState } from 'react'
 
-import { CalendarDates } from '../../dates'
-import { CalendarHeader } from '../../header'
-import { CalendarWeekdays } from '../../weekdays'
+import { CalendarDates } from '../dates'
+import { CalendarHeader } from '../header'
+import { CalendarWeekdays } from '../weekdays'
 
 import { theme } from '@/shared/config'
 import { useOutsideClick } from '@/shared/hooks'

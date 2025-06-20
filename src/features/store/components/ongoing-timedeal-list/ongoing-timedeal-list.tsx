@@ -1,7 +1,7 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import { ReactNode, useEffect, useState } from 'react'
 
-import { OngoingTimeDealCard } from '../../ongoing-timedeal-card'
+import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
 
 import { TimeDealProduct } from '@/entities/store/api'
 import { ApologizeContent, LucideIcon } from '@/shared/components'

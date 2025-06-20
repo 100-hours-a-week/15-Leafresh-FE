@@ -1,5 +1,4 @@
-import { theme } from '../../config/style/theme'
-import { ThemeColorType, ThemeFontSizeType } from '../../config/style/type'
+import { theme, ThemeColorType, ThemeFontSizeType } from '@/shared/config'
 
 export const getThemeColor = (key?: ThemeColorType) => {
   if (!key) return undefined

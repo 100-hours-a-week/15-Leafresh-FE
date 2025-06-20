@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
-import { VerificationImageData } from '../challenge-verify-examples'
+import { ChallengeVerifyExamples, VerificationImageData } from '../challenge-verify-examples'
 
 import { CHALLENGE_CATEGORIES_KOR, FullFormValues, PARTICIPANT_RANGE } from '@/entities/challenge/model'
 import { DatePicker, Dropdown, DropdownProps, ErrorText, Input, LucideIcon, TimePicker } from '@/shared/components'

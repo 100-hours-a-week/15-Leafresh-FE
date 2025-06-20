@@ -3,7 +3,7 @@
 import { ChevronDown, ChevronUp, Send } from 'lucide-react'
 import { useRef, useState } from 'react'
 
-import { CommentItem } from '../../verification-comment-item'
+import { CommentItem } from '../verification-comment-item'
 
 import { CommentType } from '@/entities/challenge/api'
 import { theme } from '@/shared/config'

@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect, useRef, useState } from 'react'
 
-import { ProductCard } from '../../product-card'
+import { ProductCard } from '../product-card'
 
 import { useInfiniteProducts } from '@/features/store/api'
 import { ApologizeContent, Loading } from '@/shared/components'

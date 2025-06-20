@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { ChallengeCategoryType, ChallengeCategoryTypeKor } from './types'
 
-import { LanguageMap } from '@/entities/common/model'
+import { LanguageMap } from '@/shared/lib'
 
 /** 카테고리 */
 export const CHALLENGE_CATEGORY_PAIRS: LanguageMap[] = [

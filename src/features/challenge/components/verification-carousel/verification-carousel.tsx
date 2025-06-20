@@ -3,7 +3,7 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState } from 'react'
 
-import { VerificationStatus, VerificationStatusCard } from '../../verification-status-card'
+import { VerificationStatus, VerificationStatusCard } from '../verification-status-card'
 
 import styled from '@emotion/styled'
 
