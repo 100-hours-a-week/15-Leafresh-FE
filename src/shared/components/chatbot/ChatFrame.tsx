@@ -192,7 +192,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   // 카테고리 설명 핸들러
   const handleExplainCategory = () => {
     addChatItem({ type: 'message', role: 'user', text: '카테고리 설명해줘' })
-    const descs = categoryDescriptions.flatMap((pair: [string, string], idx: number) => [
+    const categoryDescription = categoryDescriptions.flatMap((pair: [string, string], idx: number) => [
       pair[0],
       <br key={`title-${idx}`} />,
       pair[1],
@@ -200,7 +200,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       <br key={`gap-${idx}`} />,
     ])
 
-    setTimeout(() => addChatItem({ type: 'message', role: 'bot', text: descs }), 300)
+    setTimeout(() => addChatItem({ type: 'message', role: 'bot', text: categoryDescription }), 300)
 
     setTimeout(() => {
       addChatItem({
@@ -223,18 +223,18 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   }
 
   // 재선택 핸들러
-  const handleRetry = () => {
-    if (loading) {
-      setTimeout(() => handleRetry(), 1000)
-      return
-    }
-    addChatItem({ type: 'message', role: 'bot', text: '참여하고 싶은 챌린지 유형을 선택해주세요!' })
-    addChatItem({
-      type: 'selection',
-      selectionProps: challengeSelectionProps,
-    })
-    onRetry()
-  }
+  // const handleRetry = () => {
+  //   if (loading) {
+  //     setTimeout(() => handleRetry(), 1000)
+  //     return
+  //   }
+  //   addChatItem({ type: 'message', role: 'bot', text: '참여하고 싶은 챌린지 유형을 선택해주세요!' })
+  //   addChatItem({
+  //     type: 'selection',
+  //     selectionProps: challengeSelectionProps,
+  //   })
+  //   onRetry()
+  // }
 
   return (
     <Container>
