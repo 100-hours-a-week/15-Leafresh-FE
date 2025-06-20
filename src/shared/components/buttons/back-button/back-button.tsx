@@ -1,3 +1,5 @@
+'use client'
+
 import { LucideIcon } from '@/shared/components'
 import styled from '@emotion/styled'
 

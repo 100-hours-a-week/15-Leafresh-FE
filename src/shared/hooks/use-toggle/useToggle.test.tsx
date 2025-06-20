@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { act, renderHook } from '@testing-library/react'
-
 import { useToggle } from './useToggle'
+
+import { act, renderHook } from '@testing-library/react'
 
 describe('useToggle', () => {
   it('초기 상태를 false로 설정', () => {

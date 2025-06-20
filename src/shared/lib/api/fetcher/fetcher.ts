@@ -1,8 +1,8 @@
-import { isServer } from '@tanstack/react-query'
-
 import { clientFetchRequest } from '../client-fetcher'
 import { serverFetchRequest } from '../server-fetcher'
 import { ApiResponse, Endpoint, OptionsType } from '../type'
+
+import { isServer } from '@tanstack/react-query'
 
 export const fetchRequest = async <T>(endpoint: Endpoint, options: OptionsType = {}): Promise<ApiResponse<T>> => {
   // 서버 환경

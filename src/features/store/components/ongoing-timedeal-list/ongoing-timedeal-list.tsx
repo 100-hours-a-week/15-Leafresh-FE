@@ -1,3 +1,5 @@
+'use client'
+
 import useEmblaCarousel from 'embla-carousel-react'
 import { ReactNode, useEffect, useState } from 'react'
 

@@ -1,8 +1,7 @@
+import boundaries from 'eslint-plugin-boundaries'
 import prettier from 'eslint-plugin-prettier'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import unusedImport from 'eslint-plugin-unused-imports'
-import boundaries from 'eslint-plugin-boundaries'
-
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -84,7 +83,9 @@ const eslintConfig = [
             'motion/**',
             'date-fns/**',
             'zustand/**',
+            'vitest/**',
 
+            '@chakra-ui/**',
             '@hookform/**',
             '@tanstack/**',
             '@emotion/**',

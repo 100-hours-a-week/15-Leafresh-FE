@@ -1,4 +1,3 @@
-// shared/components/auth/AuthGuard.tsx
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
