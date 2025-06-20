@@ -1,13 +1,15 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+
 import { useGroupChallengeVerificationResult } from '@features/challenge/hook/use-group-verification-result'
 import { usePersonalChallengeVerificationResult } from '@features/challenge/hook/use-personal-verification-result'
 import { useFeedbackPolling } from '@features/member/hooks/useFeedbackPolling'
 import { usePollingStore } from '@shared/context/polling/PollingStore'
 import { ToastType } from '@shared/context/toast/type'
 import { useToast } from '@shared/hooks/useToast/useToast'
-import { useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
+
 import { QUERY_KEYS } from '../tanstack-query/query-keys'
 
 enum PollingTarget {
