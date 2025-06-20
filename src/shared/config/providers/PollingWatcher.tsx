@@ -113,8 +113,7 @@ const PollingFeedbackResult = ({ type, onComplete }: FeedbackResultProps) => {
   const data = FeedbackQuery.data
 
   if (data) {
-    const { data: result } = data
-    if (result !== null) {
+    if (data.data.content !== null) {
       onComplete(type)
     }
   }
