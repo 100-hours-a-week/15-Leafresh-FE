@@ -83,12 +83,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const sessionId = useChatSession()
   const messagesEndRef = useScrollToBottom([chatHistory, catText, freeText])
 
-  // chatSelections가 바뀔 때마다 세션 스토리지에 저장
-  useEffect(() => {
-    saveSelectionsToSession(chatSelections)
-  }, [chatSelections])
-
-  // chatSelections 업데이트 헬퍼
+  // chatSelections 업데이트, 세션 스토리지에 저장
   const updateChatSelections = (updates: Partial<typeof chatSelections>) => {
     setChatSelections(prev => {
       const next = { ...prev, ...updates }
