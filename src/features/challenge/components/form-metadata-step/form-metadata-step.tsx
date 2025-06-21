@@ -4,8 +4,9 @@ import { memo, useCallback, useEffect, useState } from 'react'
 
 import { sendGAEvent } from '@next/third-parties/google'
 
-import styled from '@emotion/styled'
 import { Controller, UseFormReturn } from 'react-hook-form'
+
+import styled from '@emotion/styled'
 
 import { CHALLENGE_CATEGORIES_KOR, FullFormValues, PARTICIPANT_RANGE } from '@/entities/challenge/model'
 

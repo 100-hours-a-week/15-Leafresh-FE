@@ -9,8 +9,7 @@ import { BadgeData, getBadgeList } from '@/entities/member/api'
 import { badgeCategory } from '@/entities/member/model'
 
 import { ApologizeContent, Loading } from '@/shared/components'
-import { theme } from '@/shared/config'
-import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { theme, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 export const BadgePage = () => {
   const {

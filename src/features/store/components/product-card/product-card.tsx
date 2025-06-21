@@ -15,8 +15,7 @@ import {
   Product,
 } from '@/entities/store/api'
 
-import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
-import { media, theme } from '@/shared/config'
+import { media, theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'

@@ -18,8 +18,7 @@ import {
 import { convertLanguage } from '@/entities/challenge/model'
 
 import { Loading, LucideIcon } from '@/shared/components'
-import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { theme } from '@/shared/config'
+import { theme, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { ChallengeDataType } from '@/shared/context'
 import { DAY_PAIRS, extractDateFromISOInKST } from '@/shared/lib'
 import { ApiResponse } from '@/shared/lib'

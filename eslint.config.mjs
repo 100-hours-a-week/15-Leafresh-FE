@@ -77,6 +77,7 @@ const eslintConfig = [
             '@next/**',
             'react',
             'react-dom',
+            'react-hook-form/**',
             'zod',
             'motion/**',
             'date-fns/**',
@@ -132,6 +133,11 @@ const eslintConfig = [
             },
             {
               pattern: 'zod',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'react-hook-form',
               group: 'external',
               position: 'before',
             },

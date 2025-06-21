@@ -19,8 +19,7 @@ import {
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
 import { Loading, LucideIcon } from '@/shared/components'
-import { theme } from '@/shared/config'
-import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
+import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useCameraModalStore, useConfirmModalStore, usePollingStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'

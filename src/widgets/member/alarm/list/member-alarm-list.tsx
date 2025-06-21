@@ -6,8 +6,7 @@ import styled from '@emotion/styled'
 
 import { useInfiniteMemberAlarmList } from '@/features/member/api'
 
-import { theme } from '@/shared/config'
-import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
+import { theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { getTimeDiff } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 

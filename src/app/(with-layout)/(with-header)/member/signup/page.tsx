@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react'
 
 import { useRouter } from 'next/navigation'
 
+import { useForm } from 'react-hook-form'
+
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
 
 import { NicknameDuplicate, ProfileResponse, SignUpBody, SignUpResponse, SignUpVariables } from '@/entities/member/api'
 import { OAuthType, SignupFormType, signupSchema } from '@/entities/member/model'

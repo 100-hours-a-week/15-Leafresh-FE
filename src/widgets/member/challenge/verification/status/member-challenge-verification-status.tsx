@@ -12,8 +12,7 @@ import {
 } from '@/entities/challenge/api'
 
 import { Loading } from '@/shared/components'
-import { theme } from '@/shared/config'
-import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
+import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'

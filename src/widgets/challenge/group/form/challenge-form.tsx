@@ -6,9 +6,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import { sendGAEvent } from '@next/third-parties/google'
 
+import { useForm } from 'react-hook-form'
+
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
 
 import { DetailStep, MetaDataStep } from '@/features/challenge/components'
 
@@ -30,8 +31,7 @@ import {
   fullSchema,
 } from '@/entities/challenge/model'
 
-import { theme } from '@/shared/config'
-import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
+import { theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType } from '@/shared/context'
 import { useToast } from '@/shared/hooks'

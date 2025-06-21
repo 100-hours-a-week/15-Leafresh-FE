@@ -16,8 +16,7 @@ import {
 } from '@/entities/store/api'
 
 import { LucideIcon } from '@/shared/components'
-import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
-import { media } from '@/shared/config'
+import { media, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
