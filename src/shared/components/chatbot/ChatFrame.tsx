@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { categoryDescriptions, CHAT_CHALLENGE_OPTIONS, ChatHistoryItem, initialMessages } from '@entities/chatbot/type'
@@ -92,28 +92,40 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     })
   }
 
-  // 거주 지역∙직장 형태 카드 렌더링
-  const renderHorizontalCards = (): React.ReactNode[] => {
-    const locationCard = (
-      <ChatSelection
-        selectionType='location'
-        title='거주 지역 선택'
-        subtitle='* 자신의 생활환경을 위해 선택해주세요.'
-        imageUrl={liveImage}
-        onSelect={handleLocationSelect}
-      />
-    )
-    const workCard = (
-      <ChatSelection
-        selectionType='workType'
-        title='직장 형태 선택'
-        subtitle='* 자신의 직업환경을 위해 선택해주세요.'
-        imageUrl={workImage}
-        onSelect={handleWorkTypeSelect}
-      />
-    )
-    return [locationCard, workCard]
+  // 지역 선택 핸들러
+  const handleLocationSelect = (value: string) => {
+    setSelectedLocation(value)
+    updateChatSelections({ location: value })
+    setVisibleCardIndex(1) // 두 번째 카드로 넘기기
   }
+
+  // 직장 형태 선택 핸들러
+  const handleWorkTypeSelect = (value: string) => {
+    setSelectedWorkType(value)
+    updateChatSelections({ workType: value })
+  }
+
+  const horizonCardData = useMemo(
+    () => [
+      {
+        key: 'location',
+        selectionType: 'location' as const,
+        title: '거주 지역 선택',
+        subtitle: '* 자신의 생활환경을 위해 선택해주세요.',
+        imageUrl: liveImage,
+        onSelect: handleLocationSelect,
+      },
+      {
+        key: 'work',
+        selectionType: 'workType' as const,
+        title: '직장 형태 선택',
+        subtitle: '* 자신의 직업환경을 위해 선택해주세요.',
+        imageUrl: workImage,
+        onSelect: handleWorkTypeSelect,
+      },
+    ],
+    [liveImage, workImage, handleLocationSelect, handleWorkTypeSelect],
+  )
 
   // 두 선택(지역 & 직장) 완료 시
   useEffect(() => {
@@ -140,19 +152,6 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       setSelectedWorkType(null)
     }
   }, [selectedLocation, selectedWorkType])
-
-  // 지역 선택 핸들러
-  const handleLocationSelect = (value: string) => {
-    setSelectedLocation(value)
-    updateChatSelections({ location: value })
-    setVisibleCardIndex(1) // 두 번째 카드로 넘기기
-  }
-
-  // 직장 형태 선택 핸들러
-  const handleWorkTypeSelect = (value: string) => {
-    setSelectedWorkType(value)
-    updateChatSelections({ workType: value })
-  }
 
   // 챌린지 카테고리 선택 핸들러
   const handleChallengeSelect = useCallback(
@@ -217,20 +216,6 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
     onSelect: handleChallengeSelect,
   }
 
-  // 재선택 핸들러
-  // const handleRetry = () => {
-  //   if (loading) {
-  //     setTimeout(() => handleRetry(), 1000)
-  //     return
-  //   }
-  //   addChatItem({ type: 'message', role: 'bot', text: '참여하고 싶은 챌린지 유형을 선택해주세요!' })
-  //   addChatItem({
-  //     type: 'selection',
-  //     selectionProps: challengeSelectionProps,
-  //   })
-  //   onRetry()
-  // }
-
   return (
     <Container>
       <MessagesContainer>
@@ -247,7 +232,7 @@ export default function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
               {type === 'selection' && selectionProps && <ChatSelection {...selectionProps} />}
 
               {type === 'horizontal-cards' && (
-                <HorizontalCards visibleIndex={visibleCardIndex} renderCards={renderHorizontalCards} />
+                <HorizontalCards visibleIndex={visibleCardIndex} renderCards={horizonCardData} />
               )}
             </div>
           )
