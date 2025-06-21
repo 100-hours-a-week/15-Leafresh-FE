@@ -89,6 +89,7 @@ const eslintConfig = [
             '@hookform/**',
             '@tanstack/**',
             '@emotion/**',
+            '@public/**',
 
             // 각 레이어별 허용 구조
             '@/widgets/*',

@@ -30,6 +30,8 @@ import { copyToClipboard } from '@/shared/lib/utils'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
 import styled from '@emotion/styled'
+import LikeIcon from '@public/icon/like.svg'
+import UnLikeIcon from '@public/icon/unLike.svg'
 import { useQuery } from '@tanstack/react-query'
 
 interface VerificationDetailsProps {
@@ -55,8 +57,6 @@ export const VerificationDetails = ({
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
-
-  console.log('verificaiton Data: ', verificationData)
 
   const { data: commentData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.COMMENT(challengeId, verificationId),
@@ -94,14 +94,13 @@ export const VerificationDetails = ({
   )
 
   const verifications: VerificationDetailResponse = verificationData?.data ?? ({} as VerificationDetailResponse)
-  console.log(verifications)
 
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
-  console.log(comments)
 
   const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
   const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
   const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
+
   const [localComments, setLocalComments] = useState<CommentType[]>(comments?.comments ?? [])
 
   /** 좋아요 핸들러 */
@@ -380,7 +379,7 @@ export const VerificationDetails = ({
       <Stats>
         <LeftStat>
           <LikeButton onClick={handleLikeToggle}>
-            {isLiked ? <LikeIcon src='/icon/like.svg' alt='♥' /> : <LikeIcon src='/icon/unLike.svg' alt='♥' />}
+            <LikeIconImage src={isLiked ? LikeIcon : UnLikeIcon} alt='좋아요 아이콘' />
             {likeCount}
           </LikeButton>
           <Stat>
@@ -499,7 +498,7 @@ const LikeButton = styled.button`
   cursor: pointer;
 `
 
-const LikeIcon = styled(Image)`
+const LikeIconImage = styled(Image)`
   height: 16px;
   width: auto;
 `

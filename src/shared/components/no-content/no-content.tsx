@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 
 import { theme } from '@/shared/config'
 import styled from '@emotion/styled'
-
+import LogoCharacterImage from '@public/image/main-icon.svg'
 interface NoContentProps {
   title: string
   buttonText: string // 버튼에 들어갈 텍스트
@@ -16,7 +16,7 @@ interface NoContentProps {
 export const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProps): ReactNode => {
   return (
     <EmptyWrapper className={className}>
-      <Image src='/image/main-icon.svg' alt='로고 캐릭터' />
+      <Image src={LogoCharacterImage} alt='로고 캐릭터' />
       <NoChallengeMessage>{title}</NoChallengeMessage>
       <CreateButton onClick={clickHandler}>{buttonText}</CreateButton>
     </EmptyWrapper>

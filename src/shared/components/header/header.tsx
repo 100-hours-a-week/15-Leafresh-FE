@@ -7,6 +7,7 @@ import { BackButton, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import styled from '@emotion/styled'
+import LogoImage from '@public/image/logo.svg'
 
 interface HeaderProps {
   padding: number
@@ -53,7 +54,7 @@ export const Header = ({ padding }: HeaderProps) => {
       <CustomWidthWrapper padding={padding}>
         {!hasBackButton ? (
           <LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
-            <StyledImage src='/image/logo.svg' alt='Leafresh 로고' priority />
+            <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
           </LogoWrapper>
         ) : (
           <BackButton />

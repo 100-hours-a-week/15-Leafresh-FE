@@ -21,6 +21,7 @@ import { useAuth, useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import styled from '@emotion/styled'
+import LeafIcon from '@public/icon/leaf.png'
 import { useQuery } from '@tanstack/react-query'
 
 type WarningType = {
@@ -207,7 +208,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
             <Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
-                인증 성공시 <Image src='/icon/leaf.png' alt='나뭇잎 아이콘' /> {leafReward}개 지급
+                인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
               </li>
             </Warning>
           </WarningList>

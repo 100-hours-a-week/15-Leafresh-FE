@@ -11,6 +11,8 @@ import { QUERY_KEYS, QUERY_OPTIONS, theme } from '@/shared/config'
 import { ToastType, useOAuthStateStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import styled from '@emotion/styled'
+import KakaoLoginButton from '@public/image/kakao_login.svg'
+import LogoImage from '@public/image/logo.svg'
 import { useQuery } from '@tanstack/react-query'
 
 const LoginPage = () => {
@@ -63,14 +65,14 @@ const LoginPage = () => {
 
   return (
     <Container>
-      <Logo src='/image/logo.svg' alt='Leafresh' width={160} height={60} />
+      <Logo src={LogoImage} alt='Leafresh' width={160} height={60} />
       <DividerWrapper>
         <Line />
         <Text>로그인 / 회원가입</Text>
         <Line />
       </DividerWrapper>
       {!isLoading ? (
-        <KakaoImage src='/image/kakao_login.svg' alt='kakao' onClick={() => handleLogin('kakao')} />
+        <KakaoImage src={KakaoLoginButton} alt='kakao' onClick={() => handleLogin('kakao')} />
       ) : (
         <Loading />
       )}

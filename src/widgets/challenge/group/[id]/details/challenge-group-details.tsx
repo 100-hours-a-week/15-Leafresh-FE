@@ -16,13 +16,13 @@ import {
   VerificationImageData,
 } from '@/features/challenge/components'
 import { BackButton, DatePicker, Loading, LucideIcon } from '@/shared/components'
-import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
-import { theme } from '@/shared/config'
+import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import styled from '@emotion/styled'
+import LeafIcon from '@public/icon/leaf.png'
 import { useQuery } from '@tanstack/react-query'
 
 type WarningType = {
@@ -189,7 +189,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
             <Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
-                인증 성공시 <Image src='/icon/leaf.png' alt='나뭇잎 아이콘' /> {leafReward}개 지급
+                인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
               </li>
             </Warning>
           </WarningList>
