@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { categoryDescriptions, CHAT_CHALLENGE_OPTIONS, ChatHistoryItem, initialMessages } from '@entities/chatbot/type'
+import { categoryDescriptions, CHAT_CHALLENGE_OPTIONS, initialMessages } from '@entities/chatbot/constants'
 import {
   getDisplayLabel,
   getRandomLiveImage,

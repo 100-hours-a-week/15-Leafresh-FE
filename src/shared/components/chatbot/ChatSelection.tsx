@@ -7,12 +7,9 @@ import styled from '@emotion/styled'
 
 import { theme } from '@shared/styles/theme'
 
-import {
-  CHAT_CHALLENGE_OPTIONS,
-  type ChatOption,
-  LOCATION_OPSIONS,
-  WORKTYPE_OPTIONS,
-} from '../../../entities/chatbot/type'
+import { CHAT_CHALLENGE_OPTIONS, LOCATION_OPSIONS, WORKTYPE_OPTIONS } from '@entities/chatbot/constants'
+
+import { ChatOption } from '@entities/chatbot/type'
 
 export interface ChatSelectionProps {
   selectionType: 'location' | 'workType' | 'challenge' | 'retry'
