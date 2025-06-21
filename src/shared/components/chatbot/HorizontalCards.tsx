@@ -4,6 +4,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 import SlideArea from '@shared/components/slidearea/SlideArea'
+
 import ChatSelection from './ChatSelection'
 
 interface HorizontalCardsProps {
