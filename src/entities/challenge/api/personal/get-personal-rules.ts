@@ -1,7 +1,7 @@
-import { ChallengeVerificationResultType } from '../../model'
-
 import { DayType, ENDPOINTS, fetchRequest } from '@/shared/lib'
 import { TimeFormatString } from '@/shared/type'
+
+import { ChallengeVerificationResultType } from '../../model'
 
 export type PersonalChallengeExampleImageType = {
   id: number

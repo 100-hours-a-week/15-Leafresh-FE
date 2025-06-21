@@ -1,14 +1,17 @@
 'use client'
 
-import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
+
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
+
 import { CheckIcon, LucideIcon, SwitchTap, VerificationGuideModal } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { ToastType, useCameraModalStore } from '@/shared/context'
 import { useImageUpload, useScrollLock, useToast } from '@/shared/hooks'
-import styled from '@emotion/styled'
 
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']

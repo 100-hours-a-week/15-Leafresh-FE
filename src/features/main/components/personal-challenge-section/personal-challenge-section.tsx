@@ -1,16 +1,20 @@
 'use client'
 
-import useEmblaCarousel from 'embla-carousel-react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+
+import { sendGAEvent } from '@next/third-parties/google'
+
+import styled from '@emotion/styled'
+import useEmblaCarousel from 'embla-carousel-react'
+
 import { PersonalChallengeType } from '@/entities/challenge/api'
+
 import { LeafReward, LucideIcon } from '@/shared/components'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
 
 interface PersonalChallengeSectionProps {
   personalChallenges: PersonalChallengeType[]

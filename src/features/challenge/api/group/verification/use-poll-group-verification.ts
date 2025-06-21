@@ -1,6 +1,8 @@
-import { getGroupVerificationResult } from '@/entities/challenge/api'
-import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { useQuery } from '@tanstack/react-query'
+
+import { getGroupVerificationResult } from '@/entities/challenge/api'
+
+import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 type PollingQueryOptions = {
   enabled: boolean // 실행 가능 여부 (불필요한 요청을 막기 위해)

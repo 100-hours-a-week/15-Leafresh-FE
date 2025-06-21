@@ -1,11 +1,10 @@
-import boundaries from 'eslint-plugin-boundaries'
-import prettier from 'eslint-plugin-prettier'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import unusedImport from 'eslint-plugin-unused-imports'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 import { FlatCompat } from '@eslint/eslintrc'
+import boundaries from 'eslint-plugin-boundaries'
+import prettier from 'eslint-plugin-prettier'
+import unusedImport from 'eslint-plugin-unused-imports'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -19,7 +18,6 @@ const eslintConfig = [
   { ignores: ['.next', '.lintstagedrc.js'] },
   {
     plugins: {
-      'simple-import-sort': simpleImportSort,
       'unused-imports': unusedImport,
       prettier: prettier,
       boundaries: boundaries,
@@ -105,20 +103,95 @@ const eslintConfig = [
         },
       ],
 
-      // simpleImportSort
-      'simple-import-sort/imports': [
-        'error',
+      // Import 순서
+      'import/order': [
+        'warn',
         {
-          groups: [
-            ['^node:', '^\\w'], // 1. node, builtin 모듈
-            // ['^react', '^@?\\w'], // 2. 외부 라이브러리 (react 관련 우선)
-            ['^@app/', '^@entities/', '^@features/', '^@shared/', '^/public/'], // 3. 내부 alias 경로 - @app, @features 등
-            ['^\\u0000', '^\\.\\.(?!/?$)', '^\\.'], // 4. 상대경로 import
-            ['^.+\\.s?css$'], // 5. 스타일 import
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          pathGroups: [
+            // 외부 라이브러리
+            {
+              pattern: 'react',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'react-dom',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'next/**',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: '@next/**',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'zod',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'motion/**',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'date-fns/**',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'zustand/**',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'vitest/**',
+              group: 'external',
+              position: 'before',
+            },
+
+            // FSD 레이어 파일
+            {
+              pattern: '@/app/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/widgets/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/features/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/entities/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/shared/**',
+              group: 'internal',
+              position: 'before',
+            },
           ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+          'newlines-between': 'always',
         },
       ],
-      'simple-import-sort/exports': 'error',
 
       // unusedImport
       'unused-imports/no-unused-imports': 'error',

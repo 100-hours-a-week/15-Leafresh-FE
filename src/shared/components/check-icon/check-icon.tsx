@@ -2,8 +2,9 @@
 
 import { motion } from 'motion/react'
 
-import { theme } from '@/shared/config'
 import styled from '@emotion/styled'
+
+import { theme } from '@/shared/config'
 
 export const CheckIcon = () => {
   return (

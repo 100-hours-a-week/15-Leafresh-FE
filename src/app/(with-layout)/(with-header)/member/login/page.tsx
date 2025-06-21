@@ -1,19 +1,23 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
+
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 import { Login } from '@/entities/member/api'
 import { LowercaseOAuthType } from '@/entities/member/model'
+
 import { Loading } from '@/shared/components'
 import { QUERY_KEYS, QUERY_OPTIONS, theme } from '@/shared/config'
 import { ToastType, useOAuthStateStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
-import styled from '@emotion/styled'
+
 import KakaoLoginButton from '@public/image/kakao_login.svg'
 import LogoImage from '@public/image/logo.svg'
-import { useQuery } from '@tanstack/react-query'
 
 const LoginPage = () => {
   const openToast = useToast()

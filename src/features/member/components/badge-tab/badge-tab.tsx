@@ -1,14 +1,17 @@
 'use client'
 
-import Image from 'next/image'
 import { useState } from 'react'
+
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
 
 import { BadgeData } from '@/entities/member/api'
 import { Category } from '@/entities/member/model'
+
 import { theme } from '@/shared/config'
 import { useInfoModalStore } from '@/shared/context'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
 
 interface BadgeTabProps {
   categories: Category[]

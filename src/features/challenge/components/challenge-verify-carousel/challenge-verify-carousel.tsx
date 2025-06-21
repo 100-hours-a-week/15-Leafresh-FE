@@ -1,11 +1,13 @@
 'use client'
 
-import useEmblaCarousel from 'embla-carousel-react'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import { theme } from '@/shared/config'
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
+import useEmblaCarousel from 'embla-carousel-react'
+
+import { theme } from '@/shared/config'
 
 interface ChallengeVerifyCarouselProps {
   images: string[]

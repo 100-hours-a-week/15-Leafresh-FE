@@ -1,7 +1,13 @@
 'use client'
+import { ReactNode, useState } from 'react'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useState } from 'react'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
+import { CommentList } from '@/features/challenge/components'
 
 import {
   CommentResponse,
@@ -18,7 +24,7 @@ import {
   PutCommentVariables,
   VerificationDetailResponse,
 } from '@/entities/challenge/api'
-import { CommentList } from '@/features/challenge/components'
+
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
@@ -29,10 +35,9 @@ import { getTimeDiff } from '@/shared/lib'
 import { copyToClipboard } from '@/shared/lib/utils'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
-import styled from '@emotion/styled'
+
 import LikeIcon from '@public/icon/like.svg'
 import UnLikeIcon from '@public/icon/unLike.svg'
-import { useQuery } from '@tanstack/react-query'
 
 interface VerificationDetailsProps {
   challengeId: number

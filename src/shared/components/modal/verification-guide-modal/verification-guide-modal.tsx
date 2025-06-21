@@ -1,7 +1,13 @@
 'use client'
 
-import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
+
+import { AnimatePresence, motion } from 'motion/react'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
+import { ChallengeVerifyExamples } from '@/features/challenge/components'
 
 import {
   getGroupChallengeRulesList,
@@ -10,15 +16,13 @@ import {
   PersonalChallengeRulesListResponse,
 } from '@/entities/challenge/api'
 import { convertLanguage } from '@/entities/challenge/model'
-import { ChallengeVerifyExamples } from '@/features/challenge/components'
+
 import { Loading, LucideIcon } from '@/shared/components'
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { theme } from '@/shared/config'
 import { ChallengeDataType } from '@/shared/context'
 import { DAY_PAIRS, extractDateFromISOInKST } from '@/shared/lib'
 import { ApiResponse } from '@/shared/lib'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 interface VerificationGuideModalProps {
   isOpen: boolean

@@ -2,12 +2,14 @@
 
 import { useEffect, useRef } from 'react'
 
+import styled from '@emotion/styled'
+
 import { useInfiniteMemberAlarmList } from '@/features/member/api'
+
 import { theme } from '@/shared/config'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { getTimeDiff } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
 
 export const MemberAlarmList = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()

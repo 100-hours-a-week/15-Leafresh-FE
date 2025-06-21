@@ -1,12 +1,15 @@
 'use client'
 
-import Image from 'next/image'
 import { useState } from 'react'
 
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
+
 import { CommentType } from '@/entities/challenge/api'
+
 import { theme } from '@/shared/config'
 import { getTimeDiff } from '@/shared/lib'
-import styled from '@emotion/styled'
 
 interface CommentItemProps {
   comment: CommentType

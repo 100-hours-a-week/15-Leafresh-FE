@@ -1,16 +1,20 @@
 'use client'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
-import { ChallengeStatus, getGroupParticipationsCount } from '@/entities/member/api'
+import { useRouter } from 'next/navigation'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
 import { useInfiniteGroupParticipations } from '@/features/challenge/api'
 import { GroupChallengeParticipantCard } from '@/features/challenge/components'
+
+import { ChallengeStatus, getGroupParticipationsCount } from '@/entities/member/api'
+
 import { Loading, NoContent, SwitchTap } from '@/shared/components'
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 const statusMap: Record<number, ChallengeStatus> = {
   0: 'not_started',

@@ -1,9 +1,12 @@
 import { notFound } from 'next/navigation'
 
-import { getGroupChallengeDetails, getGroupChallengeParticipateList } from '@/entities/challenge/api'
-import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { ChallengeGroupParticipateList } from '@/widgets/challenge'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { ChallengeGroupParticipateList } from '@/widgets/challenge'
+
+import { getGroupChallengeDetails, getGroupChallengeParticipateList } from '@/entities/challenge/api'
+
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 interface GroupChallengePageProps {
   params: Promise<{ id: string }>

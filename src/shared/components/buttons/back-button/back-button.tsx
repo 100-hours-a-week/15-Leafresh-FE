@@ -1,7 +1,8 @@
 'use client'
 
-import { LucideIcon } from '@/shared/components'
 import styled from '@emotion/styled'
+
+import { LucideIcon } from '@/shared/components'
 
 export interface BackButtonProps {
   onClick?: () => void

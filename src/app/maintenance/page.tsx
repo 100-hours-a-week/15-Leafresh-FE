@@ -2,8 +2,10 @@
 
 import Image from 'next/image'
 
-import { media, theme } from '@/shared/config'
 import styled from '@emotion/styled'
+
+import { media, theme } from '@/shared/config'
+
 import ServiceReadyImage from '@public/image/service_ready.svg'
 
 export default function ServiceReady() {

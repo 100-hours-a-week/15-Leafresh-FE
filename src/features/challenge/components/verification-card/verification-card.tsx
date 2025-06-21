@@ -1,9 +1,13 @@
 'use client'
 
-import { motion } from 'motion/react'
+import { ReactNode, useState } from 'react'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useState } from 'react'
+
+import { motion } from 'motion/react'
+
+import styled from '@emotion/styled'
 
 import {
   CreateVerificationLikeResponse,
@@ -13,13 +17,14 @@ import {
   Verification,
 } from '@/entities/challenge/api'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@/entities/challenge/model'
+
 import { LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { copyToClipboard, getTimeDiff } from '@/shared/lib'
-import styled from '@emotion/styled'
+
 import ActiveLikeIcon from '@public/icon/like_active.svg'
 import InActiveLikeIcon from '@public/icon/like_inactive.svg'
 

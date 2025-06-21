@@ -1,9 +1,11 @@
 'use client'
 
-import Image from 'next/image'
 import { ReactNode } from 'react'
 
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
+
 import FeedBackIcon from '@public/icon/feedback_button.svg'
 interface FeedBackButtonProps {
   className?: string

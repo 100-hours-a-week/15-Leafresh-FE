@@ -2,9 +2,10 @@
 
 import React from 'react'
 
+import styled from '@emotion/styled'
+
 import { LucideIcon, LucideIconProps } from '@/shared/components'
 import { theme, ThemeColorType } from '@/shared/config'
-import styled from '@emotion/styled'
 
 export type VerificationStatus = 'SUCCESS' | 'FAILURE' | 'PENDING_APPROVAL'
 

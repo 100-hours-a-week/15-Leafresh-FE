@@ -1,7 +1,10 @@
-import { getVerificationCommemtList, getVerificationDetails } from '@/entities/challenge/api'
-import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { VerificationDetails } from '@/widgets/challenge'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { VerificationDetails } from '@/widgets/challenge'
+
+import { getVerificationCommemtList, getVerificationDetails } from '@/entities/challenge/api'
+
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 interface PageProps {
   params: Promise<{

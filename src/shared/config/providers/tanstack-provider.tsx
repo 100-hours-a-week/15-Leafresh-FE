@@ -1,9 +1,10 @@
 'use client'
 import { ReactNode } from 'react'
 
-import { getQueryClient } from '@/shared/config'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
+import { getQueryClient } from '@/shared/config'
 
 interface Props {
   children: ReactNode

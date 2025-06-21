@@ -1,13 +1,16 @@
 'use client'
 
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
+import { BadgeTab } from '@/features/member/components'
+
 import { BadgeData, getBadgeList } from '@/entities/member/api'
 import { badgeCategory } from '@/entities/member/model'
-import { BadgeTab } from '@/features/member/components'
+
 import { ApologizeContent, Loading } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 export const BadgePage = () => {
   const {

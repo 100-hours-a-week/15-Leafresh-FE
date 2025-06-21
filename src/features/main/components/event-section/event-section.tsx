@@ -1,17 +1,21 @@
 'use client'
 
-import Autoplay from 'embla-carousel-autoplay'
-import useEmblaCarousel from 'embla-carousel-react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+
+import { sendGAEvent } from '@next/third-parties/google'
+
+import styled from '@emotion/styled'
+import Autoplay from 'embla-carousel-autoplay'
+import useEmblaCarousel from 'embla-carousel-react'
+
 import { EventChallenge } from '@/entities/challenge/api'
+
 import { media } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
 
 interface EventSectionProps {
   eventChallenges: EventChallenge[]

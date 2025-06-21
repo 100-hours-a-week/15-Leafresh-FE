@@ -1,15 +1,18 @@
 'use client'
 
-import useEmblaCarousel from 'embla-carousel-react'
-import { X } from 'lucide-react'
-import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
+import useEmblaCarousel from 'embla-carousel-react'
+import { X } from 'lucide-react'
+
 import { ChallengeVerificationResultType } from '@/entities/challenge/model'
+
 import { theme } from '@/shared/config'
 import { useImageZoomStore } from '@/shared/context'
 import { useKeyClose, useScrollLock } from '@/shared/hooks'
-import styled from '@emotion/styled'
 
 export const ImageZoomModal = () => {
   const [isInitial, setIsInitial] = useState(true)

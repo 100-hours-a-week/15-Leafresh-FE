@@ -1,7 +1,10 @@
-import { ChallengeStatus, getGroupParticipations, getGroupParticipationsCount } from '@/entities/member/api'
-import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { ChallengeParticipatePage } from '@/widgets/member'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { ChallengeParticipatePage } from '@/widgets/member'
+
+import { ChallengeStatus, getGroupParticipations, getGroupParticipationsCount } from '@/entities/member/api'
+
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 export default async function Page() {
   try {

@@ -1,8 +1,14 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ReactNode } from 'react'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
+import { ChallengeVerifyExamples, VerificationImageData } from '@/features/challenge/components'
 
 import {
   getPersonalChallengeDetails,
@@ -11,7 +17,7 @@ import {
   VerifyVariables,
 } from '@/entities/challenge/api'
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
-import { ChallengeVerifyExamples, VerificationImageData } from '@/features/challenge/components'
+
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
@@ -20,9 +26,8 @@ import { ToastType, useCameraModalStore, useConfirmModalStore, usePollingStore }
 import { useAuth, useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
+
 import LeafIcon from '@public/icon/leaf.png'
-import { useQuery } from '@tanstack/react-query'
 
 type WarningType = {
   isWarning: boolean

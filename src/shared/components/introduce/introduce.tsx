@@ -2,11 +2,13 @@
 
 import Image from 'next/image'
 
-import { getLeafAccumulateCount, getVerificationAccumulateCount } from '@/entities/common/api'
-import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { useCountUp } from '@/shared/hooks'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
+
+import { getLeafAccumulateCount, getVerificationAccumulateCount } from '@/entities/common/api'
+
+import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { useCountUp } from '@/shared/hooks'
 
 export const Introduce = () => {
   const { data: verificationCountData, isLoading: isVerificationLoading } = useQuery({

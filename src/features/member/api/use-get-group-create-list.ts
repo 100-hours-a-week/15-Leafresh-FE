@@ -1,7 +1,9 @@
+import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
+
 import { MemberGroupChallengeCreations, MemberGroupChallengeCreationsResponse } from '@/entities/member/api'
+
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { ApiResponse } from '@/shared/lib'
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
 export const useInfiniteMemberGroupChallengeCreations = () => {
   return useInfiniteQuery<

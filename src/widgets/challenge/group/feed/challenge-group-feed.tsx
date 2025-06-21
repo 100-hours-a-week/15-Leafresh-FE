@@ -1,13 +1,17 @@
 'use client'
-import Image from 'next/image'
 import { ReactNode, useState } from 'react'
+
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
+import { FeedList } from '@/features/challenge/components'
 
 import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@/entities/challenge/api'
 import { ChallengeCategoryType } from '@/entities/challenge/model'
-import { FeedList } from '@/features/challenge/components'
+
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 interface FeedPageProps {
   className?: string

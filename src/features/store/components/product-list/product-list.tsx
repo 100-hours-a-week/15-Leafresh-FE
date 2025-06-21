@@ -2,13 +2,15 @@
 
 import { ReactNode, useEffect, useRef, useState } from 'react'
 
-import { ProductCard } from '../product-card'
+import styled from '@emotion/styled'
 
 import { useInfiniteProducts } from '@/features/store/api'
+
 import { ApologizeContent, Loading } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
+
+import { ProductCard } from '../product-card'
 
 interface ProductListProps {
   className?: string

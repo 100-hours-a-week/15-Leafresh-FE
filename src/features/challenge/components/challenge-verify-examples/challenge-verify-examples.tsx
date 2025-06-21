@@ -2,12 +2,14 @@
 
 import { useEffect } from 'react'
 
-import { VerificationImageInput } from '../verification-image-input'
+import styled from '@emotion/styled'
 
 import { CHALLENGE_VERIFICATION_RESULT, ChallengeVerificationResultType } from '@/entities/challenge/model'
+
 import { theme } from '@/shared/config'
 import { ImageZoomModalData, useImageZoomStore } from '@/shared/context'
-import styled from '@emotion/styled'
+
+import { VerificationImageInput } from '../verification-image-input'
 
 export interface VerificationImageData {
   id?: number

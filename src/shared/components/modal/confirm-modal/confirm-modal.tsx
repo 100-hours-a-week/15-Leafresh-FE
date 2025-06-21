@@ -1,10 +1,11 @@
 'use client'
 import { useRef } from 'react'
 
+import styled from '@emotion/styled'
+
 import { theme } from '@/shared/config'
 import { useConfirmModalStore } from '@/shared/context'
 import { useKeyClose, useOutsideClick, useScrollLock } from '@/shared/hooks'
-import styled from '@emotion/styled'
 
 export const ConfirmModal = () => {
   const { isOpen, title, description, onConfirm, onCancel, closeConfirmModal } = useConfirmModalStore()

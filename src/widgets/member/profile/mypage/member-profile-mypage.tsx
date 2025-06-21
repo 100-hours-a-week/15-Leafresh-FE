@@ -1,6 +1,13 @@
 'use client'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import { keyframes } from '@emotion/react'
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
+import { ProfileBox, ProfileCard, RecentBadgeBox } from '@/features/member/components'
 
 import {
   FeedbackResponse,
@@ -15,7 +22,7 @@ import {
   ProfileResponse,
   RecentBadge,
 } from '@/entities/member/api'
-import { ProfileBox, ProfileCard, RecentBadgeBox } from '@/features/member/components'
+
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
@@ -23,9 +30,6 @@ import { URL } from '@/shared/constants'
 import { ToastType, useOAuthUserStore, useUserStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import { keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 const slideRotateIn = keyframes`
   0% {

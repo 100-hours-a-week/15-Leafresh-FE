@@ -2,10 +2,11 @@
 
 import { useRef, useState } from 'react'
 
+import styled from '@emotion/styled'
+
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { useKeyClose, useOutsideClick, useToggle } from '@/shared/hooks'
-import styled from '@emotion/styled'
 
 export interface DropdownProps<OptionType> {
   label: string

@@ -1,17 +1,20 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import styled from '@emotion/styled'
 
 import { DeleteGroupChallengeResponse, DeleteGroupChallengeVariables } from '@/entities/challenge/api'
 import { CHALLENGE_CATEGORY_PAIRS, ChallengeCategoryType, convertLanguage } from '@/entities/challenge/model'
+
 import { LeafReward, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { ISOFormatString } from '@/shared/type'
-import styled from '@emotion/styled'
 
 export type GroupChallenge = {
   id: number

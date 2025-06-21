@@ -1,6 +1,7 @@
 'use client'
 
 import { useGroupChallengeVerificationResult, usePersonalChallengeVerificationResult } from '@/features/challenge/api'
+
 import { ToastType, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 

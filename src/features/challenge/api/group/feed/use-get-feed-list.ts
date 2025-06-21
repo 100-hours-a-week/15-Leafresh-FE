@@ -1,9 +1,11 @@
 'use client'
 
+import { useInfiniteQuery } from '@tanstack/react-query'
+
 import { getGroupChallengeFeedList } from '@/entities/challenge/api'
 import { ChallengeCategoryType } from '@/entities/challenge/model'
+
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { useInfiniteQuery } from '@tanstack/react-query'
 
 export const useInfiniteGroupChallengeFeedList = (category?: ChallengeCategoryType) => {
   return useInfiniteQuery({

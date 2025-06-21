@@ -1,13 +1,15 @@
 'use client'
 
-import { ChevronDown, ChevronUp, Send } from 'lucide-react'
 import { useRef, useState } from 'react'
 
-import { CommentItem } from '../verification-comment-item'
+import styled from '@emotion/styled'
+import { ChevronDown, ChevronUp, Send } from 'lucide-react'
 
 import { CommentType } from '@/entities/challenge/api'
+
 import { theme } from '@/shared/config'
-import styled from '@emotion/styled'
+
+import { CommentItem } from '../verification-comment-item'
 
 interface CommentListProps {
   comments: CommentType[]

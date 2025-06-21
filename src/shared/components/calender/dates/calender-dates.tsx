@@ -1,5 +1,6 @@
 'use client'
 
+import styled from '@emotion/styled'
 import {
   addDays,
   eachDayOfInterval,
@@ -16,7 +17,6 @@ import {
 } from 'date-fns'
 
 import { theme } from '@/shared/config'
-import styled from '@emotion/styled'
 
 interface CalendarDatesProps {
   currentMonth: Date

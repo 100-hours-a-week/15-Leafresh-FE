@@ -1,11 +1,13 @@
 'use client'
 
-import Image from 'next/image'
 import { ReactNode } from 'react'
+
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
 
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
-import styled from '@emotion/styled'
 
 interface ChatHeaderProps {
   close: () => void

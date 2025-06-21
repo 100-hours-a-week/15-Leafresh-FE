@@ -1,10 +1,12 @@
 'use client'
 
-import Image from 'next/image'
 import React, { ReactNode } from 'react'
 
-import { theme } from '@/shared/config'
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
+
+import { theme } from '@/shared/config'
 
 export interface ChatBubbleProps {
   role: 'bot' | 'user'

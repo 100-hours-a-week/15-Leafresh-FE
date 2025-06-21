@@ -1,12 +1,13 @@
 'use client'
 
-import { format } from 'date-fns'
 import React, { useState } from 'react'
+
+import styled from '@emotion/styled'
+import { format } from 'date-fns'
 
 import { Calendar } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { dayToString } from '@/shared/lib'
-import styled from '@emotion/styled'
 
 interface DatePickerProps {
   icon: React.JSX.Element

@@ -1,7 +1,13 @@
 'use client'
+import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react'
+
+import styled from '@emotion/styled'
+
+import { useInfiniteGroupChallenges } from '@/features/challenge/api'
+import { GroupChallenge, GroupChallengeCard } from '@/features/challenge/components'
 
 import { GroupChallengeCategory, GroupChallengeItem } from '@/entities/challenge/api'
 import {
@@ -10,12 +16,10 @@ import {
   convertLanguage,
   FilterChallengeCategoryType,
 } from '@/entities/challenge/model'
-import { useInfiniteGroupChallenges } from '@/features/challenge/api'
-import { GroupChallenge, GroupChallengeCard } from '@/features/challenge/components'
+
 import { Loading, NoContent } from '@/shared/components'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
 
 interface GroupChallengeSectionsProps {
   categories: GroupChallengeCategory[]

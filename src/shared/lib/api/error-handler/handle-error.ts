@@ -1,8 +1,8 @@
 'use client'
 
-import { ErrorResponse } from '../type'
-
 import { ToastType, useToastStore } from '@/shared/context'
+
+import { ErrorResponse } from '../type'
 
 export const handleError = (error: ErrorResponse) => {
   if (error.status === 401) return

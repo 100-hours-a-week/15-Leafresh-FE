@@ -1,6 +1,7 @@
 'use client'
-import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+
+import { create } from 'zustand'
 
 import { LowercaseOAuthType } from '@/entities/member/model'
 

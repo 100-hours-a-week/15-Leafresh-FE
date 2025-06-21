@@ -1,6 +1,6 @@
-import { refreshClientAccessToken } from './client-reissue'
-
 import { ApiResponse, BASE_API_URL, EndpointType, ErrorResponse, OptionsType } from '@/shared/lib'
+
+import { refreshClientAccessToken } from './client-reissue'
 
 const BASE_URL = BASE_API_URL
 

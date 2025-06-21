@@ -1,9 +1,11 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { usePathname, useRouter } from 'next/navigation'
+
 import { ProfileResponse } from '@/entities/member/api'
+
 import { URL } from '@/shared/constants'
 import { ToastType, UserInfo, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'

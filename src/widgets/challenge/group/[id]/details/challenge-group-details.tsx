@@ -1,8 +1,17 @@
 'use client'
 
-import { differenceInCalendarDays } from 'date-fns'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+import { differenceInCalendarDays } from 'date-fns'
+
+import {
+  ChallengeVerifyCarousel,
+  ChallengeVerifyExamples,
+  VerificationImageData,
+} from '@/features/challenge/components'
 
 import {
   getGroupChallengeDetails,
@@ -10,20 +19,15 @@ import {
   ParticipateGroupChallengeVariables,
 } from '@/entities/challenge/api'
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
-import {
-  ChallengeVerifyCarousel,
-  ChallengeVerifyExamples,
-  VerificationImageData,
-} from '@/features/challenge/components'
+
 import { BackButton, DatePicker, Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
+
 import LeafIcon from '@public/icon/leaf.png'
-import { useQuery } from '@tanstack/react-query'
 
 type WarningType = {
   isWarning: boolean

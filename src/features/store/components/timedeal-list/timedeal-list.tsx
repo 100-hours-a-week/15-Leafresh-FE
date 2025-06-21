@@ -2,12 +2,15 @@
 
 import { ReactNode } from 'react'
 
-import { getTimeDealProducts, TimeDealProduct } from '@/entities/store/api'
-import { OngoingTimeDealList, UpcomingTimeDealList } from '@/features/store/components'
-import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { responsiveHorizontalPadding } from '@/shared/styles'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
+
+import { OngoingTimeDealList, UpcomingTimeDealList } from '@/features/store/components'
+
+import { getTimeDealProducts, TimeDealProduct } from '@/entities/store/api'
+
+import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { responsiveHorizontalPadding } from '@/shared/styles'
 
 interface TimeDealListProps {
   className?: string

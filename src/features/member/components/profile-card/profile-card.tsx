@@ -1,14 +1,17 @@
 'use client'
 
-import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
-import { GuideOverlay } from '../guide-overlay'
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
 
 import { treeLevelMap } from '@/entities/member/model'
+
 import { theme } from '@/shared/config'
 import { useScrollLock } from '@/shared/hooks'
-import styled from '@emotion/styled'
+
+import { GuideOverlay } from '../guide-overlay'
 
 interface Badge {
   id: number

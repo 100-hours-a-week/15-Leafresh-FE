@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 
-import { ProductList, TimeDealList } from '@/features/store/components'
-import { media, theme } from '@/shared/config'
 import styled from '@emotion/styled'
+
+import { ProductList, TimeDealList } from '@/features/store/components'
+
+import { media, theme } from '@/shared/config'
 
 type TabState = 'time-deal' | 'product'
 

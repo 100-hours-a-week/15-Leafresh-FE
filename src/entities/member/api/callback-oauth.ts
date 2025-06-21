@@ -1,6 +1,6 @@
-import { LowercaseOAuthType } from '../model'
-
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+
+import { LowercaseOAuthType } from '../model'
 
 type LoginCallbackResponse = {
   isMember: boolean

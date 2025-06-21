@@ -1,8 +1,16 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
+
+import { useRouter, useSearchParams } from 'next/navigation'
+
+import { sendGAEvent } from '@next/third-parties/google'
+
+import styled from '@emotion/styled'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+
+import { DetailStep, MetaDataStep } from '@/features/challenge/components'
 
 import {
   CreateChallengeBody,
@@ -21,7 +29,7 @@ import {
   FullFormValues,
   fullSchema,
 } from '@/entities/challenge/model'
-import { DetailStep, MetaDataStep } from '@/features/challenge/components'
+
 import { theme } from '@/shared/config'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -30,9 +38,6 @@ import { useToast } from '@/shared/hooks'
 import { getKstMidnightToUtcISOString } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { TimeFormatString } from '@/shared/type'
-import styled from '@emotion/styled'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { sendGAEvent } from '@next/third-parties/google'
 
 interface GroupChallengeFormPageProps {
   defaultValues: FullFormValues

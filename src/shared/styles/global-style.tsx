@@ -1,7 +1,6 @@
 'use client'
-import emotionReset from 'emotion-reset'
-
 import { css, Global, Theme, useTheme } from '@emotion/react'
+import emotionReset from 'emotion-reset'
 
 export const GlobalStyle = () => {
   const theme: Theme = useTheme()

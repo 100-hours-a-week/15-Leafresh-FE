@@ -1,7 +1,7 @@
-import { FeedbackResponse } from './get-feedback'
-
 import { getQueryClient, QUERY_KEYS } from '@/shared/config'
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+
+import { FeedbackResponse } from './get-feedback'
 
 export async function pollFeedbackResult(): Promise<void> {
   const queryClient = getQueryClient()

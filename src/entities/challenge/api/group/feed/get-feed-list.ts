@@ -1,4 +1,5 @@
 import { ChallengeCategoryType } from '@/entities/challenge/model'
+
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 import { InfiniteScrollResponse, ISOFormatString } from '@/shared/type'
 

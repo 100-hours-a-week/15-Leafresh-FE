@@ -1,8 +1,7 @@
+import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { useObjectState } from './useObjectState'
-
-import { act, renderHook } from '@testing-library/react'
 
 type TestObject = {
   id: number

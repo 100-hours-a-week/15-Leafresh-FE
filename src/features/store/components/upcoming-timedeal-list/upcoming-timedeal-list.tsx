@@ -1,15 +1,18 @@
 'use client'
 
+import { ReactNode, useRef } from 'react'
+
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
 import { format } from 'date-fns'
 import Autoplay from 'embla-carousel-autoplay'
 import useEmblaCarousel from 'embla-carousel-react'
-import Image from 'next/image'
-import { ReactNode, useRef } from 'react'
 
 import { TimeDealProduct } from '@/entities/store/api'
+
 import { ApologizeContent } from '@/shared/components'
 import { media, theme } from '@/shared/config'
-import styled from '@emotion/styled'
 
 interface UpcomingTimeDealListProps {
   data: TimeDealProduct[]

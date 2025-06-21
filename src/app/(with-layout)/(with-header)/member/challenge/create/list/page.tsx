@@ -1,7 +1,10 @@
-import { MemberGroupChallengeCreations } from '@/entities/member/api'
-import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { MemberChallengeCreationsPage } from '@/widgets/member'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { MemberChallengeCreationsPage } from '@/widgets/member'
+
+import { MemberGroupChallengeCreations } from '@/entities/member/api'
+
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 const Page = async () => {
   try {

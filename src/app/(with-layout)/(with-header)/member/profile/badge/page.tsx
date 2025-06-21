@@ -1,7 +1,10 @@
-import { getBadgeList } from '@/entities/member/api'
-import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { BadgePage } from '@/widgets/member'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { BadgePage } from '@/widgets/member'
+
+import { getBadgeList } from '@/entities/member/api'
+
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 const Page = async () => {
   const queryClient = getQueryClient()

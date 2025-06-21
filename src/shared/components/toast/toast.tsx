@@ -1,12 +1,14 @@
 'use client'
-import { AnimatePresence, motion } from 'motion/react'
 import { useEffect } from 'react'
 
-import { LucideIcon } from '../lucide-icon'
+import { AnimatePresence, motion } from 'motion/react'
+
+import styled from '@emotion/styled'
 
 import { theme } from '@/shared/config'
 import { ToastType, useToastStore } from '@/shared/context'
-import styled from '@emotion/styled'
+
+import { LucideIcon } from '../lucide-icon'
 
 export const Toast = () => {
   const { isOpen, type, description, close: closeToast } = useToastStore()

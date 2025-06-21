@@ -1,14 +1,17 @@
 'use client'
-import Image from 'next/image'
-import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
-import { ChatWindow } from '../chat-window'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+
+import { sendGAEvent } from '@next/third-parties/google'
+
+import styled from '@emotion/styled'
 
 import { URL } from '@/shared/constants'
 import { useScrollLock, useToggle } from '@/shared/hooks'
-import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
+
+import { ChatWindow } from '../chat-window'
 
 export const Chatbot = () => {
   const pathname = usePathname()

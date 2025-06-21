@@ -1,6 +1,8 @@
-import { ChallengeStatus, FetchGroupParticipationsParams, getGroupParticipations } from '@/entities/member/api'
-import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { useInfiniteQuery } from '@tanstack/react-query'
+
+import { ChallengeStatus, FetchGroupParticipationsParams, getGroupParticipations } from '@/entities/member/api'
+
+import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 export const useInfiniteGroupParticipations = (status: ChallengeStatus) =>
   useInfiniteQuery({

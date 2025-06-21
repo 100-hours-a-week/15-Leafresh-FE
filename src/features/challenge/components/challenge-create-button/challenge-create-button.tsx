@@ -2,12 +2,14 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 
+import { sendGAEvent } from '@next/third-parties/google'
+
+import styled from '@emotion/styled'
+
 import { LucideIcon } from '@/shared/components'
 import { URL } from '@/shared/constants'
 import { useConfirmModalStore } from '@/shared/context'
 import { useAuth } from '@/shared/hooks'
-import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
 
 export const ChallengeCreateButton = () => {
   const router = useRouter()

@@ -1,13 +1,16 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
+
+import { usePathname, useRouter } from 'next/navigation'
+
+import { sendGAEvent } from '@next/third-parties/google'
+
+import styled from '@emotion/styled'
 
 import { LucideIcon, NAVBAR_TABS } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { useAuth } from '@/shared/hooks'
-import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
 
 export const Navbar = (): ReactNode => {
   const router = useRouter()

@@ -1,6 +1,7 @@
 import { ChallengeCategoryType } from '@/entities/challenge/model'
 import { ChallengeStatus } from '@/entities/member/api'
 import { LowercaseOAuthType } from '@/entities/member/model'
+
 import { DayType } from '@/shared/lib'
 
 const CHALLENGE_QUERY_KEYS = {

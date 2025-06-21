@@ -1,8 +1,11 @@
 'use client'
 
+import { ReactNode, useState } from 'react'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useState } from 'react'
+
+import styled from '@emotion/styled'
 
 import {
   OrderTimeDealProductBody,
@@ -11,6 +14,7 @@ import {
   OrderTimeDealProductVariables,
   TimeDealProduct,
 } from '@/entities/store/api'
+
 import { LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { media } from '@/shared/config'
@@ -18,7 +22,6 @@ import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { formatSecondToTime } from '@/shared/lib'
-import styled from '@emotion/styled'
 
 interface OngoingTimeDealCardProps {
   data: TimeDealProduct

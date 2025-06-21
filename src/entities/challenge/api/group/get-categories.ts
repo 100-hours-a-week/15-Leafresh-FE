@@ -1,6 +1,6 @@
-import { FilterChallengeCategoryType, FilterChallengeCategoryTypeKor } from '../../model'
-
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+
+import { FilterChallengeCategoryType, FilterChallengeCategoryTypeKor } from '../../model'
 
 export type GroupChallengeCategory = {
   category: FilterChallengeCategoryType

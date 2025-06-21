@@ -1,6 +1,8 @@
-import { getGroupChallengeParticipateList, GroupChallengeParticipateListParams } from '@/entities/challenge/api'
-import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { useInfiniteQuery } from '@tanstack/react-query'
+
+import { getGroupChallengeParticipateList, GroupChallengeParticipateListParams } from '@/entities/challenge/api'
+
+import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 export const useInfiniteGroupChallengeVerifications = (challengeId: number) =>
   useInfiniteQuery({

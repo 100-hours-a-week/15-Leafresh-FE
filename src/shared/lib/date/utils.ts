@@ -1,7 +1,7 @@
+import { DateFormatString, ISOFormatString } from '@/shared/type'
+
 import { DAYS, DAYS_KOR } from './consts'
 import { DayType } from './type'
-
-import { DateFormatString, ISOFormatString } from '@/shared/type'
 
 /**
  * 요일 인덱스(일: 0, 월: 1, … 토: 6)를 통해 한글 요일로 반환

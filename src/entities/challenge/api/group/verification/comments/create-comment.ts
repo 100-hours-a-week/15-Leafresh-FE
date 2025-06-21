@@ -1,6 +1,6 @@
-import { CommentResponse } from './get-comment-list'
-
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+
+import { CommentResponse } from './get-comment-list'
 
 export type PostCommentBody = {
   content: string

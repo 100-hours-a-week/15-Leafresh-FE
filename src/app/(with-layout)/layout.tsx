@@ -1,4 +1,5 @@
 import { PollingWatcher } from '@/features/common/components'
+
 import { Toast } from '@/shared/components'
 import { AuthGuard, GlobalWrapper, ModalProvider } from '@/shared/config'
 

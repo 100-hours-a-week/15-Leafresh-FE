@@ -1,9 +1,10 @@
 'use client'
 import { ReactNode } from 'react'
 
+import styled from '@emotion/styled'
+
 import { FeedBackButton, Introduce } from '@/shared/components'
 import { theme } from '@/shared/config'
-import styled from '@emotion/styled'
 
 export const GlobalWrapper = ({ children }: { children: ReactNode }) => {
   return (

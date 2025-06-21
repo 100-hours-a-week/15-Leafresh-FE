@@ -1,9 +1,11 @@
 'use client'
 
+import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
+
 import { getMemberAlarmList, MemberAlarmList, MemberAlarmListParams } from '@/entities/member/api'
+
 import { QUERY_KEYS } from '@/shared/config'
 import { ApiResponse } from '@/shared/lib'
-import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
 export const useInfiniteMemberAlarmList = () => {
   return useInfiniteQuery<

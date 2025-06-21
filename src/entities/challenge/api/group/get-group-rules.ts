@@ -1,7 +1,7 @@
-import { ChallengeVerificationResultType } from '../../model'
-
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 import { ISOFormatString, TimeFormatString } from '@/shared/type'
+
+import { ChallengeVerificationResultType } from '../../model'
 
 type ExampleImage = {
   id: number

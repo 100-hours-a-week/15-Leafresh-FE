@@ -1,9 +1,9 @@
 'use client'
 
-import { ErrorResponse } from '../type'
-
 import { URL } from '@/shared/constants'
 import { useOAuthUserStore, useUserStore } from '@/shared/context'
+
+import { ErrorResponse } from '../type'
 
 let isHandlingAuth = false
 

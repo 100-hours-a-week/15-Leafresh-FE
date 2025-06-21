@@ -1,20 +1,23 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import styled from '@emotion/styled'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
 import { NicknameDuplicate, ProfileResponse, SignUpBody, SignUpResponse, SignUpVariables } from '@/entities/member/api'
 import { OAuthType, SignupFormType, signupSchema } from '@/entities/member/model'
+
 import { ErrorText } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
-import styled from '@emotion/styled'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
 
 const SignupPage = () => {
   const router = useRouter()

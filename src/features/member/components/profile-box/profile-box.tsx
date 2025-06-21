@@ -1,11 +1,14 @@
 'use client'
 
-import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import { treeLevelMap } from '@/entities/member/model'
-import { theme } from '@/shared/config'
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
+
+import { treeLevelMap } from '@/entities/member/model'
+
+import { theme } from '@/shared/config'
 
 interface ProfileBoxProps {
   className?: string

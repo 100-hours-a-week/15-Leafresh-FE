@@ -2,6 +2,11 @@
 
 import { ReactNode } from 'react'
 
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
+import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@/features/main/components'
+
 import {
   EventChallenge,
   getEventChallengeList,
@@ -10,11 +15,9 @@ import {
   GroupChallengeCategory,
   PersonalChallengeType,
 } from '@/entities/challenge/api'
-import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@/features/main/components'
+
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { DayType, getDayOfWeek } from '@/shared/lib'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 export const MainPage = (): ReactNode => {
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준

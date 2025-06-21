@@ -1,7 +1,10 @@
-import { getMemberAlarmList } from '@/entities/member/api'
-import { getQueryClient, QUERY_KEYS } from '@/shared/config'
-import { MemberAlarmList } from '@/widgets/member'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { MemberAlarmList } from '@/widgets/member'
+
+import { getMemberAlarmList } from '@/entities/member/api'
+
+import { getQueryClient, QUERY_KEYS } from '@/shared/config'
 
 const MemberAlarmPage = async () => {
   const queryClient = getQueryClient()

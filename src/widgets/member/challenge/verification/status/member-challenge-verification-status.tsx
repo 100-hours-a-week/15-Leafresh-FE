@@ -1,19 +1,22 @@
 'use client'
 
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
+import { VerificationCarousel } from '@/features/challenge/components'
+
 import {
   getGroupVerifications,
   PostGroupVerificationBody,
   PostGroupVerificationResponse,
 } from '@/entities/challenge/api'
-import { VerificationCarousel } from '@/features/challenge/components'
+
 import { Loading } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 export function GroupVerificationPage({ participateId }: { participateId: number }) {
   const openToast = useToast()

@@ -1,12 +1,13 @@
 'use client'
 
-import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
+
+import { AnimatePresence, motion } from 'motion/react'
+
+import styled from '@emotion/styled'
 
 import { ChatFrame, FrameStep } from '../chat-frame'
 import { ChatHeader } from '../chat-header'
-
-import styled from '@emotion/styled'
 
 export interface ChatWindowProps {
   open: boolean

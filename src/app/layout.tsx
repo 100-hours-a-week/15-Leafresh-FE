@@ -1,7 +1,8 @@
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import type { Metadata } from 'next'
 
 import { pretendard, Providers } from '@/shared/config'
-import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   title: 'Leafresh',

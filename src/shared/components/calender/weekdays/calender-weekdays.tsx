@@ -1,8 +1,9 @@
 'use client'
 
+import styled from '@emotion/styled'
+
 import { theme } from '@/shared/config'
 import { convertDayToLabel, DAYS, DayType } from '@/shared/lib'
-import styled from '@emotion/styled'
 
 interface CalendarWeekdaysProps {
   startDayOfWeek: DayType

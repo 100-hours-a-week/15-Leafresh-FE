@@ -2,16 +2,18 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { ChatBubble } from '../chat-bubble'
-import { ChatSelection } from '../chat-selection'
+import styled from '@emotion/styled'
 
 import {
   RecommendationResponseDataDTO,
   requestCategoryBasedRecommendation,
   requestFreetextBasedRecommendation,
 } from '@/entities/chatbot/api'
+
 import { LucideIcon, SlideArea } from '@/shared/components'
-import styled from '@emotion/styled'
+
+import { ChatBubble } from '../chat-bubble'
+import { ChatSelection } from '../chat-selection'
 
 export type FrameStep = 1 | 2 | 3
 

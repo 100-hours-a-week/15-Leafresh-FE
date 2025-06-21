@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 
-import { GroupChallengeFormPage } from '../../form'
+import { useQuery } from '@tanstack/react-query'
 
 import { getGroupChallengeDetails } from '@/entities/challenge/api'
 import {
@@ -11,8 +11,10 @@ import {
   convertLanguage,
   FullFormValues,
 } from '@/entities/challenge/model'
+
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { useQuery } from '@tanstack/react-query'
+
+import { GroupChallengeFormPage } from '../../form'
 
 interface ChallengeGroupModifyPageProps {
   challengeId: number

@@ -1,7 +1,7 @@
-import { ChallengeCategoryType } from '../../model'
-
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 import { InfiniteScrollResponse, ISOFormatString } from '@/shared/type'
+
+import { ChallengeCategoryType } from '../../model'
 
 /**
  * 요청 파라미터 타입

@@ -1,7 +1,7 @@
-import { ChallengeCategoryType, ChallengeVerificationResultType } from '../../model'
-
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 import { ISOFormatString, TimeFormatString } from '@/shared/type'
+
+import { ChallengeCategoryType, ChallengeVerificationResultType } from '../../model'
 
 export type CreateChallengeResponse = {
   id: number

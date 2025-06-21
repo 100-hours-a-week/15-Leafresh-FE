@@ -1,4 +1,5 @@
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
+
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 export type PersonalChallengeVerificationResultResponse = {

@@ -1,9 +1,12 @@
 import { notFound } from 'next/navigation'
 
-import { getPersonalChallengeDetails } from '@/entities/challenge/api'
-import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { ChallengePersonalDetails } from '@/widgets/challenge'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { ChallengePersonalDetails } from '@/widgets/challenge'
+
+import { getPersonalChallengeDetails } from '@/entities/challenge/api'
+
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 interface PersonalChallengeDetailsProps {
   params: Promise<{ id: string }>

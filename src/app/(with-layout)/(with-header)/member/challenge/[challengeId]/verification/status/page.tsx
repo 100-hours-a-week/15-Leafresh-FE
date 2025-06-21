@@ -1,7 +1,10 @@
-import { getGroupVerifications } from '@/entities/challenge/api'
-import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { GroupVerificationPage } from '@/widgets/member'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { GroupVerificationPage } from '@/widgets/member'
+
+import { getGroupVerifications } from '@/entities/challenge/api'
+
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 export default async function Page({ params }: { params: Promise<{ participateId: string }> }) {
   const { participateId } = await params

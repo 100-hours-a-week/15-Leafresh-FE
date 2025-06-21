@@ -1,16 +1,19 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import styled from '@emotion/styled'
 
 import { GroupChallenge, GroupChallengeCard } from '@/features/challenge/components'
 import { useInfiniteMemberGroupChallengeCreations } from '@/features/member/api'
+
 import { Loading, NoContent } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { useAuth } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import styled from '@emotion/styled'
 
 export const MemberChallengeCreationsPage = (): ReactNode => {
   const router = useRouter()

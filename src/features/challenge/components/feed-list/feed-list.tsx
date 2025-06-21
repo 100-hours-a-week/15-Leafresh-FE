@@ -1,16 +1,20 @@
-import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useRef } from 'react'
 
-import { VerificationCard } from '../verification-card'
+import { useRouter } from 'next/navigation'
+
+import styled from '@emotion/styled'
+
+import { useInfiniteGroupChallengeFeedList } from '@/features/challenge/api'
 
 import { VerificationType } from '@/entities/challenge/api'
 import { CHALLENGE_CATEGORY_PAIRS, ChallengeCategoryType, convertLanguage } from '@/entities/challenge/model'
-import { useInfiniteGroupChallengeFeedList } from '@/features/challenge/api'
+
 import { Loading, NoContent } from '@/shared/components'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
-import styled from '@emotion/styled'
+
+import { VerificationCard } from '../verification-card'
 
 interface FeedListProps {
   category: ChallengeCategoryType

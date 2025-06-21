@@ -1,7 +1,10 @@
-import { getMemberStoreOrderList } from '@/entities/member/api'
-import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
-import { MemberOrderListPage } from '@/widgets/member'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+
+import { MemberOrderListPage } from '@/widgets/member'
+
+import { getMemberStoreOrderList } from '@/entities/member/api'
+
+import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 const Page = async () => {
   try {

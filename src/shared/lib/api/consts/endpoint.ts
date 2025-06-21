@@ -1,6 +1,6 @@
-import { HttpMethod } from './http'
-
 import { LowercaseOAuthType } from '@/entities/member/model'
+
+import { HttpMethod } from './http'
 
 export const BASE_API_URL = '/api/proxy'
 

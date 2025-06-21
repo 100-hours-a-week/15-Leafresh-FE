@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+
+import styled from '@emotion/styled'
 import { UseFormReturn } from 'react-hook-form'
 
 import { FullFormValues } from '@/entities/challenge/model'
+
 import { ErrorText, ImageInput, Loading, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
-import styled from '@emotion/styled'
 
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>

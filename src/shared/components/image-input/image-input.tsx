@@ -1,15 +1,18 @@
 'use client'
 
-import Image from 'next/image'
 import { useState } from 'react'
 
+import Image from 'next/image'
+
+import styled from '@emotion/styled'
+
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
+
 import { LucideIcon } from '@/shared/components'
 import { theme, ThemeColorType, ThemeFontSizeType } from '@/shared/config'
 import { ASPECT_RATIOS, AspectRatioType } from '@/shared/constants'
 import { useCameraModalStore } from '@/shared/context'
 import { getThemeColor, getThemeFontSize } from '@/shared/lib'
-import styled from '@emotion/styled'
 
 interface ImageInputProps {
   icon: React.ReactNode

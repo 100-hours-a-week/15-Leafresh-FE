@@ -3,10 +3,12 @@
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 
+import styled from '@emotion/styled'
+
 import { BackButton, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import styled from '@emotion/styled'
+
 import LogoImage from '@public/image/logo.svg'
 
 interface HeaderProps {

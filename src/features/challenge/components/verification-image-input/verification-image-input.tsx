@@ -1,10 +1,12 @@
 'use client'
 
+import styled from '@emotion/styled'
+
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
+
 import { ImageInput, LucideIcon } from '@/shared/components'
 import { theme, ThemeColorType } from '@/shared/config'
 import { getThemeColor } from '@/shared/lib'
-import styled from '@emotion/styled'
 
 const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.ReactNode; color: ThemeColorType }> = {
   SUCCESS: {

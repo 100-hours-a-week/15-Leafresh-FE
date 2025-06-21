@@ -1,11 +1,14 @@
 'use client'
 
-import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import { RecentBadge } from '@/entities/member/api'
-import { theme } from '@/shared/config'
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
+
+import { RecentBadge } from '@/entities/member/api'
+
+import { theme } from '@/shared/config'
 
 interface RecentBadgeBoxProps {
   className?: string

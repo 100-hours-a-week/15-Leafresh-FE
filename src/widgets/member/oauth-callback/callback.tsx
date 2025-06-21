@@ -1,18 +1,21 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
+
+import { useRouter, useSearchParams } from 'next/navigation'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 import { LoginCallback, ProfileResponse } from '@/entities/member/api'
 import { LowercaseOAuthType } from '@/entities/member/model'
+
 import { Loading } from '@/shared/components'
 import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useOAuthStateStore, useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 interface CallbackPageProps {
   provider: LowercaseOAuthType

@@ -1,19 +1,23 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
-import { getGroupChallengeDetails, Verification } from '@/entities/challenge/api'
+import { useRouter } from 'next/navigation'
+
+import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
+
 import { useInfiniteGroupChallengeVerifications } from '@/features/challenge/api'
 import { VerificationCard } from '@/features/challenge/components'
+
+import { getGroupChallengeDetails, Verification } from '@/entities/challenge/api'
+
 import { LucideIcon, NoContent } from '@/shared/components'
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
-import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
 
 interface ChallengeGroupParticipateListProps {
   challengeId: number

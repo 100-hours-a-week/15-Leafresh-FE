@@ -1,16 +1,19 @@
 'use client'
 
 import { memo, useCallback, useEffect, useState } from 'react'
+
+import { sendGAEvent } from '@next/third-parties/google'
+
+import styled from '@emotion/styled'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
-import { ChallengeVerifyExamples, VerificationImageData } from '../challenge-verify-examples'
-
 import { CHALLENGE_CATEGORIES_KOR, FullFormValues, PARTICIPANT_RANGE } from '@/entities/challenge/model'
+
 import { DatePicker, Dropdown, DropdownProps, ErrorText, Input, LucideIcon, TimePicker } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { StyledGeneric } from '@/shared/styles'
-import styled from '@emotion/styled'
-import { sendGAEvent } from '@next/third-parties/google'
+
+import { ChallengeVerifyExamples, VerificationImageData } from '../challenge-verify-examples'
 
 const PARTICIPANT_OPTIONS = Array.from(
   { length: Math.floor((PARTICIPANT_RANGE.MAX - PARTICIPANT_RANGE.MIN) / PARTICIPANT_RANGE.RANGE) + 1 },

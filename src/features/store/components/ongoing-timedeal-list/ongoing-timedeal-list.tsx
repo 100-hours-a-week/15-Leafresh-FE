@@ -1,14 +1,16 @@
 'use client'
 
-import useEmblaCarousel from 'embla-carousel-react'
 import { ReactNode, useEffect, useState } from 'react'
 
-import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
+import styled from '@emotion/styled'
+import useEmblaCarousel from 'embla-carousel-react'
 
 import { TimeDealProduct } from '@/entities/store/api'
+
 import { ApologizeContent, LucideIcon } from '@/shared/components'
 import { media, theme } from '@/shared/config'
-import styled from '@emotion/styled'
+
+import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
 
 interface Props {
   data: TimeDealProduct[]
