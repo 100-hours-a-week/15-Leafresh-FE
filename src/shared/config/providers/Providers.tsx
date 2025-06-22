@@ -4,9 +4,8 @@ import { ReactNode } from 'react'
 
 import { ThemeProvider } from '@emotion/react'
 
+import { theme } from '@/shared/config'
 import { GlobalStyle } from '@/shared/styles'
-
-import { theme } from '../style'
 
 import { ChakraUseProvider } from './chakra-provider'
 import { TanstackQueryProvider } from './tanstack-provider'
