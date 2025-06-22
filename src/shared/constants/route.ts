@@ -141,6 +141,7 @@ const MEMBER_URL = {
         name: '참여중인 챌린지',
         value: `/member/challenge/participate/list`,
         isProtected: true,
+        hasBackButton: false,
       },
     },
     VERIFICATION: {
@@ -149,6 +150,7 @@ const MEMBER_URL = {
         name: '특정 챌린지 인증 현황',
         value: (challengeId: number) => `/member/challenge/${challengeId}/verification/status`,
         isProtected: true,
+        hasBackButton: true,
       },
     },
 
