@@ -6,17 +6,17 @@ import { getGroupVerifications } from '@/entities/challenge/api'
 
 import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
-export default async function Page({ params }: { params: Promise<{ participateId: string }> }) {
-  const { participateId } = await params
+export default async function Page({ params }: { params: Promise<{ challengeId: string }> }) {
+  const { challengeId } = await params
 
-  const idNum = Number(participateId)
+  const challengeIdNum = Number(challengeId)
 
   try {
     const queryClient = getQueryClient()
 
     await queryClient.prefetchQuery({
-      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS(idNum),
-      queryFn: () => getGroupVerifications(idNum),
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS(challengeIdNum),
+      queryFn: () => getGroupVerifications(challengeIdNum),
       ...QUERY_OPTIONS.MEMBER.CHALLENGE.GROUP.VERIFICATIONS,
     })
 
@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ participateId
 
     return (
       <HydrationBoundary state={dehydratedState}>
-        <GroupVerificationPage participateId={idNum} />
+        <GroupVerificationPage challengeId={challengeIdNum} />
       </HydrationBoundary>
     )
   } catch (err) {

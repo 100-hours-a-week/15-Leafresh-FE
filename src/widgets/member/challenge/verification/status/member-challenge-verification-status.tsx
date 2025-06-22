@@ -17,13 +17,11 @@ import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/contex
 import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
-export function GroupVerificationPage({ participateId }: { participateId: number }) {
+export function GroupVerificationPage({ challengeId }: { challengeId: number }) {
   const openToast = useToast()
 
   const { open: openCameraModal } = useCameraModalStore()
   const { addGroupChallengeId } = usePollingStore()
-
-  const challengeId = participateId
 
   const {
     data: verificationData,

@@ -147,7 +147,7 @@ const MEMBER_URL = {
       // 특정 챌린지 인증 현황
       STATUS: {
         name: '특정 챌린지 인증 현황',
-        value: (challengeId: number) => `member/challenge/${challengeId}/verification/status`,
+        value: (challengeId: number) => `/member/challenge/${challengeId}/verification/status`,
         isProtected: true,
       },
     },
