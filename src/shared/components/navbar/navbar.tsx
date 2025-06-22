@@ -26,15 +26,25 @@ export const Navbar = (): ReactNode => {
         pathname === '/' ||
         (pathname.startsWith('/challenge') &&
           !pathname.startsWith('/challenge/participate') &&
-          !pathname.startsWith('/challenge/group/feed'))
+          !pathname.startsWith('/challenge/group/feed') &&
+          !(pathname.startsWith('/challenge/group') && pathname.includes('/verification/')))
       )
 
-    if (label === '인증') return pathname.startsWith('/challenge/participate')
-    if (label === '피드') return pathname.startsWith('/challenge/group/feed')
+    if (label === '인증') {
+      return pathname.startsWith('/member/challenge') && !pathname.startsWith('/member/challenge/create/list')
+    }
+    if (label === '피드')
+      return (
+        pathname.startsWith('/challenge/group/feed') ||
+        (pathname.startsWith('/challenge/group') && pathname.includes('/verification/'))
+      )
 
-    if (label === '피드') return false
     if (label === '상점') return pathname.startsWith('/store')
-    if (label === '마이페이지') return pathname.startsWith('/member')
+    if (label === '마이페이지')
+      return (
+        pathname.startsWith('/member') &&
+        (!pathname.startsWith('/member/challenge') || pathname === '/member/challenge/create/list')
+      )
     return false
   }
 
