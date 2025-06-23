@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import { FeedList } from '@/features/challenge/components'
 
 import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@/entities/challenge/api'
-import { ChallengeCategoryType } from '@/entities/challenge/model'
+import { FilterChallengeCategoryType } from '@/entities/challenge/model'
 
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
@@ -28,11 +28,11 @@ export const FeedPage = ({ className }: FeedPageProps): ReactNode => {
   // 상수
   const categories: GroupChallengeCategory[] = categoriesData?.data?.categories ?? []
 
-  const [category, setCategory] = useState<ChallengeCategoryType>(categories[0]?.category) // 영어
+  const [category, setCategory] = useState<FilterChallengeCategoryType>(categories[0]?.category) // 영어
 
   /** 이벤트 핸들러 */
   /** 카테고리 전환 */
-  const handleCategoryRoute = (newCategory: ChallengeCategoryType) => {
+  const handleCategoryRoute = (newCategory: FilterChallengeCategoryType) => {
     setCategory(newCategory)
   }
 
