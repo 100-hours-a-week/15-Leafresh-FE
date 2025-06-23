@@ -1,3 +1,10 @@
+import { HttpMethod } from './consts'
+
+export type Endpoint = {
+  method: HttpMethod
+  path: string
+}
+
 export interface ApiResponse<T> {
   status: number
   message: string

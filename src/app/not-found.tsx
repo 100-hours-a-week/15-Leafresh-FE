@@ -5,11 +5,10 @@ import Link from 'next/link'
 
 import styled from '@emotion/styled'
 
-import { URL } from '@shared/constants/route/route'
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
-import NotFoundImage from '@public/image/404.svg'
+import { media } from '@/shared/config'
+import { URL } from '@/shared/constants'
 
+import NotFoundImage from '@public/image/404.svg'
 export default function NotFound() {
   return (
     <Wrapper>
@@ -49,8 +48,8 @@ const ImageWrapper = styled.div`
 
 const Title = styled.h1`
   font-size: 24px;
-  font-weight: ${theme.fontWeight.bold};
-  color: ${theme.colors.lfBlack.base};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.lfBlack.base};
 
   ${media.afterMobile} {
     font-size: 32px;
@@ -71,23 +70,23 @@ const DescriptionWrapper = styled.div`
 `
 
 const Description = styled.p`
-  color: ${theme.colors.lfDarkGray.base};
+  color: ${({ theme }) => theme.colors.lfDarkGray.base};
   white-space: pre-line;
 `
 
 const HomeButton = styled(Link)`
   margin-top: 16px;
   padding: 18px 32px;
-  background-color: ${theme.colors.lfGreenDark.base};
+  background-color: ${({ theme }) => theme.colors.lfGreenDark.base};
   color: #d0ddb4;
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.fontSize.base};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
   border: none;
-  border-radius: ${theme.radius.full};
+  border-radius: ${({ theme }) => theme.radius.full};
   cursor: pointer;
 
   &:hover {
-    background-color: ${theme.colors.lfGreenDark.hover};
+    background-color: ${({ theme }) => theme.colors.lfGreenDark.hover};
   }
 
   ${media.afterMobile} {

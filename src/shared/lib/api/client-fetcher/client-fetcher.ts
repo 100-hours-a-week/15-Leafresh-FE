@@ -1,7 +1,5 @@
-import { BASE_API_URL } from '@shared/constants/api-url'
-import { EndpointType } from '@shared/constants/endpoint/endpoint'
+import { ApiResponse, BASE_API_URL, EndpointType, ErrorResponse, OptionsType } from '@/shared/lib'
 
-import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshClientAccessToken } from './client-reissue'
 
 const BASE_URL = BASE_API_URL

@@ -8,5 +8,6 @@
   "bracketSpacing": true,
   "bracketSameLine": false,
   "jsxBracketSameLine": false,
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "endOfLine": "lf"
 }

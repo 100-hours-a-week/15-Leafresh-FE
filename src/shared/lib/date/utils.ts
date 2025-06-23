@@ -1,6 +1,7 @@
-import { DAYS, DAYS_KOR } from '@entities/challenge/constant'
-import { DayType } from '@entities/challenge/type'
-import { DateFormatString, ISOFormatString } from '@shared/types/date'
+import { DateFormatString, ISOFormatString } from '@/shared/type'
+
+import { DAYS, DAYS_KOR } from './consts'
+import { DayType } from './type'
 
 /**
  * 요일 인덱스(일: 0, 월: 1, … 토: 6)를 통해 한글 요일로 반환
@@ -76,6 +77,10 @@ export const getTimeDiff = (dateString: ISOFormatString): string => {
   const diffMonth = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 7 * 30))
   const diffYear = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 7 * 30 * 12))
 
+  // 1분 이내
+  if (diffMin < 1) {
+    return `방금`
+  }
   // 1시간 이내
   if (diffMin < 60) {
     return `${diffMin}분 전`
@@ -84,6 +89,11 @@ export const getTimeDiff = (dateString: ISOFormatString): string => {
   // 하루 이내
   if (diffHour < 24) {
     return `${diffHour}시간 전`
+  }
+
+  // 이틀 이내
+  if (diffDay < 2) {
+    return `어제`
   }
 
   // 일주일 이내
@@ -101,4 +111,35 @@ export const getTimeDiff = (dateString: ISOFormatString): string => {
   }
 
   return `${diffYear}년 전`
+}
+
+/**
+ * KST 기준 자정을 UTC ISO 문자열로 변환
+ * @param date 로컬 Date 객체
+ * @returns ISO 문자열 (ex: "2025-06-17T00:00:00Z" ← 한국 기준 자정)
+ */
+export function getKstMidnightToUtcISOString(date: Date): ISOFormatString {
+  // 1. 연/월/일 추출
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
+
+  // 2. 한국(KST) 자정 문자열 생성
+  const kstDateTimeString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T00:00:00+09:00`
+
+  // 3. Date 객체 생성 후 UTC로 변환
+  const utcDate = new Date(kstDateTimeString)
+
+  return utcDate.toISOString() as ISOFormatString
+}
+
+/**
+ * ISO 형식의 데이터에서 날짜만을 추출하는 방식
+ * @param iso ISO 형식 시간 (2025-06-17T00:00:00Z)
+ * @returns 날짜 (YYYY-MM-dd)
+ */
+export function extractDateFromISOInKST(iso: ISOFormatString): string {
+  return new Date(iso).toLocaleDateString('sv-SE', {
+    timeZone: 'Asia/Seoul',
+  })
 }
