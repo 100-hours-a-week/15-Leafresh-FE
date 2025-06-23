@@ -1,6 +1,6 @@
-import { useEffect,useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import type { ChatHistoryItem } from '@entities/chatbot/type'
+import type { ChatHistoryItem } from '@/entities/chatbot/model'
 
 /**
  * 채팅 히스토리와 메시지를 추가하는 함수를 제공하는 커스텀 훅

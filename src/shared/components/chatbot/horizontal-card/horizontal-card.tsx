@@ -1,9 +1,10 @@
 'use client'
 
 import React from 'react'
+
 import styled from '@emotion/styled'
 
-import SlideArea from '@shared/components/slidearea/SlideArea'
+import { SlideArea } from '../../slidearea'
 
 interface HorizontalCardsProps {
   visibleIndex: number
@@ -11,7 +12,7 @@ interface HorizontalCardsProps {
   renderCards: () => React.ReactNode[]
 }
 
-export default function HorizontalCards({ visibleIndex, renderCards }: HorizontalCardsProps) {
+export const HorizontalCards = ({ visibleIndex, renderCards }: HorizontalCardsProps) => {
   return (
     <SlideWrapper>
       <SlideArea visibleIndex={visibleIndex}>

@@ -2,8 +2,15 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { formatChallengeResponse } from '@/shared/components/chatbot/formatChallengeResponse'
+import styled from '@emotion/styled'
 
+import { useChatHistory } from '@/features/chatbot/api'
+
+import {
+  RecommendationResponse,
+  requestCategoryBasedRecommendation,
+  requestFreetextBasedRecommendation,
+} from '@/entities/chatbot/api'
 import {
   categoryDescriptions,
   CHAT_CHALLENGE_OPTIONS,
@@ -15,18 +22,9 @@ import {
   useChatSession,
   useScrollToBottom,
 } from '@/entities/chatbot/model'
-import { useChatHistory } from '../../api/use-chat-history'
-import HorizontalCards from '@/shared/components/chatbot/HorizontalCards'
-
-import styled from '@emotion/styled'
-
-import {
-  RecommendationResponse,
-  requestCategoryBasedRecommendation,
-  requestFreetextBasedRecommendation,
-} from '@/entities/chatbot/api'
 
 import { LucideIcon } from '@/shared/components'
+import { HorizontalCards, formatChallengeResponse } from '@/shared/components/chatbot'
 
 import { ChatBubble } from '../chat-bubble'
 import { ChatSelection } from '../chat-selection'
@@ -333,6 +331,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             {/* 메시지 타입 */}
             {item.type === 'message' && item.role && (
               <ChatBubble
+                loading={loading}
                 role={item.role}
                 subDescription={item.subDescription}
                 buttonText={item.buttonText}

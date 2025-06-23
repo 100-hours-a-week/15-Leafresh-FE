@@ -18,44 +18,50 @@ export interface ChatBubbleProps {
   onClick?: () => void
 }
 
-export const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
-  ({ role, loading = false, children, subDescription, buttonText, isAnswer, onClick }) => {
-    // 1) 로딩 중 텍스트
-    // 2) children 이 문자열(string)일 때만 split 처리
-    // 3) 나머지는 그대로 렌더링
-    let content: ReactNode
-    if (loading) {
-      content = '잠시만 기다려주세요…'
-    } else if (typeof children === 'string') {
-      content = children.split('\n').map((line, i) => (
-        <React.Fragment key={i}>
-          {line}
-          <br />
-        </React.Fragment>
-      ))
-    } else {
-      content = children
-    }
+export const ChatBubble: React.FC<ChatBubbleProps> = React.memo(function ChatBubble({
+  role,
+  loading = false,
+  children,
+  subDescription,
+  buttonText,
+  isAnswer,
+  onClick,
+}) {
+  // 1) 로딩 중 텍스트
+  // 2) children 이 문자열(string)일 때만 split 처리
+  // 3) 나머지는 그대로 렌더링
+  let content: ReactNode
+  if (loading && role == 'bot') {
+    content = '잠시만 기다려주세요…'
+  } else if (typeof children === 'string') {
+    content = children.split('\n').map((line, i) => (
+      <React.Fragment key={i}>
+        {line}
+        <br />
+      </React.Fragment>
+    ))
+  } else {
+    content = children
+  }
 
-    return (
-      <Container role={role}>
-        {role === 'bot' && (
-          <Avatar role={role}>
-            <Image src='/image/chatbot/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
-          </Avatar>
-        )}
-        <BubbleWrapper>
-          <NameText role={role}>{role === 'bot' ? '수피' : ''}</NameText>
-          <Bubble role={role} isAnswer={isAnswer}>
-            {content}
-            {subDescription && <SubDescription role={role}>{subDescription}</SubDescription>}
-            {buttonText && onClick && <RetryButton onClick={onClick}>{buttonText}</RetryButton>}
-          </Bubble>
-        </BubbleWrapper>
-      </Container>
-    )
-  },
-)
+  return (
+    <Container role={role}>
+      {role === 'bot' && (
+        <Avatar role={role}>
+          <Image src='/image/chatbot/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
+        </Avatar>
+      )}
+      <BubbleWrapper>
+        <NameText role={role}>{role === 'bot' ? '수피' : ''}</NameText>
+        <Bubble role={role} isAnswer={isAnswer}>
+          {content}
+          {subDescription && <SubDescription role={role}>{subDescription}</SubDescription>}
+          {buttonText && onClick && <RetryButton onClick={onClick}>{buttonText}</RetryButton>}
+        </Bubble>
+      </BubbleWrapper>
+    </Container>
+  )
+})
 
 const Container = styled.div<{ role: 'bot' | 'user' }>`
   display: flex;
