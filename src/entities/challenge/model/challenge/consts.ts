@@ -1,11 +1,7 @@
 import { z } from 'zod'
 
-import { LanguageMap } from '@/shared/lib'
-
-import { ChallengeCategoryType, ChallengeCategoryTypeKor } from './types'
-
 /** 카테고리 */
-export const CHALLENGE_CATEGORY_PAIRS: LanguageMap[] = [
+export const CHALLENGE_CATEGORY_PAIRS = [
   { kor: '제로웨이스트', eng: 'ZERO_WASTE' },
   { kor: '플로깅', eng: 'PLOGGING' },
   { kor: '탄소 발자국', eng: 'CARBON_FOOTPRINT' },
@@ -17,8 +13,8 @@ export const CHALLENGE_CATEGORY_PAIRS: LanguageMap[] = [
   { kor: '기타', eng: 'ETC' },
 ] as const
 
-export const CHALLENGE_CATEGORIES: ChallengeCategoryType[] = CHALLENGE_CATEGORY_PAIRS.map(pair => pair.eng)
-export const CHALLENGE_CATEGORIES_KOR: ChallengeCategoryTypeKor[] = CHALLENGE_CATEGORY_PAIRS.map(pair => pair.kor)
+export const CHALLENGE_CATEGORIES = CHALLENGE_CATEGORY_PAIRS.map(pair => pair.eng)
+export const CHALLENGE_CATEGORIES_KOR = CHALLENGE_CATEGORY_PAIRS.map(pair => pair.kor)
 
 /** 최대 인원 */
 // 최대, 최소, 가능한 간격
