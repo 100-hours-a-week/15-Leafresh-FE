@@ -1,7 +1,13 @@
 'use client'
 
-import { useGroupChallengeVerificationResult, usePersonalChallengeVerificationResult } from '@/features/challenge/api'
+import { useEffect } from 'react'
 
+import { useQueryClient } from '@tanstack/react-query'
+
+import { useGroupChallengeVerificationResult, usePersonalChallengeVerificationResult } from '@/features/challenge/api'
+import { useFeedbackPolling } from '@/features/member/api'
+
+import { QUERY_KEYS } from '@/shared/config'
 import { ToastType, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
@@ -13,12 +19,13 @@ enum PollingTarget {
 
 export const PollingWatcher = () => {
   const openToast = useToast()
-  const { polling, removePersonalChallengeId, removeGroupChallengeId } = usePollingStore()
+  const { polling, removePersonalChallengeId, removeGroupChallengeId, clearFeedbackPolling } = usePollingStore()
 
   const { challenge, member } = polling
 
   const personalChallengeIdList: number[] = challenge.verification.personalChallengeIdList // 개인 챌린지 롱폴링ID
   const groupChallengeIdList: number[] = challenge.verification.groupChallengeIdList // 단체 챌린지 롱폴링ID
+  const isFeedbackReceived: boolean = member.feedback
 
   /** 이벤트 핸들러 */
   // TODO: type=단체 챌린지 인증 제출 핸들링
@@ -33,6 +40,13 @@ export const PollingWatcher = () => {
     if (type === PollingTarget.GROUP_CHALLENGE_VERIFICATION_RESULT) {
       removeGroupChallengeId(challengeId) // 챌린지 제거
       openToast(ToastType.Success, `단체 챌린지 인증 결과 도착!\n알림창을 확인해주세요`)
+    }
+  }
+  // 피드백 요청
+  const handleCompleteFeedback = (type: PollingTarget) => {
+    if (type === PollingTarget.FEEDBACK) {
+      clearFeedbackPolling()
+      openToast(ToastType.Success, `피드백 도착!\n마이페이지를 확인해주세요`)
     }
   }
   return (
@@ -54,6 +68,10 @@ export const PollingWatcher = () => {
           onComplete={handleOnCompleteChallenge}
         />
       ))}
+
+      {isFeedbackReceived && (
+        <PollingFeedbackResult type={PollingTarget.FEEDBACK} onComplete={handleCompleteFeedback} />
+      )}
     </>
   )
 }
@@ -86,3 +104,26 @@ const PollingChallengeResult = ({ type, challengeId, onComplete }: PollingChalle
 
   return null
 }
+
+interface FeedbackResultProps {
+  type: PollingTarget
+  onComplete: (type: PollingTarget) => void
+}
+const PollingFeedbackResult = ({ type, onComplete }: FeedbackResultProps) => {
+  const FeedbackQuery = useFeedbackPolling({
+    enabled: true,
+  })
+
+  const data = FeedbackQuery.data
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    if (data?.data?.content) {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK })
+      onComplete(type)
+    }
+  }, [data?.data?.content, onComplete, type])
+  return null
+}
+
+export default PollingWatcher

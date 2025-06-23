@@ -17,7 +17,6 @@ import {
   getRecentBadges,
   LogoutResponse,
   LogoutVariables,
-  pollFeedbackResult,
   ProfileCardResponse,
   ProfileResponse,
   RecentBadge,
@@ -26,7 +25,7 @@ import {
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useOAuthUserStore, useUserStore } from '@/shared/context'
+import { ToastType, useOAuthUserStore, usePollingStore, useUserStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
@@ -44,17 +43,25 @@ const slideRotateIn = keyframes`
 export const Mypage = () => {
   const router = useRouter()
   const [count, setCount] = useState(8)
-  const [isPolling, setIsPolling] = useState(false)
   const [pollError, setPollError] = useState<string | null>(null)
   const [showProfileCard, setShowProfileCard] = useState(false)
 
   const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
   const { clearUserInfo } = useUserStore()
   const { isLoggedIn } = useAuth()
+  const { setFeedbackPolling } = usePollingStore()
+
+  const {
+    polling: {
+      member: { feedback: shouldPoll },
+    },
+  } = usePollingStore()
 
   const openToast = useToast()
 
-  const { mutate: requestFeedback } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK)
+  const { mutate: requestFeedback, isPending } = useMutationStore<null, void>(
+    MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK,
+  )
 
   const isMountedRef = useRef(true) //페이지 언마운트 시, 상태 변경(set... 호출) 방지
 
@@ -104,7 +111,7 @@ export const Mypage = () => {
     ...QUERY_OPTIONS.MEMBER.PROFILE_CARD,
   })
 
-  const { data: feedbackData } = useQuery({
+  const { data: feedbackData, isFetching } = useQuery({
     queryKey: QUERY_KEYS.MEMBER.FEEDBACK.GET_FEEDBACK,
     queryFn: getFeedback,
     ...QUERY_OPTIONS.MEMBER.FEEDBACK,
@@ -128,26 +135,12 @@ export const Mypage = () => {
   const handleRequestFeedback = () => {
     // const body = { reason: 'WEEKLY_FEEDBACK' }
     requestFeedback(undefined, {
-      onSuccess: async () => {
-        if (isMountedRef.current) {
-          setIsPolling(true)
-          setPollError(null) // 초기화
-        }
-
-        try {
-          await pollFeedbackResult()
-        } catch (err) {
-          if (isMountedRef.current) {
-            setPollError('피드백을 가져오는 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.')
-          }
-        } finally {
-          if (isMountedRef.current) setIsPolling(false)
-        }
+      onSuccess: () => {
+        setFeedbackPolling()
       },
-      onError: err => {
-        if (isMountedRef.current) {
-          setPollError('피드백 요청에 실패했어요.')
-        }
+      onError: error => {
+        const errMessage = error.message
+        setPollError(errMessage)
       },
     })
   }
@@ -180,7 +173,6 @@ export const Mypage = () => {
       )
     }
   }
-
   return (
     <Container isScroll={showProfileCard}>
       <ProfileSection>
@@ -193,18 +185,18 @@ export const Mypage = () => {
         />
         <FeedbackBox>
           <FeedbackText>나의 친환경 활동 피드백</FeedbackText>
-          {isPolling && <Loading />}
+          {(shouldPoll || isFetching) && <Loading />}
 
           {/* 피드백 */}
-          {feedback?.content && !isPolling && <Feedback>{feedback.content}</Feedback>}
+          {feedback?.content && !shouldPoll && <Feedback>{feedback.content}</Feedback>}
 
           {/* 피드백 요청 버튼 조건 분기 */}
-          {feedback?.content === null && !isPolling && !pollError && (
+          {feedback?.content === null && !shouldPoll && !pollError && (
             <FeedbackButton onClick={handleRequestFeedback}>AI 피드백 받기</FeedbackButton>
           )}
 
           {/* 에러 발생 시 다시 시도 버튼만 표시 */}
-          {pollError && !isPolling && (
+          {pollError && !shouldPoll && (
             <>
               <FeedbackButton onClick={handleRequestFeedback}>다시 시도</FeedbackButton>
               <ErrorMessage>{pollError}</ErrorMessage>
@@ -295,6 +287,7 @@ const FeedbackText = styled.p`
   align-self: flex-start;
 `
 const Feedback = styled.p`
+  white-space: pre-line;
   font-size: ${theme.fontSize.sm};
   font-weight: ${theme.fontWeight.medium};
 `
