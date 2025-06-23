@@ -10,7 +10,8 @@ import styled from '@emotion/styled'
 
 import { CHALLENGE_CATEGORIES_KOR, FullFormValues, PARTICIPANT_RANGE } from '@/entities/challenge/model'
 
-import { DatePicker, Dropdown, DropdownProps, ErrorText, Input, LucideIcon, TimePicker } from '@/shared/components'
+import { DatePicker, Dropdown, DropdownProps, ErrorText, Input, LucideIcon } from '@/shared/components'
+import { TimePicker } from '@/shared/components/timepicker'
 import { theme } from '@/shared/config'
 import { StyledGeneric } from '@/shared/styles'
 
