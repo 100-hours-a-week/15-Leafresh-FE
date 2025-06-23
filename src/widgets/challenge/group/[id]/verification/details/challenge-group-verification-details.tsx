@@ -242,7 +242,7 @@ export const VerificationDetails = ({
         challengeId,
         verificationId,
         commentId: parentCommentId,
-        body: { content: content },
+        body: { comment: content },
       },
       {
         onSuccess: response => {
