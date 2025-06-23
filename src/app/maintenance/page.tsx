@@ -4,8 +4,8 @@ import Image from 'next/image'
 
 import styled from '@emotion/styled'
 
-import { media } from '@shared/styles/emotion/media'
-import { theme } from '@shared/styles/theme'
+import { media, theme } from '@/shared/config'
+
 import ServiceReadyImage from '@public/image/service_ready.svg'
 
 export default function ServiceReady() {

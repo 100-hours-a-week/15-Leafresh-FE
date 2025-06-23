@@ -1,11 +1,14 @@
-import Image from 'next/image'
+'use client'
 
 import { ReactNode } from 'react'
+
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
 
-import { theme } from '@shared/styles/theme'
-import LogoCharacterImage from '@public/image/main-icon.svg'
+import { theme } from '@/shared/config'
 
+import LogoCharacterImage from '@public/image/main-icon.svg'
 interface NoContentProps {
   title: string
   buttonText: string // 버튼에 들어갈 텍스트
@@ -13,7 +16,7 @@ interface NoContentProps {
   className?: string
 }
 
-const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProps): ReactNode => {
+export const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProps): ReactNode => {
   return (
     <EmptyWrapper className={className}>
       <Image src={LogoCharacterImage} alt='로고 캐릭터' />
@@ -22,8 +25,6 @@ const NoContent = ({ title, buttonText, clickHandler, className }: NoContentProp
     </EmptyWrapper>
   )
 }
-
-export default NoContent
 
 const EmptyWrapper = styled.div`
   width: 100%;

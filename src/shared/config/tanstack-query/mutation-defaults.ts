@@ -1,32 +1,35 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
-import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
-import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
-import { ChallengeStatus } from '@features/challenge/api/participate/group-participant'
-import { deleteVerificationComment } from '@features/challenge/api/participate/verification/delete-verification-comment'
-import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
-import { CreateVerificationLike } from '@features/challenge/api/participate/verification/likes/create-like'
-import { DeleteVerificationLike } from '@features/challenge/api/participate/verification/likes/delete-like'
-import { postVerificationComment } from '@features/challenge/api/participate/verification/post-verification-comment'
-import { postVerificationReply } from '@features/challenge/api/participate/verification/post-verification-reply'
-import { putVerificationComment } from '@features/challenge/api/participate/verification/put-verification-comment'
-import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
-import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
-import { Logout } from '@features/member/api/logout'
-import { PatchMemberInfo } from '@features/member/api/profile/patch-member-info'
-import { RequestFeedback } from '@features/member/api/profile/post-member-feedback'
-import { readAllAlarms } from '@features/member/api/read-all-alarms'
-import { SignUp } from '@features/member/api/signup'
-import { Unregister } from '@features/member/api/unregister'
-import { OrderProduct } from '@features/store/api/order-proudcts'
-import { OrderTimeDealProduct } from '@features/store/api/order-timedeal'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
+import {
+  CreateChallenge,
+  CreateVerificationLike,
+  DeleteGroupChallenge,
+  deleteVerificationComment,
+  DeleteVerificationLike,
+  ModifyChallenge,
+  ParticipateGroupChallenge,
+  PostGroupVerification,
+  postVerificationComment,
+  postVerificationReply,
+  putVerificationComment,
+  VerifyGroupChallenge,
+} from '@/entities/challenge/api'
+import {
+  ChallengeStatus,
+  Logout,
+  PatchMemberInfo,
+  readAllAlarms,
+  RequestFeedback,
+  SignUp,
+  Unregister,
+} from '@/entities/member/api'
+import { OrderProduct, OrderTimeDealProduct } from '@/entities/store/api'
+
+import { ApiResponse, ErrorResponse, handleError } from '@/shared/lib'
 
 import { MUTATION_KEYS } from './mutation-keys'
+import { getQueryClient } from './query-client'
 import { QUERY_KEYS } from './query-keys'
-import { getQueryClient } from './queryClient'
-import { handleError } from './utils'
 
 const queryClient = getQueryClient()
 
