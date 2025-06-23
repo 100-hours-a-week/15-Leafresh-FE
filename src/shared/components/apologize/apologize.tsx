@@ -1,9 +1,13 @@
-import Image from 'next/image'
+'use client'
 
 import { ReactNode } from 'react'
+
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
 
-import { theme } from '@shared/styles/theme'
+import { theme } from '@/shared/config'
+
 import ApologizeImage from '@public/image/apologize_character.svg'
 
 interface ApologizeContentProps {
@@ -12,7 +16,7 @@ interface ApologizeContentProps {
   className?: string
 }
 
-const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
+export const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
   return (
     <EmptySection className={className}>
       <Image src={ApologizeImage} alt='사죄 이미지' width={140} height={140} />
@@ -22,8 +26,6 @@ const ApologizeContent = ({ title, description, className }: ApologizeContentPro
     </EmptySection>
   )
 }
-
-export default ApologizeContent
 
 const EmptySection = styled.div`
   display: flex;

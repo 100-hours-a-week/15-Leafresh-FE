@@ -1,0 +1,91 @@
+'use client'
+import { useEffect, useState } from 'react'
+
+import styled from '@emotion/styled'
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
+
+export const GuideOverlay = ({ visible }: { visible: boolean }) => {
+  const [shouldRender, setShouldRender] = useState(true)
+
+  useEffect(() => {
+    if (!visible) {
+      const timer = setTimeout(() => setShouldRender(false), 500) // fade-out 지속시간 후 제거
+      return () => clearTimeout(timer)
+    } else {
+      setShouldRender(true)
+    }
+  }, [visible])
+
+  if (!shouldRender) return null
+
+  return (
+    <Overlay className={!visible ? 'fade-out' : ''}>
+      <SwipeGuide>
+        <ChevronLeft size={24} />
+        <span>좌우로 회전해보세요</span>
+        <ChevronRight size={24} />
+      </SwipeGuide>
+      <DownGuide>
+        <ChevronDown size={28} />
+        <span>아래로 스와이프하면 닫을 수 있어요</span>
+      </DownGuide>
+    </Overlay>
+  )
+}
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  &.fade-out {
+    animation: fadeOut 0.5s ease forwards;
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+`
+
+const SwipeGuide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #333;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+`
+
+const DownGuide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #333;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 6px 12px;
+  border-radius: 20px;
+`

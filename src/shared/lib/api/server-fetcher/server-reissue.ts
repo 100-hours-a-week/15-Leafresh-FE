@@ -2,8 +2,7 @@
 
 import { cookies } from 'next/headers'
 
-import { BASE_API_URL } from '@shared/constants/api-url'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { BASE_API_URL, ENDPOINTS } from '../consts'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
