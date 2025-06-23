@@ -1,7 +1,7 @@
-import ModalProvider from '@shared/components/modal/ModalProvider'
-import Toast from '@shared/components/toast/Toast'
-import AuthGuard from '@shared/config/providers/AuthGaurd'
-import LayoutWrapper from '@shared/styles/LayoutWrapper'
+import { PollingWatcher } from '@/features/common/components'
+
+import { Toast } from '@/shared/components'
+import { AuthGuard, GlobalWrapper, ModalProvider } from '@/shared/config'
 
 const RootLayout = ({
   children,
@@ -10,11 +10,12 @@ const RootLayout = ({
 }>) => {
   return (
     <AuthGuard>
-      <LayoutWrapper>
+      <GlobalWrapper>
+        <PollingWatcher /> {/* 롱폴링 상태 조회  */}
         {children}
         <Toast />
         <ModalProvider />
-      </LayoutWrapper>
+      </GlobalWrapper>
     </AuthGuard>
   )
 }

@@ -1,5 +1,4 @@
-import { BASE_API_URL } from '@shared/constants/api-url'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
+import { BASE_API_URL, ENDPOINTS } from '../consts'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
@@ -10,6 +9,7 @@ export async function refreshClientAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()
 
   isRefreshing = true
+
   refreshPromise = (async () => {
     try {
       const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE.path}`, {

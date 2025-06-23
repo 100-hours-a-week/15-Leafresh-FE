@@ -1,7 +1,5 @@
-import { BASE_API_URL } from '@shared/constants/api-url'
-import { EndpointType } from '@shared/constants/endpoint/endpoint'
+import { ApiResponse, BASE_API_URL, EndpointType, ErrorResponse, OptionsType } from '@/shared/lib'
 
-import { ApiResponse, ErrorResponse, OptionsType } from '../type'
 import { refreshClientAccessToken } from './client-reissue'
 
 const BASE_URL = BASE_API_URL
@@ -13,7 +11,7 @@ export async function clientFetchRequest<T>(
 ): Promise<ApiResponse<T>> {
   /** Request */
   const { method, path } = endpoint
-  const url = new URL(BASE_URL + path)
+  const url = new URL(BASE_URL + path, window.location.origin)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
@@ -42,7 +40,6 @@ export async function clientFetchRequest<T>(
   /** Response */
   const contentType = response.headers.get('Content-Type')
   const data = contentType?.includes('application/json') ? await response.json() : await response.text()
-
   if (!response.ok) {
     // ✅ Access Token 만료 추정 시 재시도
     if ((response.status === 401 || response.status === 403) && !isRetry) {
