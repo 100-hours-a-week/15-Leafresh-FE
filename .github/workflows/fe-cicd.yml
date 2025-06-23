@@ -200,6 +200,8 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Tag and Push Docker Image (tag = ${{ env.TAG_NAME }})
+        env:
+          TAG_NAME: ${{ env.TAG_NAME }}
         run: |
           docker pull jchanho99/frontend-develop:latest
           docker image tag jchanho99/frontend-develop:latest temp-image-with-label
