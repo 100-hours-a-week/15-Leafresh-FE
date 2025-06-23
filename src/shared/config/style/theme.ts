@@ -1,4 +1,4 @@
-const colorThemes = {
+export const colorThemes = {
   lfBlack: {
     base: '#000000',
   },
@@ -45,7 +45,7 @@ const colorThemes = {
   },
 }
 
-const fontSizeThemes = {
+export const fontSizeThemes = {
   xss: '10px',
   xs: '12px',
   sm: '14px',

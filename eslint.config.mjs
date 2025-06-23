@@ -100,6 +100,7 @@ const eslintConfig = [
             '@/entities/*/model',
 
             '@/shared/*',
+            '@/shared/**', // TODO: 임시 -> 제거
           ],
         },
       ],
