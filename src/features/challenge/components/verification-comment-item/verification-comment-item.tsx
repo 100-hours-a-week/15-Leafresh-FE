@@ -27,6 +27,16 @@ export const CommentItem = ({ comment, onUpdate, onDelete }: CommentItemProps) =
     setIsEditing(false)
   }
 
+  const handleKeyDownUpdateComment = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      const content = editedText.trim()
+      if (content) {
+        handleUpdate()
+      }
+    }
+  }
+
   return (
     <CommentItemWrapper>
       <ContentArea>
@@ -52,6 +62,7 @@ export const CommentItem = ({ comment, onUpdate, onDelete }: CommentItemProps) =
             <EditField
               value={editedText}
               onChange={e => setEditedText(e.target.value)}
+              onKeyDown={handleKeyDownUpdateComment}
               placeholder='댓글을 작성하세요'
             />
             <ActionRow>
@@ -152,6 +163,7 @@ const DeletedText = styled.div`
 const Text = styled.p`
   margin-top: 4px;
   font-size: 14px;
+  white-space: pre-line;
   color: #333;
 `
 

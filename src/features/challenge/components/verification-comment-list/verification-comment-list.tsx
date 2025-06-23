@@ -64,6 +64,27 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
     onDelete(id)
   }
 
+  const handleKeyDownNewComment = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      const content = newCommentInput.trim()
+      if (content) {
+        handleNewCommentSubmit()
+      }
+    }
+  }
+
+  const handleKeyDownReply = (e: React.KeyboardEvent<HTMLTextAreaElement>, parentCommentId: number) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+
+      const content = e.currentTarget.value.trim()
+      if (!content) return
+
+      handleReplySubmit(parentCommentId)
+    }
+  }
+
   return (
     <Container>
       <TextareaWrapper>
@@ -71,6 +92,7 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
           placeholder='댓글을 작성하세요'
           value={newCommentInput}
           onChange={e => setNewCommentInput(e.target.value)}
+          onKeyDown={e => handleKeyDownNewComment(e)}
         />
         <SubmitButton onClick={handleNewCommentSubmit} size={20} />
       </TextareaWrapper>
@@ -125,6 +147,7 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
                     placeholder='답글을 입력하세요'
                     value={replyInputMap[comment.id] || ''}
                     onChange={e => handleReplyChange(comment.id, e.target.value)}
+                    onKeyDown={e => handleKeyDownReply(e, comment.id)}
                   />
                   <SubmitButton onClick={() => handleReplySubmit(comment.id)} size={20} />
                 </ReplyTextAreaWrapper>
