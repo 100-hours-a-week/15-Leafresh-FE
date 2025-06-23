@@ -1,3 +1,5 @@
+import { BASE_API_URL } from '@/shared/lib'
+
 export type RecommendationEvent = {
   event?: string
   status: number
@@ -27,17 +29,13 @@ export function createCategoryStream(
   category: string,
 ): EventSource {
   const params = new URLSearchParams({ sessionId, location, workType, category })
-  return new EventSource(`https://springboot.dev-leafresh.app/api/chatbot/recommendation/base-info?${params}`, {
+  return new EventSource(`${BASE_API_URL}/api/chatbot/recommendation/base-info?${params}`, {
     withCredentials: true,
   })
-  // return new EventSource(`http://35.216.82.57:8000/ai/chatbot/recommendation/base-info?${params}`, {
-  //   withCredentials: true,
-  // })
-  // return new EventSource(`http://35.216.82.57:8000/ai/chatbot/recommendation/base-info?${params}`)
 }
 
 // SSE 스트림 생성 함수 (자유 텍스트)
 export function createFreeTextStream(sessionId: string, message: string): EventSource {
   const params = new URLSearchParams({ sessionId, message })
-  return new EventSource(`https://springboot.dev-leafresh.app/api/chatbot/recommendation/free-text?${params}`)
+  return new EventSource(`${BASE_API_URL}/api/chatbot/recommendation/free-text?${params}`)
 }
