@@ -104,9 +104,17 @@ export const VerificationDetails = ({
 
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
 
-  const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
-  const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
-  const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
+  const [isLiked, setIsLiked] = useState<boolean | undefined>(undefined)
+  const [likeCount, setLikeCount] = useState<number>(0)
+  const [commentCount, setCommentCount] = useState<number>(0)
+
+  useEffect(() => {
+    if (verificationData?.data) {
+      setIsLiked(verificationData.data.isLiked)
+      setLikeCount(verificationData.data.counts.like ?? 0)
+      setCommentCount(verificationData.data.counts.comment ?? 0)
+    }
+  }, [verificationData?.data])
 
   const [localComments, setLocalComments] = useState<CommentType[]>(comments?.comments ?? [])
 
