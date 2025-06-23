@@ -171,7 +171,7 @@ jobs:
       - name: Extract tag name
         id: tag
         run: |
-          TAG_NAME="${GITHUB_REF#refs/tags/v}"
+          TAG_NAME="${GITHUB_REF#refs/tags}"
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Deploy to Dev
