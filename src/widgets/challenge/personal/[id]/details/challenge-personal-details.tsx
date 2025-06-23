@@ -146,7 +146,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     const now = new Date()
 
     /** #예외2: 요일이 일치하지 않으면 참여 불가 */
-    const nowDay: DayType = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase() // e.g. 'MONDAY'
+    const nowDay: DayType = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase() as DayType // e.g. 'MONDAY'
     if (nowDay !== dayOfWeek) {
       openToast(ToastType.Error, '챌린지 기간이 아닙니다')
       return
@@ -250,7 +250,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
       </SectionWrapper>
 
       <SubmitButton onClick={openImageModal} disabled={isButtonDisabled}>
-        {!isPending ? getSubmitButtonLabel(status) : <Loading />}
+        {!isPending ? getSubmitButtonLabel(status) : <Loading hasText={false} />}
       </SubmitButton>
     </Wrapper>
   )

@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
 
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
 
 import { FeedVerificationStatusType } from '@/entities/challenge/model'
@@ -58,14 +60,12 @@ export const GroupChallengeParticipantCard = ({
   return (
     <CardContainer className={className} onClick={onClick}>
       <LeftSection>
-        <ChallengeImage src={imageUrl} alt={title} width={120} height={120} />
+        <ChallengeImage src={imageUrl} alt={title} fill />
       </LeftSection>
       <RightSection>
         <TitleSection>
           <Title>{title}</Title>
-          <ArrowIcon onClick={onClick} name='ChevronRight' size={18}>
-            &gt;
-          </ArrowIcon>
+          <ArrowIcon onClick={onClick} name='ChevronRight' size={18} />
         </TitleSection>
         <DateRange>
           {formatDate(startDate)} ~ {formatDate(endDate)}
@@ -78,10 +78,6 @@ export const GroupChallengeParticipantCard = ({
         </InfoSection>
 
         <RateWrapper>
-          {/* 프로그레스 바 추가 */}
-          {/* <ProgressBarContainer>
-            <ProgressBarFill width={progressPercentage} />
-          </ProgressBarContainer> */}
           <SegmentedBar>
             {segments.map((seg, i) => (
               <Segment
@@ -105,7 +101,7 @@ const CardContainer = styled.div`
   width: 100%;
   height: 130px;
   margin: 0 0 20px 0;
-  border-radius: 15px;
+  border-radius: ${theme.radius.md};
   background-color: ${theme.colors.lfWhite.base};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -114,23 +110,22 @@ const CardContainer = styled.div`
 `
 
 const LeftSection = styled.div`
-  width: 130px;
   height: 100%;
+  aspect-ratio: 1/1;
   /* background-color: ${theme.colors.lfGreenMain.base}; */
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
 `
 
-const ChallengeImage = styled.img`
-  width: 120px;
-  height: 120px;
+const ChallengeImage = styled(Image)`
   object-fit: cover;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: filter 0.2s ease;
+
+  ${CardContainer}:hover & {
+    filter: brightness(1.1);
+  }
 `
 
 const RightSection = styled.div`
@@ -196,9 +191,13 @@ const ProgressText = styled.span`
 
 const RateWrapper = styled.div`
   flex: 1;
-  display: flex;
-  justify-content: center;
   text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6px;
 `
 
 const SegmentedBar = styled.div`
@@ -218,9 +217,6 @@ const Segment = styled.div<{ color: string; hasBorder: boolean }>`
 `
 
 const SuccessRate = styled.div`
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
   font-size: 14px;
   font-weight: 600;
   color: #333;

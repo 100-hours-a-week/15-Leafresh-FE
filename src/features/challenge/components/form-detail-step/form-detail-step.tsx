@@ -116,7 +116,7 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
           <WarningList>
             {CHALLENGE_DETAILS_WARNINGS.map(warnings => (
               <Warning key={warnings.value} isWarning={warnings.isWarning}>
-                <LucideIcon name='Check' />
+                <LucideIcon name='Check' size={20} />
                 <li>{warnings.value}</li>
               </Warning>
             ))}
@@ -184,7 +184,7 @@ const LabelRow = styled.div`
   gap: 4px;
 `
 const Label = styled.label`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.md};
   font-weight: ${theme.fontWeight.medium};
 `
 const RequiredMark = styled.span`
@@ -193,7 +193,7 @@ const RequiredMark = styled.span`
 const SubText = styled.p`
   color: ${theme.colors.lfDarkGray.base};
   font-size: ${theme.fontSize.xs};
-  margin: 5px 0 8px 0;
+  margin-bottom: 4px;
 `
 const InfoIcon = styled.span`
   font-size: 14px;
@@ -208,7 +208,7 @@ const TextArea = styled.textarea`
 `
 
 const WarningList = styled.ul`
-  font-size: ${theme.fontSize.xs};
+  font-size: ${theme.fontSize.sm};
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -218,7 +218,7 @@ const WarningList = styled.ul`
 const Warning = styled.div<{ isWarning: boolean }>`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 
   color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
 `
