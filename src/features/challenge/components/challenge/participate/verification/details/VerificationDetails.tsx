@@ -46,6 +46,7 @@ import { theme } from '@shared/styles/theme'
 import { ISOFormatString } from '@shared/types/date'
 import Like from '@public/icon/like.svg'
 import UnLike from '@public/icon/unLike.svg'
+import Loading from '@shared/components/loading'
 
 interface VerificationDetailsProps {
   challengeId: number
@@ -378,7 +379,9 @@ const VerificationDetails = ({ challengeId, verificationId, className }: Verific
       },
     })
   }
-
+  if (!verifications) {
+    return <Loading /> // 로딩 스피너나 빈 화면 처리
+  }
   return (
     <Container>
       <Header>

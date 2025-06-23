@@ -33,14 +33,6 @@ const CommentItem = ({ comment, onUpdate, onDelete }: CommentItemProps) => {
     }
   }
 
-  const formatMultilineText = (text: string) =>
-    text.split('\n').map((line, idx) => (
-      <span key={idx}>
-        {line}
-        <br />
-      </span>
-    ))
-
   return (
     <CommentItemWrapper>
       <ContentArea>
@@ -75,7 +67,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }: CommentItemProps) => {
             </ActionRow>
           </>
         ) : (
-          <Text>{formatMultilineText(comment.content)}</Text>
+          <Text>{comment.content}</Text>
         )}
       </ContentArea>
     </CommentItemWrapper>
@@ -169,6 +161,7 @@ const DeletedText = styled.div`
 const Text = styled.p`
   margin-top: 4px;
   font-size: 14px;
+  white-space: pre-line;
   color: #333;
 `
 
