@@ -234,8 +234,9 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
                         <Image
                           src={badge.imageUrl}
                           alt={badge.name}
-                          width={60}
-                          height={60}
+                          width={80}
+                          height={80}
+                          fill
                           style={{ objectFit: 'cover' }}
                         />
                       </BadgeImage>
@@ -515,8 +516,9 @@ const NextLabel = styled.span`
 
 /* 뱃지 영역 */
 const BadgeSection = styled.div`
+  width: 95%;
   flex: 1;
-  margin-top: 20px;
+  margin-bottom: 20px;
 `
 
 const BadgeGrid = styled.div`
@@ -527,19 +529,21 @@ const BadgeGrid = styled.div`
 `
 
 const BadgeItem = styled.div`
+  width: 100%;
+
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
 `
 
 const BadgeImage = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  aspect-ratio: 1/1;
+
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 8px;
-  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -547,10 +551,10 @@ const BadgeImage = styled.div`
 `
 
 const BadgeName = styled.span`
-  font-size: 10px;
-  color: #666;
+  font-size: ${theme.fontSize.xs};
+  font-weight: ${theme.fontWeight.medium};
+  color: ${theme.colors.lfBlack.base};
   text-align: center;
-  line-height: 1.2;
 `
 
 const NoBadgeMessage = styled.p`
