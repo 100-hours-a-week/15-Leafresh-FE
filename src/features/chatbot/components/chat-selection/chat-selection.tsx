@@ -1,75 +1,81 @@
 'use client'
 
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import Image from 'next/image'
 
 import styled from '@emotion/styled'
 
+import { CHAT_CHALLENGE_OPTIONS, LOCATION_OPSIONS, WORKTYPE_OPTIONS, ChatOption } from '@/entities/chatbot/model'
+
 import { theme } from '@/shared/config'
 
-// 선택 타입 정의
-export type SelectionType = 'location' | 'workType' | 'challenge' | 'retry'
-
-export interface ChatSelectionOption {
-  label: string
-  value: string
-}
-
 export interface ChatSelectionProps {
+  selectionType: 'location' | 'workType' | 'challenge' | 'retry'
   title: string
-  description?: string
   subtitle?: string
-  options: ChatSelectionOption[]
   imageUrl?: string
-  onSelect: (value: string) => void
+  options?: ChatOption[]
   buttonText?: string
   onExplainClick?: () => void
-  selectionType?: SelectionType // 선택 타입 추가
+  onSelect: (value: string) => void
 }
 
-export const ChatSelection: React.FC<ChatSelectionProps> = ({
+export const ChatSelection = ({
+  selectionType,
   title,
-  description,
   subtitle,
-  options,
   imageUrl,
-  onSelect,
   buttonText,
   onExplainClick,
-  selectionType = 'challenge', // 기본값 설정
-}) => {
+  onSelect,
+}: ChatSelectionProps) => {
+  const options: ChatOption[] = useMemo(() => {
+    if (selectionType === 'location') return LOCATION_OPSIONS
+    if (selectionType === 'workType') return WORKTYPE_OPTIONS
+    // 'challenge'나 그 외 타입일 때
+    return CHAT_CHALLENGE_OPTIONS
+  }, [selectionType])
+
   return (
-    <Card data-type={selectionType}>
-      {imageUrl && (
-        <ImageWrapper data-type={selectionType}>
-          <CardImage
-            src={imageUrl}
-            alt='cardimg'
-            // fill={true}
-            width={selectionType === 'challenge' ? 250 : 175}
-            height={108}
-          />
-        </ImageWrapper>
-      )}
+    <SelectionWrapper>
+      <Card data-type={selectionType}>
+        {/* cardImageUrl이 있을 때만 Image 컴포넌트를 렌더링 */}
+        {imageUrl && (
+          <ImageWrapper data-type={selectionType}>
+            <CardImage
+              src={imageUrl}
+              alt={title}
+              width={selectionType === 'challenge' ? 250 : 175}
+              height={selectionType === 'challenge' ? 120 : 110}
+            />
+          </ImageWrapper>
+        )}
 
-      <CardContent data-type={selectionType}>
-        {title && <CardTitle data-type={selectionType}>{title}</CardTitle>}
-        {subtitle && <CardSubtitle data-type={selectionType}>{subtitle}</CardSubtitle>}
-        {description && <DescWrapper>{description}</DescWrapper>}
+        <CardContent data-type={selectionType}>
+          {title && <CardTitle data-type={selectionType}>{title}</CardTitle>}
+          {subtitle && <CardSubtitle data-type={selectionType}>{subtitle}</CardSubtitle>}
 
-        <OptionsGrid data-type={selectionType}>
-          {options.map(option => (
-            <OptionButton key={option.value} onClick={() => onSelect(option.value)} data-type={selectionType}>
-              {option.label}
-            </OptionButton>
-          ))}
-        </OptionsGrid>
-        {buttonText && <ExplainButton onClick={onExplainClick}>{buttonText}</ExplainButton>}
-      </CardContent>
-    </Card>
+          <OptionsGrid data-type={selectionType}>
+            {options.map((opt: ChatOption) => (
+              <OptionButton key={opt.value} data-type={selectionType} onClick={() => onSelect(opt.label)}>
+                {opt.label}
+              </OptionButton>
+            ))}
+          </OptionsGrid>
+
+          {buttonText && <ExplainButton onClick={onExplainClick}>{buttonText}</ExplainButton>}
+        </CardContent>
+      </Card>
+    </SelectionWrapper>
   )
 }
+
+const SelectionWrapper = styled.div`
+  margin: 8px 0;
+  padding-left: 40px;
+  width: 100%;
+`
 
 // 기본 카드 스타일
 const Card = styled.div`
@@ -143,12 +149,6 @@ const CardSubtitle = styled.p`
   align-self: flex-start;
   font-size: 10px;
   color: ${theme.colors.lfGreenMain.base};
-`
-
-const DescWrapper = styled.div`
-  display: flex;
-  color: black;
-  font-size: 10px;
 `
 
 const OptionsGrid = styled.div`

@@ -52,18 +52,23 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
 
   const [step, setStep] = useState<1 | 2>(1)
 
-  const categoryFromQuery = searchParams.get('category') ?? ''
-  const categoryKor: string = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(categoryFromQuery) ?? ''
+  // //search 쿼리에서 get
+  const title: string = searchParams.get('title') ?? ''
+  const description: string = searchParams.get('description') ?? ''
+  const categoryKor: string =
+    convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(searchParams.get('category') ?? '') ?? ''
 
   const mergedDefaultValues = useMemo(() => {
     const createdDefaultValues: FullFormValues = {
       ...defaultValues,
+      title: title,
+      description: description,
       category: categoryKor,
     }
     const modifyDefaultValues: FullFormValues = { ...defaultValues }
 
     return !isEdit ? createdDefaultValues : modifyDefaultValues
-  }, [categoryFromQuery, defaultValues])
+  }, [title, description, categoryKor, defaultValues])
 
   const form = useForm<FullFormValues>({
     resolver: zodResolver(fullSchema),

@@ -1,9 +1,9 @@
 // 챗봇 API 모듈 인덱스 파일
 import {
   CATEGORY_RECOMMENDATION_ENDPOINT,
-  CategoryRecommendationRequestDTO,
-  ChallengeDTO,
-  RecommendationResponseDataDTO,
+  CategoryRecommendationRequest,
+  Challenge,
+  RecommendationResponse,
   requestCategoryBasedRecommendation,
 } from './chatbot-base-info'
 import {
@@ -25,7 +25,7 @@ export {
 }
 
 // 타입 내보내기 - isolatedModules 설정 때문에 export type 사용
-export type { CategoryRecommendationRequestDTO }
+export type { CategoryRecommendationRequest }
 
 export {
   // 자유 텍스트 기반 추천
@@ -37,4 +37,4 @@ export {
 export type { FreetextRecommendationRequestDTO }
 
 // 공통 응답 타입 - isolatedModules 설정 때문에 export type 사용
-export type { ChallengeDTO, RecommendationResponseDataDTO }
+export type { Challenge, RecommendationResponse }

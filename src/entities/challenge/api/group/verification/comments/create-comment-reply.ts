@@ -2,15 +2,15 @@ import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 import { CommentResponse } from './get-comment-list'
 
-export type PostReplytBody = {
-  content: string
+export type PostReplyBody = {
+  comment: string
 }
 
 export type PostReplyVariables = {
   challengeId: number
   verificationId: number
   commentId: number
-  body: PostReplytBody
+  body: PostReplyBody
 }
 
 export const postVerificationReply = ({ challengeId, verificationId, commentId, body }: PostReplyVariables) => {

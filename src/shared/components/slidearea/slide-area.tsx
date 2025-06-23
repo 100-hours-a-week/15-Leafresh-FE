@@ -19,17 +19,17 @@ export function SlideArea({ children, className, visibleIndex, onItemSelect }: S
 
   // visibleIndex가 변경되면 해당 아이템으로 스크롤
   useEffect(() => {
-    if (scrollRef.current && visibleIndex > 0) {
-      const itemElements = scrollRef.current.querySelectorAll('[data-slide-item]')
-      if (itemElements.length > visibleIndex - 1) {
-        const targetElement = itemElements[visibleIndex - 1] as HTMLElement
+    if (!scrollRef.current) return
 
-        // 부드럽게 스크롤
-        scrollRef.current.scrollTo({
-          left: targetElement.offsetLeft, // gap 고려
-          behavior: 'smooth',
-        })
-      }
+    const itemElements = scrollRef.current.querySelectorAll<HTMLElement>('[data-slide-item]')
+    // 배열 범위를 벗어나지 않도록 인덱스를 제한
+    const idx = Math.min(visibleIndex, itemElements.length - 1)
+    const target = itemElements[idx]
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'start',
+      })
     }
   }, [visibleIndex])
 
