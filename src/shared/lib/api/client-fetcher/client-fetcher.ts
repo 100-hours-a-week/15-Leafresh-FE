@@ -1,4 +1,4 @@
-import { ApiResponse, BASE_API_URL, EndpointType, ErrorResponse, OptionsType } from '@/shared/lib'
+import { ApiResponse, BASE_API_URL, EndpointType, ErrorResponse, handleAuthError, OptionsType } from '@/shared/lib'
 
 import { refreshClientAccessToken } from './client-reissue'
 
@@ -54,7 +54,7 @@ export async function clientFetchRequest<T>(
           data: null,
         }
         /** 미인증 유저에게는 토스트로 알림 */
-        // handleAuthError(error)
+        handleAuthError(error)
         throw error
       }
     }
