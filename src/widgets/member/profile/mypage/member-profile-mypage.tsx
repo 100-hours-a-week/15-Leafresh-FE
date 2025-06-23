@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
+
 import { ProfileBox, ProfileCard, RecentBadgeBox } from '@/features/member/components'
 
 import {

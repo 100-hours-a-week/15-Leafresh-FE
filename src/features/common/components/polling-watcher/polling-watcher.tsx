@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
-import { useFeedbackPolling } from '@/features/member/hooks/useFeedbackPolling'
-import { useGroupChallengeVerificationResult, usePersonalChallengeVerificationResult } from '@/features/challenge/api'
 
-import { ToastType, usePollingStore } from '@/shared/context'
-import { useToast } from '@/shared/hooks'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { useGroupChallengeVerificationResult, usePersonalChallengeVerificationResult } from '@/features/challenge/api'
+import { useFeedbackPolling } from '@/features/member/api'
 
 import { QUERY_KEYS } from '@/shared/config'
+import { ToastType, usePollingStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 
 enum PollingTarget {
   PERSONAL_CHALLENGE_VERIFICATION_RESULT, // 개인 챌린지 인증 결과 조회
