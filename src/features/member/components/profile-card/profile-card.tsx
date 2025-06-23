@@ -231,14 +231,7 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
                   {data.badges.map(badge => (
                     <BadgeItem key={badge.id}>
                       <BadgeImage>
-                        <Image
-                          src={badge.imageUrl}
-                          alt={badge.name}
-                          width={80}
-                          height={80}
-                          fill
-                          style={{ objectFit: 'cover' }}
-                        />
+                        <Image src={badge.imageUrl} alt={badge.name} fill style={{ objectFit: 'cover' }} />
                       </BadgeImage>
                       <BadgeName>{badge.name}</BadgeName>
                     </BadgeItem>
@@ -402,19 +395,6 @@ const LeafValueWrapper = styled.div`
 
   gap: 8px;
 `
-
-const ProgressItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-`
-
-const TreeIcon = styled.div`
-  display: flex;
-  align-items: center;
-`
-
 const LeafIcon = styled(Image)`
   width: 24px;
   height: 24px;
@@ -430,13 +410,6 @@ const ProgressTitle = styled.span`
   align-items: center;
 
   margin-right: 6px;
-`
-
-const ProgressValues = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
 `
 
 const LeafStatWrapper = styled.div`
@@ -481,14 +454,6 @@ const LeftTreeLabel = styled(TreeLabel)`
 
 const RightTreeLabel = styled(TreeLabel)`
   justify-self: end;
-`
-
-const CurrentLabel = styled.span`
-  font-size: 12px;
-
-  padding: 0px 3px;
-  color: #666;
-  min-width: 24px;
 `
 
 const ProgressBar = styled.div`
@@ -548,6 +513,8 @@ const BadgeImage = styled.div`
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  position: relative;
 `
 
 const BadgeName = styled.span`
