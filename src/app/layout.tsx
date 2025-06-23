@@ -1,12 +1,8 @@
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import type { Metadata } from 'next'
 
-import ModalProvider from '@shared/components/modal/ModalProvider'
-import Toast from '@shared/components/toast/Toast'
-import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
-import { pretendard } from '@shared/config/font'
-import AuthGuard from '@shared/config/providers/AuthGaurd'
-import { Providers } from '@shared/config/providers/Providers'
-import LayoutWrapper from '@shared/styles/LayoutWrapper'
+import { pretendard, Providers } from '@/shared/config'
 
 export const metadata: Metadata = {
   title: 'Leafresh',
@@ -24,15 +20,9 @@ const RootLayout = ({
   return (
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
-        <Providers>
-          <LayoutWrapper>
-            <AuthGuard>{children}</AuthGuard>
-          </LayoutWrapper>
-          <ModalProvider />
-          <ImageZoomModal />
-          <Toast />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
     </html>
   )
 }
