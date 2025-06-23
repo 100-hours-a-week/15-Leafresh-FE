@@ -83,7 +83,12 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
   } else if (!groupChallenges || groupChallenges.length === 0) {
     /** 검색값이 없는 경우 */
     let title: string
-    if (category === 'ALL') {
+
+    const isSearching: boolean = input.trim().length > 0
+
+    if (isSearching) {
+      title = '검색 결과가 없습니다'
+    } else if (category === 'ALL') {
       title = `챌린지가 없습니다`
     } else {
       const korCategory = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(category) as string
