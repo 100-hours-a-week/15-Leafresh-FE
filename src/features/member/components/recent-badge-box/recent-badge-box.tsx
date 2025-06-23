@@ -78,11 +78,13 @@ const BadgeWrapper = styled.div`
 `
 
 const BadgeCard = styled.div`
+  padding: 10px;
+  text-align: center;
+
   display: flex;
   flex-direction: column;
-  padding: 10px;
   align-items: center;
-  text-align: center;
+  gap: 6px;
 `
 
 const BadgeImage = styled(Image)`
