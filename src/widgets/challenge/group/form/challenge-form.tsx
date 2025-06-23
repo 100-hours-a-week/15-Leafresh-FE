@@ -26,6 +26,7 @@ import {
 import {
   CHALLENGE_CATEGORY_PAIRS,
   ChallengeCategoryType,
+  ChallengeCategoryTypeKor,
   convertLanguage,
   FullFormValues,
   fullSchema,
@@ -53,7 +54,8 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
   const [step, setStep] = useState<1 | 2>(1)
 
   const categoryFromQuery = searchParams.get('category') ?? ''
-  const categoryKor: string = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(categoryFromQuery) ?? ''
+  const categoryKor: string =
+    convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(categoryFromQuery as ChallengeCategoryType) ?? ''
 
   const mergedDefaultValues = useMemo(() => {
     const createdDefaultValues: FullFormValues = {
@@ -114,7 +116,11 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
     const body: CreateChallengeBody = {
       title,
       description,
-      category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
+      category: convertLanguage(
+        CHALLENGE_CATEGORY_PAIRS,
+        'kor',
+        'eng',
+      )(category as ChallengeCategoryTypeKor) as ChallengeCategoryType,
       maxParticipantCount: maxParticipant,
       thumbnailImageUrl: thumbnailUrl,
       startDate: getKstMidnightToUtcISOString(startDate),
@@ -190,7 +196,11 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
     const body: ModifyChallengeBody = {
       title,
       description,
-      category: convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'kor', 'eng')(category) as ChallengeCategoryType,
+      category: convertLanguage(
+        CHALLENGE_CATEGORY_PAIRS,
+        'kor',
+        'eng',
+      )(category as ChallengeCategoryTypeKor) as ChallengeCategoryType,
       maxParticipantCount: maxParticipant,
       thumbnailImageUrl: thumbnailUrl,
       startDate: getKstMidnightToUtcISOString(startDate),

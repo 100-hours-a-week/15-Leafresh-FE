@@ -1,4 +1,4 @@
-import { ChallengeCategoryType } from '@/entities/challenge/model'
+import { ChallengeCategoryType, FilterChallengeCategoryType } from '@/entities/challenge/model'
 import { ChallengeStatus } from '@/entities/member/api'
 import { LowercaseOAuthType } from '@/entities/member/model'
 
@@ -32,7 +32,7 @@ const CHALLENGE_QUERY_KEYS = {
     // 상세
     DETAILS: (challengeId: number) => ['challenges', 'group', challengeId],
     // 목록
-    LIST: (category: ChallengeCategoryType, input: string | undefined) => [
+    LIST: (category: FilterChallengeCategoryType, input: string | undefined) => [
       'challenges',
       'group',
       category,
