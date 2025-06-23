@@ -319,7 +319,7 @@ const BadgeSection = styled.div`
 `
 const AnimatedCardWrapper = styled.div`
   animation: ${slideRotateIn} 1.6s ease forwards;
-  position: fixed; /* ✅ 수정 */
+  position: absolute; /* ✅ 수정 */
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); /* ✅ 중앙 정렬 */
