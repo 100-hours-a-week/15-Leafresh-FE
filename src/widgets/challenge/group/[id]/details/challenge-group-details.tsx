@@ -254,7 +254,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
       </SectionWrapper>
 
       <SubmitButton onClick={handleSubmit} disabled={isButtonDisabled}>
-        {!isPending ? getSubmitButtonLabel(status) : <Loading />}
+        {!isPending ? getSubmitButtonLabel(status) : <Loading hasText={false} />}
       </SubmitButton>
     </Wrapper>
   )

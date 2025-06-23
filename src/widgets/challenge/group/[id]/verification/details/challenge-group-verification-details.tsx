@@ -60,9 +60,9 @@ export const VerificationDetails = ({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
     queryFn: () => getVerificationDetails({ challengeId, verificationId }),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
-    enabled: isClient,
-    // refetchOnMount: false,
-    // refetchOnWindowFocus: false,
+    // enabled: isClient,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   })
 
   const { data: commentData } = useQuery({
@@ -104,9 +104,17 @@ export const VerificationDetails = ({
 
   const comments: CommentResponse = commentData?.data ?? ({} as CommentResponse)
 
-  const [isLiked, setIsLiked] = useState(verificationData?.data.isLiked)
-  const [commentCount, setCommentCount] = useState(verificationData?.data.counts.comment ?? 0)
-  const [likeCount, setLikeCount] = useState(verificationData?.data.counts.like ?? 0)
+  const [isLiked, setIsLiked] = useState<boolean | undefined>(undefined)
+  const [likeCount, setLikeCount] = useState<number>(0)
+  const [commentCount, setCommentCount] = useState<number>(0)
+
+  useEffect(() => {
+    if (verificationData?.data) {
+      setIsLiked(verificationData.data.isLiked)
+      setLikeCount(verificationData.data.counts.like ?? 0)
+      setCommentCount(verificationData.data.counts.comment ?? 0)
+    }
+  }, [verificationData?.data])
 
   const [localComments, setLocalComments] = useState<CommentType[]>(comments?.comments ?? [])
 
@@ -486,6 +494,7 @@ const Stats = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 0 10px 0;
+  font-size: ${theme.fontSize.base};
 `
 
 const LeftStat = styled.div`
@@ -496,7 +505,6 @@ const LeftStat = styled.div`
 const Stat = styled.div`
   display: flex;
   align-items: center;
-  font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfBlack.base};
   gap: 4px;
 `
@@ -507,7 +515,6 @@ const LikeButton = styled.button`
   gap: 4px;
   background: none;
   border: none;
-  font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfBlack.base};
   cursor: pointer;
 `

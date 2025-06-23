@@ -1,7 +1,5 @@
-import { DayType, DayTypeKor, LanguageMap } from './type'
-
 /** 요일 */
-export const DAY_PAIRS: LanguageMap[] = [
+export const DAY_PAIRS = [
   { kor: '일', eng: 'SUNDAY' },
   { kor: '월', eng: 'MONDAY' },
   { kor: '화', eng: 'TUESDAY' },
@@ -11,5 +9,5 @@ export const DAY_PAIRS: LanguageMap[] = [
   { kor: '토', eng: 'SATURDAY' },
 ] as const
 
-export const DAYS: DayType[] = DAY_PAIRS.map(pair => pair.eng)
-export const DAYS_KOR: DayTypeKor[] = DAY_PAIRS.map(pair => pair.kor)
+export const DAYS = DAY_PAIRS.map(pair => pair.eng)
+export const DAYS_KOR = DAY_PAIRS.map(pair => pair.kor)

@@ -132,6 +132,8 @@ const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: 4px;
+
   margin: 0 auto;
 
   height: 100%;

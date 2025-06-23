@@ -10,12 +10,7 @@ import { useInfiniteGroupChallenges } from '@/features/challenge/api'
 import { GroupChallenge, GroupChallengeCard } from '@/features/challenge/components'
 
 import { GroupChallengeCategory, GroupChallengeItem } from '@/entities/challenge/api'
-import {
-  CHALLENGE_CATEGORY_PAIRS,
-  ChallengeCategoryType,
-  convertLanguage,
-  FilterChallengeCategoryType,
-} from '@/entities/challenge/model'
+import { CHALLENGE_CATEGORY_PAIRS, convertLanguage, FilterChallengeCategoryType } from '@/entities/challenge/model'
 
 import { Loading, NoContent } from '@/shared/components'
 import { URL } from '@/shared/constants'
@@ -67,7 +62,7 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   /** 카테고리 전환 */
-  const handleCategoryRoute = (newCategory: ChallengeCategoryType) => {
+  const handleCategoryRoute = (newCategory: FilterChallengeCategoryType) => {
     setCategory(newCategory)
     setInput('') // 검색값 초기화
     if (searchInputRef.current) searchInputRef.current.value = ''
@@ -98,7 +93,7 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
       <StyledNoContent
         title={title}
         buttonText='챌린지 생성하기'
-        clickHandler={() => router.push(URL.CHALLENGE.GROUP.CREATE.value(category))} // 해당 카테고리로 생성하러 가기
+        clickHandler={() => router.push(URL.CHALLENGE.GROUP.CREATE.value(category === 'ALL' ? undefined : category))} // 해당 카테고리로 생성하러 가기
       />
     )
   } else {

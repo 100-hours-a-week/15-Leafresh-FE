@@ -20,11 +20,22 @@ interface CommentListProps {
 }
 
 export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDelete }: CommentListProps) => {
+  // 🔒 IME 조합 추적 (댓글: -1, 답글: id)
+  const isComposingMapRef = useRef<Record<number, boolean>>({})
+
   const [expandedMap, setExpandedMap] = useState<Record<number, boolean>>({})
   const [replyInputMap, setReplyInputMap] = useState<Record<number, string>>({})
   const [newCommentInput, setNewCommentInput] = useState('')
   //댓글 작성 자동 스크롤 ref
   const bottomRef = useRef<HTMLDivElement | null>(null)
+
+  const handleCompositionStart = (id: number) => {
+    isComposingMapRef.current[id] = true
+  }
+
+  const handleCompositionEnd = (id: number) => {
+    isComposingMapRef.current[id] = false
+  }
 
   const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -65,6 +76,9 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
   }
 
   const handleKeyDownNewComment = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // 한글 조합중인 경우 무시
+    if (isComposingMapRef.current[-1]) return
+
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       const content = newCommentInput.trim()
@@ -75,6 +89,9 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
   }
 
   const handleKeyDownReply = (e: React.KeyboardEvent<HTMLTextAreaElement>, parentCommentId: number) => {
+    // 한글 조합중인 경우 무시
+    if (isComposingMapRef.current[parentCommentId]) return
+
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
 
@@ -93,6 +110,8 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
           value={newCommentInput}
           onChange={e => setNewCommentInput(e.target.value)}
           onKeyDown={e => handleKeyDownNewComment(e)}
+          onCompositionStart={() => handleCompositionStart(-1)}
+          onCompositionEnd={() => handleCompositionEnd(-1)}
         />
         <SubmitButton onClick={handleNewCommentSubmit} size={20} />
       </TextareaWrapper>
@@ -148,6 +167,8 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
                     value={replyInputMap[comment.id] || ''}
                     onChange={e => handleReplyChange(comment.id, e.target.value)}
                     onKeyDown={e => handleKeyDownReply(e, comment.id)}
+                    onCompositionStart={() => handleCompositionStart(comment.id)}
+                    onCompositionEnd={() => handleCompositionEnd(comment.id)}
                   />
                   <SubmitButton onClick={() => handleReplySubmit(comment.id)} size={20} />
                 </ReplyTextAreaWrapper>
