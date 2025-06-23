@@ -20,11 +20,21 @@ interface CommentListProps {
 }
 
 export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDelete }: CommentListProps) => {
+  const isComposingRef = useRef(false)
+
   const [expandedMap, setExpandedMap] = useState<Record<number, boolean>>({})
   const [replyInputMap, setReplyInputMap] = useState<Record<number, string>>({})
   const [newCommentInput, setNewCommentInput] = useState('')
   //댓글 작성 자동 스크롤 ref
   const bottomRef = useRef<HTMLDivElement | null>(null)
+
+  const handleCompositionStart = () => {
+    isComposingRef.current = true
+  }
+
+  const handleCompositionEnd = () => {
+    isComposingRef.current = false
+  }
 
   const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -65,6 +75,8 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
   }
 
   const handleKeyDownNewComment = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (isComposingRef.current) return
+
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       const content = newCommentInput.trim()
@@ -93,6 +105,8 @@ export const CommentList = ({ comments, onSubmit, onReplySubmit, onUpdate, onDel
           value={newCommentInput}
           onChange={e => setNewCommentInput(e.target.value)}
           onKeyDown={e => handleKeyDownNewComment(e)}
+          onCompositionStart={handleCompositionStart}
+          onCompositionEnd={handleCompositionEnd}
         />
         <SubmitButton onClick={handleNewCommentSubmit} size={20} />
       </TextareaWrapper>
