@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import { createCategoryStream, createFreeTextStream, RecommendationEvent } from '../stream-api'
+import { createCategoryStream, createFreeTextStream, RecommendationEvent } from './stream-api'
 
 type Handler = (evt: RecommendationEvent) => void
 export function useRecommendationStream() {

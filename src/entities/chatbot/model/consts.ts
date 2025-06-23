@@ -1,4 +1,4 @@
-import { ChatHistoryItem, ChatOption } from '@entities/chatbot/type'
+import { ChatHistoryItem, ChatOption } from './types'
 
 export const LOCATION_OPSIONS: ChatOption[] = [
   { label: '도시', value: 'city' },

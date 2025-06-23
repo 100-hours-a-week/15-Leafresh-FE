@@ -1,11 +1,12 @@
 'use client'
 
 import React from 'react'
+
 import styled from '@emotion/styled'
 
-import SlideArea from '@shared/components/slidearea/SlideArea'
+import { ChatSelection } from '@/features/chatbot/components'
 
-import ChatSelection from './ChatSelection'
+import { SlideArea } from '@/shared/components/slidearea'
 
 interface HorizontalCardsProps {
   visibleIndex: number
@@ -22,7 +23,7 @@ type HorizonCardType = {
   onSelect: (value: string) => void
 }
 
-export default function HorizontalCards({ visibleIndex, renderCards }: HorizontalCardsProps) {
+export const HorizontalCards = ({ visibleIndex, renderCards }: HorizontalCardsProps) => {
   return (
     <SlideWrapper>
       <SlideArea visibleIndex={visibleIndex}>

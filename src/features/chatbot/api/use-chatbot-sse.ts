@@ -1,10 +1,10 @@
-import { useRouter } from 'next/navigation'
-
 import { useCallback, useRef, useState } from 'react'
 
-import { URL } from '@shared/constants/route/route'
+import { useRouter } from 'next/navigation'
 
-import type { ChatChallenge, RecommendationEvent } from '../stream-api'
+import { URL } from '@/shared/constants'
+
+import type { ChatChallenge, RecommendationEvent } from './stream-api'
 
 type Action = { buttonText: string; onClick: () => void }
 type Handler = (evt: RecommendationEvent) => void
@@ -25,7 +25,8 @@ export function useChatbotSSE<Params extends unknown[]>(
     if (!cleaned) return
 
     // 2) 마침표·물음표·느낌표 뒤에 줄바꿈 삽입
-    const processed = cleaned.replace(/([.?!])\s*/g, '$1\n')
+    const processed = cleaned
+    // .replace(/([.?!])\s*/g, '$1\n')
 
     // 3) 이전 스트림에 공백 + processed 누적
     streamRef.current = streamRef.current ? `${streamRef.current} ${processed}` : processed
