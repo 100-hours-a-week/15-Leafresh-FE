@@ -310,6 +310,7 @@ const CameraWrapper = styled.div`
   gap: 16px;
   width: 100%;
   aspect-ratio: 4/3;
+  overflow: hidden;
 
   position: relative;
   background-color: ${theme.colors.lfInputBackground.base};
