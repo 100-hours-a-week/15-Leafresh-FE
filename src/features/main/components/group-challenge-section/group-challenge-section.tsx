@@ -24,10 +24,15 @@ interface GroupChallengeSectionsProps {
 export const GroupChallengeSections = ({ categories, className }: GroupChallengeSectionsProps): ReactNode => {
   const router = useRouter()
 
-  const [category, setCategory] = useState<FilterChallengeCategoryType>(categories[0]?.category) // 영어
+  const [category, setCategory] = useState<FilterChallengeCategoryType>() // 영어
+
+  useEffect(() => {
+    if (!category && categories.length > 0) {
+      setCategory(categories[0].category)
+    }
+  }, [categories, category])
 
   const [input, setInput] = useState('') // 유저의 검색값
-
   const searchInputRef = useRef<HTMLInputElement>(null)
 
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useInfiniteGroupChallenges(
@@ -88,7 +93,7 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
 
     if (isSearching) {
       title = '검색 결과가 없습니다'
-    } else if (category === 'ALL') {
+    } else if (category === 'ALL' || !category) {
       title = `챌린지가 없습니다`
     } else {
       const korCategory = convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(category) as string
