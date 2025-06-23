@@ -10,9 +10,10 @@ import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
  * @param category - 필터할 챌린지 카테고리 (string) - 빈 문자열이면 전체 조회
  * @param input - 검색어 (string)
  */
-export const useInfiniteGroupChallenges = (category: FilterChallengeCategoryType, input: string) =>
+
+export const useInfiniteGroupChallenges = (category: FilterChallengeCategoryType | undefined, input: string) =>
   useInfiniteQuery({
-    queryKey: QUERY_KEYS.CHALLENGE.GROUP.LIST(category, input),
+    queryKey: QUERY_KEYS.CHALLENGE.GROUP.LIST(category as FilterChallengeCategoryType, input), // enabled 서렂ㅇ으로 인해 항상 category !== undefined
     queryFn: ctx => {
       const params = ctx.pageParam as FetchGroupChallengesParams
       return fetchGroupChallenges({
@@ -22,6 +23,7 @@ export const useInfiniteGroupChallenges = (category: FilterChallengeCategoryType
         cursorTimestamp: params.cursorTimestamp,
       })
     },
+    enabled: !!category,
     getNextPageParam: last =>
       last.data.hasNext
         ? {

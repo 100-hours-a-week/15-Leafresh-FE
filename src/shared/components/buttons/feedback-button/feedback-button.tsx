@@ -32,4 +32,10 @@ const LinkWrapper = styled.a`
   @media (max-width: 735px) {
     display: none;
   }
+
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &:hover {
+    transform: scale(1.2);
+  }
 `
