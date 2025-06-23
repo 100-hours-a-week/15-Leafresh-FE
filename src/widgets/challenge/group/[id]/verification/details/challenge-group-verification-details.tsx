@@ -494,6 +494,7 @@ const Stats = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 0 10px 0;
+  font-size: ${theme.fontSize.base};
 `
 
 const LeftStat = styled.div`
@@ -504,7 +505,6 @@ const LeftStat = styled.div`
 const Stat = styled.div`
   display: flex;
   align-items: center;
-  font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfBlack.base};
   gap: 4px;
 `
@@ -515,7 +515,6 @@ const LikeButton = styled.button`
   gap: 4px;
   background: none;
   border: none;
-  font-size: ${theme.fontSize.sm};
   color: ${theme.colors.lfBlack.base};
   cursor: pointer;
 `
