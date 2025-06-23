@@ -228,7 +228,7 @@ export const CameraModal = () => {
           ) : (
             <CloseButton name='X' onClick={close} size={30} />
           )}
-          {title}
+          <Title>{title}</Title>
         </Header>
         <CameraWrapper>
           {previewUrl ? (
@@ -416,6 +416,14 @@ const CloseButton = styled(LucideIcon)`
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
+`
+
+const Title = styled.span`
+  width: 80%;
+
+  white-space: nowrap; // 줄바꿈 방지
+  overflow: hidden; // 넘치는 텍스트 숨김
+  text-overflow: ellipsis; // 말줄임표 표시
 `
 
 const ShootButtonWrapper = styled.div`
