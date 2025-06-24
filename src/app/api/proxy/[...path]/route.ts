@@ -1,15 +1,18 @@
 import { NextRequest } from 'next/server'
 
-/**
- * 로컬 : https://springboot.dev-leafresh.app
- * 배포 : http://10.x.x.x:8080 // 실제 배포 경로
- */
-const BACKEND_ORIGIN = process.env.NEXT_PUBLIC_API_URL!
+// const RUNTIME_ENV = process.env.NEXT_RUNTIME_ENV
 
+// if (RUNTIME_ENV !== 'dev') {
+//   throw new Error('This proxy is only available on the dev instance.')
+// }
+
+/**
+ * dev 인스턴스 → 내부망 백엔드로 직접 요청
+ */
 const proxyToBackend = async (method: string, req: NextRequest) => {
   const backendPath = req.nextUrl.pathname.replace(/^\/api\/proxy\//, '')
   const search = req.nextUrl.search
-  const url = `${BACKEND_ORIGIN}/${backendPath}${search}`
+  const url = `https://springboot.dev-leafresh.app/${backendPath}${search}`
 
   // 🟢 요청 헤더 복사
   const headers = new Headers()
@@ -18,7 +21,7 @@ const proxyToBackend = async (method: string, req: NextRequest) => {
   })
 
   // 🟢 바디 처리 (GET 외)
-  let body: BodyInit | undefined = undefined
+  let body: BodyInit | undefined
   if (method !== 'GET' && method !== 'HEAD') {
     body = await req.text()
   }
@@ -27,52 +30,53 @@ const proxyToBackend = async (method: string, req: NextRequest) => {
     method,
     headers,
     body,
-    credentials: 'include', // 중요: 쿠키 전달
+    credentials: 'include',
   })
 
-  // ✅ 응답 헤더 복사
-  const responseHeaders = new Headers()
+  return response
+}
 
-  // 1. 일반 헤더 복사 (Set-Cookie 제외)
-  response.headers.forEach((value, key) => {
+const handleProxy = async (method: string, req: NextRequest) => {
+  const upstreamResponse = await proxyToBackend(method, req)
+
+  const responseHeaders = new Headers()
+  upstreamResponse.headers.forEach((value, key) => {
     if (key.toLowerCase() !== 'set-cookie') {
       responseHeaders.set(key, value)
     }
   })
 
-  // 2. Set-Cookie 복사 (중복 허용)
-  const rawSetCookie = response.headers.get('set-cookie')
+  const rawSetCookie = upstreamResponse.headers.get('set-cookie')
   const allSetCookies = rawSetCookie ? rawSetCookie.split(',').filter(v => v.toLowerCase().includes('expires=')) : []
 
   for (const cookie of allSetCookies) {
     responseHeaders.append('Set-Cookie', cookie)
   }
 
-  // 🟢 응답 바디 복사
-  let responseBody: BodyInit | null = null
-  if (response.status !== 204) {
-    responseBody = await response.arrayBuffer()
-  }
+  const body = upstreamResponse.status === 204 ? null : await upstreamResponse.arrayBuffer()
 
-  return new Response(responseBody, {
-    status: response.status,
+  // return new NextResponse(body, {
+  //   status: upstreamResponse.status,
+  //   headers: responseHeaders,
+  // })
+  return new Response(body, {
+    status: upstreamResponse.status,
     headers: responseHeaders,
   })
 }
 
-// ✅ 모든 메서드 라우팅
 export async function GET(req: NextRequest) {
-  return proxyToBackend('GET', req)
+  return handleProxy('GET', req)
 }
 export async function POST(req: NextRequest) {
-  return proxyToBackend('POST', req)
+  return handleProxy('POST', req)
 }
 export async function PUT(req: NextRequest) {
-  return proxyToBackend('PUT', req)
+  return handleProxy('PUT', req)
 }
 export async function DELETE(req: NextRequest) {
-  return proxyToBackend('DELETE', req)
+  return handleProxy('DELETE', req)
 }
 export async function PATCH(req: NextRequest) {
-  return proxyToBackend('PATCH', req)
+  return handleProxy('PATCH', req)
 }
