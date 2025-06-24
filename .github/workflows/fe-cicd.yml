@@ -104,9 +104,9 @@ jobs:
         run: |
           echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
           echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
-          
+
           pnpm run start &
-          
+
       - name: Wait for App to Start (Health Check)
         run: sleep 20
       - name: Run Playwright Tests (${{ matrix.browser }})
@@ -137,7 +137,7 @@ jobs:
           tags: jchanho99/frontend-develop:latest
           build-args: |
             NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
-            NEXT_PUBLIC_API_URL=${{ secrets.ENV_FE_DEV_PROD }}
+            NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_DEV_PROD }}
 
   build-prod:
     name: Build and Push Docker (prod)
@@ -162,7 +162,7 @@ jobs:
           tags: jchanho99/frontend-prod:latest
           build-args: |
             NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
-            NEXT_PUBLIC_API_URL=${{ secrets.ENV_FE_PROD }}
+            NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_PROD }}
 
   deploy-dev:
     name: Deploy to Dev Server
@@ -173,7 +173,7 @@ jobs:
     steps:
       - name: Checkout for git access
         uses: actions/checkout@v3
-      
+
       - name: Extract tag name
         id: tag
         run: |
@@ -264,7 +264,7 @@ jobs:
 
 
 
-          
+
             set -e # 오류 발생 시 즉시 스크립트 중단
             VERSION="${{ github.ref }}"             # ex: refs/tags/v2.0.6
             VERSION="${VERSION#refs/tags/}"         # remove prefix
