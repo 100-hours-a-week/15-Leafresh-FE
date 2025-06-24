@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const url = request.nextUrl
+  const hostname = request.headers.get('host') || ''
 
-  // 점검 여부
-  const isUnderMaintenance: boolean = false
+  const isProd = hostname.includes('leafresh.com') // prod 도메인만 적용
 
-  // 점검중일 때, /maintenance로 rewrite
+  // 운영 환경에서만 점검 fetch
+  const isUnderMaintenance = isProd
+    ? await fetch('https://storage.googleapis.com/leafresh-prod-images/.maintenance/active', {
+        cache: 'no-store',
+      })
+        .then(res => res.ok)
+        .catch(() => false)
+    : false
+
   if (isUnderMaintenance && !url.pathname.startsWith('/maintenance')) {
     url.pathname = '/maintenance'
     return NextResponse.rewrite(url)
