@@ -27,7 +27,8 @@ export async function middleware(request: NextRequest) {
   const hour = getKSTHour()
   const isWithinServiceTime = hour >= 7 && hour < 19
 
-  const shouldBlock = isUnderMaintenance || (isProd && !isWithinServiceTime)
+  // const shouldBlock = isUnderMaintenance || (isProd && !isWithinServiceTime)
+  const shouldBlock = false // TODO: 임시로 꺼두기
 
   if (shouldBlock && !url.pathname.startsWith('/maintenance')) {
     url.pathname = '/maintenance'
