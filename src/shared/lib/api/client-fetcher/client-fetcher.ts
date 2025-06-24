@@ -1,8 +1,8 @@
-import { ApiResponse, BASE_API_URL, EndpointType, ErrorResponse, OptionsType } from '@/shared/lib'
+import { ApiResponse, EndpointType, ErrorResponse, OptionsType } from '@/shared/lib'
+
+import { getClientFetchOrigin } from '../utils'
 
 import { refreshClientAccessToken } from './client-reissue'
-
-const BASE_URL = BASE_API_URL
 
 export async function clientFetchRequest<T>(
   endpoint: EndpointType,
@@ -11,7 +11,11 @@ export async function clientFetchRequest<T>(
 ): Promise<ApiResponse<T>> {
   /** Request */
   const { method, path } = endpoint
-  const url = new URL(BASE_URL + path, window.location.origin)
+
+  const origin = getClientFetchOrigin()
+  const url = new URL(origin + path)
+
+  console.log('url: ', url)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))

@@ -2,12 +2,11 @@
 
 import { cookies } from 'next/headers'
 
-import { BASE_API_URL, EndpointType } from '../consts'
+import { EndpointType } from '../consts'
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
+import { getServerFetchOrigin } from '../utils'
 
 import { refreshServerAccessToken } from './server-reissue'
-
-const BASE_URL = BASE_API_URL
 
 export async function serverFetchRequest<T>(
   endpoint: EndpointType,
@@ -15,10 +14,8 @@ export async function serverFetchRequest<T>(
   isRetry = false,
 ): Promise<ApiResponse<T>> {
   const { method, path } = endpoint
-  const url = new URL(
-    BASE_URL + path,
-    process.env.NODE_ENV === 'production' ? 'http://localhost:3000' : 'https://local.dev-leafresh.app',
-  )
+  const origin = getServerFetchOrigin()
+  const url = new URL(origin + path)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
