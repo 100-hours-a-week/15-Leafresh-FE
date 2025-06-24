@@ -1,12 +1,13 @@
+import fs from 'fs'
+
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const url = request.nextUrl
 
-  // 점검 여부
-  const isUnderMaintenance: boolean = false
+  const maintenanceFilePath = '/app/.maintenance' // 점검중 유무 판단 (컨테이너 내 파일 경로)
+  const isUnderMaintenance = fs.existsSync(maintenanceFilePath)
 
-  // 점검중일 때, /maintenance로 rewrite
   if (isUnderMaintenance && !url.pathname.startsWith('/maintenance')) {
     url.pathname = '/maintenance'
     return NextResponse.rewrite(url)
