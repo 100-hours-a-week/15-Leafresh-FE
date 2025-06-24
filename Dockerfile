@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Accept build arguments from GitHub Actions
 ARG NEXT_PUBLIC_API_URL
-ARG NEXT_PUBLIC_CLIENT_ENV
+ARG NEXT_PUBLIC_GOOGLE_ANALYTICS
 
 # Make them available as environment variables
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
