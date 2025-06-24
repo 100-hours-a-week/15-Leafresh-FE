@@ -3,14 +3,6 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Install pnpm globally
-RUN npm install -g pnpm
-
-# Install dependencies
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
-
-# Copy source and build
 # Accept build arguments from GitHub Actions
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_CLIENT_ENV
@@ -19,7 +11,14 @@ ARG NEXT_PUBLIC_CLIENT_ENV
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_GOOGLE_ANALYTICS=$NEXT_PUBLIC_GOOGLE_ANALYTICS
 
-# Start Build
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Install dependencies
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# Copy source and build
 COPY . .
 RUN pnpm run build
 
