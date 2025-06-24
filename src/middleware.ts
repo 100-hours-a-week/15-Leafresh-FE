@@ -12,8 +12,7 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl
   const hostname = request.headers.get('host') || ''
 
-  // const isProd: boolean = hostname.includes('leafresh.com')
-  const isProd: boolean = true
+  const isProd: boolean = hostname.includes('leafresh.com')
 
   // 운영 환경 여부에 따라 점검 상태 fetch
   const isUnderMaintenance = isProd
