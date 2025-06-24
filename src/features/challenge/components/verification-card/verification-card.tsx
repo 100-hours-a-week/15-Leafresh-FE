@@ -98,7 +98,8 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
   }
 
   /** 클립보드 복사 */
-  const handleCopyVerificationUrl = () => {
+  const handleCopyVerificationUrl = (e?: React.MouseEvent) => {
+    e?.stopPropagation() // 라우팅 방지
     const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
     copyToClipboard(url)
   }
@@ -145,7 +146,12 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
               <LucideIcon name='MessageCircle' size={24} strokeWidth={1.8} />
               <InteractionCount>{comment}</InteractionCount>
             </Interaction>
-            <LucideIcon name='SquareArrowOutUpRight' size={24} strokeWidth={1.8} onClick={handleCopyVerificationUrl} />
+            <LucideIcon
+              name='SquareArrowOutUpRight'
+              size={24}
+              strokeWidth={1.8}
+              onClick={e => handleCopyVerificationUrl(e)}
+            />
             <ViewWrapper>조회수 {view}</ViewWrapper>
           </InteractionWrapper>
         </DescriptionWrapper>
