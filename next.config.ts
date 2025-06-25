@@ -31,11 +31,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'http',
-        hostname: 'img1.kakaocdn.net',
-      },
-      {
-        protocol: 'http',
-        hostname: 't1.kakaocdn.net',
+        hostname: '*.kakaocdn.net',
       },
     ],
   },
