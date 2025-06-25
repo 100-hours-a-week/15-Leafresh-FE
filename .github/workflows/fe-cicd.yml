@@ -68,7 +68,7 @@ jobs:
         run: |
           echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
           echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-
+          echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
           pnpm run test
 
   integration-test:
