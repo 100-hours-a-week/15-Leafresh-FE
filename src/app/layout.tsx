@@ -2,7 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 import type { Metadata } from 'next'
 
-import { pretendard, Providers } from '@/shared/config'
+import { pretendard, Providers, WebVitals } from '@/shared/config'
 
 export const metadata: Metadata = {
   title: 'Leafresh',
@@ -23,6 +23,7 @@ const RootLayout = ({
         <Providers>{children}</Providers>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
+      <WebVitals />
     </html>
   )
 }

@@ -3,7 +3,7 @@
  */
 export const getClientFetchOrigin = () => {
   const runtimeEnv = process.env.NEXT_PUBLIC_RUNTIME
-  console.log('runtimeEnv: ', runtimeEnv)
+  // console.log('runtimeEnv: ', runtimeEnv)
 
   switch (runtimeEnv) {
     case 'local':
@@ -24,6 +24,7 @@ export const getClientFetchOrigin = () => {
  */
 export const getServerFetchOrigin = () => {
   const runtimeEnv = process.env.NEXT_PUBLIC_RUNTIME
+  // console.log('runtimeEnv: ', runtimeEnv)
 
   switch (runtimeEnv) {
     case 'local':
