@@ -70,6 +70,9 @@ jobs:
           echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
           echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
           pnpm run test
+        env:
+          NEXT_PUBLIC_RUNTIME: dev
+          NEXT_PUBLIC_GOOGLE_ANALYTICS: 'G-2BKG11WDXZ'
 
   integration-test:
     name: Integration Test
