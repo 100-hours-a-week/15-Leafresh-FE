@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next'
 
 const runtimeEnv = process.env.NEXT_PUBLIC_RUNTIME
+console.log(runtimeEnv)
 
 let gcsHostname: string
 
@@ -14,7 +15,7 @@ switch (runtimeEnv) {
   case 'prod':
     gcsHostname = 'leafresh-prod-images'
   default:
-    throw new Error(`Unknown Image Route NEXT_PUBLIC_RUNTIME: ${runtimeEnv}`)
+    gcsHostname = 'leafresh-images'
 }
 
 const nextConfig: NextConfig = {
