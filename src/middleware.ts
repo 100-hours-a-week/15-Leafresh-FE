@@ -23,12 +23,11 @@ export async function middleware(request: NextRequest) {
         .catch(() => false)
     : false
 
-  // 시간 제한: 07 ~ 18시까지만 허용 (19시 포함 X)
+  // 시간 제한: 07 ~ 19시까지만 허용 (19시 포함 X)
   const hour = getKSTHour()
   const isWithinServiceTime = hour >= 7 && hour < 19
 
-  // const shouldBlock = isUnderMaintenance || (isProd && !isWithinServiceTime)
-  const shouldBlock = false // TODO: 임시로 꺼두기
+  const shouldBlock = isUnderMaintenance || (isProd && !isWithinServiceTime)
 
   if (shouldBlock && !url.pathname.startsWith('/maintenance')) {
     url.pathname = '/maintenance'
