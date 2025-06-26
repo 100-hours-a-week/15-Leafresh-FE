@@ -296,6 +296,7 @@ const Header = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
 `
 
