@@ -15,8 +15,6 @@ export async function clientFetchRequest<T>(
   const origin = getClientFetchOrigin()
   const url = new URL(origin + path)
 
-  console.log('url: ', url)
-
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
   }

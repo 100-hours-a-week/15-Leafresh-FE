@@ -17,7 +17,6 @@ const METRIC_THRESHOLDS: Record<string, number> = {
 const handleWebVitals: ReportWebVitalsCallback = metric => {
   const { name, value } = metric
   const threshold = METRIC_THRESHOLDS[name]
-
   if (threshold !== undefined) {
     const isPass = value <= threshold
     console.log(

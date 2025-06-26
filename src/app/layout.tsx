@@ -23,7 +23,7 @@ const RootLayout = ({
         <Providers>{children}</Providers>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
-      <WebVitals />
+      {process.env.NODE_ENV === 'development' && <WebVitals />}
     </html>
   )
 }
