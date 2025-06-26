@@ -1,5 +1,7 @@
 'use client'
 
+import { useMemo } from 'react'
+
 import styled from '@emotion/styled'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -10,15 +12,13 @@ import {
   PostGroupVerificationBody,
   PostGroupVerificationResponse,
 } from '@/entities/challenge/api'
+import { ParticipantChallengeItem } from '@/entities/member/api'
 
 import { Loading } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import { ParticipantChallengeItem } from '@/entities/member/api'
-import { useMemo } from 'react'
-import { render } from '@testing-library/react'
 
 export function GroupVerificationPage({ challengeId }: { challengeId: number }) {
   const openToast = useToast()
@@ -48,12 +48,12 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
     { challengeId: number; body: PostGroupVerificationBody }
   >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT)
 
-  if (isPending) return <Loading />
-  if (error) return <Message>Error: {error.message}</Message>
-
   const isCompleted = useMemo(() => {
     return completedQuery?.pages.flatMap(page => page.data.challenges).some(item => item.id === challengeId) ?? false
   }, [completedQuery, challengeId])
+
+  if (isPending) return <Loading />
+  if (error) return <Message>Error: {error.message}</Message>
 
   const verifications = verificationData!.data
 
