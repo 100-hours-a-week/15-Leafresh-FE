@@ -2,8 +2,6 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import styled from '@emotion/styled'
-
 import { useChatHistory } from '@/features/chatbot/api'
 
 import {
@@ -28,6 +26,8 @@ import { HorizontalCards } from '@/shared/components/chatbot'
 
 import { ChatBubble } from '../chat-bubble'
 import { ChatSelection } from '../chat-selection'
+
+import * as S from './styles'
 
 export interface ChatFrameProps {
   step: FrameStep
@@ -328,8 +328,8 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   )
 
   return (
-    <Container>
-      <MessagesContainer>
+    <S.Container>
+      <S.MessagesContainer>
         {chatHistory.map((item, idx) => (
           <div key={idx}>
             {/* 메시지 타입 */}
@@ -348,9 +348,9 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
 
             {/* 일반 선택지 타입 */}
             {item.type === 'selection' && item.selectionProps && (
-              <SelectionWrapper>
+              <S.SelectionWrapper>
                 <ChatSelection {...item.selectionProps} />
-              </SelectionWrapper>
+              </S.SelectionWrapper>
             )}
 
             {/* 가로 스크롤 카드 타입 */}
@@ -362,11 +362,11 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
 
         {/* 자동 스크롤용 ref */}
         <div ref={messagesEndRef} />
-      </MessagesContainer>
+      </S.MessagesContainer>
 
       {step >= 2 && (
-        <InputContainer>
-          <Input
+        <S.InputContainer>
+          <S.Input
             type='text'
             placeholder='메시지를 입력하세요 (최대 100자)'
             maxLength={100}
@@ -378,7 +378,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
               }
             }}
           />
-          <SendButton
+          <S.SendButton
             onClick={() => {
               if (inputText.trim()) {
                 handleSendMessage(inputText)
@@ -386,69 +386,9 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             }}
           >
             <LucideIcon name='ArrowUpRight' size={22} />
-          </SendButton>
-        </InputContainer>
+          </S.SendButton>
+        </S.InputContainer>
       )}
-    </Container>
+    </S.Container>
   )
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  height: 100%;
-`
-
-const MessagesContainer = styled.div`
-  display: flex;
-  width: 100%;
-  padding-right: 20px;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-left: 10px;
-`
-
-const SelectionWrapper = styled.div`
-  margin: 8px 0;
-  padding-left: 40px;
-  width: 100%;
-`
-
-const SlideWrapper = styled.div`
-  margin: 8px 0;
-  padding-left: 40px;
-  width: 100%;
-`
-
-const InputContainer = styled.div`
-  display: flex;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-top: 8px;
-`
-
-const Input = styled.input`
-  flex: 1;
-  padding: 12px 16px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-
-  &::placeholder {
-    color: #888888;
-  }
-`
-
-const SendButton = styled.button`
-  width: 44px;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
