@@ -13,6 +13,7 @@ switch (runtimeEnv) {
     break
   case 'prod':
     gcsHostname = 'leafresh-prod-images'
+    break
   default:
     throw new Error(`Unknown Image Route NEXT_PUBLIC_RUNTIME: ${runtimeEnv}`)
 }
