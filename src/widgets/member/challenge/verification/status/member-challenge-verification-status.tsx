@@ -1,7 +1,7 @@
 'use client'
 
 import styled from '@emotion/styled'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { VerificationCarousel } from '@/features/challenge/components'
 
@@ -16,12 +16,21 @@ import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } fro
 import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
+import { ParticipantChallengeItem } from '@/entities/member/api'
+import { useMemo } from 'react'
+import { render } from '@testing-library/react'
 
 export function GroupVerificationPage({ challengeId }: { challengeId: number }) {
   const openToast = useToast()
 
   const { open: openCameraModal } = useCameraModalStore()
   const { addGroupChallengeId } = usePollingStore()
+  const queryClient = useQueryClient()
+
+  const completedQuery = queryClient.getQueryData<{
+    pages: { data: { challenges: ParticipantChallengeItem[] } }[]
+  }>(QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS('completed'))
+  console.log(completedQuery)
 
   const {
     data: verificationData,
@@ -41,6 +50,10 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
 
   if (isPending) return <Loading />
   if (error) return <Message>Error: {error.message}</Message>
+
+  const isCompleted = useMemo(() => {
+    return completedQuery?.pages.flatMap(page => page.data.challenges).some(item => item.id === challengeId) ?? false
+  }, [completedQuery, challengeId])
 
   const verifications = verificationData!.data
 
@@ -80,6 +93,20 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
     )
   }
 
+  const renderButton = () => {
+    if (isCompleted) return <DisabledButton>기간 종료</DisabledButton>
+    switch (verifications.todayStatus) {
+      case 'NOT_SUBMITTED':
+        return <ActionButton onClick={handleCapture}>인증하기</ActionButton>
+      case 'PENDING_APPROVAL':
+        return <DisabledButton>인증 중</DisabledButton>
+      case 'DONE':
+        return <DisabledButton>금일 참여 완료</DisabledButton>
+      default:
+        return null
+    }
+  }
+
   return (
     <Container>
       <Title>{verifications.title} 챌린지</Title>
@@ -107,9 +134,7 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
 
       <ButtonGroup>
         {/* <QuestionButton>문의하기</QuestionButton> */}
-        {verifications.todayStatus === 'NOT_SUBMITTED' && <ActionButton onClick={handleCapture}>인증하기</ActionButton>}
-        {verifications.todayStatus === 'PENDING_APPROVAL' && <DisabledButton>인증 중</DisabledButton>}
-        {verifications.todayStatus === 'DONE' && <DisabledButton>금일 참여 완료</DisabledButton>}
+        {renderButton()}
       </ButtonGroup>
     </Container>
   )
