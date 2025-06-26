@@ -1,6 +1,5 @@
 'use client'
 
-import styled from '@emotion/styled'
 import {
   addDays,
   eachDayOfInterval,
@@ -16,8 +15,7 @@ import {
   subDays,
 } from 'date-fns'
 
-import { theme } from '@/shared/config'
-
+import * as S from './styles'
 interface CalendarDatesProps {
   currentMonth: Date
   startDate?: Date
@@ -43,9 +41,9 @@ export const CalendarDates = ({ currentMonth, startDate, endDate, onDateSelect }
 
   const availableWeek: Date[][] = weeks.filter(week => week.some(date => isSameMonth(date, currentMonth)))
   return (
-    <Dates>
+    <S.Dates>
       {availableWeek.map((week, rowIndex) => (
-        <DateRow key={rowIndex}>
+        <S.DateRow key={rowIndex}>
           {week.map((date, i) => {
             const isCurrentMonth = isSameMonth(date, currentMonth)
             const isSelected =
@@ -55,7 +53,7 @@ export const CalendarDates = ({ currentMonth, startDate, endDate, onDateSelect }
             const isDisabled = !isCurrentMonth || isPastMonth || isBefore(date, today)
 
             return (
-              <DateCell
+              <S.DateCell
                 key={i}
                 isCurrentMonth={isCurrentMonth}
                 isSelected={!!isSelected}
@@ -66,57 +64,11 @@ export const CalendarDates = ({ currentMonth, startDate, endDate, onDateSelect }
                 onClick={() => !isDisabled && onDateSelect(date)}
               >
                 {format(date, 'd')}
-              </DateCell>
+              </S.DateCell>
             )
           })}
-        </DateRow>
+        </S.DateRow>
       ))}
-    </Dates>
+    </S.Dates>
   )
 }
-
-const Dates = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-`
-
-const DateRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-`
-
-const DateCell = styled.div<{
-  isCurrentMonth: boolean
-  isSelected: boolean
-  isInRange: boolean
-  isDisabled: boolean
-  isSunday: boolean
-  isSaturday: boolean
-}>`
-  width: 100%;
-  aspect-ratio: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.medium};
-
-  color: ${({ isCurrentMonth, isSelected, isDisabled, isSunday, isSaturday }) => {
-    if (!isCurrentMonth || isDisabled) return theme.colors.lfGray.base
-    if (isSelected) return theme.colors.lfWhite.base
-    if (isSaturday) return theme.colors.lfBlue.base
-    if (isSunday) return theme.colors.lfRed.base
-    return theme.colors.lfBlack.base
-  }};
-
-  background-color: ${({ isSelected, isInRange }) => {
-    if (isSelected) return theme.colors.lfGreenMain.base
-    if (isInRange) return theme.colors.lfGreenInactive.base
-    return 'transparent'
-  }};
-
-  border-radius: ${theme.radius.base};
-  ${({ isDisabled }) => (isDisabled ? 'pointer-events: none; opacity: 0.5;' : 'cursor: pointer;')};
-`

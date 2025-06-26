@@ -24,7 +24,7 @@ import {
 } from '@/entities/chatbot/model'
 
 import { LucideIcon } from '@/shared/components'
-import { HorizontalCards, formatChallengeResponse } from '@/shared/components/chatbot'
+import { HorizontalCards } from '@/shared/components/chatbot'
 
 import { ChatBubble } from '../chat-bubble'
 import { ChatSelection } from '../chat-selection'
@@ -36,6 +36,10 @@ export interface ChatFrameProps {
 }
 
 export type FrameStep = 1 | 2 | 3
+
+function formatChallengeResponse(challenges: { title: string; description: string }[]): string {
+  return challenges.map((ch, i) => `${i + 1}. ${ch.title}\n  ${ch.description}`).join('\n\n')
+}
 
 export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [inputText, setInputText] = useState('')
