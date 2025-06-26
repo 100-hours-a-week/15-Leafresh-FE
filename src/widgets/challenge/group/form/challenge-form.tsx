@@ -8,7 +8,6 @@ import { sendGAEvent } from '@next/third-parties/google'
 
 import { useForm } from 'react-hook-form'
 
-import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { DetailStep, MetaDataStep } from '@/features/challenge/components'
@@ -32,13 +31,14 @@ import {
   fullSchema,
 } from '@/entities/challenge/model'
 
-import { theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
+import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { getKstMidnightToUtcISOString } from '@/shared/lib'
-import { responsiveHorizontalPadding } from '@/shared/styles'
 import { TimeFormatString } from '@/shared/type'
+
+import * as S from './styles'
 
 interface GroupChallengeFormPageProps {
   defaultValues: FullFormValues
@@ -232,7 +232,7 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
     window.scrollTo({ top: 0, behavior: 'auto' })
   }
   return (
-    <PageWrapper>
+    <S.PageWrapper>
       {step === 1 ? (
         <MetaDataStep form={form} handleStepChange={handleStepChange} isEdit={isEdit} />
       ) : (
@@ -244,18 +244,6 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
           isEdit={isEdit}
         />
       )}
-    </PageWrapper>
+    </S.PageWrapper>
   )
 }
-
-const PageWrapper = styled.div`
-  ${responsiveHorizontalPadding};
-
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-width: 480px;
-  margin: 0 auto;
-  background-color: ${theme.colors.lfWhite.base};
-`

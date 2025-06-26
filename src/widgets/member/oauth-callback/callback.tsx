@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 
 import { useRouter, useSearchParams } from 'next/navigation'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { LoginCallback, ProfileResponse } from '@/entities/member/api'
@@ -16,6 +15,8 @@ import { URL } from '@/shared/constants'
 import { ToastType, useOAuthStateStore, useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+
+import * as S from './styles'
 
 interface CallbackPageProps {
   provider: LowercaseOAuthType
@@ -89,9 +90,9 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
 
   if (isLoading) {
     return (
-      <LoadingWrapper>
+      <S.LoadingWrapper>
         <Loading />
-      </LoadingWrapper>
+      </S.LoadingWrapper>
     )
   }
 
@@ -104,12 +105,3 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
   // 데이터 로드 후 라우팅될 것이므로 빈 상태 반환
   return null
 }
-
-const LoadingWrapper = styled.div`
-  width: 100%;
-  height: 100dvh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
