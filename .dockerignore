@@ -1,6 +1,8 @@
 # node_modules: Docker에서 다시 설치하므로 불필요
 node_modules
 
+
+
 # Git 관련
 .git
 .gitignore
