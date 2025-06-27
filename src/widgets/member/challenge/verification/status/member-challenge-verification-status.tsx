@@ -3,7 +3,7 @@
 import { useMemo } from 'react'
 
 import styled from '@emotion/styled'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { VerificationCarousel } from '@/features/challenge/components'
 
@@ -15,7 +15,7 @@ import {
 import { ParticipantChallengeItem } from '@/entities/member/api'
 
 import { Loading } from '@/shared/components'
-import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
+import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore, getQueryClient } from '@/shared/config'
 import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
@@ -25,7 +25,7 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
 
   const { open: openCameraModal } = useCameraModalStore()
   const { addGroupChallengeId } = usePollingStore()
-  const queryClient = useQueryClient()
+  const queryClient = getQueryClient()
 
   const completedQuery = queryClient.getQueryData<{
     pages: { data: { challenges: ParticipantChallengeItem[] } }[]
