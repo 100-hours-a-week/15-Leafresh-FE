@@ -41,16 +41,6 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
     const valid = await trigger(['title', 'category', 'startDate', 'endDate', 'maxParticipant', 'examples'])
     setIsMetaValid(valid)
   }
-  useEffect(() => {
-    handleMetaCheck()
-  }, [
-    watch('title'),
-    watch('category'),
-    watch('startDate'),
-    watch('endDate'),
-    watch('maxParticipant'),
-    watch('examples'),
-  ])
 
   const title = watch('title')
   const category = watch('category')
@@ -60,6 +50,10 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
   const endTime = watch('endTime')
   const maxParticipant = watch('maxParticipant')
   const examples = watch('examples')
+
+  useEffect(() => {
+    handleMetaCheck()
+  }, [title, category, startDate, endDate, maxParticipant, examples])
 
   const handleExamplesChange = useCallback(
     (updated: VerificationImageData[]) => {
