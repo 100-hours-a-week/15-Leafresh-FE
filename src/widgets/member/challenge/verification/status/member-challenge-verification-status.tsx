@@ -101,7 +101,7 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
       case 'PENDING_APPROVAL':
         return <DisabledButton>인증 중</DisabledButton>
       case 'DONE':
-        return <DisabledButton>금일 참여 완료</DisabledButton>
+        return <DisabledButton>오늘 참여 완료</DisabledButton>
       default:
         return null
     }
@@ -124,13 +124,13 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
           <Count>{verifications.achievement.remaining}회</Count>
         </Stat>
       </Stats>
-      <GridWrapper>
+      <CarouselWrapper>
         {verifications.verifications.length !== 0 ? (
           <VerificationCarousel verifications={verifications.verifications} />
         ) : (
           <NoneContent>인증 목록이 없습니다.</NoneContent>
         )}
-      </GridWrapper>
+      </CarouselWrapper>
 
       <ButtonGroup>
         {/* <QuestionButton>문의하기</QuestionButton> */}
@@ -155,6 +155,8 @@ const Title = styled.h2`
   font-weight: ${theme.fontWeight.bold};
 `
 const Stats = styled.div`
+  padding: 0 20px;
+
   display: flex;
   justify-content: space-between;
 `
@@ -170,11 +172,10 @@ const Count = styled.div`
   font-weight: ${theme.fontWeight.bold};
   margin-top: 4px;
 `
-const GridWrapper = styled.div`
+const CarouselWrapper = styled.div`
   width: 100%;
 
   position: relative;
-  gap: 16px;
 `
 const ButtonGroup = styled.div`
   display: flex;
@@ -182,18 +183,6 @@ const ButtonGroup = styled.div`
   gap: 12px;
 `
 
-const QuestionButton = styled.button`
-  text-align: center;
-  padding: 12px;
-  background: ${theme.colors.lfGreenInactive.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 4px;
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.regular};
-  /* cursor: pointer; */
-  cursor: default;
-`
 const ActionButton = styled.button`
   padding: 12px;
   background: ${theme.colors.lfGreenMain.base};
