@@ -40,7 +40,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
   const [nickname, setNickname] = useState('')
   const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
   const [imageUrl, setImageUrl] = useState('')
-  const { uploadFile, loading: uploading } = useImageUpload()
+  const { uploadFile, isUploading } = useImageUpload()
 
   const { updateUserInfo } = useUserStore()
 
@@ -183,7 +183,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
             type='file'
             accept='image/*'
             onChange={handleImageChange}
-            disabled={uploading}
+            disabled={isUploading}
           />
         </UploadImageButton>
       </ProfileWrapper>
@@ -206,8 +206,8 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
         </InputWrapper>
       </InputSection>
 
-      <SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || uploading}>
-        {uploading ? '업로드 중...' : '수정하기'}
+      <SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || isUploading}>
+        {isUploading ? '업로드 중...' : '수정하기'}
       </SubmitButton>
     </Container>
   )

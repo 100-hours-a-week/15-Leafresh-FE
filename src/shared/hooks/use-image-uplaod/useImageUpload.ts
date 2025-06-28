@@ -3,51 +3,54 @@ import { useCallback, useState } from 'react'
 import { ENDPOINTS, fetchRequest, HttpMethod } from '@/shared/lib'
 
 type PresignedUrlResponse = {
-  uploadUrl: string // GCS로 PUT 요청을 보낼 PreSigned URL
-  fileUrl: string // 버킷 내부에 저장될 객체 경로 (key)
+  uploadUrl: string // PresignedURL
+  fileUrl: string // 버킷 내부 이미지 실제 경로
 }
 
+/**
+ * 버킷에 이미지를 업로드하고, 업로드된 이미지 경로를 받아오는 커스텀 훅
+ * @returns 업로드된 이미지 경로
+ */
 export function useImageUpload() {
-  const [loading, setLoading] = useState(false)
+  const [isUploading, setIsUploading] = useState<boolean>(false)
   const [error, setError] = useState<Error | null>(null)
 
   const uploadFile = useCallback(async (file: File): Promise<string> => {
-    setLoading(true)
+    setIsUploading(true)
     setError(null)
     const uniqueId = crypto.randomUUID()
     const uniqueName = `${Date.now()}-${uniqueId}-${file.name}`
 
     try {
-      const signed = await fetchRequest<PresignedUrlResponse>(ENDPOINTS.S3.PRESIGNED_URL, {
+      const presignedResponse = await fetchRequest<PresignedUrlResponse>(ENDPOINTS.S3.PRESIGNED_URL, {
         body: {
           fileName: uniqueName,
           contentType: file.type,
         },
       })
-      // 2) GCS에 PUT 요청으로 업로드
-      const res = await fetch(signed.data.uploadUrl, {
+      // 2) Cloud Storage 이미지 업로드
+      const { fileUrl, uploadUrl } = presignedResponse.data
+      const res = await fetch(uploadUrl, {
         method: HttpMethod.PUT,
         headers: { 'Content-Type': file.type },
         body: file,
       })
-      if (!res.ok) throw new Error(`GCS 업로드 실패: ${res.status}`)
+      if (!res.ok) throw new Error(`이미지 업로드 실패: ${res.status}`)
 
       // 3) 최종 공개 URL 조립
-      // GCS 기본 공개 URL 패턴: https://storage.googleapis.com/[BUCKET]/[OBJECT_NAME]
-      return signed.data.fileUrl
+      return fileUrl
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err)
         throw err
       }
-
-      const fallbackError = new Error('알 수 없는 에러 발생')
+      const fallbackError: Error = new Error('알 수 없는 에러 발생')
       setError(fallbackError)
       throw fallbackError
     } finally {
-      setLoading(false)
+      setIsUploading(false)
     }
   }, [])
 
-  return { uploadFile, loading, error }
+  return { uploadFile, isUploading, error }
 }

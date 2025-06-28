@@ -21,7 +21,7 @@ export const CameraModal = () => {
   const openToast = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
 
-  const { uploadFile, loading: uploading, error: uploadError } = useImageUpload()
+  const { uploadFile, isUploading, error: uploadError } = useImageUpload()
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
