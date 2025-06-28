@@ -44,18 +44,6 @@ export const ButtonGroup = styled.div`
   gap: 12px;
 `
 
-export const QuestionButton = styled.button`
-  text-align: center;
-  padding: 12px;
-  background: ${({ theme }) => theme.colors.lfGreenInactive.base};
-  color: ${({ theme }) => theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 4px;
-  font-size: ${({ theme }) => theme.fontSize.md};
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
-  /* cursor: pointer; */
-  cursor: default;
-`
 export const ActionButton = styled.button`
   padding: 12px;
   background: ${({ theme }) => theme.colors.lfGreenMain.base};

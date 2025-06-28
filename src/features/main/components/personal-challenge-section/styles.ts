@@ -110,28 +110,7 @@ export const JoinButton = styled.button`
   }
 `
 
-export const ArrowButton = styled.button<{ direction: 'prev' | 'next' }>`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  ${({ direction }) => (direction === 'prev' ? 'left: 8px;' : 'right: 8px;')}
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: white;
-  border: none;
-  box-shadow: ${({ theme }) => theme.shadow.lfInput};
-  font-size: 18px;
-  cursor: pointer;
-  z-index: 10;
-
-  &:disabled {
-    opacity: 0.3;
-    cursor: default;
-  }
-`
-
-export const IconWrapper = styled.div`
+const IconWrapper = styled.div`
   width: 40px;
   aspect-ratio: 1/1;
   padding: 10;

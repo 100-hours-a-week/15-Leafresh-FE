@@ -1,8 +1,0 @@
-src/features/chatbot/components/chat-frame/styles.ts:28 - SlideWrapper
-src/features/main/components/personal-challenge-section/styles.ts:113 - ArrowButton
-src/features/member/components/profile-card/styles.ts:191 - TreeLabel (used in module)
-src/features/member/components/profile-card/styles.ts:224 - NextLabel
-src/features/member/components/profile-card/styles.ts:284 - Badges
-src/features/store/components/ongoing-timedeal-list/styles.ts:44 - MoveButton (used in module)
-src/widgets/member/profile/mypage/styles.ts:6 - slideRotateIn (used in module)
-src/widgets/member/challenge/verification/status/styles.ts:47 - QuestionButton

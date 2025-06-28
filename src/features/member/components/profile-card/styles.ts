@@ -188,7 +188,7 @@ export const ProgressBarSection = styled.div`
   /* gap: 12px; */
   align-items: center;
 `
-export const TreeLabel = styled.div`
+const TreeLabel = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -219,14 +219,6 @@ export const Progress = styled.div`
   background: linear-gradient(90deg, #4caf50, #8bc34a);
   transition: width 0.3s ease;
   border-radius: 6px;
-`
-
-export const NextLabel = styled.span`
-  padding: 0 3px;
-  font-size: 12px;
-  color: #666;
-  min-width: 24px;
-  text-align: right;
 `
 
 /* 뱃지 영역 */
@@ -279,11 +271,4 @@ export const NoBadgeMessage = styled.p`
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.lfBlack.base};
   text-align: center;
-`
-
-export const Badges = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 12px;
 `

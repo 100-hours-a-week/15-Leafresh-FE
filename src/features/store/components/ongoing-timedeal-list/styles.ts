@@ -41,7 +41,7 @@ export const EmblaTrack = styled.div`
   display: flex;
 `
 
-export const MoveButton = styled.button`
+const MoveButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
-export const slideRotateIn = keyframes`
+const slideRotateIn = keyframes`
   0% {
     transform: translateX(-50%) translateY(200px) rotateY(0deg); /* 뷰포트 아래쪽에서 시작 */
     opacity: 0;

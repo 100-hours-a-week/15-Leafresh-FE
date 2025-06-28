@@ -25,12 +25,6 @@ export const SelectionWrapper = styled.div`
   width: 100%;
 `
 
-export const SlideWrapper = styled.div`
-  margin: 8px 0;
-  padding-left: 40px;
-  width: 100%;
-`
-
 export const InputContainer = styled.div`
   display: flex;
   background: #ffffff;

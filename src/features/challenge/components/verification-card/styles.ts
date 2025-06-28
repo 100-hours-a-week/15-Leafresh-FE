@@ -146,8 +146,3 @@ export const ViewWrapper = styled.div`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.regular};
 `
-
-export const LikeImage = styled(Image)`
-  width: 24px;
-  aspect-ratio: 1/1;
-`

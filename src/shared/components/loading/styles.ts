@@ -2,7 +2,7 @@ import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 
 // 애니메이션 정의
-export const opacityFade = keyframes`
+const opacityFade = keyframes`
   0% { opacity: 1 }
   50% { opacity: 0 }
   100% { opacity: 1 }
