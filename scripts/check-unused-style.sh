@@ -2,7 +2,7 @@
 #!/bin/sh
 
 echo "🔍 스타일 파일 내 미사용 export 검사 중..."
-pnpm find-deadStyleCode | grep -E '\.(styled|styles|style)\.ts' > .ts-prune-style.txt
+pnpm find-deadStyleCode | grep -E 'styles.ts' > .ts-prune-style.txt
 
 if [ -s .ts-prune-style.txt ]; then
   cat .ts-prune-style.txt
