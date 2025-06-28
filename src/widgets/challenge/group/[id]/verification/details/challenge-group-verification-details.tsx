@@ -29,8 +29,8 @@ import {
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { ToastType, useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 import { getTimeDiff } from '@/shared/lib'
 import { copyToClipboard } from '@/shared/lib/utils'
 import { responsiveHorizontalPadding } from '@/shared/styles'
@@ -51,7 +51,7 @@ export const VerificationDetails = ({
   className,
 }: VerificationDetailsProps): ReactNode => {
   const { openConfirmModal } = useConfirmModalStore()
-  const { isLoggedIn, userInfo } = useAuth()
+  const { isLoggedIn, userInfo } = useUserStore()
   const openToast = useToast()
   const router = useRouter()
   const isClient = typeof window !== 'undefined'

@@ -21,8 +21,8 @@ import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useCameraModalStore, useConfirmModalStore, usePollingStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { ToastType, useCameraModalStore, useConfirmModalStore, usePollingStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
@@ -50,7 +50,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
   const router = useRouter()
   const openToast = useToast()
   const { open: openCameraModal } = useCameraModalStore()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
   const { addPersonalChallengeId } = usePollingStore()

@@ -18,8 +18,8 @@ import {
 import { LucideIcon } from '@/shared/components'
 import { media, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { ToastType, useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 import { formatSecondToTime } from '@/shared/lib'
 
 interface OngoingTimeDealCardProps {
@@ -31,7 +31,7 @@ interface OngoingTimeDealCardProps {
 export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTimeDealCardProps): ReactNode => {
   const router = useRouter()
   const openToast = useToast()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { IdempotencyKey, regenerateIdempotencyKey } = useIdempotencyKeyStore()
 

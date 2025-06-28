@@ -12,12 +12,12 @@ import { useInfiniteMemberGroupChallengeCreations } from '@/features/member/api'
 import { Loading, NoContent } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { useAuth } from '@/shared/hooks'
+import { useUserStore } from '@/shared/context'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const MemberChallengeCreationsPage = (): ReactNode => {
   const router = useRouter()
-  const { userInfo } = useAuth()
+  const { userInfo } = useUserStore()
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
     useInfiniteMemberGroupChallengeCreations()

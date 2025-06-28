@@ -12,8 +12,8 @@ import { CHALLENGE_CATEGORY_PAIRS, ChallengeCategoryType, convertLanguage } from
 import { LeafReward, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { ToastType, useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 import { ISOFormatString } from '@/shared/type'
 
 export type GroupChallenge = {
@@ -46,7 +46,7 @@ export const GroupChallengeCard = ({
   className,
 }: GroupChallengeCardProps): ReactNode => {
   const router = useRouter()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const openToast = useToast()
   const { openConfirmModal } = useConfirmModalStore()
 

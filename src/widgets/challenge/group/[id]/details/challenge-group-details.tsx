@@ -23,11 +23,11 @@ import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 import { BackButton, DatePicker, Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
-import { responsiveHorizontalPadding } from '@/shared/styles'
+import { ToastType, useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 
 import LeafIcon from '@public/icon/leaf.png'
+import { responsiveHorizontalPadding } from '@/shared/styles'
 
 type WarningType = {
   isWarning: boolean
@@ -48,7 +48,7 @@ interface ChallengeGroupDetailsProps {
 }
 
 export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
   const router = useRouter()

@@ -26,7 +26,7 @@ import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useOAuthUserStore, usePollingStore, useUserStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 const slideRotateIn = keyframes`
@@ -48,7 +48,7 @@ export const Mypage = () => {
 
   const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
   const { clearUserInfo } = useUserStore()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { setFeedbackPolling } = usePollingStore()
 
   const {
