@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 
-import styled from '@emotion/styled'
+import * as S from './styles'
 
 interface SlideAreaProps {
   children: React.ReactNode[]
@@ -94,7 +94,7 @@ export function SlideArea({ children, className, visibleIndex, onItemSelect }: S
   const childrenArray = React.Children.toArray(children)
 
   return (
-    <SlideContainer
+    <S.SlideContainer
       className={className}
       ref={scrollRef}
       isDragging={isDragging}
@@ -105,43 +105,18 @@ export function SlideArea({ children, className, visibleIndex, onItemSelect }: S
       onTouchMove={handleTouchMove}
       onTouchEnd={stopDragging}
     >
-      <SlideItem data-slide-item={0} key={0}>
+      <S.SlideItem data-slide-item={0} key={0}>
         {childrenArray[0]}
-      </SlideItem>
+      </S.SlideItem>
 
       {childrenArray.slice(1).map((child, index) => {
         const actualIndex = index + 1
         return actualIndex <= visibleIndex ? (
-          <SlideItem data-slide-item={actualIndex} key={actualIndex}>
+          <S.SlideItem data-slide-item={actualIndex} key={actualIndex}>
             {child}
-          </SlideItem>
+          </S.SlideItem>
         ) : null
       })}
-    </SlideContainer>
+    </S.SlideContainer>
   )
 }
-
-const SlideContainer = styled.div<{ isDragging: boolean }>`
-  display: flex;
-  scroll-behavior: smooth;
-  gap: 5px;
-  user-select: none;
-
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`
-
-const SlideItem = styled.div`
-  flex: 0 0 auto;
-  width: auto;
-  min-width: min-content;
-  transition:
-    opacity 1s ease,
-    transform 1s ease;
-  scroll-snap-align: start;
-`

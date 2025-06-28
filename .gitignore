@@ -42,7 +42,9 @@ next-env.d.ts
 
 # eslint
 .eslintcache
+./ts-prune-style.txt
 
+# File
 *.zip*
 
 # Playwright
@@ -53,3 +55,4 @@ node_modules/
 /playwright/.cache/
 
 certificates
+

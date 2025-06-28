@@ -1,17 +1,16 @@
 'use client'
 import { useState } from 'react'
 
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 import { sendGAEvent } from '@next/third-parties/google'
-
-import styled from '@emotion/styled'
 
 import { URL } from '@/shared/constants'
 import { useScrollLock, useToggle } from '@/shared/hooks'
 
 import { ChatWindow } from '../chat-window'
+
+import * as S from './styles'
 
 export const Chatbot = () => {
   const pathname = usePathname()
@@ -38,7 +37,7 @@ export const Chatbot = () => {
   return (
     <>
       {!isOpen && (
-        <StyledImage
+        <S.StyledImage
           src='/image/chatbot/chatbot.svg'
           alt='챗봇 아이콘'
           width={48}
@@ -46,39 +45,8 @@ export const Chatbot = () => {
           onClick={handleClickLauncher}
         />
       )}
-      {isOpen && <Backdrop onClick={handleCloseAndReset} />}
+      {isOpen && <S.Backdrop onClick={handleCloseAndReset} />}
       <ChatWindow key={resetCount} open={isOpen} onClose={() => setOpen(false)} />
     </>
   )
 }
-
-const StyledImage = styled(Image)`
-  position: absolute;
-  bottom: 90px;
-  margin-left: auto;
-  right: 16px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  cursor: pointer;
-
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-`
-
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1000;
-`

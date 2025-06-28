@@ -2,12 +2,11 @@
 
 import { ko } from 'date-fns/locale'
 
-import styled from '@emotion/styled'
 import { format } from 'date-fns'
 
 import { LucideIcon } from '@/shared/components'
-import { theme } from '@/shared/config'
 
+import * as S from './styles'
 interface CalendarHeaderProps {
   currentMonth: Date
   onPrev: () => void
@@ -15,33 +14,13 @@ interface CalendarHeaderProps {
 }
 
 export const CalendarHeader = ({ currentMonth, onPrev, onNext }: CalendarHeaderProps) => (
-  <Header>
-    <ArrowButton onClick={onPrev}>
+  <S.Header>
+    <S.ArrowButton onClick={onPrev}>
       <LucideIcon name='ChevronLeft' size={16} />
-    </ArrowButton>
-    <CurrentMonth>{format(currentMonth, 'yyyy년 M월', { locale: ko })}</CurrentMonth>
-    <ArrowButton onClick={onNext}>
+    </S.ArrowButton>
+    <S.CurrentMonth>{format(currentMonth, 'yyyy년 M월', { locale: ko })}</S.CurrentMonth>
+    <S.ArrowButton onClick={onNext}>
       <LucideIcon name='ChevronRight' size={16} />
-    </ArrowButton>
-  </Header>
+    </S.ArrowButton>
+  </S.Header>
 )
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-`
-
-const CurrentMonth = styled.h3`
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfBlack.base};
-`
-
-const ArrowButton = styled.button`
-  background: none;
-  border: none;
-  padding: 4px;
-  cursor: pointer;
-`

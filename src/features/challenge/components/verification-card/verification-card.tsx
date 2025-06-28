@@ -2,12 +2,9 @@
 
 import { ReactNode, useState } from 'react'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { motion } from 'motion/react'
-
-import styled from '@emotion/styled'
 
 import {
   CreateVerificationLikeResponse,
@@ -27,6 +24,8 @@ import { copyToClipboard, getTimeDiff } from '@/shared/lib'
 
 import ActiveLikeIcon from '@public/icon/like_active.svg'
 import InActiveLikeIcon from '@public/icon/like_inactive.svg'
+
+import * as S from './styles'
 
 interface VerificationCardProps {
   challengeId: number
@@ -108,28 +107,28 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
     router.push(URL.CHALLENGE.GROUP.VERIFICATION.DETAILS.value(challengeId, verificationId))
   }
   return (
-    <Wrapper className={className}>
-      <HeaderWrapper>
-        <ProfileWrapper>
-          <ProfileImage src={profileImageUrl} alt='프로필' width={40} height={40} />
-          <ProfileDescriptions>
-            <Nickname>{nickname}</Nickname>
-            <CreatedTime>{createdTime}</CreatedTime>
-          </ProfileDescriptions>
-        </ProfileWrapper>
-      </HeaderWrapper>
+    <S.Wrapper className={className}>
+      <S.HeaderWrapper>
+        <S.ProfileWrapper>
+          <S.ProfileImage src={profileImageUrl} alt='프로필' width={40} height={40} />
+          <S.ProfileDescriptions>
+            <S.Nickname>{nickname}</S.Nickname>
+            <S.CreatedTime>{createdTime}</S.CreatedTime>
+          </S.ProfileDescriptions>
+        </S.ProfileWrapper>
+      </S.HeaderWrapper>
 
-      <VerificationWrapper onClick={handleDetailsRoute}>
-        <ImageWrapper>
-          <VerificationImage src={verificationImageUrl} alt='인증 이미지' fill />
-          <Badge className='badge'>{category_kor}</Badge>
-        </ImageWrapper>
+      <S.VerificationWrapper onClick={handleDetailsRoute}>
+        <S.ImageWrapper>
+          <S.VerificationImage src={verificationImageUrl} alt='인증 이미지' fill />
+          <S.Badge className='badge'>{category_kor}</S.Badge>
+        </S.ImageWrapper>
 
-        <DescriptionWrapper>
-          <Description>{description}</Description>
+        <S.DescriptionWrapper>
+          <S.Description>{description}</S.Description>
 
-          <InteractionWrapper>
-            <LikeInteraction isLiked={isLiked} onClick={toggleLike}>
+          <S.InteractionWrapper>
+            <S.LikeInteraction isLiked={isLiked} onClick={toggleLike}>
               <motion.img
                 key={isLiked ? 'liked' : 'unliked'}
                 src={isLiked ? ActiveLikeIcon.src : InActiveLikeIcon.src}
@@ -140,172 +139,22 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, mass: 0.5 }}
               />
-              <InteractionCount>{likesCount}</InteractionCount>
-            </LikeInteraction>
-            <Interaction>
+              <S.InteractionCount>{likesCount}</S.InteractionCount>
+            </S.LikeInteraction>
+            <S.Interaction>
               <LucideIcon name='MessageCircle' size={24} strokeWidth={1.8} />
-              <InteractionCount>{comment}</InteractionCount>
-            </Interaction>
+              <S.InteractionCount>{comment}</S.InteractionCount>
+            </S.Interaction>
             <LucideIcon
               name='SquareArrowOutUpRight'
               size={24}
               strokeWidth={1.8}
               onClick={e => handleCopyVerificationUrl(e)}
             />
-            <ViewWrapper>조회수 {view}</ViewWrapper>
-          </InteractionWrapper>
-        </DescriptionWrapper>
-      </VerificationWrapper>
-    </Wrapper>
+            <S.ViewWrapper>조회수 {view}</S.ViewWrapper>
+          </S.InteractionWrapper>
+        </S.DescriptionWrapper>
+      </S.VerificationWrapper>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`
-
-const HeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-`
-const ProfileWrapper = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: repeat(2, auto);
-  column-gap: 8px;
-  align-items: center;
-`
-
-const ProfileImage = styled(Image)`
-  grid-row: span 2;
-  width: 40px;
-  height: 40px;
-  border-radius: 9999px;
-  object-fit: cover;
-`
-
-const ProfileDescriptions = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 4px;
-`
-
-const Nickname = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.md};
-  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
-`
-
-const CreatedTime = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  color: ${({ theme }) => theme.colors.lfDarkGray.base};
-`
-
-const VerificationWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  box-shadow: ${({ theme }) => theme.shadow.lfInput};
-  border-radius: ${({ theme }) => theme.radius.md};
-
-  overflow: hidden;
-  cursor: pointer;
-
-  &:hover {
-    .badge {
-      opacity: 1;
-    }
-  }
-`
-
-const ImageWrapper = styled.div`
-  position: relative;
-  aspect-ratio: 5 / 3;
-  overflow: hidden;
-`
-
-const VerificationImage = styled(Image)`
-  /* width: 100%; */
-  object-fit: cover;
-  object-position: center;
-`
-
-const Badge = styled.div`
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  padding: 12px 12px;
-  background: ${({ theme }) => theme.colors.lfGreenMain.base};
-  opacity: 0.7;
-  color: ${({ theme }) => theme.colors.lfWhite.base};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  border-radius: ${({ theme }) => theme.radius.full};
-  transition: opacity 0.3s ease;
-`
-
-const DescriptionWrapper = styled.div`
-  padding: 12px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`
-const Description = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.base};
-  font-weight: 450;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2; // 최대 2줄
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-  white-space: normal;
-`
-
-const InteractionWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 8px;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.lfBlack.base};
-`
-
-const Interaction = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`
-
-const LikeInteraction = styled(Interaction)<{ isLiked: boolean }>`
-  cursor: pointer;
-
-  &:hover img {
-    filter: ${({ isLiked }) =>
-      isLiked
-        ? 'brightness(0.9) saturate(150%) hue-rotate(-10deg)' // 삭제를 의미하는 hover (붉은기)
-        : 'brightness(1.4) saturate(180%) hue-rotate(90deg)'}; // 추가를 의미하는 hover (녹색기)
-    transition: filter 0.2s ease;
-  }
-`
-
-const InteractionCount = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.base};
-`
-
-const ViewWrapper = styled.div`
-  margin-left: auto;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
-`
-
-const LikeImage = styled(Image)`
-  width: 24px;
-  aspect-ratio: 1/1;
-`

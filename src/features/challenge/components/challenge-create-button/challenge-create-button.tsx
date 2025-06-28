@@ -4,12 +4,11 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { sendGAEvent } from '@next/third-parties/google'
 
-import styled from '@emotion/styled'
-
-import { LucideIcon } from '@/shared/components'
 import { URL } from '@/shared/constants'
 import { useConfirmModalStore } from '@/shared/context'
 import { useAuth } from '@/shared/hooks'
+
+import * as S from './styles'
 
 export const ChallengeCreateButton = () => {
   const router = useRouter()
@@ -35,47 +34,8 @@ export const ChallengeCreateButton = () => {
   // TODO: 피드 페이지 생성되면 넣기
   if (pathname !== URL.MAIN.INDEX.value && !pathname.startsWith('/feed')) return null
   return (
-    <Container>
-      <ButtonIcon name='Plus' color='lfWhite' size={24} onClick={handleCreateChallenge} />
-    </Container>
+    <S.Container>
+      <S.ButtonIcon name='Plus' color='lfWhite' size={24} onClick={handleCreateChallenge} />
+    </S.Container>
   )
 }
-
-// === Styles ===
-
-const Container = styled.div`
-  position: absolute;
-  bottom: 90px;
-  left: 16px;
-
-  pointer-events: none;
-  z-index: 999;
-
-  display: flex;
-  justify-content: center;
-
-  width: 48px;
-  aspect-ratio: 1/1;
-`
-
-const ButtonIcon = styled(LucideIcon)`
-  width: 100%;
-  height: 100%;
-  pointer-events: auto;
-
-  position: relative;
-
-  background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-  box-shadow: ${({ theme }) => theme.shadow.lfInput};
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.lfGreenMain.hover};
-  }
-`

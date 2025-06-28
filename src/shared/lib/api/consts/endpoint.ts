@@ -173,12 +173,6 @@ const CHALLENGE_ENDPOINTS = {
   },
 }
 
-const a = {
-  1: 2,
-  2: 3,
-  3: 4,
-}
-
 const MEMBER_ENDPOINTS = {
   AUTH: {
     LOGIN: (provider: LowercaseOAuthType) => ({ method: HttpMethod.GET, path: `/oauth/${provider}` }), // OAuth 로그인 시작

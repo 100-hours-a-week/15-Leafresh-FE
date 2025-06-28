@@ -1,10 +1,10 @@
 'use client'
-import isPropValid from '@emotion/is-prop-valid'
-import styled from '@emotion/styled'
 import { icons } from 'lucide-react'
 
 import { ThemeColorType } from '@/shared/config'
 import { getThemeColor } from '@/shared/lib/utils'
+
+import * as S from './styles'
 
 export interface LucideIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'ref'> {
   name: keyof typeof icons
@@ -32,8 +32,8 @@ export const LucideIcon = ({
   const Icon = icons[name]
 
   return (
-    <Wrapper ref={ref} onClick={onClick} className={className}>
-      <StyledIcon
+    <S.Wrapper ref={ref} onClick={onClick} className={className}>
+      <S.StyledIcon
         as={Icon}
         color={color ? getThemeColor(color) : undefined}
         fill={fill ? getThemeColor(fill) : 'transparent'}
@@ -42,23 +42,6 @@ export const LucideIcon = ({
         hasClick={!!onClick}
         {...props}
       />
-    </Wrapper>
+    </S.Wrapper>
   )
 }
-
-// === Styles ===
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-`
-
-const StyledIcon = styled('svg', {
-  shouldForwardProp: prop => isPropValid(prop) && prop !== 'hasClick',
-})<{ size: number; hasClick: boolean }>`
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-  ${({ hasClick }) => hasClick && 'cursor: pointer;'}
-`

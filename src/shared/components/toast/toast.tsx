@@ -1,14 +1,13 @@
 'use client'
 import { useEffect } from 'react'
 
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
 
-import styled from '@emotion/styled'
-
-import { theme } from '@/shared/config'
 import { ToastType, useToastStore } from '@/shared/context'
 
 import { LucideIcon } from '../lucide-icon'
+
+import * as S from './styles'
 
 export const Toast = () => {
   const { isOpen, type, description, close: closeToast } = useToastStore()
@@ -27,7 +26,7 @@ export const Toast = () => {
   return (
     <AnimatePresence>
       {isOpen && description && (
-        <MotionContainer
+        <S.MotionContainer
           key='toast'
           toastType={type}
           initial={{ opacity: 0, x: '-50%', y: 50 }}
@@ -35,58 +34,15 @@ export const Toast = () => {
           exit={{ opacity: 0, x: '-50%', y: 20 }}
           transition={{ duration: 0.3 }}
         >
-          <Wrapper>
+          <S.Wrapper>
             <LucideIcon name={iconName} size={20} color={color} />
-          </Wrapper>
-          <Message>{description}</Message>
-          <CloseIcon onClick={closeToast}>
+          </S.Wrapper>
+          <S.Message>{description}</S.Message>
+          <S.CloseIcon onClick={closeToast}>
             <LucideIcon name='X' size={16} color='lfBlack' />
-          </CloseIcon>
-        </MotionContainer>
+          </S.CloseIcon>
+        </S.MotionContainer>
       )}
     </AnimatePresence>
   )
 }
-
-const MotionContainer = styled(motion.div)<{ toastType: ToastType }>`
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  min-width: ${({ toastType }) => (toastType === ToastType.Success ? '209px' : '256px')};
-  height: 60px;
-  width: 250px;
-  padding: 0px 20px;
-
-  background-color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  box-shadow: ${theme.shadow.lfInput};
-  color: ${({ toastType }) => (toastType === ToastType.Success ? theme.colors.lfBlack.base : theme.colors.lfRed.base)};
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-`
-
-const Wrapper = styled.div`
-  display: flex;
-  align-self: center;
-`
-
-const Message = styled.span`
-  flex: 1;
-  text-align: center;
-  white-space: pre-line;
-  line-height: 1.3;
-`
-
-const CloseIcon = styled.div`
-  position: absolute;
-  right: 7px;
-  top: 4px;
-  cursor: pointer;
-`
