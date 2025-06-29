@@ -21,7 +21,7 @@ import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useCameraModalStore, useConfirmModalStore, usePollingStore, useUserStore } from '@/shared/context'
+import { useCameraModalStore, useConfirmModalStore, usePollingStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
@@ -139,7 +139,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
 
     /** #예외1: 챌린지에 이미 참여한 경우 */
     if (status !== 'NOT_SUBMITTED') {
-      toast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
+      toast('Error', '챌린지에 재참여할 수 없습니다.')
       return
     }
 
@@ -148,7 +148,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     /** #예외2: 요일이 일치하지 않으면 참여 불가 */
     const nowDay: DayType = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase() as DayType // e.g. 'MONDAY'
     if (nowDay !== dayOfWeek) {
-      toast(ToastType.Error, '챌린지 기간이 아닙니다')
+      toast('Error', '챌린지 기간이 아닙니다')
       return
     }
 
@@ -160,7 +160,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     const endMinutes = endH * 60 + endM
 
     if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
-      toast(ToastType.Error, '참여 가능한 시간이 아닙니다')
+      toast('Error', '참여 가능한 시간이 아닙니다')
       return
     }
 
@@ -178,7 +178,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
       {
         onSuccess: () => {
           addPersonalChallengeId(challengeId) // 인증 결과 롱폴링 시작
-          toast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+          toast('Success', `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
         },
       },
     )

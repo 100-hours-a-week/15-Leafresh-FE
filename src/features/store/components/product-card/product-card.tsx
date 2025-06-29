@@ -17,7 +17,7 @@ import {
 
 import { media, theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
+import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
 interface ProductCardProps {
@@ -60,7 +60,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     // #1. 에러 케이스
     // 재고 없음
     if (isSoldOut) {
-      toast(ToastType.Error, '품절된 상품입니다.')
+      toast('Error', '품절된 상품입니다.')
       return
     }
 
@@ -81,11 +81,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           { productId: id, headers, body },
           {
             onSuccess: () => {
-              toast(ToastType.Success, '구매가 완료되었습니다')
+              toast('Success', '구매가 완료되었습니다')
             },
             onError: () => {
               setLocalStock(prevStock) // 실패 시 롤백
-              toast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
+              toast('Error', '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
               regenerateIdempotencyKey()

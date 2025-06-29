@@ -13,7 +13,7 @@ import { LowercaseOAuthType } from '@/entities/member/model'
 
 import { Loading } from '@/shared/components'
 import { QUERY_KEYS, QUERY_OPTIONS, theme } from '@/shared/config'
-import { ToastType, useOAuthStateStore } from '@/shared/context'
+import { useOAuthStateStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
 import KakaoLoginButton from '@public/image/kakao_login.svg'
@@ -57,13 +57,13 @@ const LoginPage = () => {
         window.location.href = parsedUrl.toString()
       }
     } catch (_error) {
-      toast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
+      toast('Error', `${provider} 로그인 실패\n재시도 해주세요`)
     }
   }
 
   useEffect(() => {
     if (isExpired) {
-      toast(ToastType.Error, '세션이 만료되었습니다\n다시 로그인해주세요')
+      toast('Error', '세션이 만료되었습니다\n다시 로그인해주세요')
     }
   }, [isExpired])
 

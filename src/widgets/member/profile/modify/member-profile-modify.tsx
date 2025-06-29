@@ -17,7 +17,7 @@ import { getMemberProfile, MemberInfoRequest, MemberInfoResponse, ProfileRespons
 import { ErrorText, Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useUserStore } from '@/shared/context'
+import { useUserStore } from '@/shared/context'
 import { useImageUpload, useToast } from '@/shared/hooks'
 
 interface ProfileModifyPageProps {
@@ -114,10 +114,10 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
 
         const uploadedUrl = await uploadFile(file)
         setValue('imageUrl', uploadedUrl)
-        toast(ToastType.Success, '이미지가 성공적으로 업로드되었습니다')
+        toast('Success', '이미지가 성공적으로 업로드되었습니다')
       }, 'image/jpeg')
     } catch (err) {
-      toast(ToastType.Error, '이미지 업로드에 실패했습니다')
+      toast('Error', '이미지 업로드에 실패했습니다')
     }
   }
 
@@ -132,7 +132,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
     }
 
     if (Object.keys(body).length === 0) {
-      toast(ToastType.Error, '변경된 정보가 없습니다')
+      toast('Error', '변경된 정보가 없습니다')
       return
     }
 
@@ -145,7 +145,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
         router.push(URL.MEMBER.PROFILE.MYPAGE.value)
       },
       onError: err => {
-        toast(ToastType.Error, err.message || '프로필 수정에 실패했습니다.\n다시 시도해 주세요!')
+        toast('Error', err.message || '프로필 수정에 실패했습니다.\n다시 시도해 주세요!')
       },
     })
   }

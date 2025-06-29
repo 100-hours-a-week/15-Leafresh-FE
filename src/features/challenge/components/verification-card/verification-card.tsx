@@ -21,7 +21,7 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@/entities/challenge/
 import { LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { copyToClipboard, getTimeDiff } from '@/shared/lib'
 
@@ -92,7 +92,7 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
         setIsLiked(prevLiked)
         setLikesCount(prevCount)
 
-        toast(ToastType.Error, '좋아요 처리 중 오류가 발생했습니다.')
+        toast('Error', '좋아요 처리 중 오류가 발생했습니다.')
       },
     })
   }

@@ -25,7 +25,7 @@ import {
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useOAuthUserStore, usePollingStore, useUserStore } from '@/shared/context'
+import { useOAuthUserStore, usePollingStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
@@ -166,7 +166,7 @@ export const Mypage = () => {
           onSuccess: response => {
             clearOAuthUserInfo()
             clearUserInfo()
-            toast(ToastType.Success, '로그아웃 성공')
+            toast('Success', '로그아웃 성공')
             router.push(URL.MAIN.INDEX.value)
           },
         },

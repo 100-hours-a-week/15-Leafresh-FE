@@ -18,7 +18,7 @@ import {
 import { LucideIcon } from '@/shared/components'
 import { media, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
+import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { formatSecondToTime } from '@/shared/lib'
 
@@ -56,7 +56,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
     }
 
     if (deal.stock <= 0) {
-      toast(ToastType.Error, '품절된 상품입니다.')
+      toast('Error', '품절된 상품입니다.')
       return
     }
 
@@ -65,7 +65,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
     const end = new Date(deal.dealEndTime).getTime()
 
     if (now < start || now > end) {
-      toast(ToastType.Error, '현재는 특가 구매 가능한 시간이 아닙니다.')
+      toast('Error', '현재는 특가 구매 가능한 시간이 아닙니다.')
       return
     }
 
@@ -83,10 +83,10 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
         return PurchaseMutate(
           { productId: deal.dealId, headers, body },
           {
-            onSuccess: () => toast(ToastType.Success, '구매가 완료되었습니다'),
+            onSuccess: () => toast('Success', '구매가 완료되었습니다'),
             onError: () => {
               setLocalStock(prevStock) // 실패 시 rollback
-              toast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
+              toast('Error', '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
               regenerateIdempotencyKey()

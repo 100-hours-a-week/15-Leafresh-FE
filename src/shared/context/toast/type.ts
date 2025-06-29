@@ -1,4 +1,4 @@
-type ToastType = 'Success' | 'Error'
+export type ToastType = 'Success' | 'Error'
 
 type ToastItem = {
   id: string

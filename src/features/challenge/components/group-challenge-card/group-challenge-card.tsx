@@ -12,7 +12,7 @@ import { CHALLENGE_CATEGORY_PAIRS, ChallengeCategoryType, convertLanguage } from
 import { LeafReward, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { ISOFormatString } from '@/shared/type'
 
@@ -83,7 +83,7 @@ export const GroupChallengeCard = ({
     }
     // 2. 참여자 여부 확인 (없어야 함)
     if (currentParticipantCount) {
-      toast(ToastType.Error, `이미 참여자가 있는 챌린지는\n수정할 수 없습니다!`)
+      toast('Error', `이미 참여자가 있는 챌린지는\n수정할 수 없습니다!`)
       return
     }
 
@@ -112,7 +112,7 @@ export const GroupChallengeCard = ({
     }
     // 2. 참여자 여부 확인 (없어야 함)
     if (currentParticipantCount) {
-      toast(ToastType.Error, `이미 참여자가 있는 챌린지는\n삭제할 수 없습니다!`)
+      toast('Error', `이미 참여자가 있는 챌린지는\n삭제할 수 없습니다!`)
       return
     }
 
@@ -129,7 +129,7 @@ export const GroupChallengeCard = ({
             // 성공
             onSuccess(data, variables, context) {
               if (deleteCallback) deleteCallback()
-              toast(ToastType.Success, '챌린지가 삭제되었습니다')
+              toast('Success', '챌린지가 삭제되었습니다')
             },
           },
         ),

@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { ProfileResponse } from '@/entities/member/api'
 
 import { URL } from '@/shared/constants'
-import { ToastType, UserInfo, useUserStore } from '@/shared/context'
+import { UserInfo, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
@@ -80,7 +80,7 @@ export const AuthGuard = ({ children }: Props) => {
         setIsVerified(true)
       } catch (e) {
         clearUserInfo()
-        toast(ToastType.Error, '로그인이 필요합니다')
+        toast('Error', '로그인이 필요합니다')
         router.replace(URL.MEMBER.LOGIN.value)
       }
     }

@@ -4,7 +4,7 @@ import { ToastState } from './type'
 
 export const toastStore = create<ToastState>(set => ({
   toasts: [],
-  open: (type, description) =>
+  toast: (type, description) =>
     set(state => {
       const id = crypto.randomUUID()
       const nextToasts = [...state.toasts, { id, type, description }]

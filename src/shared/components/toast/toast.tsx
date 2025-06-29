@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import styled from '@emotion/styled'
 
 import { theme } from '@/shared/config'
-import { toastStore, ToastType } from '@/shared/context'
+import { toastStore } from '@/shared/context'
 
 import { LucideIcon } from '../lucide-icon'
 
@@ -64,9 +64,9 @@ export const Toast = () => {
               }}
             >
               <LucideIcon
-                name={toast.type === ToastType.Success ? 'CheckCheck' : 'CircleAlert'}
+                name={toast.type === 'Success' ? 'CheckCheck' : 'CircleAlert'}
                 size={20}
-                color={toast.type === ToastType.Success ? 'lfBlue' : 'lfRed'}
+                color={toast.type === 'Success' ? 'lfBlue' : 'lfRed'}
               />
               <Message>{toast.description}</Message>
               <CloseIcon onClick={() => remove(toast.id)}>
