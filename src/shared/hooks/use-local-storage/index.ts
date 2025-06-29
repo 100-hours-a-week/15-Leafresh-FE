@@ -1,1 +1,1 @@
-export * from './useLocalStorage'
+export * from './use-local-storage'
