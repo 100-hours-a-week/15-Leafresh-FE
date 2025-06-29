@@ -8,14 +8,13 @@ import styled from '@emotion/styled'
 
 import { LucideIcon } from '@/shared/components'
 import { URL } from '@/shared/constants'
-import { useConfirmModalStore } from '@/shared/context'
-import { useAuth } from '@/shared/hooks'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
 
 export const ChallengeCreateButton = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
   const handleCreateChallenge = () => {

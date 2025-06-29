@@ -1,1 +1,1 @@
-export * from './useUnmount'
+export * from './use-unmount'

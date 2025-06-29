@@ -10,13 +10,13 @@ import styled from '@emotion/styled'
 
 import { LucideIcon, NAVBAR_TABS } from '@/shared/components'
 import { theme } from '@/shared/config'
-import { useAuth } from '@/shared/hooks'
+import { useUserStore } from '@/shared/context'
 
 export const Navbar = (): ReactNode => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
 
   // 현재 경로가 어떤 탭인지 판단
   const isCurrentTab = (label: string) => {

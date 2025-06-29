@@ -1,1 +1,1 @@
-export * from './useScrollLock'
+export * from './use-scroll-lock'

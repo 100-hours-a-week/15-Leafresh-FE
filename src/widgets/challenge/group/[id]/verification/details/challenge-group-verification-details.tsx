@@ -29,8 +29,8 @@ import {
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 import { getTimeDiff } from '@/shared/lib'
 import { copyToClipboard } from '@/shared/lib/utils'
 import { responsiveHorizontalPadding } from '@/shared/styles'
@@ -51,8 +51,8 @@ export const VerificationDetails = ({
   className,
 }: VerificationDetailsProps): ReactNode => {
   const { openConfirmModal } = useConfirmModalStore()
-  const { isLoggedIn, userInfo } = useAuth()
-  const openToast = useToast()
+  const { isLoggedIn, userInfo } = useUserStore()
+  const { toast } = useToast()
   const router = useRouter()
   const isClient = typeof window !== 'undefined'
 
@@ -151,7 +151,7 @@ export const VerificationDetails = ({
         setIsLiked(prevLiked)
         setLikeCount(prevCount)
 
-        openToast(ToastType.Error, '좋아요 처리 중 오류가 발생했습니다.')
+        toast('Error', '좋아요 처리 중 오류가 발생했습니다.')
       },
     })
   }
@@ -207,7 +207,7 @@ export const VerificationDetails = ({
         onError: () => {
           setLocalComments(prev) // rollback
           setCommentCount(prevComment)
-          openToast(ToastType.Error, '댓글 작성에 실패했습니다.')
+          toast('Error', '댓글 작성에 실패했습니다.')
         },
       },
     )
@@ -280,7 +280,7 @@ export const VerificationDetails = ({
         onError: () => {
           setCommentCount(prevComment)
           setLocalComments(prev) // rollback
-          openToast(ToastType.Error, '답글 작성에 실패했습니다.')
+          toast('Error', '답글 작성에 실패했습니다.')
         },
       },
     )
@@ -314,7 +314,7 @@ export const VerificationDetails = ({
       {
         onError: () => {
           setLocalComments(prev) // rollback
-          openToast(ToastType.Error, '수정에 실패했습니다.')
+          toast('Error', '수정에 실패했습니다.')
         },
       },
     )
@@ -372,7 +372,7 @@ export const VerificationDetails = ({
             onError: () => {
               setCommentCount(prevComment)
               setLocalComments(prev) // rollback
-              openToast(ToastType.Error, '삭제에 실패했습니다.')
+              toast('Error', '삭제에 실패했습니다.')
             },
           },
         )

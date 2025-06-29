@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/dom'
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { useKeyClose } from './useKeyClose'
+import { useKeyClose } from './use-key-close'
 
 describe('useKeyClose', () => {
   it('기본 키 (Escape) 입력 시 콜백이 실행되어야 한다', () => {

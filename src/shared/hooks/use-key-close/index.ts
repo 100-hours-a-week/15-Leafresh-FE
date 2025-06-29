@@ -1,1 +1,1 @@
-export * from './useKeyClose'
+export * from './use-key-close'

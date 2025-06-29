@@ -1,1 +1,1 @@
-export * from './useSessionStorage'
+export * from './use-session-storage'
