@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+import { extremeEaseOut } from './utils'
 
 /**
  * 0부터 일정 숫자까지 증가하는 커스텀 훅
@@ -11,10 +13,6 @@ export const useCountUp = (endNumber: number, duration = 1500) => {
   const animationRef = useRef<number | null>(null)
   const startTimeRef = useRef<number | null>(null)
   const previousValueRef = useRef<number | null>(null)
-
-  const extremeEaseOut = useCallback((t: number) => {
-    return 1 - Math.pow(1 - t, 6)
-  }, [])
 
   useEffect(() => {
     if (endNumber == null) return
