@@ -1,13 +1,16 @@
 export enum ToastType {
   Success = 'success',
   Error = 'error',
-  //다른 타입은 추후 확장
 }
 
-export interface ToastStore {
-  isOpen: boolean
+type ToastItem = {
+  id: string
   type: ToastType
-  description: string | null
-  open: (type: ToastType, description: string) => void
-  close: () => void
+  description: string
+}
+
+export interface ToastState {
+  toasts: ToastItem[]
+  toast: (type: ToastType, description: string) => void
+  remove: (id: string) => void
 }

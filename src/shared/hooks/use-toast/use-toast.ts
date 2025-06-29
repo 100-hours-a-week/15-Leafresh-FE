@@ -1,8 +1,10 @@
-import { useCallback } from 'react'
+import { toastStore } from '@/shared/context'
 
-import { ToastType, useToastStore } from '@/shared/context'
-
+// TODO: 토스트 최적화시 삭제
 export function useToast() {
-  const { open } = useToastStore()
-  return useCallback((type: ToastType = ToastType.Success, description: string) => open(type, description), [open])
+  const { toasts, toast, remove } = toastStore()
+  return {
+    toasts: toasts,
+    toast,
+  }
 }
