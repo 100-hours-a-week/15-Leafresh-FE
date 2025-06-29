@@ -20,7 +20,7 @@ import KakaoLoginButton from '@public/image/kakao_login.svg'
 import LogoImage from '@public/image/logo.svg'
 
 const LoginPage = () => {
-  const openToast = useToast()
+  const { toast } = useToast()
   const searchParams = useSearchParams()
 
   const { setState } = useOAuthStateStore()
@@ -57,13 +57,13 @@ const LoginPage = () => {
         window.location.href = parsedUrl.toString()
       }
     } catch (_error) {
-      openToast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
+      toast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
     }
   }
 
   useEffect(() => {
     if (isExpired) {
-      openToast(ToastType.Error, '세션이 만료되었습니다\n다시 로그인해주세요')
+      toast(ToastType.Error, '세션이 만료되었습니다\n다시 로그인해주세요')
     }
   }, [isExpired])
 

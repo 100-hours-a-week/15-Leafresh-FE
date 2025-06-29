@@ -44,7 +44,7 @@ interface Props {
 export const AuthGuard = ({ children }: Props) => {
   const pathname = usePathname()
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const { userInfo, setUserInfo, clearUserInfo } = useUserStore()
   const [isVerified, setIsVerified] = useState(false)
@@ -80,7 +80,7 @@ export const AuthGuard = ({ children }: Props) => {
         setIsVerified(true)
       } catch (e) {
         clearUserInfo()
-        openToast(ToastType.Error, '로그인이 필요합니다')
+        toast(ToastType.Error, '로그인이 필요합니다')
         router.replace(URL.MEMBER.LOGIN.value)
       }
     }

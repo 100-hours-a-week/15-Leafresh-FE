@@ -30,7 +30,7 @@ interface OngoingTimeDealCardProps {
 
 export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTimeDealCardProps): ReactNode => {
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
   const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { IdempotencyKey, regenerateIdempotencyKey } = useIdempotencyKeyStore()
@@ -56,7 +56,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
     }
 
     if (deal.stock <= 0) {
-      openToast(ToastType.Error, '품절된 상품입니다.')
+      toast(ToastType.Error, '품절된 상품입니다.')
       return
     }
 
@@ -65,7 +65,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
     const end = new Date(deal.dealEndTime).getTime()
 
     if (now < start || now > end) {
-      openToast(ToastType.Error, '현재는 특가 구매 가능한 시간이 아닙니다.')
+      toast(ToastType.Error, '현재는 특가 구매 가능한 시간이 아닙니다.')
       return
     }
 
@@ -83,10 +83,10 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
         return PurchaseMutate(
           { productId: deal.dealId, headers, body },
           {
-            onSuccess: () => openToast(ToastType.Success, '구매가 완료되었습니다'),
+            onSuccess: () => toast(ToastType.Success, '구매가 완료되었습니다'),
             onError: () => {
               setLocalStock(prevStock) // 실패 시 rollback
-              openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
+              toast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
               regenerateIdempotencyKey()

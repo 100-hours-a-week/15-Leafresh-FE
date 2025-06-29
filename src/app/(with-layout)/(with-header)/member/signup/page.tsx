@@ -23,7 +23,7 @@ import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 const SignupPage = () => {
   const router = useRouter()
   const { OAuthUserInfo } = useOAuthUserStore()
-  const openToast = useToast()
+  const { toast } = useToast()
   const { setUserInfo } = useUserStore()
 
   const [isDuplicateChecked, setIsDuplicateChecked] = useState<boolean>(false)
@@ -78,13 +78,13 @@ const SignupPage = () => {
           message: '이미 사용 중인 닉네임입니다.',
         })
       } else {
-        openToast(ToastType.Success, '중복 검사 성공')
+        toast(ToastType.Success, '중복 검사 성공')
         setIsDuplicateChecked(true)
         setLastCheckedNickname(nickname)
         clearErrors('nickname')
       }
     } catch (error) {
-      openToast(ToastType.Error, '중복 확인 중 오류가 발생했습니다.')
+      toast(ToastType.Error, '중복 확인 중 오류가 발생했습니다.')
     }
   }
 
@@ -98,7 +98,7 @@ const SignupPage = () => {
     }
 
     if (!OAuthUserInfo) {
-      openToast(ToastType.Error, '로그인 정보가 없습니다.')
+      toast(ToastType.Error, '로그인 정보가 없습니다.')
       return
     }
 

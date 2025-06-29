@@ -35,7 +35,7 @@ const maxLength = 20
 
 export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => {
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const [nickname, setNickname] = useState('')
   const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
@@ -114,10 +114,10 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
 
         const uploadedUrl = await uploadFile(file)
         setValue('imageUrl', uploadedUrl)
-        openToast(ToastType.Success, '이미지가 성공적으로 업로드되었습니다')
+        toast(ToastType.Success, '이미지가 성공적으로 업로드되었습니다')
       }, 'image/jpeg')
     } catch (err) {
-      openToast(ToastType.Error, '이미지 업로드에 실패했습니다')
+      toast(ToastType.Error, '이미지 업로드에 실패했습니다')
     }
   }
 
@@ -132,7 +132,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
     }
 
     if (Object.keys(body).length === 0) {
-      openToast(ToastType.Error, '변경된 정보가 없습니다')
+      toast(ToastType.Error, '변경된 정보가 없습니다')
       return
     }
 
@@ -145,7 +145,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
         router.push(URL.MEMBER.PROFILE.MYPAGE.value)
       },
       onError: err => {
-        openToast(ToastType.Error, err.message || '프로필 수정에 실패했습니다.\n다시 시도해 주세요!')
+        toast(ToastType.Error, err.message || '프로필 수정에 실패했습니다.\n다시 시도해 주세요!')
       },
     })
   }

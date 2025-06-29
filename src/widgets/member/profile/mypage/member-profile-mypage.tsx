@@ -57,7 +57,7 @@ export const Mypage = () => {
     },
   } = usePollingStore()
 
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const { mutate: requestFeedback, isPending } = useMutationStore<null, void>(
     MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK,
@@ -166,7 +166,7 @@ export const Mypage = () => {
           onSuccess: response => {
             clearOAuthUserInfo()
             clearUserInfo()
-            openToast(ToastType.Success, '로그아웃 성공')
+            toast(ToastType.Success, '로그아웃 성공')
             router.push(URL.MAIN.INDEX.value)
           },
         },

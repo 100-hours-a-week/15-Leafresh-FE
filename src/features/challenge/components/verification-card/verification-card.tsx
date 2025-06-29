@@ -36,7 +36,7 @@ interface VerificationCardProps {
 
 export const VerificationCard = ({ challengeId, verificationData, className }: VerificationCardProps): ReactNode => {
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
   const { openConfirmModal } = useConfirmModalStore()
   const { isLoggedIn } = useUserStore()
 
@@ -92,7 +92,7 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
         setIsLiked(prevLiked)
         setLikesCount(prevCount)
 
-        openToast(ToastType.Error, '좋아요 처리 중 오류가 발생했습니다.')
+        toast(ToastType.Error, '좋아요 처리 중 오류가 발생했습니다.')
       },
     })
   }

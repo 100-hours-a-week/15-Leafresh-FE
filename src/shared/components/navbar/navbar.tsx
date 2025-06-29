@@ -9,8 +9,8 @@ import { sendGAEvent } from '@next/third-parties/google'
 import styled from '@emotion/styled'
 
 import { LucideIcon, NAVBAR_TABS } from '@/shared/components'
-import { useUserStore } from '@/shared/context'
 import { theme } from '@/shared/config'
+import { useUserStore } from '@/shared/context'
 
 export const Navbar = (): ReactNode => {
   const router = useRouter()

@@ -25,9 +25,9 @@ import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } fro
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
+import { responsiveHorizontalPadding } from '@/shared/styles'
 
 import LeafIcon from '@public/icon/leaf.png'
-import { responsiveHorizontalPadding } from '@/shared/styles'
 
 type WarningType = {
   isWarning: boolean
@@ -52,7 +52,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
   const { openConfirmModal } = useConfirmModalStore()
 
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
   /** 단체 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
@@ -104,7 +104,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
   const handleSubmit = () => {
     /** 예외0 : disabled 무시하고 제출 */
     if (isButtonDisabled) {
-      openToast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
+      toast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
       return
     }
     /** 로그인하지 않음 */
@@ -128,7 +128,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
 
     // 1. 오늘이 챌린지 날짜 범위 내에 있는지 확인
     if (todayDateOnly < startDateOnly || todayDateOnly > endDateOnly) {
-      openToast(ToastType.Error, '챌린지 진행 기간이 아닙니다!')
+      toast(ToastType.Error, '챌린지 진행 기간이 아닙니다!')
       return
     }
 
@@ -141,7 +141,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
     const endMinutes = endHour * 60 + endMinute
 
     if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
-      openToast(ToastType.Error, '현재는 인증 가능한 시간이 아닙니다!')
+      toast(ToastType.Error, '현재는 인증 가능한 시간이 아닙니다!')
       return
     }
 
@@ -150,7 +150,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
       { challengeId },
       {
         onSuccess: () => {
-          openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
+          toast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
           router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value) // 참여중인 챌린지로 이동
         },
       },

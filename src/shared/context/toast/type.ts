@@ -1,7 +1,4 @@
-export enum ToastType {
-  Success = 'success',
-  Error = 'error',
-}
+type ToastType = 'Success' | 'Error'
 
 type ToastItem = {
   id: string

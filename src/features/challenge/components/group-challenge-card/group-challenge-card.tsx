@@ -47,7 +47,7 @@ export const GroupChallengeCard = ({
 }: GroupChallengeCardProps): ReactNode => {
   const router = useRouter()
   const { isLoggedIn } = useUserStore()
-  const openToast = useToast()
+  const { toast } = useToast()
   const { openConfirmModal } = useConfirmModalStore()
 
   /** Mutations */
@@ -83,7 +83,7 @@ export const GroupChallengeCard = ({
     }
     // 2. 참여자 여부 확인 (없어야 함)
     if (currentParticipantCount) {
-      openToast(ToastType.Error, `이미 참여자가 있는 챌린지는\n수정할 수 없습니다!`)
+      toast(ToastType.Error, `이미 참여자가 있는 챌린지는\n수정할 수 없습니다!`)
       return
     }
 
@@ -112,7 +112,7 @@ export const GroupChallengeCard = ({
     }
     // 2. 참여자 여부 확인 (없어야 함)
     if (currentParticipantCount) {
-      openToast(ToastType.Error, `이미 참여자가 있는 챌린지는\n삭제할 수 없습니다!`)
+      toast(ToastType.Error, `이미 참여자가 있는 챌린지는\n삭제할 수 없습니다!`)
       return
     }
 
@@ -129,7 +129,7 @@ export const GroupChallengeCard = ({
             // 성공
             onSuccess(data, variables, context) {
               if (deleteCallback) deleteCallback()
-              openToast(ToastType.Success, '챌린지가 삭제되었습니다')
+              toast(ToastType.Success, '챌린지가 삭제되었습니다')
             },
           },
         ),

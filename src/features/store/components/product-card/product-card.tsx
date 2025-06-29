@@ -26,7 +26,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
   const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { IdempotencyKey, regenerateIdempotencyKey } = useIdempotencyKeyStore()
@@ -60,7 +60,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     // #1. 에러 케이스
     // 재고 없음
     if (isSoldOut) {
-      openToast(ToastType.Error, '품절된 상품입니다.')
+      toast(ToastType.Error, '품절된 상품입니다.')
       return
     }
 
@@ -81,11 +81,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           { productId: id, headers, body },
           {
             onSuccess: () => {
-              openToast(ToastType.Success, '구매가 완료되었습니다')
+              toast(ToastType.Success, '구매가 완료되었습니다')
             },
             onError: () => {
               setLocalStock(prevStock) // 실패 시 롤백
-              openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
+              toast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
               regenerateIdempotencyKey()

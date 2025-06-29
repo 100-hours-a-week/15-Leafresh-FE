@@ -18,7 +18,7 @@ enum PollingTarget {
 }
 
 export const PollingWatcher = () => {
-  const openToast = useToast()
+  const { toast } = useToast()
   const { polling, removePersonalChallengeId, removeGroupChallengeId, clearFeedbackPolling } = usePollingStore()
 
   const { challenge, member } = polling
@@ -33,20 +33,20 @@ export const PollingWatcher = () => {
     // #1. 개인 챌린지 인증 제출
     if (type === PollingTarget.PERSONAL_CHALLENGE_VERIFICATION_RESULT) {
       removePersonalChallengeId(challengeId) // 챌린지 제거
-      openToast(ToastType.Success, `개인 챌린지 인증 결과 도착!\n알림창을 확인해주세요`)
+      toast(ToastType.Success, `개인 챌린지 인증 결과 도착!\n알림창을 확인해주세요`)
     }
 
     // #2. 단체 챌린지 인증 제출
     if (type === PollingTarget.GROUP_CHALLENGE_VERIFICATION_RESULT) {
       removeGroupChallengeId(challengeId) // 챌린지 제거
-      openToast(ToastType.Success, `단체 챌린지 인증 결과 도착!\n알림창을 확인해주세요`)
+      toast(ToastType.Success, `단체 챌린지 인증 결과 도착!\n알림창을 확인해주세요`)
     }
   }
   // 피드백 요청
   const handleCompleteFeedback = (type: PollingTarget) => {
     if (type === PollingTarget.FEEDBACK) {
       clearFeedbackPolling()
-      openToast(ToastType.Success, `피드백 도착!\n마이페이지를 확인해주세요`)
+      toast(ToastType.Success, `피드백 도착!\n마이페이지를 확인해주세요`)
     }
   }
   return (
