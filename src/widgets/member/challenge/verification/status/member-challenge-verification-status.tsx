@@ -1,5 +1,7 @@
 'use client'
 
+import { useMemo } from 'react'
+
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
@@ -10,9 +12,10 @@ import {
   PostGroupVerificationBody,
   PostGroupVerificationResponse,
 } from '@/entities/challenge/api'
+import { ParticipantChallengeItem } from '@/entities/member/api'
 
 import { Loading } from '@/shared/components'
-import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
+import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore, getQueryClient } from '@/shared/config'
 import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
@@ -22,6 +25,12 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
 
   const { open: openCameraModal } = useCameraModalStore()
   const { addGroupChallengeId } = usePollingStore()
+  const queryClient = getQueryClient()
+
+  const completedQuery = queryClient.getQueryData<{
+    pages: { data: { challenges: ParticipantChallengeItem[] } }[]
+  }>(QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS('completed'))
+  console.log(completedQuery)
 
   const {
     data: verificationData,
@@ -38,6 +47,10 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
     PostGroupVerificationResponse,
     { challengeId: number; body: PostGroupVerificationBody }
   >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT)
+
+  const isCompleted = useMemo(() => {
+    return completedQuery?.pages.flatMap(page => page.data.challenges).some(item => item.id === challengeId) ?? false
+  }, [completedQuery, challengeId])
 
   if (isPending) return <Loading />
   if (error) return <Message>Error: {error.message}</Message>
@@ -80,6 +93,20 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
     )
   }
 
+  const renderButton = () => {
+    if (isCompleted) return <DisabledButton>기간 종료</DisabledButton>
+    switch (verifications.todayStatus) {
+      case 'NOT_SUBMITTED':
+        return <ActionButton onClick={handleCapture}>인증하기</ActionButton>
+      case 'PENDING_APPROVAL':
+        return <DisabledButton>인증 중</DisabledButton>
+      case 'DONE':
+        return <DisabledButton>오늘 참여 완료</DisabledButton>
+      default:
+        return null
+    }
+  }
+
   return (
     <Container>
       <Title>{verifications.title} 챌린지</Title>
@@ -97,19 +124,17 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
           <Count>{verifications.achievement.remaining}회</Count>
         </Stat>
       </Stats>
-      <GridWrapper>
+      <CarouselWrapper>
         {verifications.verifications.length !== 0 ? (
           <VerificationCarousel verifications={verifications.verifications} />
         ) : (
           <NoneContent>인증 목록이 없습니다.</NoneContent>
         )}
-      </GridWrapper>
+      </CarouselWrapper>
 
       <ButtonGroup>
         {/* <QuestionButton>문의하기</QuestionButton> */}
-        {verifications.todayStatus === 'NOT_SUBMITTED' && <ActionButton onClick={handleCapture}>인증하기</ActionButton>}
-        {verifications.todayStatus === 'PENDING_APPROVAL' && <DisabledButton>인증 중</DisabledButton>}
-        {verifications.todayStatus === 'DONE' && <DisabledButton>금일 참여 완료</DisabledButton>}
+        {renderButton()}
       </ButtonGroup>
     </Container>
   )
@@ -130,6 +155,8 @@ const Title = styled.h2`
   font-weight: ${theme.fontWeight.bold};
 `
 const Stats = styled.div`
+  padding: 0 20px;
+
   display: flex;
   justify-content: space-between;
 `
@@ -145,11 +172,10 @@ const Count = styled.div`
   font-weight: ${theme.fontWeight.bold};
   margin-top: 4px;
 `
-const GridWrapper = styled.div`
+const CarouselWrapper = styled.div`
   width: 100%;
 
   position: relative;
-  gap: 16px;
 `
 const ButtonGroup = styled.div`
   display: flex;
@@ -157,18 +183,6 @@ const ButtonGroup = styled.div`
   gap: 12px;
 `
 
-const QuestionButton = styled.button`
-  text-align: center;
-  padding: 12px;
-  background: ${theme.colors.lfGreenInactive.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 4px;
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.regular};
-  /* cursor: pointer; */
-  cursor: default;
-`
 const ActionButton = styled.button`
   padding: 12px;
   background: ${theme.colors.lfGreenMain.base};

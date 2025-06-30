@@ -2,12 +2,10 @@
 
 import { useEffect } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
-
 import { useGroupChallengeVerificationResult, usePersonalChallengeVerificationResult } from '@/features/challenge/api'
 import { useFeedbackPolling } from '@/features/member/api'
 
-import { QUERY_KEYS } from '@/shared/config'
+import { getQueryClient, QUERY_KEYS } from '@/shared/config'
 import { ToastType, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
@@ -115,7 +113,7 @@ const PollingFeedbackResult = ({ type, onComplete }: FeedbackResultProps) => {
   })
 
   const data = FeedbackQuery.data
-  const queryClient = useQueryClient()
+  const queryClient = getQueryClient()
 
   useEffect(() => {
     if (data?.data?.content) {
