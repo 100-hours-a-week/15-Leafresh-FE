@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 import styled from '@emotion/styled'
 
-import { FeedBackButton, Introduce } from '@/shared/components'
+import { FeedBackLinkButton, Introduce } from '@/shared/components'
 import { theme } from '@/shared/config'
 
 export const GlobalWrapper = ({ children }: { children: ReactNode }) => {
@@ -11,7 +11,7 @@ export const GlobalWrapper = ({ children }: { children: ReactNode }) => {
     <EntirePageLayout>
       <Introduce />
       <ContentWrapper>{children}</ContentWrapper>
-      <FeedBackButton />
+      <FeedBackLinkButton />
     </EntirePageLayout>
   )
 }

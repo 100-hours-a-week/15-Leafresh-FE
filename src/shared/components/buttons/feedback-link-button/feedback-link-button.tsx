@@ -7,18 +7,15 @@ import Image from 'next/image'
 import styled from '@emotion/styled'
 
 import FeedBackIcon from '@public/icon/feedback_button.svg'
-interface FeedBackButtonProps {
+
+import { FEEDBACK_EXTERNAL_URL } from './consts'
+interface FeedBackLinkButtonProps {
   className?: string
 }
 
-export const FeedBackButton = ({ className }: FeedBackButtonProps): ReactNode => {
+export const FeedBackLinkButton = ({ className }: FeedBackLinkButtonProps): ReactNode => {
   return (
-    <LinkWrapper
-      href='https://forms.gle/7Ht67xvKfePwwyyU7' // 👉 실제 피드백 URL로 변경
-      target='_blank'
-      rel='noopener noreferrer'
-      className={className}
-    >
+    <LinkWrapper href={FEEDBACK_EXTERNAL_URL} target='_blank' rel='noopener noreferrer' className={className}>
       <Image src={FeedBackIcon} alt='피드백 남기기 버튼' />
     </LinkWrapper>
   )
