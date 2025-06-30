@@ -11,63 +11,14 @@ import { useInfiniteMemberStoreOrderList } from '@/features/member/api'
 
 import { PurchaseProduct } from '@/entities/member/api'
 
-import { NoContent } from '@/shared/components'
+import { NoContentFeedback } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { getTimeDiff } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-import { ISOFormatString } from '@/shared/type'
 
 import LeafIcon from '@public/icon/leaf.png'
 
-/** 더미 데이터 */
-const dummyMemberStoreOrderList: PurchaseProduct[] = [
-  {
-    id: 1,
-    product: {
-      id: 101,
-      title:
-        '맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목맛있는 나뭇잎 상점 구매 품목',
-      imageUrl: '/image/Main_1.png',
-    },
-    quantity: 1,
-    price: 500,
-    purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString() as ISOFormatString, // 3일 전
-  },
-  {
-    id: 2,
-    product: {
-      id: 102,
-      title: '맛있는 나뭇잎 상점 구매 품목',
-      imageUrl: '/image/Main_1.png',
-    },
-    quantity: 1,
-    price: 500,
-    purchasedAt: new Date(Date.now() - 30 * 1000 * 60 * 60 * 24 * 2).toISOString() as ISOFormatString,
-  },
-  {
-    id: 3,
-    product: {
-      id: 103,
-      title: '맛있는 나뭇잎 상점 구매 품목',
-      imageUrl: '/image/Main_1.png',
-    },
-    quantity: 1,
-    price: 500,
-    purchasedAt: new Date(Date.now() - 990 * 60 * 60 * 24 * 1).toISOString() as ISOFormatString,
-  },
-  {
-    id: 4,
-    product: {
-      id: 104,
-      title: '맛있는 나뭇잎 상점 구매 품목',
-      imageUrl: '/image/Main_1.png',
-    },
-    quantity: 1,
-    price: 500,
-    purchasedAt: new Date().toISOString() as ISOFormatString, // 오늘
-  },
-]
 export const MemberOrderListPage = (): ReactNode => {
   const router = useRouter()
 
@@ -96,7 +47,7 @@ export const MemberOrderListPage = (): ReactNode => {
   // 1. 데이터가 없는 경우
   if (isEmpty) {
     contents = (
-      <StyledNoContent
+      <StyledNoContentFeedback
         title='상품 구매내역이 없습니다'
         buttonText='나뭇잎 상점가기'
         clickHandler={() => {
@@ -256,7 +207,7 @@ const Observer = styled.div`
   height: 1px;
 `
 
-const StyledNoContent = styled(NoContent)`
+const StyledNoContentFeedback = styled(NoContentFeedback)`
   height: 100%;
 `
 

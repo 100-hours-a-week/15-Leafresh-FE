@@ -12,7 +12,7 @@ import { GroupChallenge, GroupChallengeCard } from '@/features/challenge/compone
 import { GroupChallengeCategory, GroupChallengeItem } from '@/entities/challenge/api'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage, FilterChallengeCategoryType } from '@/entities/challenge/model'
 
-import { Loading, NoContent } from '@/shared/components'
+import { Loading, NoContentFeedback } from '@/shared/components'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
@@ -100,10 +100,14 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
       title = `${korCategory}\n 챌린지가 없습니다`
     }
     contents = (
-      <StyledNoContent
+      <StyledNoContentFeedback
         title={title}
         buttonText='챌린지 생성하기'
-        clickHandler={() => router.push(URL.CHALLENGE.GROUP.CREATE.value(category === 'ALL' ? undefined : category))} // 해당 카테고리로 생성하러 가기
+        clickHandler={() => {
+          console.log('clicked!')
+
+          router.push(URL.CHALLENGE.GROUP.CREATE.value(category === 'ALL' ? undefined : category))
+        }} // 해당 카테고리로 생성하러 가기
       />
     )
   } else {
@@ -263,7 +267,7 @@ const ObserverTrigger = styled.div`
   height: 1px;
 `
 
-const StyledNoContent = styled(NoContent)`
+const StyledNoContentFeedback = styled(NoContentFeedback)`
   margin: 60px 0;
   min-height: 200px;
 `

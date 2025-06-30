@@ -8,7 +8,7 @@ import { useInfiniteGroupChallengeFeedList } from '@/features/challenge/api'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage, FilterChallengeCategoryType } from '@/entities/challenge/model'
 
-import { Loading, NoContent } from '@/shared/components'
+import { Loading, NoContentFeedback } from '@/shared/components'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
@@ -18,59 +18,6 @@ interface FeedListProps {
   category: FilterChallengeCategoryType
   className?: string
 }
-
-// const verificationsDummy: VerificationType[] = [
-//   {
-//     id: 1,
-//     challengeId: 1,
-//     nickname: '지호개발자',
-//     profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     verificationImageUrl: '/image/banner.png',
-//     description:
-//       '제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱 제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱 제로 웨이스트 실천! 텀블러 사용 완료 🥤🌱',
-//     category: 'ZERO_WASTE',
-//     counts: {
-//       view: 120,
-//       like: 35,
-//       comment: 12,
-//     },
-//     createdAt: new Date().toISOString() as ISOFormatString,
-//     isLiked: true,
-//   },
-//   {
-//     id: 2,
-//     challengeId: 2,
-//     nickname: '그린라이프',
-//     profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     verificationImageUrl: '/image/banner.png',
-//     description: '재활용 분리수거 철저히 했습니다. 환경 보호는 습관!',
-//     category: 'PLOGGING',
-//     counts: {
-//       view: 89,
-//       like: 22,
-//       comment: 4,
-//     },
-//     createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString() as ISOFormatString, // 5시간 전
-//     isLiked: false,
-//   },
-//   {
-//     id: 3,
-//     challengeId: 3,
-//     nickname: 'eco친구',
-//     profileImageUrl: 'https://storage.googleapis.com/leafresh-images/init/user_icon.png',
-//     verificationImageUrl: '/image/banner.png',
-//     description: '비건 도시락 도전! 채식도 맛있어요 🥗',
-//     category: 'VEGAN',
-//     counts: {
-//       view: 45,
-//       like: 10,
-//       comment: 1,
-//     },
-//     createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString() as ISOFormatString, // 하루 전
-//     isLiked: true,
-//   },
-// ]
-// const verificationsDummy: Verification[] = []GIT
 
 export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
   const router = useRouter()
@@ -126,7 +73,7 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
       title = `${korCategory}\n 인증 내역이 없습니다`
     }
     contents = (
-      <StyledNoContent
+      <StyledNoContentFeedback
         title={title}
         buttonText='챌린지 참여하기'
         clickHandler={() => {
@@ -165,7 +112,7 @@ const Wrapper = styled.section<{ isLoading: boolean }>`
   justify-content: ${({ isLoading }) => (isLoading ? 'center' : 'flex-start')};
   gap: 28px;
 `
-const StyledNoContent = styled(NoContent)`
+const StyledNoContentFeedback = styled(NoContentFeedback)`
   margin: 60px 0;
 `
 

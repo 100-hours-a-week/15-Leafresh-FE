@@ -9,7 +9,7 @@ import styled from '@emotion/styled'
 import { GroupChallenge, GroupChallengeCard } from '@/features/challenge/components'
 import { useInfiniteMemberGroupChallengeCreations } from '@/features/member/api'
 
-import { Loading, NoContent } from '@/shared/components'
+import { Loading, NoContentFeedback } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { useAuth } from '@/shared/hooks'
@@ -51,7 +51,7 @@ export const MemberChallengeCreationsPage = (): ReactNode => {
     contents = null
   } else if (groupChallenges.length === 0) {
     contents = (
-      <StyledNoContent
+      <StyledNoContentFeedback
         title='생성한 챌린지가 없습니다!'
         buttonText='챌린지 생성하러 가기'
         clickHandler={handleCreateChallenge}
@@ -135,7 +135,7 @@ const EndMessage = styled.div`
   color: ${({ theme }) => theme.colors.lfDarkGray.base};
 `
 
-const StyledNoContent = styled(NoContent)`
+const StyledNoContentFeedback = styled(NoContentFeedback)`
   height: 100%;
 `
 

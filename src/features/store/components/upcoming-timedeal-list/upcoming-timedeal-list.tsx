@@ -11,7 +11,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 
 import { TimeDealProduct } from '@/entities/store/api'
 
-import { ApologizeContent } from '@/shared/components'
+import { ApologizeFeedback } from '@/shared/components'
 import { media, theme } from '@/shared/config'
 
 interface UpcomingTimeDealListProps {
@@ -27,9 +27,9 @@ export const UpcomingTimeDealList = ({ data, className }: UpcomingTimeDealListPr
   /** 다가오는 특가 상품이 없는 경우 */
   if (data.length === 0) {
     content = (
-      <StyledApologizeContent
+      <StyledApologizeFeedback
         title='예정된 특가 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+        description={`빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다\n감사합니다`}
       />
     )
   } else {
@@ -197,6 +197,6 @@ const LeafIcon = styled(Image)`
   aspect-ratio: 1/1;
 `
 
-const StyledApologizeContent = styled(ApologizeContent)`
+const StyledApologizeFeedback = styled(ApologizeFeedback)`
   margin: 24px 0;
 `

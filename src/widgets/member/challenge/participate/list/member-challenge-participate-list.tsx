@@ -11,7 +11,7 @@ import { GroupChallengeParticipantCard } from '@/features/challenge/components'
 
 import { ChallengeStatus, getGroupParticipationsCount } from '@/entities/member/api'
 
-import { Loading, NoContent, SwitchTap } from '@/shared/components'
+import { Loading, NoContentFeedback, SwitchTap } from '@/shared/components'
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
@@ -97,7 +97,7 @@ export function ChallengeParticipatePage() {
     )
   } else {
     challengeContents = !isLoading && (
-      <NoContent
+      <NoContentFeedback
         title='챌린지가 없습니다'
         buttonText='참여하러 가기'
         clickHandler={() => {

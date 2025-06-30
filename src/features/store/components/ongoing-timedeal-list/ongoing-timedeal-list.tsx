@@ -7,7 +7,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 
 import { TimeDealProduct } from '@/entities/store/api'
 
-import { ApologizeContent, LucideIcon } from '@/shared/components'
+import { ApologizeFeedback, LucideIcon } from '@/shared/components'
 import { media, theme } from '@/shared/config'
 
 import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
@@ -53,9 +53,9 @@ export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
   /** 예외: 타임딜 상품이 없는 경우 */
   if (!data || data.length === 0) {
     timeDealContents = (
-      <StyledApologizeContent
+      <StyledApologizeFeedback
         title='진행 중인 특가 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+        description={`빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다\n감사합니다`}
       />
     )
   } else {
@@ -159,6 +159,6 @@ const RightButton = styled(LeftButton)`
   right: 0;
 `
 
-const StyledApologizeContent = styled(ApologizeContent)`
+const StyledApologizeFeedback = styled(ApologizeFeedback)`
   margin: 24px 0;
 `

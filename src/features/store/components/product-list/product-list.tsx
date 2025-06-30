@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 
 import { useInfiniteProducts } from '@/features/store/api'
 
-import { ApologizeContent, Loading } from '@/shared/components'
+import { ApologizeFeedback, Loading } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
@@ -56,7 +56,10 @@ export const ProductList = ({ className }: ProductListProps): ReactNode => {
   const hasProducts: boolean = !(products.length === 0)
   if (!hasProducts) {
     contents = (
-      <ApologizeContent title='준비된 일반 상품이 없습니다' description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다' />
+      <ApologizeFeedback
+        title='준비된 일반 상품이 없습니다'
+        description={`빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다\n감사합니다`}
+      />
     )
   } else {
     /** 일반 상품이 있는 경우 */

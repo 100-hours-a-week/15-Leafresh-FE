@@ -8,7 +8,7 @@ import { BadgeTab } from '@/features/member/components'
 import { BadgeData, getBadgeList } from '@/entities/member/api'
 import { badgeCategory } from '@/entities/member/model'
 
-import { ApologizeContent, Loading } from '@/shared/components'
+import { ApologizeFeedback, Loading } from '@/shared/components'
 import { theme, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 export const BadgePage = () => {
@@ -24,7 +24,7 @@ export const BadgePage = () => {
   })
 
   if (isError || !badgeListData?.data?.badges)
-    return <ApologizeContent title='뱃지를 불러올 수 없습니다.' description='다시 시도해 주세요.' />
+    return <ApologizeFeedback title='뱃지를 불러올 수 없습니다' description='다시 시도해 주세요' />
 
   // const badgeList: BadgeListResponse = badgeListdata?.data ?? ({} as BadgeListResponse)
   const badgeData: BadgeData =
