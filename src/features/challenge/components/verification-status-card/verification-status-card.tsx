@@ -57,20 +57,24 @@ export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({ 
 
 /* ===== Styled ===== */
 const Card = styled.div`
-  width: 150px;
-  height: 140px;
-  border-radius: ${theme.radius.sm};
+  width: 100%;
+  /* aspect-ratio: 1/1; */
+
   overflow: hidden;
-  background: ${theme.colors.lfLightGray.base};
-  box-shadow: ${theme.shadow.lfPrime};
+
+  position: relative;
   display: flex;
   flex-direction: column;
+
+  border-radius: ${theme.radius.sm};
+  background: ${theme.colors.lfLightGray.base};
+  box-shadow: ${theme.shadow.lfPrime};
 `
 
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
-  padding-top: 115px;
+  aspect-ratio: 1/1;
   background: #eee;
 `
 
@@ -95,8 +99,13 @@ const DayLabel = styled.div`
 `
 
 const BottomBar = styled.div<{ bg: string }>`
+  width: 100%;
   height: 28px;
+
+  bottom: 0;
   background: ${({ bg }) => bg};
+
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
