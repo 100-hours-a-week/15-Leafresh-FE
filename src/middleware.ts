@@ -12,11 +12,11 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl
   const hostname = request.headers.get('host') || ''
 
-  const isProd: boolean = hostname.includes('leafresh.app')
+  const isProd: boolean = hostname === 'leafresh.app'
 
   // 운영 환경 여부에 따라 점검 상태 fetch
   const isUnderMaintenance = isProd
-    ? await fetch('https://storage.googleapis.com/leafresh-prod-images/.maintenance/active', {
+    ? await fetch(`https://storage.googleapis.com/leafresh-prod-images/.maintenance/active?ts=${Date.now()}`, {
         cache: 'no-store',
       })
         .then(res => res.ok)
