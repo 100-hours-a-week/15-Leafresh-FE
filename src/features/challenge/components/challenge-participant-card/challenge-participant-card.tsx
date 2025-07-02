@@ -9,13 +9,15 @@ import { AchievementRecord } from '@/entities/member/api'
 
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
+import { extractDateFromISOInKST } from '@/shared/lib'
+import { ISOFormatString } from '@/shared/type'
 
 interface ChallengeProps {
   className?: string
   imageUrl?: string
   title: string
-  startDate: Date
-  endDate: Date
+  startDate: ISOFormatString
+  endDate: ISOFormatString
   successCount: number
   maxCount: number
   record?: AchievementRecord[]
@@ -33,10 +35,6 @@ export const GroupChallengeParticipantCard = ({
   record = [],
   onClick,
 }: ChallengeProps): ReactNode => {
-  const formatDate = (date: Date): string => {
-    return date.toISOString().split('T')[0]
-  }
-
   const getColor = (status: FeedVerificationStatusType): string => {
     switch (status) {
       case 'SUCCESS':
@@ -68,7 +66,7 @@ export const GroupChallengeParticipantCard = ({
           <ArrowIcon onClick={onClick} name='ChevronRight' size={18} />
         </TitleSection>
         <DateRange>
-          {formatDate(startDate)} ~ {formatDate(endDate)}
+          {extractDateFromISOInKST(startDate)} ~ {extractDateFromISOInKST(endDate)}
         </DateRange>
         <InfoSection>
           <ProgressItem>
