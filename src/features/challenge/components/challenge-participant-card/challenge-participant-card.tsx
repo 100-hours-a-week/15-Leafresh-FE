@@ -10,7 +10,6 @@ import { AchievementRecord } from '@/entities/member/api'
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { extractDateFromISOInKST, getKstMidnightToUtcISOString } from '@/shared/lib'
-import { ISOFormatString } from '@/shared/type'
 
 interface ChallengeProps {
   className?: string
