@@ -15,8 +15,8 @@ interface ChallengeProps {
   className?: string
   imageUrl?: string
   title: string
-  startDate: ISOFormatString
-  endDate: ISOFormatString
+  startDate: Date
+  endDate: Date
   successCount: number
   maxCount: number
   record?: AchievementRecord[]
