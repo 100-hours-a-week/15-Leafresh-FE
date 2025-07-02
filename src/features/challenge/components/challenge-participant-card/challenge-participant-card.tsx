@@ -9,15 +9,15 @@ import { AchievementRecord } from '@/entities/member/api'
 
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
-import { extractDateFromISOInKST } from '@/shared/lib'
+import { extractDateFromISOInKST, getKstMidnightToUtcISOString } from '@/shared/lib'
 import { ISOFormatString } from '@/shared/type'
 
 interface ChallengeProps {
   className?: string
   imageUrl?: string
   title: string
-  startDate: ISOFormatString
-  endDate: ISOFormatString
+  startDate: Date
+  endDate: Date
   successCount: number
   maxCount: number
   record?: AchievementRecord[]
@@ -55,6 +55,9 @@ export const GroupChallengeParticipantCard = ({
     }
   })
 
+  const KSTstartDate = getKstMidnightToUtcISOString(startDate)
+  const KSTendDate = getKstMidnightToUtcISOString(endDate)
+
   return (
     <CardContainer className={className} onClick={onClick}>
       <LeftSection>
@@ -66,7 +69,7 @@ export const GroupChallengeParticipantCard = ({
           <ArrowIcon onClick={onClick} name='ChevronRight' size={18} />
         </TitleSection>
         <DateRange>
-          {extractDateFromISOInKST(startDate)} ~ {extractDateFromISOInKST(endDate)}
+          {extractDateFromISOInKST(KSTstartDate)} ~ {extractDateFromISOInKST(KSTendDate)}
         </DateRange>
         <InfoSection>
           <ProgressItem>
