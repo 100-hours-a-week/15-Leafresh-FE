@@ -84,8 +84,8 @@ export function ChallengeParticipatePage() {
               key={id}
               title={title}
               imageUrl={thumbnailUrl}
-              startDate={startDate}
-              endDate={endDate}
+              startDate={new Date(startDate)}
+              endDate={new Date(endDate)}
               successCount={achievement.success}
               maxCount={achievement.total}
               record={achievementRecords}
