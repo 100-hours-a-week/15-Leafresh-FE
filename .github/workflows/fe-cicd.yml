@@ -141,7 +141,7 @@ jobs:
           tags: jchanho99/frontend-develop:latest
           build-args: |
             ${{ secrets.ENV_FE_ANALYTICS }}
-            ${{ secrets.ENV_FE_PROD }}
+            ${{ secrets.ENV_FE_DEV_PROD }}
 
   build-prod:
     name: Build and Push Docker (prod)
@@ -165,6 +165,8 @@ jobs:
           push: true
           tags: jchanho99/frontend-prod:latest
           build-args: |
+            ${{ secrets.ENV_FE_ANALYTICS }}
+            ${{ secrets.ENV_FE_PROD }}
             ${{ secrets.ENV_FE_ANALYTICS }}
             ${{ secrets.ENV_FE_PROD }}
 
