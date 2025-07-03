@@ -167,6 +167,8 @@ jobs:
           build-args: |
             ${{ secrets.ENV_FE_ANALYTICS }}
             ${{ secrets.ENV_FE_PROD }}
+            ${{ secrets.ENV_FE_ANALYTICS }}
+            ${{ secrets.ENV_FE_PROD }}
 
   deploy-dev:
     name: Deploy to Dev Server
