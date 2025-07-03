@@ -1,6 +1,7 @@
 // scripts/metrics-server.ts
-import client from 'prom-client'
 import http from 'http'
+
+import client from 'prom-client'
 
 client.collectDefaultMetrics({
   labels: {
