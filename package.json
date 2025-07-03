@@ -10,7 +10,7 @@
     "test": "vitest",
     "test:e2e": "playwright test",
     "metrics": "ts-node scripts/metrics-server.ts",
-    "start:with-methrics": "concurrently \"pnpm run metrics\" \"pnpm run start\""
+    "start:with-metrics": "concurrently \"pnpm run metrics\" \"pnpm run start\""
   },
   "dependencies": {
     "@chakra-ui/react": "3.16.0",
