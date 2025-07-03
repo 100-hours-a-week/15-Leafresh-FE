@@ -9,6 +9,7 @@ import { AchievementRecord } from '@/entities/member/api'
 
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
+import { extractDateFromISOInKST, getKstMidnightToUtcISOString } from '@/shared/lib'
 
 interface ChallengeProps {
   className?: string
@@ -33,10 +34,6 @@ export const GroupChallengeParticipantCard = ({
   record = [],
   onClick,
 }: ChallengeProps): ReactNode => {
-  const formatDate = (date: Date): string => {
-    return date.toISOString().split('T')[0]
-  }
-
   const getColor = (status: FeedVerificationStatusType): string => {
     switch (status) {
       case 'SUCCESS':
@@ -57,6 +54,9 @@ export const GroupChallengeParticipantCard = ({
     }
   })
 
+  const KSTstartDate = getKstMidnightToUtcISOString(startDate)
+  const KSTendDate = getKstMidnightToUtcISOString(endDate)
+
   return (
     <CardContainer className={className} onClick={onClick}>
       <LeftSection>
@@ -68,7 +68,7 @@ export const GroupChallengeParticipantCard = ({
           <ArrowIcon onClick={onClick} name='ChevronRight' size={18} />
         </TitleSection>
         <DateRange>
-          {formatDate(startDate)} ~ {formatDate(endDate)}
+          {extractDateFromISOInKST(KSTstartDate)} ~ {extractDateFromISOInKST(KSTendDate)}
         </DateRange>
         <InfoSection>
           <ProgressItem>

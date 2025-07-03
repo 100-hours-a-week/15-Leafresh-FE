@@ -10,13 +10,13 @@ const getKSTHour = () => {
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl
-  const hostname = request.headers.get('host') || ''
+  // const hostname = request.headers.get('host') || ''
 
-  const isProd: boolean = hostname.includes('leafresh.app')
+  const isProd: boolean = process.env.NEXT_PUBLIC_RUNTIME === 'prod' ? true : false
 
   // 운영 환경 여부에 따라 점검 상태 fetch
   const isUnderMaintenance = isProd
-    ? await fetch('https://storage.googleapis.com/leafresh-prod-images/.maintenance/active', {
+    ? await fetch(`https://storage.googleapis.com/leafresh-prod-images/.maintenance/active?ts=${Date.now()}`, {
         cache: 'no-store',
       })
         .then(res => res.ok)
@@ -28,6 +28,16 @@ export async function middleware(request: NextRequest) {
   const isWithinServiceTime = hour >= 7 && hour < 19
 
   const shouldBlock = isUnderMaintenance || (isProd && !isWithinServiceTime)
+
+  // ✅ 로그 출력
+  console.log('[MIDDLEWARE LOG]', {
+    isProd,
+    isUnderMaintenance,
+    hour,
+    isWithinServiceTime,
+    shouldBlock,
+    pathname: url.pathname,
+  })
 
   if (shouldBlock && !url.pathname.startsWith('/maintenance')) {
     url.pathname = '/maintenance'
