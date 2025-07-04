@@ -195,8 +195,8 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/frontend/app
-            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-            echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
+            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> sudo tee -a .env
+            echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> sudo tee -a .env.production
 
             IMAGE="jchanho99/frontend-develop:latest"
             cd /home/ubuntu/frontend
