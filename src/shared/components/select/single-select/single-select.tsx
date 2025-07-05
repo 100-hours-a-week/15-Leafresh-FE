@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react'
 
-import { Dropdown } from '../dropdown'
+import { Dropdown } from '../../dropdown'
 
 /**
  * T: 선택지의 타입
@@ -15,7 +15,7 @@ interface SelectProps<T> {
   renderOption: (option: T) => ReactNode // T: object인 경우 대비
 }
 
-export const Select = <T,>({
+export const SingleSelect = <T,>({
   trigger,
   selected,
 

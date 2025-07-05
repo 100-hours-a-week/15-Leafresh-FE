@@ -1,18 +1,13 @@
 'use client'
 
 import { cloneElement, isValidElement, useRef } from 'react'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement } from 'react'
 
 import { useOutsideClick, useToggle } from '@/shared/hooks'
 
 import { DropdownContext, useDropdownContext } from './dropdown-context'
 import * as S from './style'
-
-interface DropdownProps<T> {
-  children: ReactNode
-  selected: T | undefined // 아직 선택되지 않은 경우 undefined
-  onSelect: (value: T) => void
-}
+import { DropdownProps, InjectedItemProps, InjectedTriggerProps, ItemProps, MenuProps, TriggerProps } from './types'
 
 export const Dropdown = <T,>({ children, selected, onSelect }: DropdownProps<T>) => {
   const { value: isOpen, toggle, setValue } = useToggle(false)
@@ -35,33 +30,21 @@ export const Dropdown = <T,>({ children, selected, onSelect }: DropdownProps<T>)
   )
 }
 
-interface TriggerProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  as: ReactElement<any>
-}
-
 /**
  * 드롭다운 트리거 요소
  * @param as 드롭다운 트리거 컴포넌트
  */
 const Trigger = ({ as }: TriggerProps) => {
-  const { toggle } = useDropdownContext()
+  const { isOpen, toggle } = useDropdownContext()
 
   if (!isValidElement(as)) return null
 
-  const child = as as ReactElement<{ onClick?: (e: React.MouseEvent<HTMLElement>) => void }>
+  const child = as as ReactElement<InjectedTriggerProps>
 
   return cloneElement(child, {
-    onClick: (e: React.MouseEvent<HTMLElement>) => {
-      child.props.onClick?.(e)
-      toggle()
-    },
+    isOpen,
+    toggle,
   })
-}
-
-interface MenuProps {
-  children: ReactNode
-  maxVisibleCount?: number
 }
 
 /**
@@ -72,11 +55,6 @@ const Menu = ({ children, maxVisibleCount = 4 }: MenuProps) => {
   if (!isOpen) return null
 
   return <S.MenuWrapper maxHeight={maxVisibleCount * 40}>{children}</S.MenuWrapper>
-}
-
-interface ItemProps<T> {
-  value: T
-  children: ReactNode
 }
 
 /**
@@ -90,7 +68,7 @@ const Item = <T,>({ value, children }: ItemProps<T>) => {
     toggle()
   }
 
-  const child = children as ReactElement<{ onClick?: (e: React.MouseEvent<HTMLElement>) => void }>
+  const child = children as ReactElement<InjectedItemProps>
 
   return cloneElement(child, {
     onClick: (e: React.MouseEvent<HTMLElement>) => {
