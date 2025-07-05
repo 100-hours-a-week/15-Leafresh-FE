@@ -1,14 +1,12 @@
 import { ReactElement, ReactNode } from 'react'
 
-import { Dropdown } from './dropdown-test'
+import { Dropdown } from '../dropdown'
 
 /**
  * T: 선택지의 타입
  * 외부에서 주입해야 하는 값으로 구성됨
  */
 interface SelectProps<T> {
-  label: string // Select 종류 (이름)
-
   trigger: ReactElement // 트리거 요소 (고정)
   selected: T | undefined // 선택된 상태 (변동값)
   onSelect: (value: T) => void
@@ -18,8 +16,6 @@ interface SelectProps<T> {
 }
 
 export const Select = <T,>({
-  label,
-
   trigger,
   selected,
 
@@ -28,7 +24,7 @@ export const Select = <T,>({
   renderOption,
 }: SelectProps<T>): ReactNode => {
   return (
-    <Dropdown<T> label={label} selected={selected} onSelect={onSelect}>
+    <Dropdown<T> selected={selected} onSelect={onSelect}>
       <Dropdown.Trigger as={trigger} />
       <Dropdown.Menu>
         {options.map(option => (
