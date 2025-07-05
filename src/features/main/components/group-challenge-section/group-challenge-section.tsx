@@ -104,8 +104,6 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
         title={title}
         buttonText='챌린지 생성하기'
         clickHandler={() => {
-          console.log('clicked!')
-
           router.push(URL.CHALLENGE.GROUP.CREATE.value(category === 'ALL' ? undefined : category))
         }} // 해당 카테고리로 생성하러 가기
       />

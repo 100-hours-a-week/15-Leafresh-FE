@@ -129,8 +129,6 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
       verificationEndTime: endTime as TimeFormatString,
       exampleImages: exampleImages,
     }
-    console.log('단체 챌린지 생성 바디: ', body)
-
     CreateChallengeMutate(
       { body },
       {

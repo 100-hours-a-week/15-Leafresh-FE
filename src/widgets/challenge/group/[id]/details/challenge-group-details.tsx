@@ -164,7 +164,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
   return (
     <Wrapper className={className}>
       <DescriptionSection>
-        <StyledBackButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
+        <StyledBackButton clickHandler={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
         <ThumbnailImageWrapper>
           <Thumbnail src={thumbnailUrl} alt='썸네일' fill />
         </ThumbnailImageWrapper>
