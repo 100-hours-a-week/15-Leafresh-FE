@@ -10,10 +10,9 @@ import styled from '@emotion/styled'
 
 import { CHALLENGE_CATEGORIES_KOR, FullFormValues, PARTICIPANT_RANGE } from '@/entities/challenge/model'
 
-import { DatePicker, Dropdown, DropdownProps, ErrorText, Input, LucideIcon } from '@/shared/components'
+import { DatePicker, ErrorText, Input, LucideIcon, SelectInput, SelectItem, SingleSelect } from '@/shared/components'
 import { TimePicker } from '@/shared/components/timepicker'
 import { theme } from '@/shared/config'
-import { StyledGeneric } from '@/shared/styles'
 
 import { ChallengeVerifyExamples, VerificationImageData } from '../challenge-verify-examples'
 
@@ -103,14 +102,12 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             name='category'
             control={control}
             render={({ field }) => (
-              <CategoryDropdown
-                label='카테고리'
-                required
-                options={CHALLENGE_CATEGORIES_KOR.slice(0, -1)}
+              <SingleSelect<string>
+                trigger={<SelectInput label={'카테고리'} selected={field.value} required />}
                 selected={field.value}
-                onChange={val => field.onChange(val)}
-                getOptionKey={opt => opt}
-                getOptionLabel={opt => opt}
+                onSelect={val => field.onChange(val)}
+                options={CHALLENGE_CATEGORIES_KOR.slice(0, -1)}
+                renderOption={option => <SelectItem option={option} />}
               />
             )}
           />
@@ -164,14 +161,12 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             name='maxParticipant'
             control={control}
             render={({ field }) => (
-              <ParticipantDropdown
-                label='최대 인원'
-                required
+              <SingleSelect<number>
+                trigger={<SelectInput label={'최대 인원'} selected={field.value} required />}
                 selected={field.value}
+                onSelect={val => field.onChange(val)}
                 options={PARTICIPANT_OPTIONS}
-                onChange={val => field.onChange(val)}
-                getOptionKey={opt => opt}
-                getOptionLabel={opt => `${opt}명`}
+                renderOption={option => <SelectItem option={option} />}
               />
             )}
           />
@@ -234,19 +229,19 @@ const FieldWrapper = styled.div`
   gap: 4px;
 `
 
-const CategoryDropdown = StyledGeneric<DropdownProps<string>>(
-  Dropdown,
-  `
-  width: 100%;
-`,
-)
-const ParticipantDropdown = StyledGeneric<DropdownProps<number>>(
-  Dropdown,
-  `
-  width: 100%;
-  
-`,
-)
+// const CategoryDropdown = StyledGeneric<DropdownProps<string>>(
+//   Dropdown,
+//   `
+//   width: 100%;
+// `,
+// )
+// const ParticipantDropdown = StyledGeneric<DropdownProps<number>>(
+//   Dropdown,
+//   `
+//   width: 100%;
+
+// `,
+// )
 
 const SubmitButton = styled.button`
   height: 50px;
