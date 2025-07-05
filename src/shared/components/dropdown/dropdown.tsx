@@ -3,7 +3,7 @@
 import { cloneElement, isValidElement, useRef } from 'react'
 import { ReactElement } from 'react'
 
-import { useOutsideClick, useToggle } from '@/shared/hooks'
+import { useKeyClose, useOutsideClick, useToggle } from '@/shared/hooks'
 
 import { DropdownContext, useDropdownContext } from './dropdown-context'
 import * as S from './style'
@@ -15,6 +15,7 @@ export const Dropdown = <T,>({ children, selected, onSelect }: DropdownProps<T>)
   // 외부 클릭시 닫기
   const ref = useRef<HTMLDivElement>(null)
   useOutsideClick(ref as React.RefObject<HTMLElement>, () => setValue(false))
+  useKeyClose('Escape', ref as React.RefObject<HTMLElement>, () => setValue(false))
 
   return (
     <DropdownContext.Provider
