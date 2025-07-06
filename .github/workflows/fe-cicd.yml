@@ -63,12 +63,16 @@ jobs:
           pnpm dedupe
           pnpm install
       - name: Run Lint
-        run: pnpm run lint
+        run: |
+          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
+          echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
+          echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+          pnpm run lint
       - name: Run Unit Test
         run: |
           echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
           echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-
+          echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
           pnpm run test
 
   integration-test:
@@ -136,8 +140,8 @@ jobs:
           push: true
           tags: jchanho99/frontend-develop:latest
           build-args: |
-            NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
-            NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_DEV_PROD }}
+            ${{ secrets.ENV_FE_ANALYTICS }}
+            ${{ secrets.ENV_FE_DEV_PROD }}
 
   build-prod:
     name: Build and Push Docker (prod)
@@ -161,8 +165,10 @@ jobs:
           push: true
           tags: jchanho99/frontend-prod:latest
           build-args: |
-            NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
-            NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_PROD }}
+            ${{ secrets.ENV_FE_ANALYTICS }}
+            ${{ secrets.ENV_FE_PROD }}
+            ${{ secrets.ENV_FE_ANALYTICS }}
+            ${{ secrets.ENV_FE_PROD }}
 
   deploy-dev:
     name: Deploy to Dev Server

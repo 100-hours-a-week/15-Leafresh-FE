@@ -12,7 +12,7 @@ import { NextRequest } from 'next/server'
 const proxyToBackend = async (method: string, req: NextRequest) => {
   const backendPath = req.nextUrl.pathname.replace(/^\/api\/proxy\//, '')
   const search = req.nextUrl.search
-  const url = `https://springboot.dev-leafresh.app/${backendPath}${search}`
+  const url = `http://10.0.1.67:8080/${backendPath}${search}`
 
   // 🟢 요청 헤더 복사
   const headers = new Headers()
