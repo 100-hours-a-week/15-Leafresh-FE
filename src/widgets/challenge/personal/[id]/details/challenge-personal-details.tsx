@@ -192,7 +192,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
             src={thumbnailUrl}
             alt='썸네일'
             fill
-            sizes='(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 720px'
+            sizes='(max-width: 640px) 100vw, 400px'
             priority
             loading='eager'
           />
