@@ -57,7 +57,7 @@ export const EventSection = ({ eventChallenges, className }: EventSectionProps):
           {eventChallenges.length !== 0 ? (
             eventChallenges.map(ch => (
               <EventCard key={ch.id} onClick={() => handleClickCard(ch)}>
-                <EventImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                <EventImage src={ch.thumbnailUrl} alt={ch.description} fill sizes='100vw' loading='eager' />
                 <EventGradientOverlay />
                 <EventTitleOverlay>{ch.title}</EventTitleOverlay>
                 <Badge className='badge'>이벤트 챌린지</Badge>

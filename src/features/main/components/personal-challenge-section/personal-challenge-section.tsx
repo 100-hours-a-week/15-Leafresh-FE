@@ -44,11 +44,18 @@ export const PersonalChallengeSection = ({
       <CarouselWrapper>
         <EmblaContainer ref={emblaRef}>
           <EmblaSlideContainer>
-            {personalChallenges.map(ch => (
-              <EmblaSlide key={ch.id}>
+            {personalChallenges.map((ch, index) => (
+              <EmblaSlide key={ch.id} index={index}>
                 <DailyCard>
                   <DailyImageArea>
-                    <DailyImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                    <DailyImage
+                      src={ch.thumbnailUrl}
+                      alt={ch.description}
+                      fill
+                      sizes='(max-width: 768px) 100vw, 95vw'
+                      priority={index === 0}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                    />
                   </DailyImageArea>
                   <DailyCardDescriptions>
                     <CardTitle>{ch.title}</CardTitle>
@@ -116,11 +123,19 @@ const EmblaSlideContainer = styled.div`
   display: flex;
 `
 
-const EmblaSlide = styled.div`
+const EmblaSlide = styled.div<{ index?: number }>`
   position: relative;
   flex: 0 0 100%;
   padding: 0 20px;
   box-sizing: border-box;
+
+  ${({ index }) =>
+    index === 0 &&
+    `
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  `}
 `
 
 const DailyCard = styled.div`

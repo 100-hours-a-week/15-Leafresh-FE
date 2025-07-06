@@ -15,6 +15,7 @@ import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { ISOFormatString } from '@/shared/type'
+import Image from 'next/image'
 
 export type GroupChallenge = {
   id: number
@@ -142,7 +143,13 @@ export const GroupChallengeCard = ({
   return (
     <ChallengeCard onClick={() => handleShowDetails(id)}>
       <TopImageWrapper>
-        <ChallengeImage src={imageUrl} alt='챌린지 이미지' />
+        <ChallengeImage
+          src={imageUrl}
+          alt='챌린지 이미지'
+          fill
+          sizes='(max-width: 640px) 100vw, 400px'
+          loading={isAuth ? 'eager' : 'lazy'}
+        />
         <Badge className='badge'>{KOR_category}</Badge>
       </TopImageWrapper>
       <CardBody>
@@ -203,7 +210,7 @@ const TopImageWrapper = styled.div`
   overflow: hidden;
 `
 
-const ChallengeImage = styled.img`
+const ChallengeImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
