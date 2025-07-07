@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { ToastType } from '@/shared/context'
-import { useImageUpload, useToast } from '@/shared/hooks'
+import { useUploadImageToBucket, useToast } from '@/shared/hooks'
 
 interface UploadThumbnailInputProps {
   imageUrl: string | null
@@ -16,7 +16,7 @@ interface UploadThumbnailInputProps {
 
 export const UploadThumbnailInput = ({ imageUrl, onChange }: UploadThumbnailInputProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const { uploadFile, loading } = useImageUpload()
+  const { uploadFile, loading } = useUploadImageToBucket()
   const openToast = useToast()
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {

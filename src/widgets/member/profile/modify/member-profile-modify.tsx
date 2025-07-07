@@ -17,7 +17,7 @@ import { getMemberProfile, MemberInfoRequest, MemberInfoResponse, ProfileRespons
 import { ErrorText, Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { ToastType, useUserStore } from '@/shared/context'
-import { useImageUpload, useToast } from '@/shared/hooks'
+import { useUploadImageToBucket, useToast } from '@/shared/hooks'
 
 interface ProfileModifyPageProps {
   className?: string
@@ -39,7 +39,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
   const [nickname, setNickname] = useState('')
   const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
   const [imageUrl, setImageUrl] = useState('')
-  const { uploadFile, loading: uploading } = useImageUpload()
+  const { uploadFile, loading: uploading } = useUploadImageToBucket()
 
   const { updateUserInfo } = useUserStore()
 
