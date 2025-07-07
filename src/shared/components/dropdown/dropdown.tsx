@@ -7,10 +7,19 @@ import { useKeyClose, useOutsideClick, useToggle } from '@/shared/hooks'
 
 import { DropdownContext, useDropdownContext } from './dropdown-context'
 import * as S from './style'
-import { DropdownProps, InjectedItemProps, InjectedTriggerProps, ItemProps, MenuProps, TriggerProps } from './types'
+import {
+  ComponentProps,
+  DropdownProps,
+  InjectedComponentProps,
+  InjectedItemProps,
+  InjectedTriggerProps,
+  ItemProps,
+  MenuProps,
+  TriggerProps,
+} from './types'
 
-export const Dropdown = <T,>({ children, selected, onSelect }: DropdownProps<T>) => {
-  const { value: isOpen, toggle, setValue } = useToggle(false)
+export const Dropdown = <T,>({ initialOpen = false, children, onSelect, className }: DropdownProps<T>) => {
+  const { value: isOpen, toggle, setValue } = useToggle(initialOpen)
 
   // 외부 클릭시 닫기
   const ref = useRef<HTMLDivElement>(null)
@@ -20,13 +29,14 @@ export const Dropdown = <T,>({ children, selected, onSelect }: DropdownProps<T>)
   return (
     <DropdownContext.Provider
       value={{
-        selected,
         onSelect,
         isOpen,
         toggle,
       }}
     >
-      <S.Wrapper ref={ref}>{children}</S.Wrapper>
+      <S.Wrapper ref={ref} className={className}>
+        {children}
+      </S.Wrapper>
     </DropdownContext.Provider>
   )
 }
@@ -41,10 +51,16 @@ const Trigger = ({ as }: TriggerProps) => {
   if (!isValidElement(as)) return null
 
   const child = as as ReactElement<InjectedTriggerProps>
+  console.log(child)
 
   return cloneElement(child, {
     isOpen,
-    toggle,
+    onClick: (e: React.MouseEvent<HTMLElement>) => {
+      child.props.onClick?.(e)
+      console.log('exectued here!')
+
+      toggle()
+    },
   })
 }
 
@@ -79,6 +95,22 @@ const Item = <T,>({ value, children }: ItemProps<T>) => {
   })
 }
 
+/**
+ * 통째로 컴포넌트 보여주는 경우
+ */
+const Component = <T,>({ as }: ComponentProps<T>) => {
+  const { isOpen, toggle } = useDropdownContext()
+  if (!isOpen) return null
+
+  const child = as
+
+  return cloneElement(child, {
+    isOpen,
+    toggle,
+  }) as ReactElement<InjectedComponentProps>
+}
+
 Dropdown.Trigger = Trigger
 Dropdown.Menu = Menu
 Dropdown.Item = Item
+Dropdown.Component = Component

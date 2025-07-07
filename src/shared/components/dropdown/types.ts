@@ -1,10 +1,11 @@
 import { ReactElement, ReactNode } from 'react'
 
 export interface DropdownProps<T> {
-  children: ReactNode
+  initialOpen?: boolean
 
-  selected: T | undefined // 아직 선택되지 않은 경우 undefined
-  onSelect: (value: T) => void
+  onSelect?: (value: T) => void
+  className?: string
+  children: ReactNode
 }
 
 export interface TriggerProps {
@@ -13,7 +14,7 @@ export interface TriggerProps {
 }
 export interface InjectedTriggerProps {
   isOpen?: boolean
-  toggle?: () => void
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 export interface MenuProps {
@@ -27,4 +28,13 @@ export interface ItemProps<T> {
 }
 export interface InjectedItemProps {
   onClick?: (e: React.MouseEvent<HTMLElement>) => void
+}
+
+export interface ComponentProps<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  as: ReactElement<any>
+}
+export interface InjectedComponentProps {
+  isOpen?: boolean
+  toggle?: () => void
 }
