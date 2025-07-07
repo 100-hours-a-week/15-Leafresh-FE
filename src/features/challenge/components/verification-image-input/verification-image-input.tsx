@@ -58,24 +58,18 @@ export const VerificationImageInput = ({
 
   return (
     <Container className={className}>
-      <ImageArea>
-        <StyledImageInput
-          icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
-          label={label}
-          backgroundColor='lfInputBackground'
-          imageUrl={imageUrl}
-          cameraTitle={cameraTitle}
-          hasDescription
-          type={status}
-          onChange={readOnly ? () => {} : onChange}
-          readOnly={readOnly}
-        />
-        {imageUrl && (
-          <ZoomButton type='button' onClick={onZoom}>
-            <LucideIcon name='Scan' size={24} color='lfWhite' />
-          </ZoomButton>
-        )}
-      </ImageArea>
+      <StyledImageInput
+        icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
+        label={label}
+        backgroundColor='lfInputBackground'
+        imageUrl={imageUrl}
+        cameraTitle={cameraTitle}
+        hasDescription
+        type={status}
+        onChange={readOnly ? () => {} : onChange}
+        onZoom={onZoom}
+        readOnly={readOnly}
+      />
 
       <Footer backgroundColor={color}>{icon}</Footer>
       {imageUrl && <Description>{description}</Description>}
@@ -93,13 +87,11 @@ const Container = styled.div`
   flex-shrink: 0;
 `
 
-const ImageArea = styled.div`
-  position: relative;
-  width: 100%;
-`
-
 const StyledImageInput = styled(ImageInput)`
   width: 100%;
+
+  position: relative;
+
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 `

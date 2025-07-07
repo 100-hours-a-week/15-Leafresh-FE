@@ -96,7 +96,7 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
             <InfoIcon>ⓘ</InfoIcon>
           </LabelRow>
           <SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</SubText>
-          <StyledImageInput
+          {/* <StyledImageInput
             label='이미지를 업로드해주세요'
             icon={<LucideIcon name='Image' size={24} />}
             imageUrl={formValue.thumbnailUrl || null}
@@ -107,7 +107,7 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
             backgroundColor='lfWhite'
             cameraTitle='챌린지 썸네일'
             aspectRatio='FIVE_THREE'
-          />
+          /> */}
           <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
         </FieldWrapper>
 

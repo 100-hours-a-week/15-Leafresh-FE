@@ -26,6 +26,7 @@ interface ImageInputProps {
   hasDescription?: boolean // 해당 이미지에 대한 설명을 받을지 여부
   type?: ChallengeVerificationStatusType // TODO:(component) @entities/ 를 받아오므로, 확장성있는 공통 컴포넌트로 설계하지 않은 거임
 
+  onZoom: () => void
   onChange: (data: { imageUrl: string | null; description?: string }) => void
   readOnly?: boolean
 
@@ -45,8 +46,9 @@ export const ImageInput = ({
   hasDescription = false,
   type = 'SUCCESS',
 
-  readOnly = false,
+  onZoom,
   onChange,
+  readOnly = false,
 }: ImageInputProps) => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
   const { open: openCameraModal } = useCameraModalStore()
@@ -96,6 +98,7 @@ export const ImageInput = ({
           onRemove={handleRemoveImage}
           readOnly={readOnly}
           aspectRatio={aspectRatioValue}
+          onZoom={onZoom}
         />
       )}
     </Wrapper>
@@ -134,9 +137,10 @@ interface PreviewImageViewProps {
   onRemove: () => void
   readOnly: boolean
   aspectRatio: string
+  onZoom: () => void
 }
 
-const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio }: PreviewImageViewProps) => {
+const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio, onZoom }: PreviewImageViewProps) => {
   return (
     <ImageBox aspectRatio={aspectRatio}>
       <PreviewImage alt='preview' src={imageUrl} fill />
@@ -145,6 +149,9 @@ const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio }: Preview
           <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
         </RemoveButton>
       )}
+      <ZoomButton type='button' onClick={onZoom}>
+        <LucideIcon name='Scan' size={24} color='lfWhite' />
+      </ZoomButton>
     </ImageBox>
   )
 }
@@ -203,4 +210,14 @@ const Text = styled.p<{ fontSize: ThemeFontSizeType }>`
   color: ${theme.colors.lfBlack.base};
   white-space: pre-line;
   line-height: 1.2;
+`
+
+const ZoomButton = styled.button`
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
 `
