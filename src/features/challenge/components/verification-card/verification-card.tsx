@@ -32,9 +32,15 @@ interface VerificationCardProps {
   challengeId: number
   verificationData: Verification
   className?: string
+  isPriority?: boolean
 }
 
-export const VerificationCard = ({ challengeId, verificationData, className }: VerificationCardProps): ReactNode => {
+export const VerificationCard = ({
+  challengeId,
+  verificationData,
+  className,
+  isPriority,
+}: VerificationCardProps): ReactNode => {
   const router = useRouter()
   const openToast = useToast()
   const { openConfirmModal } = useConfirmModalStore()
@@ -121,7 +127,13 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
 
       <VerificationWrapper onClick={handleDetailsRoute}>
         <ImageWrapper>
-          <VerificationImage src={verificationImageUrl} alt='인증 이미지' fill />
+          <VerificationImage
+            src={verificationImageUrl}
+            alt='인증 이미지'
+            fill
+            sizes='(max-width: 640px) 100vw, 420px'
+            priority={isPriority}
+          />
           <Badge className='badge'>{category_kor}</Badge>
         </ImageWrapper>
 

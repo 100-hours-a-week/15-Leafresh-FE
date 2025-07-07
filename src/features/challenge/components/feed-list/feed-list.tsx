@@ -136,11 +136,12 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
     )
   } else {
     /** 검색값이 있는 경우 */
-    contents = verifications.map(verificationData => (
+    contents = verifications.map((verificationData, index) => (
       <VerificationCard
         key={verificationData.id}
         challengeId={verificationData.challengeId}
         verificationData={verificationData}
+        isPriority={index === 0}
       />
     ))
   }
