@@ -2,9 +2,8 @@ import { ReactNode } from 'react'
 
 import { format } from 'date-fns'
 
+import { InjectedTriggerProps } from '@/shared/components'
 import { dayToString } from '@/shared/lib'
-
-import { InjectedTriggerProps } from '../../dropdown'
 
 import * as S from './styles'
 
