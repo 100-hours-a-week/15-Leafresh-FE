@@ -6,7 +6,7 @@ import client from 'prom-client'
 client.collectDefaultMetrics({
   labels: {
     application_name: 'leafresh-frontend',
-    env: 'production',
+    env: process.env.NEXT_PUBLIC_RUNTIME,
   },
 })
 
@@ -15,8 +15,6 @@ const server = http.createServer(async (_req, res) => {
   res.end(await client.register.metrics())
 })
 
-server.listen(9103, () => {
+server.listen(9103, '0.0.0.0', () => {
   console.log('Prometheus metrics server running on port 9103')
 })
-
-server.listen(9103)
