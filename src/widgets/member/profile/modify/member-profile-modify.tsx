@@ -16,7 +16,6 @@ import { getMemberProfile, MemberInfoRequest, MemberInfoResponse, ProfileRespons
 
 import { ErrorText, Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
-import { URL } from '@/shared/constants'
 import { ToastType, useUserStore } from '@/shared/context'
 import { useImageUpload, useToast } from '@/shared/hooks'
 
@@ -142,7 +141,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
           nickname: res.data.nickname,
           imageUrl: res.data.imageUrl,
         })
-        router.push(URL.MEMBER.PROFILE.MYPAGE.value)
+        openToast(ToastType.Success, '프로필 수정 성공')
       },
       onError: err => {
         openToast(ToastType.Error, err.message || '프로필 수정에 실패했습니다.\n다시 시도해 주세요!')
