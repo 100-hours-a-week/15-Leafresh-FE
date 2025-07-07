@@ -52,4 +52,4 @@ EXPOSE 3000
 EXPOSE 9103
 
 #CMD ["pnpm", "run", "start"]
-CMD sh -c "node scripts/metrics-server.ts & pnpm run start"
+CMD sh -c "node scripts/metrics-server.js & pnpm run start"
