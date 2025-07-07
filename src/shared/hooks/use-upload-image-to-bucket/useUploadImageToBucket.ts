@@ -7,7 +7,7 @@ type PresignedUrlResponse = {
   fileUrl: string // 버킷 내부에 저장될 객체 경로 (key)
 }
 
-export function useImageUpload() {
+export function useUploadImageToBucket() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 

@@ -11,7 +11,7 @@ import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 import { CheckIcon, ErrorText, LucideIcon, SwitchTap, VerificationGuideModal } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { ToastType, useCameraModalStore } from '@/shared/context'
-import { useImageUpload, useScrollLock, useToast } from '@/shared/hooks'
+import { useUploadImageToBucket, useScrollLock, useToast } from '@/shared/hooks'
 
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
@@ -21,7 +21,7 @@ export const CameraModal = () => {
   const openToast = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
 
-  const { uploadFile, loading: uploading, error: uploadError } = useImageUpload()
+  const { uploadFile, loading: uploading, error: uploadError } = useUploadImageToBucket()
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
