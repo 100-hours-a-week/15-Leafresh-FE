@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 
 import { LucideIcon, LucideIconProps } from '@/shared/components'
 import { theme, ThemeColorType } from '@/shared/config'
+import Image from 'next/image'
 
 export type VerificationStatus = 'SUCCESS' | 'FAILURE' | 'PENDING_APPROVAL'
 
@@ -37,15 +38,27 @@ export interface VerificationStatusCardProps {
   day: number
   imageUrl: string
   status: VerificationStatus
+  isPriority: boolean
 }
 
-export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({ day, imageUrl, status }) => {
+export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({
+  day,
+  imageUrl,
+  status,
+  isPriority,
+}) => {
   const { barColor, iconName, iconColorKey } = statusMap[status]
 
   return (
     <Card>
       <ImageWrapper>
-        <StyledImg src={imageUrl} alt={`${day}일차 인증`} />
+        <StyledImg
+          src={imageUrl}
+          alt={`${day}일차 인증`}
+          fill
+          sizes='(max-width: 768px) 100vw, 220px'
+          priority={isPriority}
+        />
         <DayLabel>{day}일차</DayLabel>
       </ImageWrapper>
       <BottomBar bg={barColor}>
@@ -78,12 +91,7 @@ const ImageWrapper = styled.div`
   background: #eee;
 `
 
-const StyledImg = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+const StyledImg = styled(Image)`
   object-fit: cover;
 `
 
