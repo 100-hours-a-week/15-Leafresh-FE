@@ -32,8 +32,8 @@ export const ChallengeCreateButton = () => {
     router.push(URL.CHALLENGE.GROUP.CREATE.value())
   }
 
-  // TODO: 피드 페이지 생성되면 넣기
-  if (pathname !== URL.MAIN.INDEX.value && !pathname.startsWith('/feed')) return null
+  if (pathname !== URL.MAIN.INDEX.value && !pathname.startsWith('/challenge/group/feed')) return null
+
   return (
     <Container>
       <ButtonIcon name='Plus' color='lfWhite' size={24} onClick={handleCreateChallenge} />
