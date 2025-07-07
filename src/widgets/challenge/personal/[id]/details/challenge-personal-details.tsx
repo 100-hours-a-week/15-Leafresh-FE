@@ -188,7 +188,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     <Wrapper className={className}>
       <DescriptionSection>
         <ThumbnailImageWrapper>
-          <Thumbnail src={thumbnailUrl} alt='썸네일' fill sizes='(max-width: 640px) 100vw, 400px' loading='eager' />
+          <Thumbnail src={thumbnailUrl} alt='썸네일' fill sizes='(max-width: 640px) 100vw, 400px' priority />
         </ThumbnailImageWrapper>
 
         <Descriptions>
