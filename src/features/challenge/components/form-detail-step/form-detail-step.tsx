@@ -11,6 +11,8 @@ import { FullFormValues } from '@/entities/challenge/model'
 import { ErrorText, ImageInput, Loading, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 
+import { UploadThumbnailInput } from './thumbnail-image-input'
+
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
   handleStepChange: (step: 1 | 2) => void
@@ -93,21 +95,16 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
             <Label>
               챌린지 썸네일 이미지 <RequiredMark>*</RequiredMark>
             </Label>
-            <InfoIcon>ⓘ</InfoIcon>
           </LabelRow>
           <SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</SubText>
-          <StyledImageInput
-            label='이미지를 업로드해주세요'
-            icon={<LucideIcon name='Image' size={24} />}
+          <UploadThumbnailInput
             imageUrl={formValue.thumbnailUrl || null}
             onChange={({ imageUrl }) => {
               setValue('thumbnailUrl', imageUrl ?? '')
               trigger('thumbnailUrl')
             }}
-            backgroundColor='lfWhite'
-            cameraTitle='챌린지 썸네일'
-            aspectRatio='FIVE_THREE'
           />
+
           <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
         </FieldWrapper>
 
@@ -195,9 +192,7 @@ const SubText = styled.p`
   font-size: ${theme.fontSize.xs};
   margin-bottom: 4px;
 `
-const InfoIcon = styled.span`
-  font-size: 14px;
-`
+
 const TextArea = styled.textarea`
   border: 1px solid ${theme.colors.lfGray.base};
   border-radius: ${theme.radius.base};
