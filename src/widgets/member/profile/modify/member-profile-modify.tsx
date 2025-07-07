@@ -1,8 +1,6 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
-
-import { useRouter } from 'next/navigation'
+import { ReactNode, useEffect } from 'react'
 
 import { z } from 'zod'
 
@@ -33,12 +31,9 @@ type ProfileForm = z.infer<typeof profileSchema>
 const maxLength = 20
 
 export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => {
-  const router = useRouter()
   const openToast = useToast()
 
-  const [nickname, setNickname] = useState('')
-  const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
-  const [imageUrl, setImageUrl] = useState('')
+  // const [imageUrl, setImageUrl] = useState('')
 
   const { processImageFile } = useProcessImageFile()
   const { uploadFile, loading: uploading } = useUploadImageToBucket()
@@ -78,19 +73,6 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
   const { mutate: patchMemberInfo } = useMutationStore<MemberInfoResponse, MemberInfoRequest>(
     MUTATION_KEYS.MEMBER.MODIFY,
   )
-
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setNickname(value)
-    try {
-      profileSchema.parse(value)
-      setNicknameError('')
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setNicknameError(err.errors[0].message)
-      }
-    }
-  }
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -144,15 +126,11 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
 
   const profile: ProfileResponse = profileData.data ?? ({} as ProfileResponse)
 
-  const currentImage = watch('imageUrl') || profile?.profileImageUrl
-
-  //이미지 업로드 시 변경
-  const backgroundImage = imageUrl || currentImage
-
+  const profileImage = watch('imageUrl') || profile?.profileImageUrl
   const watchedNickname = watch('nickname') ?? ''
   const watchedImageUrl = watch('imageUrl') ?? ''
 
-  const isUnchanged =
+  const isUnchanged: boolean =
     watchedNickname === (profile?.nickname ?? '') && watchedImageUrl === (profile?.profileImageUrl ?? '')
 
   return (
@@ -162,8 +140,8 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
       </Header>
 
       <ProfileWrapper>
-        <UploadImageButton htmlFor='profile-image' $hasImage={!!currentImage}>
-          {currentImage && <ProfileImage src={backgroundImage} alt='프로필 이미지' />}
+        <UploadImageButton htmlFor='profile-image' $hasImage={!!profileImage}>
+          {profileImage && <ProfileImage src={profileImage} alt='프로필 이미지' />}
           <CameraWrapper>
             <LucideIcon size={14} name='Pencil' color='lfBlack' />
             수정
