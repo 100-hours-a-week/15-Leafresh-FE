@@ -1,6 +1,6 @@
 export * from './use-auth'
 export * from './use-count-up'
-export * from './use-image-uplaod'
+export * from './use-upload-image-to-bucket'
 export * from './use-key-close'
 export * from './use-local-storage'
 export * from './use-object-state'
