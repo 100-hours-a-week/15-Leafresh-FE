@@ -1,3 +1,5 @@
+import { fromZonedTime } from 'date-fns-tz'
+
 import { DateFormatString, ISOFormatString } from '@/shared/type'
 
 import { DAYS, DAYS_KOR } from './consts'
@@ -142,4 +144,8 @@ export function extractDateFromISOInKST(iso: ISOFormatString): string {
   return new Date(iso).toLocaleDateString('sv-SE', {
     timeZone: 'Asia/Seoul',
   })
+}
+
+export function DateToKst(date: Date): Date {
+  return fromZonedTime(date, 'Asia/Seoul')
 }
