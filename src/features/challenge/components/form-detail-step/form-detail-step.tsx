@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 
 import { FullFormValues } from '@/entities/challenge/model'
 
-import { ErrorText, ImageInput, Loading, LucideIcon } from '@/shared/components'
+import { ErrorText, Loading, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 
 interface DetailsStepProps {
@@ -246,11 +246,6 @@ const SubmitButton = styled.button<{ $active: boolean; disabled?: boolean }>`
   border: none;
 
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-`
-
-const StyledImageInput = styled(ImageInput)`
-  width: 100%;
-  border: 1px solid ${theme.colors.lfGray.base};
 `
 
 const StyledLoading = styled(Loading)`

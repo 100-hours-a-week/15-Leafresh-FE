@@ -51,13 +51,11 @@ const Trigger = ({ as }: TriggerProps) => {
   if (!isValidElement(as)) return null
 
   const child = as as ReactElement<InjectedTriggerProps>
-  console.log(child)
 
   return cloneElement(child, {
     isOpen,
     onClick: (e: React.MouseEvent<HTMLElement>) => {
       child.props.onClick?.(e)
-      console.log('exectued here!')
 
       toggle()
     },

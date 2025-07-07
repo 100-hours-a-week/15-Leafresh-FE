@@ -4,9 +4,11 @@ import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
-import { ImageInput, LucideIcon } from '@/shared/components'
+import { LucideIcon } from '@/shared/components'
 import { theme, ThemeColorType } from '@/shared/config'
 import { getThemeColor } from '@/shared/lib'
+
+import { CameraImageInput } from './camera-image-input'
 
 const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.ReactNode; color: ThemeColorType }> = {
   SUCCESS: {
@@ -87,7 +89,7 @@ const Container = styled.div`
   flex-shrink: 0;
 `
 
-const StyledImageInput = styled(ImageInput)`
+const StyledImageInput = styled(CameraImageInput)`
   width: 100%;
 
   position: relative;
