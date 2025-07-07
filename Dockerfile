@@ -49,6 +49,7 @@ COPY --from=builder /app/next.config.ts ./next.config.ts
 USER nodejs
 
 EXPOSE 3000
+EXPOSE 9103
 
-CMD ["pnpm", "run", "start"]
-
+#CMD ["pnpm", "run", "start"]
+CMD sh -c "node scripts/metrics-server.ts & pnpm run start"
