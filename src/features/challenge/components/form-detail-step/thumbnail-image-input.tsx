@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { ToastType } from '@/shared/context'
-import { useUploadImageToBucket, useToast } from '@/shared/hooks'
+import { useUploadImageToBucket, useToast, useProcessImageFile } from '@/shared/hooks'
 
 interface UploadThumbnailInputProps {
   imageUrl: string | null
@@ -16,6 +16,7 @@ interface UploadThumbnailInputProps {
 
 export const UploadThumbnailInput = ({ imageUrl, onChange }: UploadThumbnailInputProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const { processImageFile } = useProcessImageFile()
   const { uploadFile, loading } = useUploadImageToBucket()
   const openToast = useToast()
 
@@ -23,25 +24,17 @@ export const UploadThumbnailInput = ({ imageUrl, onChange }: UploadThumbnailInpu
     const file = e.target.files?.[0]
     if (!file) return
 
+    const processed = await processImageFile(file, 'thumbnail.jpg')
+    if (!processed) {
+      openToast(ToastType.Error, '이미지 처리에 실패했습니다')
+      return
+    }
     try {
-      const imageBitmap = await createImageBitmap(file)
-      const canvas = document.createElement('canvas')
-      canvas.width = imageBitmap.width
-      canvas.height = imageBitmap.height
-
-      const ctx = canvas.getContext('2d')
-      if (!ctx) throw new Error('캔버스 컨텍스트 생성 실패')
-
-      ctx.drawImage(imageBitmap, 0, 0)
-      canvas.toBlob(async blob => {
-        if (!blob) return
-        const newFile = new File([blob], 'thumbnail.jpg', { type: 'image/jpeg' })
-        const uploadedUrl = await uploadFile(newFile)
-        onChange({ imageUrl: uploadedUrl })
-        openToast(ToastType.Success, '썸네일 업로드 성공')
-      }, 'image/jpeg')
+      const uploadedUrl = await uploadFile(processed)
+      onChange({ imageUrl: uploadedUrl })
+      openToast(ToastType.Success, '썸네일 업로드 성공')
     } catch {
-      openToast(ToastType.Error, '썸네일 업로드 실패')
+      openToast(ToastType.Error, '썸네일 업로드에 실패')
     }
   }
 

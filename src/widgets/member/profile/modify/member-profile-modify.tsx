@@ -17,7 +17,7 @@ import { getMemberProfile, MemberInfoRequest, MemberInfoResponse, ProfileRespons
 import { ErrorText, Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { ToastType, useUserStore } from '@/shared/context'
-import { useUploadImageToBucket, useToast } from '@/shared/hooks'
+import { useUploadImageToBucket, useToast, useProcessImageFile } from '@/shared/hooks'
 
 interface ProfileModifyPageProps {
   className?: string
@@ -39,6 +39,8 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
   const [nickname, setNickname] = useState('')
   const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
   const [imageUrl, setImageUrl] = useState('')
+
+  const { processImageFile } = useProcessImageFile()
   const { uploadFile, loading: uploading } = useUploadImageToBucket()
 
   const { updateUserInfo } = useUserStore()
@@ -91,32 +93,21 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
   }
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const originalFile = e.target.files?.[0]
-    if (!originalFile) return
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const processed = await processImageFile(file, 'thumbnail.jpg')
+    if (!processed) {
+      openToast(ToastType.Error, '이미지 처리에 실패했습니다')
+      return
+    }
 
     try {
-      const imageBitmap = await createImageBitmap(originalFile)
-      const canvas = document.createElement('canvas')
-      canvas.width = imageBitmap.width
-      canvas.height = imageBitmap.height
-
-      const ctx = canvas.getContext('2d')
-      if (!ctx) throw new Error('Canvas context 생성 실패')
-
-      ctx.drawImage(imageBitmap, 0, 0)
-
-      canvas.toBlob(async blob => {
-        if (!blob) return
-        const file = new File([blob], `profile.jpg`, {
-          type: 'image/jpeg',
-        })
-
-        const uploadedUrl = await uploadFile(file)
-        setValue('imageUrl', uploadedUrl)
-        openToast(ToastType.Success, '이미지가 성공적으로 업로드되었습니다')
-      }, 'image/jpeg')
-    } catch (err) {
-      openToast(ToastType.Error, '이미지 업로드에 실패했습니다')
+      const uploadedUrl = await uploadFile(processed)
+      setValue('imageUrl', uploadedUrl)
+      openToast(ToastType.Success, '프로필 이미지 업로드 성공')
+    } catch {
+      openToast(ToastType.Error, '프로필 이미지 업로드 실패')
     }
   }
 
