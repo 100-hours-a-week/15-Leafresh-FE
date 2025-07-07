@@ -95,7 +95,6 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
             <Label>
               챌린지 썸네일 이미지 <RequiredMark>*</RequiredMark>
             </Label>
-            <InfoIcon>ⓘ</InfoIcon>
           </LabelRow>
           <SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</SubText>
           <UploadThumbnailInput
@@ -193,9 +192,7 @@ const SubText = styled.p`
   font-size: ${theme.fontSize.xs};
   margin-bottom: 4px;
 `
-const InfoIcon = styled.span`
-  font-size: 14px;
-`
+
 const TextArea = styled.textarea`
   border: 1px solid ${theme.colors.lfGray.base};
   border-radius: ${theme.radius.base};
