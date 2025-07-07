@@ -3,11 +3,11 @@
 import React, { useState } from 'react'
 
 import styled from '@emotion/styled'
-import { format } from 'date-fns'
 
-import { Calendar } from '@/shared/components'
+import { Calendar, ComponentSelect } from '@/shared/components'
 import { theme } from '@/shared/config'
-import { dayToString } from '@/shared/lib'
+
+import { DatePickerTrigger } from './trigger'
 
 interface DatePickerProps {
   icon: React.JSX.Element
@@ -32,16 +32,7 @@ export const DatePicker = ({
   readOnly = false,
   className,
 }: DatePickerProps) => {
-  const [status, setStatus] = useState<'start' | 'end' | null>(null)
-
-  const toggleStart = () => {
-    if (!readOnly) setStatus(prev => (prev === 'start' ? null : 'start'))
-  }
-
-  const toggleEnd = () => {
-    if (!readOnly) setStatus(prev => (prev === 'end' ? null : 'end'))
-  }
-
+  const [status, setStatus] = useState<'start' | 'end'>('start')
   const handleDateSelect = (date: Date) => {
     if (status === 'start') {
       if (endDate && date > endDate) {
@@ -60,8 +51,6 @@ export const DatePicker = ({
       }
     }
   }
-  const isStartActive = status === 'start' || !!startDate
-  const isEndActive = status === 'end' || !!endDate
 
   return (
     <Wrapper className={className}>
@@ -73,32 +62,11 @@ export const DatePicker = ({
         </Label>
       </LabelWrapper>
 
-      <InputGroup>
-        <InputArea isFocused={isStartActive} onClick={toggleStart} readOnly={readOnly}>
-          <DateText isValid={!!startDate}>
-            {startDate ? `${format(startDate, 'MM.dd')} (${dayToString(startDate.getDay())})` : '시작날짜'}
-          </DateText>
-        </InputArea>
-
-        <Tilde>~</Tilde>
-
-        <InputArea isFocused={isEndActive} onClick={toggleEnd} readOnly={readOnly}>
-          <DateText isValid={!!endDate}>
-            {endDate ? `${format(endDate, 'MM.dd')} (${dayToString(endDate.getDay())})` : '종료날짜'}
-          </DateText>
-        </InputArea>
-
-        {!readOnly && status && (
-          <CalendarWrapper>
-            <Calendar
-              startDate={startDate}
-              endDate={endDate}
-              onDateSelect={handleDateSelect}
-              toggle={() => setStatus(null)}
-            />
-          </CalendarWrapper>
-        )}
-      </InputGroup>
+      <StyledComponentSelect
+        readOnly={readOnly}
+        trigger={<DatePickerTrigger startDate={startDate} endDate={endDate} />}
+        component={<StyledStartCalendar startDate={startDate} endDate={endDate} onDateSelect={handleDateSelect} />}
+      />
     </Wrapper>
   )
 }
@@ -125,54 +93,26 @@ const RequiredMark = styled.span`
   margin-left: 4px;
 `
 
-const InputGroup = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 20px;
-`
+const StyledComponentSelect = styled(ComponentSelect)<{ readOnly?: boolean }>`
+  flex: 1;
 
-const InputArea = styled.div<{ isFocused: boolean; readOnly?: boolean }>`
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1;
-  padding: 10px 0;
-  border-bottom: 2px solid ${theme.colors.lfLightGray.base};
+  gap: 20px;
   font-weight: ${theme.fontWeight.semiBold};
   cursor: ${({ readOnly }) => (readOnly ? 'default' : 'pointer')};
-
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%) scaleX(${({ isFocused, readOnly }) => (readOnly ? 0 : isFocused ? 1 : 0)});
-    transform-origin: center;
-    width: 100%;
-    height: 2px;
-    background-color: ${theme.colors.lfBlack.base};
-    transition: transform 0.3s ease;
-  }
 `
 
-const Tilde = styled.span`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfBlack.base};
-`
-
-const DateText = styled.div<{ isValid: boolean }>`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${({ isValid }) => (isValid ? theme.colors.lfBlack.base : theme.colors.lfDarkGray.base)};
-`
-
-const CalendarWrapper = styled.div`
+const StyledCalendar = styled(Calendar)`
   position: absolute;
+  top: calc(100% + 20px);
+
   z-index: 10;
-  top: calc(100% + 12px);
+`
+
+const StyledStartCalendar = styled(StyledCalendar)`
+  left: 50%;
+  transform: translateX(-50%);
 `

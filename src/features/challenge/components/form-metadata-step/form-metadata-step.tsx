@@ -104,7 +104,6 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             render={({ field }) => (
               <SingleSelect<string>
                 trigger={<SelectInput label={'카테고리'} selected={field.value} required />}
-                selected={field.value}
                 onSelect={val => field.onChange(val)}
                 options={CHALLENGE_CATEGORIES_KOR.slice(0, -1)}
                 renderOption={option => <SelectItem option={option} />}
@@ -163,7 +162,6 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             render={({ field }) => (
               <SingleSelect<number>
                 trigger={<SelectInput label={'최대 인원'} selected={field.value} required />}
-                selected={field.value}
                 onSelect={val => field.onChange(val)}
                 options={PARTICIPANT_OPTIONS}
                 renderOption={option => <SelectItem option={option} />}
