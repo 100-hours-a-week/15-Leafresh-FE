@@ -1,7 +1,7 @@
-import { PollingWatcher } from '@/features/common/components'
+import { GlobalWrapper, PollingWatcher } from '@/features/common/components'
 
 import { Toast } from '@/shared/components'
-import { AuthGuard, GlobalWrapper, ModalProvider } from '@/shared/config'
+import { AuthGuard, ModalProvider } from '@/shared/config'
 
 const RootLayout = ({
   children,
