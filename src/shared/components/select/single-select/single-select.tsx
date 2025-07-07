@@ -8,7 +8,6 @@ import { Dropdown } from '../../dropdown'
  */
 interface SelectProps<T> {
   trigger: ReactElement // 트리거 요소 (고정)
-  selected: T | undefined // 선택된 상태 (변동값)
   onSelect: (value: T) => void
 
   options: T[]
@@ -17,14 +16,13 @@ interface SelectProps<T> {
 
 export const SingleSelect = <T,>({
   trigger,
-  selected,
 
   onSelect,
   options,
   renderOption,
 }: SelectProps<T>): ReactNode => {
   return (
-    <Dropdown<T> selected={selected} onSelect={onSelect}>
+    <Dropdown<T> onSelect={onSelect}>
       <Dropdown.Trigger as={trigger} />
       <Dropdown.Menu>
         {options.map(option => (
