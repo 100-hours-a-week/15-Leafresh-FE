@@ -38,7 +38,7 @@ export interface VerificationStatusCardProps {
   day: number
   imageUrl: string
   status: VerificationStatus
-  isPriority: boolean
+  isPriority?: boolean
 }
 
 export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({
