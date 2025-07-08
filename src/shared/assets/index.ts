@@ -1,0 +1,6 @@
+export * from './404.svg'
+export * from './apologize_character.svg'
+export * from './background.svg'
+export * from './logo.svg'
+export * from './main-icon.svg'
+export * from './service_ready.svg'
