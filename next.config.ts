@@ -46,9 +46,6 @@ const nextConfig: NextConfig = {
       use: [
         {
           loader: '@svgr/webpack',
-          options: {
-            icon: true, // width/height를 1em으로 만들어 icon처럼 사용 가능
-          },
         },
       ],
     })
