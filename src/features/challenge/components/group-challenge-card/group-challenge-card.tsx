@@ -11,7 +11,7 @@ import { CHALLENGE_CATEGORY_PAIRS, ChallengeCategoryType, convertLanguage } from
 
 import { LeafReward, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
-import { ASPECT_RATIOS, URL } from '@/shared/constants'
+import { ASPECT_RATIO, URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { ISOFormatString } from '@/shared/type'
@@ -194,7 +194,7 @@ const ChallengeCard = styled.div`
 const TopImageWrapper = styled.div`
   background: #d9d9d9;
   width: 100%;
-  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE.THUMBNAIL};
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
   position: relative;
   display: flex;
   align-items: center;

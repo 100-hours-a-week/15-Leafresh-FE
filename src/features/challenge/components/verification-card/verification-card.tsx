@@ -20,7 +20,7 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@/entities/challenge/
 
 import { LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
-import { ASPECT_RATIOS, URL } from '@/shared/constants'
+import { ASPECT_RATIO, URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { copyToClipboard, getTimeDiff } from '@/shared/lib'
@@ -224,7 +224,7 @@ const VerificationWrapper = styled.div`
 
 const ImageWrapper = styled.div`
   position: relative;
-  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE.VERIFICATION};
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.VERIFICATION};
   overflow: hidden;
 `
 
