@@ -318,14 +318,15 @@ const CameraWrapper = styled.div`
   gap: 16px;
   width: 100%;
   aspect-ratio: 4/3;
-  overflow: hidden;
+  /* overflow: hidden; */
 
   position: relative;
   background-color: ${theme.colors.lfInputBackground.base};
 `
 
 const CameraView = styled.video`
-  width: 100%;
+  height: 100%;
+  aspect-ratio: 4/3;
   object-fit: cover;
 `
 
