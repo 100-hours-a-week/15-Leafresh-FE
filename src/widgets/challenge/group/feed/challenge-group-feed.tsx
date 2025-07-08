@@ -3,7 +3,6 @@ import { ReactNode, useState } from 'react'
 
 import Image from 'next/image'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { FeedList } from '@/features/challenge/components'
@@ -12,6 +11,8 @@ import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@/entitie
 import { FilterChallengeCategoryType } from '@/entities/challenge/model'
 
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+
+import * as S from './styles'
 
 interface FeedPageProps {
   className?: string
@@ -37,68 +38,21 @@ export const FeedPage = ({ className }: FeedPageProps): ReactNode => {
   }
 
   return (
-    <Wrapper className={className}>
-      <CategoryGrid>
+    <S.Wrapper className={className}>
+      <S.CategoryGrid>
         {categories.map(cat => (
-          <CategoryItem
+          <S.CategoryItem
             key={cat.category}
             isActive={cat.category === category}
             onClick={() => handleCategoryRoute(cat.category)}
           >
             <Image src={cat.imageUrl} alt={cat.label} width={30} height={30} />
-            <CategoryLabel>{cat.label}</CategoryLabel>
-          </CategoryItem>
+            <S.CategoryLabel>{cat.label}</S.CategoryLabel>
+          </S.CategoryItem>
         ))}
-      </CategoryGrid>
+      </S.CategoryGrid>
 
       <FeedList category={category} />
-    </Wrapper>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  height: 100%;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-`
-
-const CategoryGrid = styled.div`
-  padding: 0 20px;
-  margin-top: 8px;
-  display: grid;
-  gap: 4px;
-  grid-template-columns: repeat(9, 1fr);
-  overflow-x: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-`
-
-const CategoryItem = styled.div<{ isActive: boolean }>`
-  aspect-ratio: 1/1;
-  border-radius: ${({ theme }) => theme.radius.lg};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  cursor: pointer;
-
-  background-color: ${({ isActive }) => (isActive ? '#f5eee4' : 'transparent')};
-
-  &:hover {
-    background-color: #f5eee4;
-  }
-`
-
-const CategoryLabel = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme }) => theme.colors.lfBlack.base};
-`

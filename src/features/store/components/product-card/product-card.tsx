@@ -2,10 +2,7 @@
 
 import { useState } from 'react'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
-import styled from '@emotion/styled'
 
 import {
   OrderProductBody,
@@ -15,10 +12,12 @@ import {
   Product,
 } from '@/entities/store/api'
 
-import { media, theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
+import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
+
+import * as S from './styles'
 
 interface ProductCardProps {
   product: Product
@@ -97,105 +96,22 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   }
 
   return (
-    <Card>
-      <ThumbnailWrapper>
-        <Thumbnail src={imageUrl} alt={title} width={180} height={180} />
-      </ThumbnailWrapper>
-      <BuyButton type='button' onClick={handlePurchase}>
+    <S.Card>
+      <S.ThumbnailWrapper>
+        <S.Thumbnail src={imageUrl} alt={title} width={180} height={180} />
+      </S.ThumbnailWrapper>
+      <S.BuyButton type='button' onClick={handlePurchase}>
         구매하기
-      </BuyButton>
-      <TextContent>
-        <Title>{title}</Title>
-        <Description>{description}</Description>
-        <StockNotice isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</StockNotice>
-        <PriceRow>
-          <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} />
-          <Price>{price.toLocaleString()}</Price>
-        </PriceRow>
-      </TextContent>
-    </Card>
+      </S.BuyButton>
+      <S.TextContent>
+        <S.Title>{title}</S.Title>
+        <S.Description>{description}</S.Description>
+        <S.StockNotice isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</S.StockNotice>
+        <S.PriceRow>
+          <S.LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} />
+          <S.Price>{price.toLocaleString()}</S.Price>
+        </S.PriceRow>
+      </S.TextContent>
+    </S.Card>
   )
 }
-
-const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-
-  cursor: pointer;
-`
-
-const ThumbnailWrapper = styled.div`
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: ${theme.radius.base};
-  overflow: hidden;
-`
-
-const Thumbnail = styled(Image)`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`
-
-const TextContent = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-const Title = styled.h3`
-  margin: 12px 0 6px 0;
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const Description = styled.p`
-  font-size: ${theme.fontSize.base};
-  color: ${theme.colors.lfBlack.base};
-  margin-top: 4px;
-`
-
-const PriceRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin: 10px 0 8px 0;
-`
-
-const Price = styled.span`
-  font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfBlack.base};
-`
-
-const LeafIcon = styled(Image)`
-  width: 24px;
-  aspect-ratio: 1/1;
-`
-
-const StockNotice = styled.div<{ isSoldOut: boolean }>`
-  font-size: ${theme.fontSize.sm};
-  color: ${({ isSoldOut }) => (isSoldOut ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-
-  margin-top: 8px;
-`
-
-const BuyButton = styled.button`
-  margin-top: 8px;
-  width: 100%;
-  height: 44px;
-  background: ${theme.colors.lfWhite.base};
-  color: ${theme.colors.lfBlack.base};
-  border: 1px solid ${theme.colors.lfLightGray.base};
-  border-radius: ${theme.radius.base};
-  font-weight: ${theme.fontWeight.medium};
-  font-size: ${theme.fontSize.sm};
-  cursor: pointer;
-
-  ${media.afterMobile} {
-    font-size: ${theme.fontSize.base};
-  }
-
-  &:hover {
-    background: ${theme.colors.lfInputBackground.base};
-  }
-`

@@ -1,8 +1,8 @@
 'use client'
 
-import styled from '@emotion/styled'
-
 import { LucideIcon } from '@/shared/components'
+
+import * as S from './styles'
 
 export interface BackButtonProps {
   onClick?: () => void
@@ -19,18 +19,8 @@ export const BackButton = ({ onClick, className }: BackButtonProps) => {
   }
 
   return (
-    <Button aria-label='back' onClick={handleClick} className={className}>
+    <S.Button aria-label='back' onClick={handleClick} className={className}>
       <LucideIcon name='MoveLeft' size={29} color='lfBlack' />
-    </Button>
+    </S.Button>
   )
 }
-
-// ===== Styled =====
-const Button = styled.button`
-  all: unset;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-`

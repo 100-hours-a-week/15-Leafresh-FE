@@ -2,9 +2,9 @@
 
 import React from 'react'
 
-import styled from '@emotion/styled'
-
 import { SlideArea } from '../../slidearea'
+
+import * as S from './styles'
 
 interface HorizontalCardsProps {
   visibleIndex: number
@@ -14,18 +14,12 @@ interface HorizontalCardsProps {
 
 export const HorizontalCards = ({ visibleIndex, renderCards }: HorizontalCardsProps) => {
   return (
-    <SlideWrapper>
+    <S.SlideWrapper>
       <SlideArea visibleIndex={visibleIndex}>
         {renderCards().map((card, idx) => (
           <React.Fragment key={idx}>{card}</React.Fragment>
         ))}
       </SlideArea>
-    </SlideWrapper>
+    </S.SlideWrapper>
   )
 }
-
-const SlideWrapper = styled.div`
-  margin: 8px 0;
-  padding-left: 40px;
-  width: 100%;
-`

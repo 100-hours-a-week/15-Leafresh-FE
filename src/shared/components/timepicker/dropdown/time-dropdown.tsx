@@ -2,9 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import styled from '@emotion/styled'
-
-import { theme } from '@/shared/config'
+import * as S from './styles'
 
 export interface TimeDropdownProps {
   value: string
@@ -89,136 +87,41 @@ export function TimeDropdown({ value, isOpen, onConfirm, onCancel, onOpenChange 
   }, [isOpen])
 
   return (
-    <Wrapper ref={wrapperRef}>
-      <Trigger
+    <S.Wrapper ref={wrapperRef}>
+      <S.Trigger
         type='button'
         onClick={() => {
           onOpenChange(!isOpen)
         }}
       >
         {String(hour).padStart(2, '0')} : {String(minute).padStart(2, '0')}
-      </Trigger>
-      <Dropdown isOpen={isOpen} ref={dropdownRef} onClick={e => e.stopPropagation()}>
-        <Columns>
-          <Column ref={hourColumnRef}>
+      </S.Trigger>
+      <S.Dropdown isOpen={isOpen} ref={dropdownRef} onClick={e => e.stopPropagation()}>
+        <S.Columns>
+          <S.Column ref={hourColumnRef}>
             {Array.from({ length: 24 }, (_, i) => i).map(h => (
-              <Option key={h} data-selected={h === hour} selected={h === hour} onClick={() => setHour(h)}>
+              <S.Option key={h} data-selected={h === hour} selected={h === hour} onClick={() => setHour(h)}>
                 {String(h).padStart(2, '0')}
-              </Option>
+              </S.Option>
             ))}
-          </Column>
-          <Column ref={minuteColumnRef} style={{ marginLeft: '2px' }}>
+          </S.Column>
+          <S.Column ref={minuteColumnRef} style={{ marginLeft: '2px' }}>
             {Array.from({ length: 6 }, (_, i) => i * 10).map(m => (
-              <Option key={m} data-selected={m === minute} selected={m === minute} onClick={() => setMinute(m)}>
+              <S.Option key={m} data-selected={m === minute} selected={m === minute} onClick={() => setMinute(m)}>
                 {String(m).padStart(2, '0')}
-              </Option>
+              </S.Option>
             ))}
-          </Column>
-        </Columns>
-        <ActionWrapper>
-          <ActButton type='button' onClick={handleClose}>
+          </S.Column>
+        </S.Columns>
+        <S.ActionWrapper>
+          <S.ActButton type='button' onClick={handleClose}>
             취소
-          </ActButton>
-          <ActButton type='button' primary onClick={handleConfirm}>
+          </S.ActButton>
+          <S.ActButton type='button' primary onClick={handleConfirm}>
             확인
-          </ActButton>
-        </ActionWrapper>
-      </Dropdown>
-    </Wrapper>
+          </S.ActButton>
+        </S.ActionWrapper>
+      </S.Dropdown>
+    </S.Wrapper>
   )
 }
-
-/* ===== 스타일 ===== */
-const Wrapper = styled.div`
-  position: relative;
-  display: inline-block;
-  width: 100%;
-`
-
-const Trigger = styled.button`
-  width: 100%;
-  appearance: none;
-  background: transparent;
-  border: none;
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.regular};
-  color: ${theme.colors.lfBlack.base};
-  text-align: start;
-  cursor: pointer;
-`
-
-const Dropdown = styled.div<{ isOpen: boolean }>`
-  position: absolute;
-  top: calc(100% + 15px);
-  width: 100%;
-  background-color: ${theme.colors.lfWhite.base};
-  color: ${theme.colors.lfDarkGray};
-  border-radius: ${theme.radius.sm};
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-
-  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-  transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(-10px)')};
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
-  pointer-events: ${({ isOpen }) => (isOpen ? 'auto' : 'none')};
-
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    visibility 0s linear ${({ isOpen }) => (isOpen ? '0s' : '0.2s')};
-`
-
-const Columns = styled.div`
-  display: flex;
-  position: relative;
-`
-const Column = styled.ul`
-  width: 50%;
-  max-height: 150px;
-  overflow-y: auto;
-  border-right: 1px solid ${theme.colors.lfBlue};
-  overscroll-behavior: contain;
-
-  &::-webkit-scrollbar {
-    width: 3px;
-  }
-`
-const Option = styled.li<{ selected: boolean }>`
-  width: 100%;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  cursor: pointer;
-  font-size: ${theme.fontSize.sm};
-  background: ${({ selected }) => (selected ? `${theme.colors.lfGreenMain.hover}` : `${theme.colors.lfWhite.base}`)};
-  color: ${({ selected }) => (selected ? `${theme.colors.lfWhite.base}` : `${theme.colors.lfGray.base}`)};
-  &:hover {
-    background: ${theme.colors.lfGreenInactive.base};
-    color: ${theme.colors.lfDarkGray.base};
-  }
-`
-const ActionWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`
-const ActButton = styled.button<{ primary?: boolean }>`
-  flex: 1;
-  padding: 8px 0;
-  background: ${({ primary }) => (primary ? `${theme.colors.lfGreenMain.base}` : 'transparent')};
-  color: ${({ primary }) => (primary ? `${theme.colors.lfWhite.base}` : `${theme.colors.lfBlack.base}`)};
-  border: none;
-
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.bold};
-
-  cursor: pointer;
-  &:hover {
-    background: ${({ primary }) =>
-      primary ? `${theme.colors.lfGreenMain.hover}` : `${theme.colors.lfLightGray.base}`};
-  }
-`
