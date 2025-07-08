@@ -22,7 +22,7 @@ import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
 import { BackButton, DatePicker, LeafReward, Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
-import { URL } from '@/shared/constants'
+import { ASPECT_RATIOS, URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
@@ -277,7 +277,7 @@ const DescriptionSection = styled.section`
 
 const ThumbnailImageWrapper = styled.div`
   width: 100%;
-  aspect-ratio: 14/9;
+  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE_THUMBNAIL};
 
   position: relative;
 `

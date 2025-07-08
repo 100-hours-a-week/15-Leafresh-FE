@@ -5,6 +5,7 @@ export const ASPECT_RATIOS = {
   FIVE_THREE: '5/3',
   TWO_ONE: '2/1',
   FIVE_TWO: '5/2',
+  CHALLENGE_THUMBNAIL: '14/9',
 } as const
 
 export type AspectRatioType = keyof typeof ASPECT_RATIOS
