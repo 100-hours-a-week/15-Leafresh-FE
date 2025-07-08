@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react'
 
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
@@ -15,7 +16,6 @@ import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { ISOFormatString } from '@/shared/type'
-import Image from 'next/image'
 
 export type GroupChallenge = {
   id: number

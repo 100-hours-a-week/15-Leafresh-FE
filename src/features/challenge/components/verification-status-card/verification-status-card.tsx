@@ -2,11 +2,12 @@
 
 import React from 'react'
 
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
 
 import { LucideIcon, LucideIconProps } from '@/shared/components'
 import { theme, ThemeColorType } from '@/shared/config'
-import Image from 'next/image'
 
 export type VerificationStatus = 'SUCCESS' | 'FAILURE' | 'PENDING_APPROVAL'
 

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 
 import styled from '@emotion/styled'
+import LogoImage from '@public/image/logo.svg'
 import { useQuery } from '@tanstack/react-query'
 
 import { Login } from '@/entities/member/api'
@@ -17,7 +18,6 @@ import { ToastType, useOAuthStateStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
 import KakaoLoginButton from '@public/image/kakao_login.svg'
-import LogoImage from '@public/image/logo.svg'
 
 const LoginPage = () => {
   const openToast = useToast()
