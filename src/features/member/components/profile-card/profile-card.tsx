@@ -193,12 +193,12 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
               <LeafValueWrapper>
                 <ProgressTitle>누적 나뭇잎</ProgressTitle>
                 <LeafStatWrapper>
-                  <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} />
+                  <LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
                   <SumLeavesStat>{data.totalLeafPoints}</SumLeavesStat>
                 </LeafStatWrapper>
                 <ProgressTitle>다음 단계까지</ProgressTitle>
                 <LeafStatWrapper>
-                  <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} />
+                  <LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
                   <RemainLeavesStat>{data.leafPointsToNextLevel}</RemainLeavesStat>
                 </LeafStatWrapper>
               </LeafValueWrapper>

@@ -10,7 +10,7 @@ import styled from '@emotion/styled'
 import { URL } from '@/shared/constants'
 import { ISOFormatString } from '@/shared/type'
 
-import LeafIcon from '@public/icon/leaf.png'
+import LeafIcon from '@public/icon/leaf.svg'
 
 interface GroupChallengeProps {
   challenge: {

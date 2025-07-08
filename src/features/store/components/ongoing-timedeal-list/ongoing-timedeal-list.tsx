@@ -7,17 +7,18 @@ import useEmblaCarousel from 'embla-carousel-react'
 
 import { TimeDealProduct } from '@/entities/store/api'
 
-import { ApologizeContent, LucideIcon } from '@/shared/components'
+import { ApologizeContent, LeafReward, LucideIcon } from '@/shared/components'
 import { media, theme } from '@/shared/config'
 
 import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
 
 interface Props {
   data: TimeDealProduct[]
+  memberLeafCount?: number // 보유 나뭇잎 수
   className?: string
 }
 
-export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
+export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props): ReactNode => {
   /** 각 재고의 남은 시간 트래킹 */
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위
   useEffect(() => {
@@ -89,6 +90,7 @@ export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
       <TitleBox>
         <SectionTitle>🔥 지금만 이 가격</SectionTitle>
         <SubText>세상은 1등만 기억해!</SubText>
+        {memberLeafCount && <StyledLeafReward reward={memberLeafCount} />}
       </TitleBox>
       {timeDealContents}
     </Container>
@@ -102,6 +104,7 @@ const Container = styled.section`
   cursor: pointer;
 `
 const TitleBox = styled.div`
+  position: relative;
   margin-bottom: 12px;
 `
 
@@ -161,4 +164,15 @@ const RightButton = styled(LeftButton)`
 
 const StyledApologizeContent = styled(ApologizeContent)`
   margin: 24px 0;
+`
+
+const LeafCountText = styled.span`
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+`
+
+const StyledLeafReward = styled(LeafReward)`
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 `

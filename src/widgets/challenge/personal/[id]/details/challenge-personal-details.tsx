@@ -18,15 +18,13 @@ import {
 } from '@/entities/challenge/api'
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
-import { Loading, LucideIcon } from '@/shared/components'
+import { LeafReward, Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useCameraModalStore, useConfirmModalStore, usePollingStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-
-import LeafIcon from '@public/icon/leaf.png'
 
 type WarningType = {
   isWarning: boolean
@@ -212,7 +210,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
             <Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
-                인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
+                인증 성공시 <StyledLeafReward reward={leafReward} />개 지급
               </li>
             </Warning>
           </WarningList>
@@ -382,6 +380,10 @@ const Warning = styled.div<{ isWarning: boolean }>`
 
   font-weight: ${theme.fontWeight.medium};
   color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
+`
+const StyledLeafReward = styled(LeafReward)`
+  margin-left: 8px;
+  position: relative;
 `
 
 // export const dummyPersonalChallengeDetail: PersonalChallengeDetail = {

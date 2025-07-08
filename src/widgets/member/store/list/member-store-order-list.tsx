@@ -18,7 +18,7 @@ import { getTimeDiff } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
 
-import LeafIcon from '@public/icon/leaf.png'
+import LeafIcon from '@public/icon/leaf.svg'
 
 /** 더미 데이터 */
 const dummyMemberStoreOrderList: PurchaseProduct[] = [
