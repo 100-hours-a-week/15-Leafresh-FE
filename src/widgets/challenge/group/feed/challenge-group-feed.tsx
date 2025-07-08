@@ -12,6 +12,7 @@ import { getGroupChallengeCategoryList, GroupChallengeCategory } from '@/entitie
 import { FilterChallengeCategoryType } from '@/entities/challenge/model'
 
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
+import { responsiveHorizontalPadding } from '@/shared/styles'
 
 interface FeedPageProps {
   className?: string
@@ -38,6 +39,11 @@ export const FeedPage = ({ className }: FeedPageProps): ReactNode => {
 
   return (
     <Wrapper className={className}>
+      <TextWrapper>
+        <FeedTitle>단체 챌린지 인증 피드</FeedTitle>
+        <FeedSubtitle>* 개인 챌린지 미포함</FeedSubtitle>
+      </TextWrapper>
+
       <CategoryGrid>
         {categories.map(cat => (
           <CategoryItem
@@ -65,7 +71,8 @@ const Wrapper = styled.div`
 `
 
 const CategoryGrid = styled.div`
-  padding: 0 20px;
+  ${responsiveHorizontalPadding};
+
   margin-top: 8px;
   display: grid;
   gap: 4px;
@@ -101,4 +108,25 @@ const CategoryLabel = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.lfBlack.base};
+`
+
+const TextWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const FeedTitle = styled.div`
+  ${responsiveHorizontalPadding};
+  padding-bottom: 10px;
+
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+`
+
+const FeedSubtitle = styled.div`
+  ${responsiveHorizontalPadding};
+
+  color: ${({ theme }) => theme.colors.lfGreenMain.base};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
 `

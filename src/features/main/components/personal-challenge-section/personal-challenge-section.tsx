@@ -13,7 +13,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { PersonalChallengeType } from '@/entities/challenge/api'
 
 import { LeafReward, LucideIcon } from '@/shared/components'
-import { URL } from '@/shared/constants'
+import { ASPECT_RATIO, URL } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 interface PersonalChallengeSectionProps {
@@ -132,7 +132,7 @@ const DailyCard = styled.div`
 
 const DailyImageArea = styled.div`
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
   position: relative;
   overflow: hidden;
   border-top-left-radius: ${({ theme }) => theme.radius.base};

@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 
 import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
+import { ASPECT_RATIO } from '@/shared/constants'
 import { ToastType } from '@/shared/context'
 import { useUploadImageToBucket, useToast, useProcessImageFile } from '@/shared/hooks'
 
@@ -55,7 +56,7 @@ export const UploadThumbnailInput = ({ imageUrl, onChange }: UploadThumbnailInpu
 
 const ThumbnailContainer = styled.div`
   width: 100%;
-  aspect-ratio: 5/3;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
 
   border: 1px solid ${theme.colors.lfGray.base};
   border-radius: ${theme.radius.base};
