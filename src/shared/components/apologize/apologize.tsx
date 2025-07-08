@@ -2,24 +2,22 @@
 
 import { ReactNode } from 'react'
 
-import Image from 'next/image'
-
 import styled from '@emotion/styled'
 
+import ApologizeImage from '@/shared/assets/images/apologize_character.svg'
 import { theme } from '@/shared/config'
-
-import ApologizeImage from '@public/image/apologize_character.svg'
 
 interface ApologizeContentProps {
   title: string
   description: string
   className?: string
 }
+console.log(ApologizeImage)
 
 export const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
   return (
     <EmptySection className={className}>
-      <Image src={ApologizeImage} alt='사죄 이미지' width={140} height={140} />
+      <ApologizeImage style={{ width: '140px', height: '140px' }} />
       <EmptyTitle>{title}</EmptyTitle>
       <EmptyDescription>{description}</EmptyDescription>
       <EmptyDescription>감사합니다.</EmptyDescription>

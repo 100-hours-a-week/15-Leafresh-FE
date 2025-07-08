@@ -25,8 +25,8 @@ import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { copyToClipboard, getTimeDiff } from '@/shared/lib'
 
-import ActiveLikeIcon from '@public/icon/like_active.svg'
-import InActiveLikeIcon from '@public/icon/like_inactive.svg'
+import ActiveLikeIcon from '@/shared/assets/icon/like_active.svg'
+import InActiveLikeIcon from '@/shared/assets/icon/like_inactive.svg'
 
 interface VerificationCardProps {
   challengeId: number
@@ -142,16 +142,14 @@ export const VerificationCard = ({
 
           <InteractionWrapper>
             <LikeInteraction isLiked={isLiked} onClick={toggleLike}>
-              <motion.img
+              <motion.div
                 key={isLiked ? 'liked' : 'unliked'}
-                src={isLiked ? ActiveLikeIcon.src : InActiveLikeIcon.src}
-                alt='좋아요'
-                width={24}
-                height={24}
                 initial={isLiked ? { scale: 1.4 } : false} // 좋아요 추가일 때만 애니메이션
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, mass: 0.5 }}
-              />
+              >
+                {isLiked ? <ActiveLikeIcon width={24} height={24} /> : <InActiveLikeIcon width={24} height={24} />}
+              </motion.div>
               <InteractionCount>{likesCount}</InteractionCount>
             </LikeInteraction>
             <Interaction>

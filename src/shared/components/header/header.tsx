@@ -5,11 +5,10 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
+import LogoImage from '@/shared/assets/images/logo.svg'
 import { BackButton, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
-
-import LogoImage from '@public/image/logo.svg'
 
 interface HeaderProps {
   padding: number
@@ -56,7 +55,7 @@ export const Header = ({ padding }: HeaderProps) => {
       <CustomWidthWrapper padding={padding}>
         {!hasBackButton ? (
           <LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
-            <StyledImage src={LogoImage} alt='Leafresh 로고' priority />
+            <StyledImage />
           </LogoWrapper>
         ) : (
           <BackButton />
@@ -96,7 +95,7 @@ const LogoWrapper = styled.div`
   cursor: pointer;
 `
 
-const StyledImage = styled(Image)`
+const StyledImage = styled(LogoImage)`
   height: 40px;
   width: auto;
 `

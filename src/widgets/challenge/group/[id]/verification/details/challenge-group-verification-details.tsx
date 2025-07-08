@@ -36,8 +36,8 @@ import { copyToClipboard } from '@/shared/lib/utils'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
 
-import LikeIcon from '@public/icon/like.svg'
-import UnLikeIcon from '@public/icon/unLike.svg'
+import LikeIcon from '@/shared/assets/icon/like_active.svg'
+import UnLikeIcon from '@/shared/assets/icon/like_inactive.svg'
 
 interface VerificationDetailsProps {
   challengeId: number
@@ -406,7 +406,8 @@ export const VerificationDetails = ({
       <Stats>
         <LeftStat>
           <LikeButton onClick={handleLikeToggle}>
-            <LikeIconImage src={isLiked ? LikeIcon : UnLikeIcon} alt='좋아요 아이콘' />
+            {/* <LikeIconImage src={isLiked ? LikeIcon : UnLikeIcon} alt='좋아요 아이콘' /> */}
+            {isLiked ? <LikeIcon width={16} height={16} /> : <UnLikeIcon width={16} height={16} />}
             {likeCount}
           </LikeButton>
           <Stat>

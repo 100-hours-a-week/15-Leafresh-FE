@@ -1,19 +1,18 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 
 import styled from '@emotion/styled'
 
+import NotFoundImage from '@/shared/assets/images/404.svg'
 import { media } from '@/shared/config'
 import { URL } from '@/shared/constants'
 
-import NotFoundImage from '@public/image/404.svg'
 export default function NotFound() {
   return (
     <Wrapper>
       <ImageWrapper>
-        <Image src={NotFoundImage} alt='404 Not Found' fill />
+        <StyledNotFoundImage />
       </ImageWrapper>
       <Title>페이지를 찾을 수 없습니다</Title>
       <DescriptionWrapper>
@@ -44,6 +43,11 @@ const ImageWrapper = styled.div`
   position: relative;
   width: 433px;
   height: 300px;
+`
+const StyledNotFoundImage = styled(NotFoundImage)`
+  width: 100%;
+  height: 100%;
+  display: block;
 `
 
 const Title = styled.h1`
