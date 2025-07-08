@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 import { useSessionStorage } from '@/shared/hooks'
 
-export const AppInit = () => {
+export const TokenDeleter = () => {
   const cleanupFlag = useSessionStorage('cleanup-token')
 
   useEffect(() => {
