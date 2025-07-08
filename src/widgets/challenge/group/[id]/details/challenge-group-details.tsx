@@ -20,14 +20,12 @@ import {
 } from '@/entities/challenge/api'
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
-import { BackButton, DatePicker, Loading, LucideIcon } from '@/shared/components'
+import { BackButton, DatePicker, LeafReward, Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-
-import LeafIcon from '@public/icon/leaf.png'
 
 type WarningType = {
   isWarning: boolean
@@ -193,7 +191,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
             <Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
-                인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
+                인증 성공시 <StyledLeafReward reward={leafReward} />개 지급
               </li>
             </Warning>
           </WarningList>
@@ -427,6 +425,11 @@ const NoVerficiationImageText = styled.div`
   padding: 30px;
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfRed.base};
+`
+
+const StyledLeafReward = styled(LeafReward)`
+  margin-left: 8px;
+  position: relative;
 `
 
 // export const dummyGroupChallengeDetail: GroupChallengeDetail = {
