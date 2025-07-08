@@ -11,7 +11,7 @@ export const TokenDeleter = () => {
     if (process.env.NEXT_PUBLIC_RUNTIME !== 'prod') return
     if (cleanupFlag) return
 
-    fetch('/api/cleanup-token', { method: 'DELETE' })
+    fetch('/api/next/cleanup-token', { method: 'DELETE' })
       .then(() => {
         sessionStorage.setItem('cleanup-token', 'true')
         console.log('✅ cleanup-token called')
