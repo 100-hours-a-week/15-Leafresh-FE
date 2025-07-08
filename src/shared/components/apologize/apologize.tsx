@@ -16,7 +16,7 @@ interface ApologizeContentProps {
 export const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
   return (
     <EmptySection className={className}>
-      <ApologizeImage style={{ width: '140px', height: '140px' }} />
+      <ApologizeImage width={140} />
       <EmptyTitle>{title}</EmptyTitle>
       <EmptyDescription>{description}</EmptyDescription>
       <EmptyDescription>감사합니다.</EmptyDescription>

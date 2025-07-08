@@ -105,7 +105,14 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
       </Timer>
       <Card>
         <ImageBox>
-          <Image src={data.imageUrl} alt={data.title} fill style={{ objectFit: 'cover' }} />
+          <Image
+            src={data.imageUrl}
+            alt={data.title}
+            fill
+            sizes='(max-width: 690px) 100vw, 420px'
+            priority
+            style={{ objectFit: 'cover' }}
+          />
         </ImageBox>
         <DescriptionSection>
           <Title>{data.title}</Title>

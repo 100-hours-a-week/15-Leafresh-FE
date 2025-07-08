@@ -20,6 +20,8 @@ import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
+
 interface ProductCardProps {
   product: Product
 }
@@ -109,7 +111,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <Description>{description}</Description>
         <StockNotice isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</StockNotice>
         <PriceRow>
-          <LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} />
+          <LeafIcon width={24} height={24} />
           <Price>{price.toLocaleString()}</Price>
         </PriceRow>
       </TextContent>
@@ -165,11 +167,6 @@ const PriceRow = styled.div`
 const Price = styled.span`
   font-weight: ${theme.fontWeight.semiBold};
   color: ${theme.colors.lfBlack.base};
-`
-
-const LeafIcon = styled(Image)`
-  width: 24px;
-  aspect-ratio: 1/1;
 `
 
 const StockNotice = styled.div<{ isSoldOut: boolean }>`
