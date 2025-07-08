@@ -14,9 +14,10 @@ import {
 
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 
+import * as S from './styles'
 import * as S from './styles'
 
 interface ProductCardProps {
@@ -25,8 +26,8 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const router = useRouter()
-  const openToast = useToast()
-  const { isLoggedIn } = useAuth()
+  const { toast } = useToast()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { IdempotencyKey, regenerateIdempotencyKey } = useIdempotencyKeyStore()
 
@@ -59,7 +60,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     // #1. 에러 케이스
     // 재고 없음
     if (isSoldOut) {
-      openToast(ToastType.Error, '품절된 상품입니다.')
+      toast('Error', '품절된 상품입니다.')
       return
     }
 
@@ -80,11 +81,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           { productId: id, headers, body },
           {
             onSuccess: () => {
-              openToast(ToastType.Success, '구매가 완료되었습니다')
+              toast('Success', '구매가 완료되었습니다')
             },
             onError: () => {
               setLocalStock(prevStock) // 실패 시 롤백
-              openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
+              toast('Error', '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
               regenerateIdempotencyKey()

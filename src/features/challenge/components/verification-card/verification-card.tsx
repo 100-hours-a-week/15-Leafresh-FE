@@ -18,8 +18,8 @@ import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@/entities/challenge/
 import { LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 import { copyToClipboard, getTimeDiff } from '@/shared/lib'
 
 import ActiveLikeIcon from '@public/icon/like_active.svg'
@@ -35,9 +35,9 @@ interface VerificationCardProps {
 
 export const VerificationCard = ({ challengeId, verificationData, className }: VerificationCardProps): ReactNode => {
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
   const { openConfirmModal } = useConfirmModalStore()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
 
   // 인증 정보
   const { id: verificationId, description, category, counts, createdAt, verificationImageUrl } = verificationData
@@ -91,7 +91,7 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
         setIsLiked(prevLiked)
         setLikesCount(prevCount)
 
-        openToast(ToastType.Error, '좋아요 처리 중 오류가 발생했습니다.')
+        toast('Error', '좋아요 처리 중 오류가 발생했습니다.')
       },
     })
   }

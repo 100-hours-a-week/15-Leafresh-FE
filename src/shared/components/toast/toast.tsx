@@ -1,48 +1,80 @@
 'use client'
-import { useEffect } from 'react'
+
+import { useEffect, useState } from 'react'
 
 import { AnimatePresence } from 'motion/react'
 
-import { ToastType, useToastStore } from '@/shared/context'
+import { toastStore } from '@/shared/context'
 
 import { LucideIcon } from '../lucide-icon'
 
 import * as S from './styles'
 
 export const Toast = () => {
-  const { isOpen, type, description, close: closeToast } = useToastStore()
+  const toasts = toastStore(state => state.toasts)
+  const remove = toastStore(state => state.remove)
 
+  const [isPaused, setIsPaused] = useState<boolean>(false)
+
+  // 각 Toast마다 타이머 개별 설정
   useEffect(() => {
-    if (!isOpen || !description) return
-    const timer = setTimeout(() => {
-      closeToast()
-    }, 2000)
-    return () => clearTimeout(timer)
-  }, [isOpen, description, closeToast])
+    if (isPaused) return
 
-  const iconName = type === ToastType.Success ? 'CheckCheck' : 'CircleAlert'
-  const color = type === ToastType.Success ? 'lfBlue' : 'lfRed'
+    const timers = toasts.map(toast => {
+      const timer = setTimeout(() => {
+        remove(toast.id)
+      }, 3000000)
+      return () => clearTimeout(timer)
+    })
+    return () => {
+      timers.forEach(clear => clear())
+    }
+  }, [toasts, isPaused, remove])
 
   return (
-    <AnimatePresence>
-      {isOpen && description && (
-        <S.MotionContainer
-          key='toast'
-          toastType={type}
-          initial={{ opacity: 0, x: '-50%', y: 50 }}
-          animate={{ opacity: 1, x: '-50%', y: 0 }}
-          exit={{ opacity: 0, x: '-50%', y: 20 }}
-          transition={{ duration: 0.3 }}
-        >
-          <S.Wrapper>
-            <LucideIcon name={iconName} size={20} color={color} />
-          </S.Wrapper>
-          <S.Message>{description}</S.Message>
-          <S.CloseIcon onClick={closeToast}>
-            <LucideIcon name='X' size={16} color='lfBlack' />
-          </S.CloseIcon>
-        </S.MotionContainer>
-      )}
-    </AnimatePresence>
+    <S.Wrapper
+      $toastCount={toasts.length}
+      $isPaused={isPaused}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <AnimatePresence initial={false}>
+        {[...toasts].reverse().map((toast, index) => {
+          const maxWidth = 250
+          const shrinkPerStep = 10
+          const width = isPaused ? maxWidth : maxWidth - index * shrinkPerStep
+          const gap = isPaused ? 70 : 20
+          const bottom = index * gap
+
+          return (
+            <S.ToastItem
+              key={toast.id}
+              style={{
+                bottom: `${bottom}px`,
+                width: `${width}px`,
+                zIndex: 999 - index,
+              }}
+              $isPaused={isPaused}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{
+                duration: 0.1,
+              }}
+            >
+              <LucideIcon
+                name={toast.type === 'Success' ? 'CheckCheck' : 'CircleAlert'}
+                size={20}
+                color={toast.type === 'Success' ? 'lfBlue' : 'lfRed'}
+              />
+              <S.Message>{toast.description}</S.Message>
+              <S.CloseIcon onClick={() => remove(toast.id)}>
+                <LucideIcon name='X' color='lfBlack' />
+              </S.CloseIcon>
+            </S.ToastItem>
+          )
+        })}
+      </AnimatePresence>
+    </S.Wrapper>
   )
 }

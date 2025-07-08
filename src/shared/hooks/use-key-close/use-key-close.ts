@@ -16,6 +16,9 @@ type SupportedKeyType =
   | 'Control'
   | 'Alt'
 
+/**
+ * Typescript KeyType과 event.key의 차이점으로 인한 정규화
+ */
 const normalizeKey = (key: SupportedKeyType): string => {
   if (key === 'Space') return ' '
   return key

@@ -12,7 +12,7 @@ import { LowercaseOAuthType } from '@/entities/member/model'
 import { Loading } from '@/shared/components'
 import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useOAuthStateStore, useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
+import { useOAuthStateStore, useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
@@ -26,7 +26,7 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
   const queryClient = getQueryClient()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const { setOAuthUserInfo } = useOAuthUserStore()
   const { state } = useOAuthStateStore()
@@ -83,7 +83,7 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
         }
       })()
 
-      openToast(ToastType.Success, '로그인 성공')
+      toast('Success', '로그인 성공')
       router.replace(URL.MAIN.INDEX.value)
     }
   }, [data])
@@ -97,7 +97,7 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
   }
 
   if (isError) {
-    // openToast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
+    // toast("Error", `${provider} 로그인 실패\n재시도 해주세요`)
 
     return <p>로그인 실패</p>
   }

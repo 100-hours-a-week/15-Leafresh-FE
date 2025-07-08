@@ -20,8 +20,8 @@ import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 import { Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useCameraModalStore, useConfirmModalStore, usePollingStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { useCameraModalStore, useConfirmModalStore, usePollingStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
 
 import LeafIcon from '@public/icon/leaf.png'
@@ -48,9 +48,9 @@ interface ChallengePersonalDetailsProps {
 
 export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePersonalDetailsProps): ReactNode => {
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
   const { open: openCameraModal } = useCameraModalStore()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
   const { addPersonalChallengeId } = usePollingStore()
@@ -139,7 +139,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
 
     /** #예외1: 챌린지에 이미 참여한 경우 */
     if (status !== 'NOT_SUBMITTED') {
-      openToast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
+      toast('Error', '챌린지에 재참여할 수 없습니다.')
       return
     }
 
@@ -148,7 +148,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     /** #예외2: 요일이 일치하지 않으면 참여 불가 */
     const nowDay: DayType = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase() as DayType // e.g. 'MONDAY'
     if (nowDay !== dayOfWeek) {
-      openToast(ToastType.Error, '챌린지 기간이 아닙니다')
+      toast('Error', '챌린지 기간이 아닙니다')
       return
     }
 
@@ -160,7 +160,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     const endMinutes = endH * 60 + endM
 
     if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
-      openToast(ToastType.Error, '참여 가능한 시간이 아닙니다')
+      toast('Error', '참여 가능한 시간이 아닙니다')
       return
     }
 
@@ -178,7 +178,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
       {
         onSuccess: () => {
           addPersonalChallengeId(challengeId) // 인증 결과 롱폴링 시작
-          openToast(ToastType.Success, `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+          toast('Success', `제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
         },
       },
     )

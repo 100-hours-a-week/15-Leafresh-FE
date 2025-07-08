@@ -33,7 +33,6 @@ import {
 
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { getKstMidnightToUtcISOString } from '@/shared/lib'
 import { TimeFormatString } from '@/shared/type'
@@ -49,7 +48,7 @@ interface GroupChallengeFormPageProps {
 export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challengeId }: GroupChallengeFormPageProps) => {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const [step, setStep] = useState<1 | 2>(1)
 
@@ -219,7 +218,7 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
       {
         onSuccess: () => {
           // 단체 챌린지 상세 페이지로 이동
-          openToast(ToastType.Success, '챌린지 수정 성공')
+          toast('Success', '챌린지 수정 성공')
           router.push(URL.CHALLENGE.GROUP.DETAILS.value(challengeId))
         },
       },

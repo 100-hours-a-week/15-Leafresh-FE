@@ -5,16 +5,16 @@ import { usePathname, useRouter } from 'next/navigation'
 import { sendGAEvent } from '@next/third-parties/google'
 
 import { URL } from '@/shared/constants'
-import { useConfirmModalStore } from '@/shared/context'
-import { useAuth } from '@/shared/hooks'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
 
+import * as S from './styles'
 import * as S from './styles'
 
 export const ChallengeCreateButton = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
   const handleCreateChallenge = () => {

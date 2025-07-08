@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/dom'
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { useOutsideClick } from './useOutsideClick'
+import { useOutsideClick } from './use-outside-click'
 
 describe('useOutsideClick', () => {
   it('요소 외부를 클릭했을 때 콜백이 호출되어야 한다', () => {

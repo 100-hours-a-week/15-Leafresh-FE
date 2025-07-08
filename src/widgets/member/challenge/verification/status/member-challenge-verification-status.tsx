@@ -12,13 +12,13 @@ import {
 
 import { Loading } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
-import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/context'
+import { useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
 import * as S from './styles'
 
 export function GroupVerificationPage({ challengeId }: { challengeId: number }) {
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const { open: openCameraModal } = useCameraModalStore()
   const { addGroupChallengeId } = usePollingStore()
@@ -61,7 +61,7 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
           {
             onSuccess: () => {
               addGroupChallengeId(challengeId) // 인증 결과 롱폴링 시작
-              openToast(ToastType.Success, `인증 제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+              toast('Success', `인증 제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
             },
           },
         )

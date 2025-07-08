@@ -23,8 +23,8 @@ import {
 import { Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useOAuthUserStore, usePollingStore, useUserStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { useOAuthUserStore, usePollingStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 
 import * as S from './styles'
 
@@ -36,7 +36,7 @@ export const Mypage = () => {
 
   const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
   const { clearUserInfo } = useUserStore()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { setFeedbackPolling } = usePollingStore()
 
   const {
@@ -45,7 +45,7 @@ export const Mypage = () => {
     },
   } = usePollingStore()
 
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const { mutate: requestFeedback, isPending } = useMutationStore<null, void>(
     MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK,
@@ -154,7 +154,7 @@ export const Mypage = () => {
           onSuccess: response => {
             clearOAuthUserInfo()
             clearUserInfo()
-            openToast(ToastType.Success, '로그아웃 성공')
+            toast('Success', '로그아웃 성공')
             router.push(URL.MAIN.INDEX.value)
           },
         },

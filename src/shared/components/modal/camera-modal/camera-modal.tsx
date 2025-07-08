@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { CheckIcon, LucideIcon, SwitchTap, VerificationGuideModal } from '@/shared/components'
-import { ToastType, useCameraModalStore } from '@/shared/context'
+import { useCameraModalStore } from '@/shared/context'
 import { useImageUpload, useScrollLock, useToast } from '@/shared/hooks'
 
 import * as S from './styles'
@@ -13,10 +13,10 @@ const CHALLENGE_TABS = ['카메라', '인증 방법']
 
 type FacingMode = 'user' | 'environment'
 export const CameraModal = () => {
-  const openToast = useToast()
+  const { toast } = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
 
-  const { uploadFile, loading: uploading, error: uploadError } = useImageUpload()
+  const { uploadFile, isUploading, error: uploadError } = useImageUpload()
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -44,7 +44,7 @@ export const CameraModal = () => {
 
   const startCamera = async (mode: FacingMode = facingMode) => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+      toast('Error', '해당 기기에서는 카메라를 사용할 수 없습니다.')
       close()
       return
     }
@@ -66,9 +66,9 @@ export const CameraModal = () => {
       }
     } catch (error) {
       if (mode === 'environment') {
-        openToast(ToastType.Error, '해당 방향을 지원하지 않습니다!')
+        toast('Error', '해당 방향을 지원하지 않습니다!')
       } else {
-        openToast(ToastType.Error, '잠시만 기다려주세요.')
+        toast('Error', '잠시만 기다려주세요.')
       }
 
       /** 후면 카메라 미지원시 */
@@ -114,7 +114,7 @@ export const CameraModal = () => {
         const uploadedUrl = await uploadFile(file)
         setPreviewUrl(uploadedUrl)
       } catch (err) {
-        openToast(ToastType.Error, '이미지 업로드 실패')
+        toast('Error', '이미지 업로드 실패')
       }
     }, 'image/jpeg')
   }
