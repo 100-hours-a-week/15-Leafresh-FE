@@ -1,1 +1,5 @@
+# 기존 lint-staged 먼저 실행
 npx lint-staged
+
+# 그 다음 ts-prune 스타일 검사
+pnpm exec bash ./scripts/check-unused-style.sh
