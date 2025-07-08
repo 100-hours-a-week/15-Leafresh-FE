@@ -23,7 +23,7 @@ export const ProductList = ({ className }: ProductListProps): ReactNode => {
   const observerRef = useRef<HTMLDivElement>(null)
 
   // 일반 상품 목록 조회
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteProducts(search)
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteProducts(search)
 
   const products = data?.pages.flatMap(page => page?.data?.products || []) ?? []
   // const products: Product[] = dummyProducts
@@ -50,27 +50,29 @@ export const ProductList = ({ className }: ProductListProps): ReactNode => {
     setSearch(input)
   }
 
+  if (isLoading) {
+    return (
+      <ContentWrapper hasProducts={true}>
+        <StyledLoading />
+      </ContentWrapper>
+    )
+  }
+
   /** 상품 리스트 */
   let contents
   /** 일반 상품이 없는 경우 */
   const hasProducts: boolean = !(products.length === 0)
   if (!hasProducts) {
     contents = (
-      <ApologizeContent title='준비된 일반 상품이 없습니다' description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다' />
+      <StyledApologizeContent
+        title='준비된 일반 상품이 없습니다'
+        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+      />
     )
   } else {
     /** 일반 상품이 있는 경우 */
     contents = (
       <>
-        <SearchBar onSubmit={handleSearchSubmit}>
-          <SearchInput
-            type='text'
-            inputMode='search'
-            placeholder='무엇을 찾아드릴까요?'
-            value={input}
-            onChange={e => setInput(e.target.value)}
-          />
-        </SearchBar>
         <ProductGrid>
           {products.map(product => (
             <ProductCard key={product.id} product={product} />
@@ -82,7 +84,20 @@ export const ProductList = ({ className }: ProductListProps): ReactNode => {
     )
   }
 
-  return <ContentWrapper hasProducts={hasProducts}>{contents}</ContentWrapper>
+  return (
+    <ContentWrapper hasProducts={hasProducts}>
+      <SearchBar onSubmit={handleSearchSubmit}>
+        <SearchInput
+          type='text'
+          inputMode='search'
+          placeholder='무엇을 찾아드릴까요?'
+          value={input}
+          onChange={e => setInput(e.target.value)}
+        />
+      </SearchBar>
+      {contents}
+    </ContentWrapper>
+  )
 }
 
 const ContentWrapper = styled.div<{ hasProducts: boolean }>`
@@ -94,7 +109,8 @@ const ContentWrapper = styled.div<{ hasProducts: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: ${({ hasProducts }) => (!hasProducts ? 'center' : 'flex-start')};
+  justify-content: flex-start;
+  /* justify-content: ${({ hasProducts }) => (!hasProducts ? 'center' : 'flex-start')}; */
   align-items: center;
 `
 
@@ -129,7 +145,15 @@ const ObserverTrigger = styled.div`
 `
 
 const StyledLoading = styled(Loading)`
+  height: 100%;
   grid-column: span 2;
+`
+
+const StyledApologizeContent = styled(ApologizeContent)`
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
 `
 
 // const dummyProducts: Product[] = [
