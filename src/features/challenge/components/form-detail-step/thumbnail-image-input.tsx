@@ -56,7 +56,7 @@ export const UploadThumbnailInput = ({ imageUrl, onChange }: UploadThumbnailInpu
 
 const ThumbnailContainer = styled.div`
   width: 100%;
-  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE_THUMBNAIL};
+  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE.THUMBNAIL};
 
   border: 1px solid ${theme.colors.lfGray.base};
   border-radius: ${theme.radius.base};

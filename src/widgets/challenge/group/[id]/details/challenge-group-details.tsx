@@ -277,7 +277,7 @@ const DescriptionSection = styled.section`
 
 const ThumbnailImageWrapper = styled.div`
   width: 100%;
-  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE_THUMBNAIL};
+  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE.THUMBNAIL};
 
   position: relative;
 `

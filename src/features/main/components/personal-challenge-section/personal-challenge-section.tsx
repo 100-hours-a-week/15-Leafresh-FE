@@ -132,7 +132,7 @@ const DailyCard = styled.div`
 
 const DailyImageArea = styled.div`
   width: 100%;
-  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE_THUMBNAIL};
+  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE.THUMBNAIL};
   position: relative;
   overflow: hidden;
   border-top-left-radius: ${({ theme }) => theme.radius.base};

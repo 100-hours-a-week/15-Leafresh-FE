@@ -112,7 +112,7 @@ const Badge = styled.div`
 const CarouselWrapper = styled.div`
   width: 100%;
   /* height: 160px; */
-  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE_THUMBNAIL};
+  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE.THUMBNAIL};
 
   position: relative;
   overflow: hidden;

@@ -28,7 +28,7 @@ import {
 
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
-import { URL } from '@/shared/constants'
+import { ASPECT_RATIOS, URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { getTimeDiff } from '@/shared/lib'
@@ -470,7 +470,7 @@ const Time = styled.div`
 
 const ImageWrapper = styled.div`
   width: 100%;
-  aspect-ratio: 5 / 3;
+  aspect-ratio: ${ASPECT_RATIOS.CHALLENGE.VERIFICATION};
   border-radius: ${theme.radius.md};
 
   position: relative;

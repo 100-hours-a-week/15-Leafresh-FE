@@ -317,7 +317,7 @@ const BackButton = styled(LucideIcon)`
 const CameraWrapper = styled.div`
   gap: 16px;
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 1/1;
   /* overflow: hidden; */
 
   position: relative;
@@ -326,7 +326,7 @@ const CameraWrapper = styled.div`
 
 const CameraView = styled.video`
   height: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 1/1;
   object-fit: cover;
 `
 
