@@ -54,7 +54,6 @@ export const VerificationDetails = ({
   const { isLoggedIn, userInfo } = useAuth()
   const openToast = useToast()
   const router = useRouter()
-  const isClient = typeof window !== 'undefined'
 
   const { data: verificationData } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
@@ -393,7 +392,13 @@ export const VerificationDetails = ({
       </Header>
 
       <ImageWrapper>
-        <ContentImage src={verifications.imageUrl} alt='Leafresh' fill />
+        <ContentImage
+          src={verifications.imageUrl}
+          alt='Leafresh'
+          fill
+          sizes='(max-width: 640px) 100vw, 420px'
+          priority
+        />
       </ImageWrapper>
 
       <Content>{verifications.content}</Content>
