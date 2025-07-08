@@ -231,7 +231,13 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
                   {data.badges.map(badge => (
                     <BadgeItem key={badge.id}>
                       <BadgeImage>
-                        <Image src={badge.imageUrl} alt={badge.name} fill style={{ objectFit: 'cover' }} />
+                        <Image
+                          src={badge.imageUrl}
+                          alt={badge.name}
+                          fill
+                          sizes='(max-width: 390px) 30vw, 100px'
+                          style={{ objectFit: 'cover' }}
+                        />
                       </BadgeImage>
                       <BadgeName>{badge.name}</BadgeName>
                     </BadgeItem>
@@ -244,7 +250,13 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
           </CardFace>
           {/* 뒷면 */}
           <CardFace className='back'>
-            <Image src='/image/main-icon.svg' alt='supy2' width={160} height={160} />
+            <Image
+              src='/image/main-icon.svg'
+              alt='supy2'
+              width={160}
+              height={125}
+              style={{ width: 'auto', height: 'auto', maxWidth: 160, maxHeight: 160 }}
+            />
           </CardFace>
         </Card>
       </CardContainer>
@@ -340,8 +352,6 @@ const ProfileImageWrapper = styled.div`
 const ProfileImg = styled(Image)`
   object-fit: cover;
   border-radius: ${theme.radius.full};
-  width: 60px;
-  height: 60px;
 `
 
 const ProfileInfo = styled.div`
@@ -471,14 +481,6 @@ const Progress = styled.div`
   border-radius: 6px;
 `
 
-const NextLabel = styled.span`
-  padding: 0 3px;
-  font-size: 12px;
-  color: #666;
-  min-width: 24px;
-  text-align: right;
-`
-
 /* 뱃지 영역 */
 const BadgeSection = styled.div`
   width: 95%;
@@ -529,11 +531,4 @@ const NoBadgeMessage = styled.p`
   font-weight: ${theme.fontWeight.medium};
   color: ${theme.colors.lfBlack.base};
   text-align: center;
-`
-
-const Badges = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 12px;
 `
