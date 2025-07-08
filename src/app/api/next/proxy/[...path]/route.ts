@@ -10,7 +10,7 @@ import { NextRequest } from 'next/server'
  * dev 인스턴스 → 내부망 백엔드로 직접 요청
  */
 const proxyToBackend = async (method: string, req: NextRequest) => {
-  const backendPath = req.nextUrl.pathname.replace(/^\/api\/proxy\//, '')
+  const backendPath = req.nextUrl.pathname.replace(/^\/api\/next\/proxy\//, '')
   const search = req.nextUrl.search
   const url = `http://10.0.1.67:8080/${backendPath}${search}`
 
@@ -55,10 +55,6 @@ const handleProxy = async (method: string, req: NextRequest) => {
 
   const body = upstreamResponse.status === 204 ? null : await upstreamResponse.arrayBuffer()
 
-  // return new NextResponse(body, {
-  //   status: upstreamResponse.status,
-  //   headers: responseHeaders,
-  // })
   return new Response(body, {
     status: upstreamResponse.status,
     headers: responseHeaders,
