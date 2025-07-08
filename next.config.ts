@@ -23,6 +23,17 @@ const nextConfig: NextConfig = {
   compiler: {
     emotion: true,
   },
+  // TurboPack 설정
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
@@ -37,19 +48,32 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      issuer: {
-        and: [/\.[jt]sx?$/], // js, ts, jsx, tsx 파일에서만 처리
-      },
-      use: [
-        {
-          loader: '@svgr/webpack',
-        },
-      ],
-    })
+  webpack: config => {
+    // @ts-expect-error 타입 에러 무시
+    const fileLoaderRule = config.module.rules.find(rule => rule.test?.test?.('.svg'))
 
+    config.module.rules.push(
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/,
+      },
+      {
+        test: /\.svg$/i,
+        issuer: fileLoaderRule.issuer,
+        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              typescript: true,
+              ext: 'tsx',
+            },
+          },
+        ],
+      },
+    )
+    fileLoaderRule.exclude = /\.svg$/i
     return config
   },
 }
