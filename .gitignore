@@ -56,3 +56,5 @@ node_modules/
 
 certificates
 
+# 스타일 미사용 코드 체킹용
+.ts-prune-style.txt
