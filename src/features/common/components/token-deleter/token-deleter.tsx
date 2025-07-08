@@ -1,24 +1,25 @@
 'use client'
-import { ReactNode, useEffect } from 'react'
 
-export const TokenDeleter = (): ReactNode => {
+import { useEffect } from 'react'
+
+import { useSessionStorage } from '@/shared/hooks'
+
+export const AppInit = () => {
+  const cleanupFlag = useSessionStorage('cleanup-token')
+
   useEffect(() => {
-    // prod 환경에서만 실행
     if (process.env.NEXT_PUBLIC_RUNTIME !== 'prod') return
+    if (cleanupFlag) return
 
-    // 이미 클린업 했다면 종료
-    const alreadyCleaned = sessionStorage.getItem('cleanup-token-called')
-    if (alreadyCleaned) return
-
-    // 1회 실행
     fetch('/api/cleanup-token', { method: 'DELETE' })
       .then(() => {
+        sessionStorage.setItem('cleanup-token', 'true')
         console.log('✅ cleanup-token called')
-        sessionStorage.setItem('cleanup-token-called', 'true')
       })
       .catch(() => {
         console.warn('❌ cleanup-token failed')
       })
-  }, [])
-  return <></>
+  }, [cleanupFlag])
+
+  return null
 }
