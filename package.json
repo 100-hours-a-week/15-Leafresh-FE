@@ -9,7 +9,9 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:hooks": "vitest run --coverage && open coverage/index.html",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "find-deadStyleCode": "ts-prune",
+    "prepare": "husky"
   },
   "dependencies": {
     "@chakra-ui/react": "3.16.0",
@@ -61,6 +63,7 @@
     "jsdom": "^26.1.0",
     "lint-staged": "^15.5.2",
     "prettier": "3.5.3",
+    "ts-prune": "^0.10.3",
     "typescript": "^5",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "3.2.0"

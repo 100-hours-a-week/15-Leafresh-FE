@@ -6,11 +6,10 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { sendGAEvent } from '@next/third-parties/google'
 
-import styled from '@emotion/styled'
-
 import { LucideIcon, NAVBAR_TABS } from '@/shared/components'
-import { theme } from '@/shared/config'
 import { useUserStore } from '@/shared/context'
+
+import * as S from './styles'
 
 export const Navbar = (): ReactNode => {
   const router = useRouter()
@@ -56,61 +55,21 @@ export const Navbar = (): ReactNode => {
   }
 
   return (
-    <NavbarWrapper>
+    <S.NavbarWrapper>
       {NAVBAR_TABS.map(({ label, icon, href }, index) => {
         const isActive: boolean = isCurrentTab(label)
         return (
-          <NavButton key={label} onClick={() => navHandler(label, href, index)}>
+          <S.NavButton key={label} onClick={() => navHandler(label, href, index)}>
             <LucideIcon
               name={icon}
               size={24}
               color={isActive ? 'lfBlack' : 'lfGray'}
               strokeWidth={isActive ? 2.2 : 2}
             />
-            <Label active={isActive}>{label}</Label>
-          </NavButton>
+            <S.Label active={isActive}>{label}</S.Label>
+          </S.NavButton>
         )
       })}
-    </NavbarWrapper>
+    </S.NavbarWrapper>
   )
 }
-
-const NavbarWrapper = styled.nav`
-  min-width: 300px;
-  max-width: 430px;
-  width: 100%;
-
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  right: 0;
-
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-
-  height: 72px;
-  background-color: ${theme.colors.lfWhite.base};
-  border-top: 1px solid ${theme.colors.lfLightGray.base};
-
-  z-index: 99;
-`
-
-const NavButton = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-
-  background: none;
-  border: none;
-  cursor: pointer;
-`
-
-const Label = styled.span<{ active: boolean }>`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-  margin-top: 4px;
-  color: ${({ active }) => (active ? theme.colors.lfBlack.base : theme.colors.lfGray.base)};
-`

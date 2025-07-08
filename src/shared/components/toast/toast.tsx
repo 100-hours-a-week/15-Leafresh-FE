@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from 'react'
 
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
 
-import styled from '@emotion/styled'
-
-import { theme } from '@/shared/config'
 import { toastStore } from '@/shared/context'
 
 import { LucideIcon } from '../lucide-icon'
+
+import * as S from './styles'
 
 export const Toast = () => {
   const toasts = toastStore(state => state.toasts)
@@ -33,7 +32,7 @@ export const Toast = () => {
   }, [toasts, isPaused, remove])
 
   return (
-    <Wrapper
+    <S.Wrapper
       $toastCount={toasts.length}
       $isPaused={isPaused}
       onMouseEnter={() => setIsPaused(true)}
@@ -48,7 +47,7 @@ export const Toast = () => {
           const bottom = index * gap
 
           return (
-            <ToastItem
+            <S.ToastItem
               key={toast.id}
               style={{
                 bottom: `${bottom}px`,
@@ -68,73 +67,14 @@ export const Toast = () => {
                 size={20}
                 color={toast.type === 'Success' ? 'lfBlue' : 'lfRed'}
               />
-              <Message>{toast.description}</Message>
-              <CloseIcon onClick={() => remove(toast.id)}>
+              <S.Message>{toast.description}</S.Message>
+              <S.CloseIcon onClick={() => remove(toast.id)}>
                 <LucideIcon name='X' color='lfBlack' />
-              </CloseIcon>
-            </ToastItem>
+              </S.CloseIcon>
+            </S.ToastItem>
           )
         })}
       </AnimatePresence>
-    </Wrapper>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div<{ $toastCount: number; $isPaused: boolean }>`
-  width: 250px;
-  position: absolute;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  ${({ $toastCount, $isPaused }) =>
-    $isPaused &&
-    `
-    pointer-events: auto;
-    min-height: ${$toastCount * 85}px;
-  `}
-`
-
-const ToastItem = styled(motion.div)<{ $isPaused: boolean }>`
-  width: 100%;
-  height: 60px;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-
-  background-color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  box-shadow: ${theme.shadow.lfInput};
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-
-  transition: all 0.2s ease;
-
-  ${({ $isPaused }) =>
-    $isPaused &&
-    `
-    width: 100%; /* hover 시 width 풀려도 ok */
-    max-width: 300px;
-  `}
-`
-
-const Message = styled.span`
-  text-align: center;
-  flex: 1;
-  white-space: pre-line;
-  line-height: 1.4;
-`
-
-const CloseIcon = styled.div`
-  position: absolute;
-  right: 7px;
-  top: 4px;
-  cursor: pointer;
-`

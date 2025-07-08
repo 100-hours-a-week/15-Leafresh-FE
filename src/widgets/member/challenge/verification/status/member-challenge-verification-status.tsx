@@ -1,6 +1,5 @@
 'use client'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { VerificationCarousel } from '@/features/challenge/components'
@@ -12,10 +11,11 @@ import {
 } from '@/entities/challenge/api'
 
 import { Loading } from '@/shared/components'
-import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
+import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
-import { responsiveHorizontalPadding } from '@/shared/styles'
+
+import * as S from './styles'
 
 export function GroupVerificationPage({ challengeId }: { challengeId: number }) {
   const { toast } = useToast()
@@ -40,7 +40,7 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
   >(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMIT)
 
   if (isPending) return <Loading />
-  if (error) return <Message>Error: {error.message}</Message>
+  if (error) return <S.Message>Error: {error.message}</S.Message>
 
   const verifications = verificationData!.data
 
@@ -81,123 +81,38 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
   }
 
   return (
-    <Container>
-      <Title>{verifications.title} 챌린지</Title>
-      <Stats>
-        <Stat>
-          <Label>인증 성공</Label>
-          <Count>{verifications.achievement.success}회</Count>
-        </Stat>
-        <Stat>
-          <Label>인증 실패</Label>
-          <Count>{verifications.achievement.failure}회</Count>
-        </Stat>
-        <Stat>
-          <Label>남은 인증</Label>
-          <Count>{verifications.achievement.remaining}회</Count>
-        </Stat>
-      </Stats>
-      <GridWrapper>
+    <S.Container>
+      <S.Title>{verifications.title} 챌린지</S.Title>
+      <S.Stats>
+        <S.Stat>
+          <S.Label>인증 성공</S.Label>
+          <S.Count>{verifications.achievement.success}회</S.Count>
+        </S.Stat>
+        <S.Stat>
+          <S.Label>인증 실패</S.Label>
+          <S.Count>{verifications.achievement.failure}회</S.Count>
+        </S.Stat>
+        <S.Stat>
+          <S.Label>남은 인증</S.Label>
+          <S.Count>{verifications.achievement.remaining}회</S.Count>
+        </S.Stat>
+      </S.Stats>
+      <S.GridWrapper>
         {verifications.verifications.length !== 0 ? (
           <VerificationCarousel verifications={verifications.verifications} />
         ) : (
-          <NoneContent>인증 목록이 없습니다.</NoneContent>
+          <S.NoneContent>인증 목록이 없습니다.</S.NoneContent>
         )}
-      </GridWrapper>
+      </S.GridWrapper>
 
-      <ButtonGroup>
+      <S.ButtonGroup>
         {/* <QuestionButton>문의하기</QuestionButton> */}
-        {verifications.todayStatus === 'NOT_SUBMITTED' && <ActionButton onClick={handleCapture}>인증하기</ActionButton>}
-        {verifications.todayStatus === 'PENDING_APPROVAL' && <DisabledButton>인증 중</DisabledButton>}
-        {verifications.todayStatus === 'DONE' && <DisabledButton>금일 참여 완료</DisabledButton>}
-      </ButtonGroup>
-    </Container>
+        {verifications.todayStatus === 'NOT_SUBMITTED' && (
+          <S.ActionButton onClick={handleCapture}>인증하기</S.ActionButton>
+        )}
+        {verifications.todayStatus === 'PENDING_APPROVAL' && <S.DisabledButton>인증 중</S.DisabledButton>}
+        {verifications.todayStatus === 'DONE' && <S.DisabledButton>금일 참여 완료</S.DisabledButton>}
+      </S.ButtonGroup>
+    </S.Container>
   )
 }
-
-const Container = styled.div`
-  ${responsiveHorizontalPadding};
-
-  max-width: 500px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`
-const Title = styled.h2`
-  align-self: center;
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-`
-const Stats = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-const Stat = styled.div`
-  text-align: center;
-`
-const Label = styled.div`
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfDarkGray.base};
-`
-const Count = styled.div`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.bold};
-  margin-top: 4px;
-`
-const GridWrapper = styled.div`
-  width: 100%;
-
-  position: relative;
-  gap: 16px;
-`
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const QuestionButton = styled.button`
-  text-align: center;
-  padding: 12px;
-  background: ${theme.colors.lfGreenInactive.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 4px;
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.regular};
-  /* cursor: pointer; */
-  cursor: default;
-`
-const ActionButton = styled.button`
-  padding: 12px;
-  background: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 4px;
-  font-size: ${theme.fontSize.md};
-  cursor: pointer;
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-`
-const DisabledButton = styled.button`
-  padding: 12px;
-  background: ${theme.colors.lfGreenInactive.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 4px;
-  font-size: ${theme.fontSize.md};
-  cursor: default;
-`
-const Message = styled.div`
-  padding: 40px;
-  text-align: center;
-`
-
-const NoneContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`

@@ -8,17 +8,18 @@ import { z } from 'zod'
 
 import { useForm } from 'react-hook-form'
 
-import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
 
 import { getMemberProfile, MemberInfoRequest, MemberInfoResponse, ProfileResponse } from '@/entities/member/api'
 
-import { ErrorText, Loading, LucideIcon } from '@/shared/components'
-import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
+import { Loading, LucideIcon } from '@/shared/components'
+import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { useUserStore } from '@/shared/context'
 import { useImageUpload, useToast } from '@/shared/hooks'
+
+import * as S from './styles'
 
 interface ProfileModifyPageProps {
   className?: string
@@ -166,194 +167,49 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
     watchedNickname === (profile?.nickname ?? '') && watchedImageUrl === (profile?.profileImageUrl ?? '')
 
   return (
-    <Container className={className}>
-      <Header>
-        <Title>프로필 수정</Title>
-      </Header>
+    <S.Container className={className}>
+      <S.Header>
+        <S.Title>프로필 수정</S.Title>
+      </S.Header>
 
-      <ProfileWrapper>
-        <UploadImageButton htmlFor='profile-image' $hasImage={!!currentImage}>
-          {currentImage && <ProfileImage src={backgroundImage} alt='프로필 이미지' />}
-          <CameraWrapper>
+      <S.ProfileWrapper>
+        <S.UploadImageButton htmlFor='profile-image' $hasImage={!!currentImage}>
+          {currentImage && <S.ProfileImage src={backgroundImage} alt='프로필 이미지' />}
+          <S.CameraWrapper>
             <LucideIcon size={14} name='Pencil' color='lfBlack' />
             수정
-          </CameraWrapper>
-          <HiddenInput
+          </S.CameraWrapper>
+          <S.HiddenInput
             id='profile-image'
             type='file'
             accept='image/*'
             onChange={handleImageChange}
             disabled={isUploading}
           />
-        </UploadImageButton>
-      </ProfileWrapper>
+        </S.UploadImageButton>
+      </S.ProfileWrapper>
 
-      <InputSection>
-        <InputWrapper>
-          <Label>이메일</Label>
-          <TextInput type='text' defaultValue={profile?.email} readOnly $readonly />
-        </InputWrapper>
+      <S.InputSection>
+        <S.InputWrapper>
+          <S.Label>이메일</S.Label>
+          <S.TextInput type='text' defaultValue={profile?.email} readOnly $readonly />
+        </S.InputWrapper>
 
-        <InputWrapper>
-          <Label>닉네임</Label>
-          <TextInput type='text' {...register('nickname')} placeholder={profile?.nickname || '나의 닉네임'} />
-          <InputMeta hasError={!!errors.nickname}>
-            <StyledErrorText message={errors.nickname?.message} />
-            <CountText hasError={!!errors.nickname}>
+        <S.InputWrapper>
+          <S.Label>닉네임</S.Label>
+          <S.TextInput type='text' {...register('nickname')} placeholder={profile?.nickname || '나의 닉네임'} />
+          <S.InputMeta hasError={!!errors.nickname}>
+            <S.StyledErrorText message={errors.nickname?.message} />
+            <S.CountText hasError={!!errors.nickname}>
               {watch('nickname')?.length || 0}/{maxLength}
-            </CountText>
-          </InputMeta>
-        </InputWrapper>
-      </InputSection>
+            </S.CountText>
+          </S.InputMeta>
+        </S.InputWrapper>
+      </S.InputSection>
 
-      <SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || isUploading}>
+      <S.SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || isUploading}>
         {isUploading ? '업로드 중...' : '수정하기'}
-      </SubmitButton>
-    </Container>
+      </S.SubmitButton>
+    </S.Container>
   )
 }
-
-const Container = styled.div`
-  max-width: 24rem;
-  margin: 0 auto;
-  background-color: #fff;
-  min-height: 100vh;
-`
-
-const Header = styled.div`
-  padding: 10px 0;
-  border-bottom: 1px solid ${theme.colors.lfLightGray.base};
-`
-
-const Title = styled.h1`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-  color: #111827;
-`
-
-const ProfileWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 2rem 0;
-`
-
-const UploadImageButton = styled.label<{ $hasImage: boolean }>`
-  position: relative;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: ${({ $hasImage }) => ($hasImage ? 'transparent' : '#fff')};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #fcfcfc;
-`
-
-const ProfileImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-`
-
-const CameraWrapper = styled.div`
-  position: absolute;
-  bottom: 10px;
-  right: 0px;
-  gap: 3px;
-  padding: 5px 5px;
-
-  background-color: ${theme.colors.lfWhite.base};
-  color: ${theme.colors.lfBlack.base};
-  border-radius: ${theme.radius.sm};
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
-  border: 1px solid #3d444d;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-`
-
-const HiddenInput = styled.input`
-  display: none;
-`
-const InputSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-const Label = styled.label`
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #111827;
-  margin-bottom: 0.5rem;
-`
-
-const TextInput = styled.input<{ $readonly?: boolean }>`
-  width: 100%;
-  padding: 0.5rem 0;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lfLightGray.base};
-  color: ${({ theme }) => theme.colors.lfBlack.base};
-  font-size: 1rem;
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.lfGray.base};
-  }
-  &:focus {
-    outline: none;
-    border-color: ${({ theme }) => theme.colors.lfGray.base};
-  }
-
-  ${({ $readonly, theme }) =>
-    $readonly &&
-    `
-    color: ${theme.colors.lfGray.base};
-    cursor: not-allowed;
-    background-color: transparent;
-  `}
-`
-const InputMeta = styled.div<{ hasError: boolean }>`
-  display: flex;
-
-  justify-content: ${({ hasError }) => (hasError ? 'space-between' : 'flex-end')};
-  align-items: center;
-  margin-top: 0.25rem;
-  font-size: 0.875rem;
-`
-
-const CountText = styled.span<{ hasError: boolean }>`
-  color: ${({ hasError }) => (hasError ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-  font-size: ${theme.fontSize.sm};
-`
-
-const SubmitButton = styled.button<{ disabled: boolean }>`
-  margin-top: 20px;
-  width: 100%;
-  padding: 10px 0;
-  background-color: ${({ disabled }) =>
-    disabled ? `${theme.colors.lfGreenInactive.base}` : `${theme.colors.lfGreenMain.base}`};
-  color: ${theme.colors.lfWhite.base};
-  text-align: center;
-  font-weight: ${theme.fontWeight.medium};
-  border-radius: ${theme.radius.sm};
-  box-shadow: ${theme.shadow.lfPrime};
-  border: none;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-
-  :hover:not(:disabled) {
-    background-color: ${theme.colors.lfGreenMain.hover};
-  }
-`
-
-const StyledErrorText = styled(ErrorText)`
-  margin: 0;
-`
