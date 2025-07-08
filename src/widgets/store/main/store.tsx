@@ -3,16 +3,32 @@
 import { useState } from 'react'
 
 import styled from '@emotion/styled'
+import { useQuery } from '@tanstack/react-query'
 
 import { ProductList, TimeDealList } from '@/features/store/components'
 
-import { media, theme } from '@/shared/config'
+import { getMemberLeafCount } from '@/entities/member/api'
+
+import { media, QUERY_KEYS, QUERY_OPTIONS, theme } from '@/shared/config'
+import { useAuth } from '@/shared/hooks'
 
 type TabState = 'time-deal' | 'product'
 
 export const StorePage = () => {
+  const { isLoggedIn } = useAuth()
+
   const [tab, setTab] = useState<TabState>('time-deal')
   const tabIndex = tab === 'time-deal' ? 0 : 1
+
+  // 보유 나뭇잎 수 조회
+  const { data: memberLeafCountData } = useQuery({
+    queryKey: QUERY_KEYS.MEMBER.LEAVES,
+    queryFn: getMemberLeafCount,
+    ...QUERY_OPTIONS.MEMBER.LEAVES,
+    enabled: isLoggedIn,
+  })
+
+  const memberLeafCount = memberLeafCountData?.data.currentLeafPoints
 
   return (
     <Container>
@@ -26,7 +42,11 @@ export const StorePage = () => {
         <Underline $index={tabIndex} />
       </TabMenu>
 
-      {tab === 'time-deal' ? <TimeDealList /> : <ProductList />}
+      {tab === 'time-deal' ? (
+        <TimeDealList memberLeafCount={memberLeafCount} />
+      ) : (
+        <ProductList memberLeafCount={memberLeafCount} />
+      )}
     </Container>
   )
 }

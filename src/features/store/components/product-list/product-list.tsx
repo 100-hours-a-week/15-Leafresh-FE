@@ -6,17 +6,18 @@ import styled from '@emotion/styled'
 
 import { useInfiniteProducts } from '@/features/store/api'
 
-import { ApologizeContent, Loading } from '@/shared/components'
+import { ApologizeContent, LeafReward, Loading } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 import { ProductCard } from '../product-card'
 
 interface ProductListProps {
+  memberLeafCount?: number
   className?: string
 }
 
-export const ProductList = ({ className }: ProductListProps): ReactNode => {
+export const ProductList = ({ memberLeafCount, className }: ProductListProps): ReactNode => {
   const [input, setInput] = useState<string>('') // 트래킹 용
   const [search, setSearch] = useState<string>('') // API 제출 용
 
@@ -95,6 +96,11 @@ export const ProductList = ({ className }: ProductListProps): ReactNode => {
           onChange={e => setInput(e.target.value)}
         />
       </SearchBar>
+      {memberLeafCount && (
+        // <LeafCountWrapper>
+        <StyledLeafReward reward={memberLeafCount} />
+        // </LeafCountWrapper>
+      )}
       {contents}
     </ContentWrapper>
   )
@@ -118,7 +124,6 @@ const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  margin-top: 8px;
 `
 
 const SearchBar = styled.form`
@@ -154,6 +159,21 @@ const StyledApologizeContent = styled(ApologizeContent)`
 
   display: flex;
   justify-content: center;
+`
+
+const LeafCountWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`
+
+const LeafCountText = styled.span`
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+`
+
+const StyledLeafReward = styled(LeafReward)`
+  align-self: flex-end;
+  position: relative;
 `
 
 // const dummyProducts: Product[] = [
