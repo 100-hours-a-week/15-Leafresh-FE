@@ -37,6 +37,24 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: {
+        and: [/\.[jt]sx?$/], // js, ts, jsx, tsx 파일에서만 처리
+      },
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            icon: true, // width/height를 1em으로 만들어 icon처럼 사용 가능
+          },
+        },
+      ],
+    })
+
+    return config
+  },
 }
 
 module.exports = nextConfig
