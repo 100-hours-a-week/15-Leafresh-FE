@@ -12,7 +12,6 @@ interface ApologizeContentProps {
   description: string
   className?: string
 }
-console.log(ApologizeImage)
 
 export const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
   return (
