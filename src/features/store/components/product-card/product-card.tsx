@@ -18,6 +18,7 @@ import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/sh
 import { useToast } from '@/shared/hooks'
 
 import * as S from './styles'
+import * as S from './styles'
 
 interface ProductCardProps {
   product: Product

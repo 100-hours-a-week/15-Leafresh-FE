@@ -10,8 +10,7 @@
     "test": "vitest run",
     "test:hooks": "vitest run --coverage && open coverage/index.html",
     "test:e2e": "playwright test",
-    "find-deadStyleCode": "ts-prune",
-    "prepare": "husky"
+    "find-deadStyleCode": "ts-prune"
   },
   "dependencies": {
     "@chakra-ui/react": "3.16.0",

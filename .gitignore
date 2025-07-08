@@ -42,7 +42,7 @@ next-env.d.ts
 
 # eslint
 .eslintcache
-./ts-prune-style.txt
+.ts-prune-style.txt
 
 # File
 *.zip*
@@ -55,6 +55,3 @@ node_modules/
 /playwright/.cache/
 
 certificates
-
-# 스타일 미사용 코드 체킹용
-.ts-prune-style.txt
