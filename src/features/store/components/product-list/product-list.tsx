@@ -76,7 +76,7 @@ export const ProductList = ({ memberLeafCount, className }: ProductListProps): R
       <>
         <ProductGrid>
           {products.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} memberLeafCount={memberLeafCount} />
           ))}
           {isFetchingNextPage && <StyledLoading />}
           {hasNextPage && <ObserverTrigger ref={observerRef} />}

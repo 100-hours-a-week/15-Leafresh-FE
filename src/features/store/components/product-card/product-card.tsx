@@ -25,9 +25,10 @@ import { ApiResponse } from '@/shared/lib'
 
 interface ProductCardProps {
   product: Product
+  memberLeafCount?: number
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, memberLeafCount }: ProductCardProps) => {
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -65,7 +66,16 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     // #1. 에러 케이스
     // 재고 없음
     if (isSoldOut) {
-      openToast(ToastType.Error, '품절된 상품입니다.')
+      openToast(ToastType.Error, '품절된 상품입니다')
+      return
+    }
+
+    console.log('memberLeafcount : ', memberLeafCount)
+    console.log('상품 가격 : ', price)
+
+    // #2. 나뭇잎 개수 부족
+    if (memberLeafCount !== undefined && memberLeafCount < price) {
+      openToast(ToastType.Error, '나뭇잎 개수가 부족합니다')
       return
     }
 
