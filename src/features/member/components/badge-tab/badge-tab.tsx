@@ -45,10 +45,10 @@ export const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
 
       <GridWrapper>
         <FadeGrid key={selectedCategory}>
-          {badgeData[selectedCategory]?.map(badge => (
+          {badgeData[selectedCategory]?.map((badge, index) => (
             <Item key={badge.id} onClick={() => handleBadgeClick(badge.name, badge.condition)}>
               <BadgeImageWrapper>
-                <BadgeImage src={badge.imageUrl} alt={badge.name} width={120} height={120} />
+                <BadgeImage src={badge.imageUrl} alt={badge.name} width={120} height={120} priority={index === 4} />
               </BadgeImageWrapper>
               <Name isLocked={badge.isLocked}>{badge.name}</Name>
             </Item>
