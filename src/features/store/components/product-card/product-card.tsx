@@ -130,7 +130,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       <TextContent>
         <Title>{title}</Title>
         <Description>{description}</Description>
-        <StockNotice isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</StockNotice>
+        <StockNotice isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${localStock}개`}</StockNotice>
         <PriceRow>
           <LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
           <Price>{price.toLocaleString()}</Price>

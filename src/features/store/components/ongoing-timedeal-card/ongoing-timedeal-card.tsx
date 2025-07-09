@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
+import { getMemberLeafCount, MemberLeafCountResponse } from '@/entities/member/api'
 import {
   OrderTimeDealProductBody,
   OrderTimeDealProductHeaders,
@@ -16,11 +17,11 @@ import {
 } from '@/entities/store/api'
 
 import { LucideIcon } from '@/shared/components'
-import { media, MUTATION_KEYS, useMutationStore } from '@/shared/config'
+import { getQueryClient, media, MUTATION_KEYS, QUERY_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
-import { formatSecondToTime } from '@/shared/lib'
+import { ApiResponse, formatSecondToTime } from '@/shared/lib'
 
 interface OngoingTimeDealCardProps {
   data: TimeDealProduct
@@ -30,6 +31,7 @@ interface OngoingTimeDealCardProps {
 
 export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTimeDealCardProps): ReactNode => {
   const router = useRouter()
+  const queryClient = getQueryClient()
   const openToast = useToast()
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
@@ -80,12 +82,33 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
         const prevStock = localStock
         setLocalStock(prev => prev - 1) // 낙관적 업데이트
 
+        // 낙관적 업데이트: 나뭇잎 수
+        const prevLeafCountData = queryClient.getQueryData<Awaited<ReturnType<typeof getMemberLeafCount>>>(
+          QUERY_KEYS.MEMBER.LEAVES,
+        )
+
+        queryClient.setQueryData<ApiResponse<MemberLeafCountResponse>>(QUERY_KEYS.MEMBER.LEAVES, old => {
+          if (!old?.data) return old
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              currentLeafPoints: old.data.currentLeafPoints - deal.discountedPrice,
+            },
+          }
+        })
+
         return PurchaseMutate(
           { productId: deal.dealId, headers, body },
           {
             onSuccess: () => openToast(ToastType.Success, '구매가 완료되었습니다'),
             onError: () => {
-              setLocalStock(prevStock) // 실패 시 rollback
+              // 롤백
+              setLocalStock(prevStock)
+              if (prevLeafCountData) {
+                queryClient.setQueryData(QUERY_KEYS.MEMBER.LEAVES, prevLeafCountData)
+              }
+
               openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
@@ -117,7 +140,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
             </Price>
             <Origin>{data.defaultPrice}</Origin>
           </PriceRow>
-          <Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${data.stock}개`}</Stock>
+          <Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${localStock}개`}</Stock>
           <BuyButton onClick={() => handlePurchase(data)}>구매하기</BuyButton>
         </DescriptionSection>
       </Card>
