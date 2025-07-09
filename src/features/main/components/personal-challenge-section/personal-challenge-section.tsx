@@ -52,7 +52,7 @@ export const PersonalChallengeSection = ({
                       src={ch.thumbnailUrl}
                       alt={ch.description}
                       fill
-                      sizes='(max-width: 768px) 100vw, 95vw'
+                      sizes='(max-width: 768px) 100vw, 430px'
                       priority={index === 0}
                       loading={index === 0 ? 'eager' : 'lazy'}
                     />
