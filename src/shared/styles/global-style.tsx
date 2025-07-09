@@ -44,7 +44,7 @@ export const GlobalStyle = () => {
           overflow-x: hidden;
           box-shadow: 0 0 40px #0000001a;
 
-          background-image: url('/image/background.svg');
+          background-image: url('/image/background.png');
           background-repeat: no-repeat;
           background-size: cover;
           background-position: center;
