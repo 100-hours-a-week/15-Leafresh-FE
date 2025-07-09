@@ -230,6 +230,11 @@ const ScrollIcon = styled(LucideIcon)`
 `
 
 const StyledLeafReward = styled(LeafReward)`
-  top: 4%;
-  right: 9%;
+  background-color: ${({ theme }) => theme.colors.lfWhite.base};
+  border-radius: ${({ theme }) => theme.radius.md};
+
+  padding: 5px;
+  opacity: 0.8;
+  top: 3%;
+  right: 7%;
 `
