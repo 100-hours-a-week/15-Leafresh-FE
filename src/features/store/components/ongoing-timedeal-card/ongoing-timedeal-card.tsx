@@ -65,7 +65,7 @@ export const OngoingTimeDealCard = ({
     }
 
     // #2. 재고 부족
-    if (deal.stock <= 0) {
+    if (isSoldOut) {
       openToast(ToastType.Error, '품절된 상품입니다')
       return
     }
