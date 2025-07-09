@@ -90,7 +90,7 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
       <TitleBox>
         <SectionTitle>🔥 지금만 이 가격</SectionTitle>
         <SubText>세상은 1등만 기억해!</SubText>
-        {memberLeafCount && <StyledLeafReward reward={memberLeafCount} />}
+        {memberLeafCount !== undefined && <StyledLeafReward reward={memberLeafCount} />}
       </TitleBox>
       {timeDealContents}
     </Container>

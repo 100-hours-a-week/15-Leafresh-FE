@@ -96,7 +96,7 @@ export const ProductList = ({ memberLeafCount, className }: ProductListProps): R
           onChange={e => setInput(e.target.value)}
         />
       </SearchBar>
-      {memberLeafCount && (
+      {memberLeafCount !== undefined && (
         // <LeafCountWrapper>
         <StyledLeafReward reward={memberLeafCount} />
         // </LeafCountWrapper>
