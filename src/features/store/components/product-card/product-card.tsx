@@ -6,7 +6,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
+import { useQueryClient } from '@tanstack/react-query'
 
+import { MemberLeafCountResponse } from '@/entities/member/api'
 import {
   OrderProductBody,
   OrderProductHeaders,
@@ -15,10 +17,11 @@ import {
   Product,
 } from '@/entities/store/api'
 
-import { media, theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
+import { media, theme, MUTATION_KEYS, useMutationStore, QUERY_KEYS } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
+import { ApiResponse } from '@/shared/lib'
 
 interface ProductCardProps {
   product: Product
@@ -26,6 +29,8 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const router = useRouter()
+  const queryClient = useQueryClient()
+
   const openToast = useToast()
   const { isLoggedIn } = useAuth()
   const { openConfirmModal } = useConfirmModalStore()
@@ -77,6 +82,19 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         const prevStock = localStock
         setLocalStock(prev => prev - 1)
 
+        const prevLeafData = queryClient.getQueryData<ApiResponse<MemberLeafCountResponse>>(QUERY_KEYS.MEMBER.LEAVES)
+
+        queryClient.setQueryData<ApiResponse<MemberLeafCountResponse>>(QUERY_KEYS.MEMBER.LEAVES, old => {
+          if (!old?.data) return old
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              currentLeafPoints: old.data.currentLeafPoints - price,
+            },
+          }
+        })
+
         PurchaseMutate(
           { productId: id, headers, body },
           {
@@ -84,7 +102,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               openToast(ToastType.Success, '구매가 완료되었습니다')
             },
             onError: () => {
-              setLocalStock(prevStock) // 실패 시 롤백
+              // 실패 시 롤백
+              setLocalStock(prevStock)
+              if (prevLeafData) {
+                queryClient.setQueryData(QUERY_KEYS.MEMBER.LEAVES, prevLeafData)
+              }
+
               openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
