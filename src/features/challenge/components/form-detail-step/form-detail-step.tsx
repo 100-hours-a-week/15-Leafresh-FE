@@ -93,7 +93,6 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
             <S.Label>
               챌린지 썸네일 이미지 <S.RequiredMark>*</S.RequiredMark>
             </S.Label>
-            <S.InfoIcon>ⓘ</S.InfoIcon>
           </S.LabelRow>
           <S.SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</S.SubText>
           <UploadThumbnailInput

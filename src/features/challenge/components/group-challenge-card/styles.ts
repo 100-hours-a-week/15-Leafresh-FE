@@ -25,7 +25,6 @@ export const TopImageWrapper = styled.div`
   background: #d9d9d9;
   width: 100%;
   aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
-
   position: relative;
   display: flex;
   align-items: center;
