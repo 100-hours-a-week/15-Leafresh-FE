@@ -18,7 +18,7 @@ import { getTimeDiff } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
 
-import LeafIcon from '@public/icon/leaf.png'
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
 
 /** 더미 데이터 */
 const dummyMemberStoreOrderList: PurchaseProduct[] = [
@@ -142,7 +142,7 @@ const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
       <ProductTitle>{title}</ProductTitle>
       <InfoRow>
         <PriceRow>
-          <Image src={LeafIcon} alt='leaf' width={24} height={24} />
+          <LeafIcon width={24} height={24} />
           <Price>{price}</Price>
         </PriceRow>
         <TimeAgo>{getTimeDiff(purchasedAt)}</TimeAgo>

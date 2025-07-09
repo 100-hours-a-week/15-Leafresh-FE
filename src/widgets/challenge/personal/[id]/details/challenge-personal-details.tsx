@@ -26,7 +26,7 @@ import { useAuth, useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
-import LeafIcon from '@public/icon/leaf.png'
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
 
 type WarningType = {
   isWarning: boolean
@@ -212,7 +212,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
             <Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
-                인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
+                인증 성공시 <LeafIcon width={24} height={24} style={{ margin: '0 6px' }} /> {leafReward}개 지급
               </li>
             </Warning>
           </WarningList>

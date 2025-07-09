@@ -10,7 +10,7 @@ import styled from '@emotion/styled'
 import { URL } from '@/shared/constants'
 import { ISOFormatString } from '@/shared/type'
 
-import LeafIcon from '@public/icon/leaf.png'
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
 
 interface GroupChallengeProps {
   challenge: {
@@ -54,7 +54,7 @@ export const DeprecatedGroupChallengeCard: React.FC<GroupChallengeProps> = ({ ch
         </TagsContainer>
 
         <RewardBadge>
-          <Image src={LeafIcon} alt='재화' width={24} height={24} />
+          <LeafIcon width={24} height={24} />
           <RewardText>{challenge?.leafReward || 30}개</RewardText>
         </RewardBadge>
       </ContentContainer>
