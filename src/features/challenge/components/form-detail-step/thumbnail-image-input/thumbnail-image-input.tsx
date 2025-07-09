@@ -2,12 +2,10 @@
 
 import { ChangeEvent, useRef } from 'react'
 
-import styled from '@emotion/styled'
-
 import { LucideIcon } from '@/shared/components'
-import { theme } from '@/shared/config'
-import { ASPECT_RATIO } from '@/shared/constants'
 import { useUploadImageToBucket, useToast, useProcessImageFile } from '@/shared/hooks'
+
+import * as S from './styles'
 
 interface UploadThumbnailInputProps {
   imageUrl: string | null
@@ -39,53 +37,16 @@ export const UploadThumbnailInput = ({ imageUrl, onChange }: UploadThumbnailInpu
   }
 
   return (
-    <ThumbnailContainer onClick={() => inputRef.current?.click()}>
+    <S.ThumbnailContainer onClick={() => inputRef.current?.click()}>
       {imageUrl ? (
-        <Thumbnail src={imageUrl} alt='썸네일 미리보기' />
+        <S.Thumbnail src={imageUrl} alt='썸네일 미리보기' />
       ) : (
-        <Overlay>
+        <S.Overlay>
           <LucideIcon name='Image' size={24} />
           이미지를 업로드해주세요
-        </Overlay>
+        </S.Overlay>
       )}
-      <HiddenInput type='file' accept='image/*' onChange={handleFileChange} ref={inputRef} disabled={loading} />
-    </ThumbnailContainer>
+      <S.HiddenInput type='file' accept='image/*' onChange={handleFileChange} ref={inputRef} disabled={loading} />
+    </S.ThumbnailContainer>
   )
 }
-
-const ThumbnailContainer = styled.div`
-  width: 100%;
-  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
-
-  border: 1px solid ${theme.colors.lfGray.base};
-  border-radius: ${theme.radius.base};
-
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-`
-
-const Thumbnail = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`
-
-const Overlay = styled.div`
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  font-size: ${theme.fontSize.xs};
-  color: ${theme.colors.lfBlack.base};
-
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  position: absolute;
-`
-
-const HiddenInput = styled.input`
-  display: none;
-`
