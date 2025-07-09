@@ -33,14 +33,14 @@ export const Introduce = () => {
 
   return (
     <Wrapper>
-      <Image src='/image/main/character.svg' alt='친환경 캐릭터' width={400} height={400} />
+      <Image src='/image/main/character.png' alt='친환경 캐릭터' width={400} height={400} />
       <ItemWrapper>
-        <StyledImage src='/image/main/verification.svg' alt='챌린지 인증' width={100} height={100} />
+        <StyledImage src='/image/main/verification.png' alt='챌린지 인증' width={100} height={100} />
         <DataWrapper>
           <Count>{isVerificationLoading ? '불러오는 중...' : animatedVerificationCount?.toLocaleString()}</Count>
           <Text>인증 수</Text>
         </DataWrapper>
-        <StyledImage src='/image/main/leaf.svg' alt='친환경 인증' width={100} height={100} />
+        <StyledImage src='/image/main/leaf.png' alt='친환경 인증' width={100} height={100} />
         <DataWrapper>
           <Count>{isLeafLoading ? '불러오는 중...' : animatedLeafCount?.toLocaleString()}</Count>
           <Text>나뭇잎 수</Text>
