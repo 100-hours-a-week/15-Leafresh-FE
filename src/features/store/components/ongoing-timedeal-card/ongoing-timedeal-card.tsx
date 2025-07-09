@@ -26,10 +26,16 @@ import { ApiResponse, formatSecondToTime } from '@/shared/lib'
 interface OngoingTimeDealCardProps {
   data: TimeDealProduct
   remainingSec: number
+  memberLeafCount?: number
   className?: string
 }
 
-export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTimeDealCardProps): ReactNode => {
+export const OngoingTimeDealCard = ({
+  data,
+  remainingSec,
+  memberLeafCount,
+  className,
+}: OngoingTimeDealCardProps): ReactNode => {
   const router = useRouter()
   const queryClient = getQueryClient()
   const openToast = useToast()
@@ -48,6 +54,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
   )
 
   const handlePurchase = (deal: TimeDealProduct) => {
+    // #1. 미로그인 상태
     if (!isLoggedIn) {
       openConfirmModal({
         title: '로그인이 필요합니다.',
@@ -57,11 +64,19 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
       return
     }
 
+    // #2. 재고 부족
     if (deal.stock <= 0) {
-      openToast(ToastType.Error, '품절된 상품입니다.')
+      openToast(ToastType.Error, '품절된 상품입니다')
       return
     }
 
+    // #3. 나뭇잎 부족
+    if (memberLeafCount !== undefined && memberLeafCount < data.discountedPrice) {
+      openToast(ToastType.Error, '나뭇잎 개수가 부족합니다')
+      return
+    }
+
+    // #4. 기간 지남
     const now = new Date().getTime()
     const start = new Date(deal.dealStartTime).getTime()
     const end = new Date(deal.dealEndTime).getTime()
@@ -71,6 +86,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
       return
     }
 
+    // #5. 구매
     openConfirmModal({
       title: `${deal.title}를 구매하시겠습니까?`,
       description: `할인된 가격은 나뭇잎 ${deal.discountedPrice}개 입니다.`,

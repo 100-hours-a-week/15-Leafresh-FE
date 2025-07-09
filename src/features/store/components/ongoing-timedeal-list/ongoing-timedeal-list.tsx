@@ -72,7 +72,12 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
         <Embla ref={emblaRef}>
           <EmblaTrack>
             {data.map((deal, index) => (
-              <OngoingTimeDealCard key={deal.productId} data={deal} remainingSec={remainingTimes[index] ?? 0} />
+              <OngoingTimeDealCard
+                key={deal.productId}
+                data={deal}
+                remainingSec={remainingTimes[index] ?? 0}
+                memberLeafCount={memberLeafCount}
+              />
             ))}
           </EmblaTrack>
         </Embla>
