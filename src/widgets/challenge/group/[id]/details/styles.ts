@@ -4,7 +4,8 @@ import styled from '@emotion/styled'
 
 import { ChallengeVerifyExamples } from '@/features/challenge/components'
 
-import { BackButton, DatePicker } from '@/shared/components'
+import { BackButton, DatePicker, LeafReward } from '@/shared/components'
+import { ASPECT_RATIO } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 export const Wrapper = styled.div`
   ${responsiveHorizontalPadding};
@@ -25,7 +26,7 @@ export const DescriptionSection = styled.section`
 
 export const ThumbnailImageWrapper = styled.div`
   width: 100%;
-  aspect-ratio: 14/9;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
 
   position: relative;
 `
@@ -174,4 +175,9 @@ export const NoVerficiationImageText = styled.div`
   padding: 30px;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.lfRed.base};
+`
+
+export const StyledLeafReward = styled(LeafReward)`
+  margin-left: 8px;
+  position: relative;
 `

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled'
 
+import { responsiveHorizontalPadding } from '@/shared/styles'
+
 export const Wrapper = styled.div`
   height: 100%;
 
@@ -9,7 +11,8 @@ export const Wrapper = styled.div`
 `
 
 export const CategoryGrid = styled.div`
-  padding: 0 20px;
+  ${responsiveHorizontalPadding};
+
   margin-top: 8px;
   display: grid;
   gap: 4px;
@@ -45,4 +48,25 @@ export const CategoryLabel = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.lfBlack.base};
+`
+
+export const TextWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+export const FeedTitle = styled.div`
+  ${responsiveHorizontalPadding};
+  padding-bottom: 10px;
+
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+`
+
+export const FeedSubtitle = styled.div`
+  ${responsiveHorizontalPadding};
+
+  color: ${({ theme }) => theme.colors.lfGreenMain.base};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
 `

@@ -4,6 +4,8 @@ import styled from '@emotion/styled'
 
 import { ChallengeVerifyExamples } from '@/features/challenge/components'
 
+import { LeafReward } from '@/shared/components'
+import { ASPECT_RATIO } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const Wrapper = styled.div`
@@ -25,11 +27,10 @@ export const DescriptionSection = styled.section`
 
 export const ThumbnailImageWrapper = styled.div`
   width: 100%;
-  aspect-ratio: 14/9;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
 
   position: relative;
 `
-
 export const Thumbnail = styled(Image)`
   object-fit: cover;
   border-radius: ${({ theme }) => theme.radius.base};
@@ -133,4 +134,9 @@ export const Warning = styled.div<{ isWarning: boolean }>`
 
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ isWarning, theme }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
+`
+
+export const StyledLeafReward = styled(LeafReward)`
+  margin-left: 8px;
+  position: relative;
 `

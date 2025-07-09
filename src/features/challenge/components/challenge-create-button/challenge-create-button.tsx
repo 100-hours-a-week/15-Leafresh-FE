@@ -8,7 +8,6 @@ import { URL } from '@/shared/constants'
 import { useConfirmModalStore, useUserStore } from '@/shared/context'
 
 import * as S from './styles'
-import * as S from './styles'
 
 export const ChallengeCreateButton = () => {
   const router = useRouter()

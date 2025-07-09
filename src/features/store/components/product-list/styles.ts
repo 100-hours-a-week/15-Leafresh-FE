@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { Loading } from '@/shared/components'
+import { ApologizeContent, LeafReward, Loading } from '@/shared/components'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 export const ContentWrapper = styled.div<{ hasProducts: boolean }>`
   flex: 1;
@@ -11,7 +11,7 @@ export const ContentWrapper = styled.div<{ hasProducts: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: ${({ hasProducts }) => (!hasProducts ? 'center' : 'flex-start')};
+  justify-content: flex-start;
   align-items: center;
 `
 
@@ -44,7 +44,19 @@ export const SearchInput = styled.input`
 export const ObserverTrigger = styled.div`
   height: 1px;
 `
-
 export const StyledLoading = styled(Loading)`
+  height: 100%;
   grid-column: span 2;
+`
+
+export const StyledApologizeContent = styled(ApologizeContent)`
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+`
+
+export const StyledLeafReward = styled(LeafReward)`
+  align-self: flex-end;
+  position: relative;
 `

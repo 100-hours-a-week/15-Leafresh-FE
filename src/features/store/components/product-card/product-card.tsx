@@ -18,7 +18,6 @@ import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/sh
 import { useToast } from '@/shared/hooks'
 
 import * as S from './styles'
-import * as S from './styles'
 
 interface ProductCardProps {
   product: Product
@@ -109,7 +108,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <S.Description>{description}</S.Description>
         <S.StockNotice isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</S.StockNotice>
         <S.PriceRow>
-          <S.LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} />
+          <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
           <S.Price>{price.toLocaleString()}</S.Price>
         </S.PriceRow>
       </S.TextContent>

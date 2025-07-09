@@ -113,7 +113,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
           <S.PriceRow>
             <S.Discount>{data.discountedPercentage}%</S.Discount>
             <S.Price>
-              <Image src='/icon/leaf.png' alt='leaf' width={18} height={18} /> {data.discountedPrice}
+              <Image src='/icon/leaf.svg' alt='leaf' width={18} height={18} /> {data.discountedPrice}
             </S.Price>
             <S.Origin>{data.defaultPrice}</S.Origin>
           </S.PriceRow>

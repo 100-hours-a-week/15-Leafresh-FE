@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styled from '@emotion/styled'
 
 import { media } from '@/shared/config'
+import { ASPECT_RATIO } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const Section = styled.section`
@@ -37,7 +38,7 @@ export const Badge = styled.div`
 export const CarouselWrapper = styled.div`
   width: 100%;
   /* height: 160px; */
-  aspect-ratio: 5/3;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
 
   position: relative;
   overflow: hidden;

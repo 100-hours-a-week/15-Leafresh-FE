@@ -2,6 +2,11 @@ import styled from '@emotion/styled'
 
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
+export const CarouselWrapper = styled.div`
+  width: 100%;
+
+  position: relative;
+`
 export const Container = styled.div`
   ${responsiveHorizontalPadding};
 
@@ -16,10 +21,14 @@ export const Title = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `
+
 export const Stats = styled.div`
+  padding: 0 20px;
+
   display: flex;
   justify-content: space-between;
 `
+
 export const Stat = styled.div`
   text-align: center;
 `
@@ -31,12 +40,6 @@ export const Count = styled.div`
   font-size: ${({ theme }) => theme.fontSize.md};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   margin-top: 4px;
-`
-export const GridWrapper = styled.div`
-  width: 100%;
-
-  position: relative;
-  gap: 16px;
 `
 export const ButtonGroup = styled.div`
   display: flex;

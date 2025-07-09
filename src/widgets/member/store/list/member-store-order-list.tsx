@@ -12,7 +12,7 @@ import { PurchaseProduct } from '@/entities/member/api'
 import { URL } from '@/shared/constants'
 import { getTimeDiff } from '@/shared/lib'
 
-import LeafIcon from '@public/icon/leaf.png'
+import LeafIcon from '@public/icon/leaf.svg'
 
 import * as S from './styles'
 

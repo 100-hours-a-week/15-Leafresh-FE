@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styled from '@emotion/styled'
 
 import { LeafReward, LucideIcon } from '@/shared/components'
+import { ASPECT_RATIO } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const Section = styled.section`
@@ -63,7 +64,7 @@ export const DailyCard = styled.div`
 
 export const DailyImageArea = styled.div`
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
   position: relative;
   overflow: hidden;
   border-top-left-radius: ${({ theme }) => theme.radius.base};

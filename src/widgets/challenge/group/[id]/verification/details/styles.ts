@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import styled from '@emotion/styled'
 
+import { ASPECT_RATIO } from '@/shared/constants'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const Container = styled.div`
@@ -48,7 +49,7 @@ export const Time = styled.div`
 
 export const ImageWrapper = styled.div`
   width: 100%;
-  aspect-ratio: 5 / 3;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.VERIFICATION};
   border-radius: ${({ theme }) => theme.radius.md};
 
   position: relative;

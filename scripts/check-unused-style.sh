@@ -1,6 +1,3 @@
-# scripts/check-unused-style.sh
-#!/bin/sh
-
 echo "🔍 스타일 파일 내 미사용 export 검사 중..."
 pnpm find-deadStyleCode | grep -E 'styles.ts' > .ts-prune-style.txt
 

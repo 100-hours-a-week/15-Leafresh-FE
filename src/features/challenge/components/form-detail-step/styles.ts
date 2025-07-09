@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { ImageInput, Loading } from '@/shared/components'
+import { Loading } from '@/shared/components'
 
 export const Container = styled.form`
   display: flex;
@@ -112,11 +112,6 @@ export const SubmitButton = styled.button<{ $active: boolean; disabled?: boolean
   border: none;
 
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-`
-
-export const StyledImageInput = styled(ImageInput)`
-  width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.lfGray.base};
 `
 
 export const StyledLoading = styled(Loading)`

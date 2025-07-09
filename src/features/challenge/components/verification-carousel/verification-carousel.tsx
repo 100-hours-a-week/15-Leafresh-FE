@@ -79,7 +79,7 @@ export const VerificationCarousel = ({ verifications }: Props) => {
   }, [emblaApi, onInit, onSelect])
 
   return (
-    <S.Wrapper>
+    <>
       <S.CarouselViewport ref={emblaRef}>
         <S.CarouselContainer>
           {chunks.map((group, index) => (
@@ -106,6 +106,6 @@ export const VerificationCarousel = ({ verifications }: Props) => {
           />
         ))}
       </S.Dots>
-    </S.Wrapper>
+    </>
   )
 }

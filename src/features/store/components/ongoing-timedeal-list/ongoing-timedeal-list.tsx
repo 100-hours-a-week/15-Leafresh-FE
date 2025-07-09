@@ -14,10 +14,11 @@ import * as S from './styles'
 
 interface Props {
   data: TimeDealProduct[]
+  memberLeafCount?: number // 보유 나뭇잎 수
   className?: string
 }
 
-export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
+export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props): ReactNode => {
   /** 각 재고의 남은 시간 트래킹 */
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위
   useEffect(() => {
@@ -89,6 +90,7 @@ export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
       <S.TitleBox>
         <S.SectionTitle>🔥 지금만 이 가격</S.SectionTitle>
         <S.SubText>세상은 1등만 기억해!</S.SubText>
+        {memberLeafCount && <S.StyledLeafReward reward={memberLeafCount} />}
       </S.TitleBox>
       {timeDealContents}
     </S.Container>

@@ -45,6 +45,7 @@ export const Header = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
 `
 
@@ -58,15 +59,16 @@ export const BackButton = styled(LucideIcon)`
 export const CameraWrapper = styled.div`
   gap: 16px;
   width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
+  aspect-ratio: 1/1;
+  /* overflow: hidden; */
 
   position: relative;
   background-color: ${({ theme }) => theme.colors.lfInputBackground.base};
 `
 
 export const CameraView = styled.video`
-  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
   object-fit: cover;
 `
 

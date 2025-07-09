@@ -1,9 +1,5 @@
 import styled from '@emotion/styled'
 
-export const Wrapper = styled.div`
-  width: 100%;
-`
-
 export const CarouselViewport = styled.div`
   overflow: hidden;
   /* width: 100%; */
@@ -13,7 +9,8 @@ export const CarouselViewport = styled.div`
 
 export const CarouselContainer = styled.div`
   display: flex;
-  margin: 0 auto; /* 화면 중앙 정렬 */
+  justify-content: center;
+  width: 100%;
 `
 
 export const Slide = styled.div`
@@ -23,6 +20,8 @@ export const Slide = styled.div`
 `
 
 export const Grid = styled.div`
+  width: 100%;
+
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;

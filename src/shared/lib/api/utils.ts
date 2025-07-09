@@ -7,11 +7,11 @@ export const getClientFetchOrigin = () => {
 
   switch (runtimeEnv) {
     case 'local':
-      // return 'https://dev-leafresh.app/api/proxy' // Dev FE 라우트
-      // return 'https://fe.dev-leafresh.app/api/proxy'
+      // return 'https://dev-leafresh.app/api/next/proxy' // Dev FE 라우트
+      // return 'https://fe.dev-leafresh.app/api/next/proxy'
       return 'https://springboot.dev-leafresh.app' // TODO: 현재는 백엔드 임시 개방 -> 추후 프론트엔드 프록시로 연결
     case 'dev':
-      return 'https://dev-leafresh.app/api/proxy' // Dev FE 라우트
+      return 'https://dev-leafresh.app/api/next/proxy' // Dev FE 라우트
     case 'prod':
       return 'https://leafresh.app' // 로드밸런서
     default:
@@ -27,8 +27,10 @@ export const getServerFetchOrigin = () => {
 
   switch (runtimeEnv) {
     case 'local':
-      return 'https://dev-leafresh.app/api/proxy' // Dev FE 라우트
+      // return 'https://dev-leafresh.app/api/next/proxy' // Dev FE 라우트
+      return 'https://springboot.dev-leafresh.app'
     case 'dev':
+      // return '35.216.18.52' //외부망으로 임시 연결
       return 'http://10.0.1.67:8080' // 내부망
     case 'prod':
       return 'https://leafresh.app' // 로드밸런서

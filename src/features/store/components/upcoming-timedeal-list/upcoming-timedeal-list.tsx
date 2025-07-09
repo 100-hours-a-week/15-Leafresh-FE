@@ -47,7 +47,7 @@ export const UpcomingTimeDealList = ({ data, className }: UpcomingTimeDealListPr
                 <S.PriceRow>
                   <S.Discount>{item.discountedPercentage}%</S.Discount>
                   <S.Price>
-                    <S.LeafIcon src='/icon/leaf.png' alt='leaf' width={24} height={24} /> {item.discountedPrice}
+                    <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} /> {item.discountedPrice}
                   </S.Price>
                   <S.Origin>{item.defaultPrice}</S.Origin>
                 </S.PriceRow>

@@ -2,7 +2,6 @@
 
 import { ReactNode } from 'react'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { useQuery } from '@tanstack/react-query'
@@ -23,8 +22,6 @@ import { URL } from '@/shared/constants'
 import { useCameraModalStore, useConfirmModalStore, usePollingStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
-
-import LeafIcon from '@public/icon/leaf.png'
 
 import * as S from './styles'
 
@@ -212,7 +209,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
             <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
-                인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
+                인증 성공시 <S.StyledLeafReward reward={leafReward} />개 지급
               </li>
             </S.Warning>
           </S.WarningList>

@@ -9,6 +9,7 @@ import { FullFormValues } from '@/entities/challenge/model'
 import { ErrorText, LucideIcon } from '@/shared/components'
 
 import * as S from './styles'
+import { UploadThumbnailInput } from './thumbnail-image-input'
 
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
@@ -95,18 +96,14 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
             <S.InfoIcon>ⓘ</S.InfoIcon>
           </S.LabelRow>
           <S.SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</S.SubText>
-          <S.StyledImageInput
-            label='이미지를 업로드해주세요'
-            icon={<LucideIcon name='Image' size={24} />}
+          <UploadThumbnailInput
             imageUrl={formValue.thumbnailUrl || null}
             onChange={({ imageUrl }) => {
               setValue('thumbnailUrl', imageUrl ?? '')
               trigger('thumbnailUrl')
             }}
-            backgroundColor='lfWhite'
-            cameraTitle='챌린지 썸네일'
-            aspectRatio='FIVE_THREE'
           />
+
           <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
         </S.FieldWrapper>
 

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { ApologizeContent } from '@/shared/components'
+import { ApologizeContent, LeafReward } from '@/shared/components'
 import { media } from '@/shared/config'
 
 export const Container = styled.section`
@@ -10,6 +10,7 @@ export const Container = styled.section`
   cursor: pointer;
 `
 export const TitleBox = styled.div`
+  position: relative;
   margin-bottom: 12px;
 `
 
@@ -69,4 +70,11 @@ export const RightButton = styled(LeftButton)`
 
 export const StyledApologizeContent = styled(ApologizeContent)`
   margin: 24px 0;
+`
+
+export const StyledLeafReward = styled(LeafReward)`
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 `

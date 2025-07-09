@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 
 import { LeafReward } from '@/shared/components'
+import { ASPECT_RATIO } from '@/shared/constants'
 
 export const ChallengeCard = styled.div`
   width: 100%;
@@ -23,7 +24,8 @@ export const ChallengeCard = styled.div`
 export const TopImageWrapper = styled.div`
   background: #d9d9d9;
   width: 100%;
-  aspect-ratio: 3/2;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.THUMBNAIL};
+
   position: relative;
   display: flex;
   align-items: center;

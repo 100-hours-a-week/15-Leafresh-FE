@@ -1,8 +1,6 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
-
-import { useRouter } from 'next/navigation'
+import { ReactNode, useEffect } from 'react'
 
 import { z } from 'zod'
 
@@ -15,9 +13,8 @@ import { getMemberProfile, MemberInfoRequest, MemberInfoResponse, ProfileRespons
 
 import { Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
-import { URL } from '@/shared/constants'
 import { useUserStore } from '@/shared/context'
-import { useImageUpload, useToast } from '@/shared/hooks'
+import { useUploadImageToBucket, useToast, useProcessImageFile } from '@/shared/hooks'
 
 import * as S from './styles'
 
@@ -35,13 +32,12 @@ type ProfileForm = z.infer<typeof profileSchema>
 const maxLength = 20
 
 export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactNode => {
-  const router = useRouter()
   const { toast } = useToast()
 
-  const [nickname, setNickname] = useState('')
-  const [nicknameError, setNicknameError] = useState<string | undefined>(undefined)
-  const [imageUrl, setImageUrl] = useState('')
-  const { uploadFile, isUploading } = useImageUpload()
+  // const [imageUrl, setImageUrl] = useState('')
+
+  const { processImageFile } = useProcessImageFile()
+  const { uploadFile, loading: uploading } = useUploadImageToBucket()
 
   const { updateUserInfo } = useUserStore()
 
@@ -79,46 +75,22 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
     MUTATION_KEYS.MEMBER.MODIFY,
   )
 
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setNickname(value)
-    try {
-      profileSchema.parse(value)
-      setNicknameError('')
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setNicknameError(err.errors[0].message)
-      }
-    }
-  }
-
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const originalFile = e.target.files?.[0]
-    if (!originalFile) return
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const processed = await processImageFile(file, 'thumbnail.jpg')
+    if (!processed) {
+      toast('Error', '이미지 처리에 실패했습니다')
+      return
+    }
 
     try {
-      const imageBitmap = await createImageBitmap(originalFile)
-      const canvas = document.createElement('canvas')
-      canvas.width = imageBitmap.width
-      canvas.height = imageBitmap.height
-
-      const ctx = canvas.getContext('2d')
-      if (!ctx) throw new Error('Canvas context 생성 실패')
-
-      ctx.drawImage(imageBitmap, 0, 0)
-
-      canvas.toBlob(async blob => {
-        if (!blob) return
-        const file = new File([blob], `profile.jpg`, {
-          type: 'image/jpeg',
-        })
-
-        const uploadedUrl = await uploadFile(file)
-        setValue('imageUrl', uploadedUrl)
-        toast('Success', '이미지가 성공적으로 업로드되었습니다')
-      }, 'image/jpeg')
-    } catch (err) {
-      toast('Error', '이미지 업로드에 실패했습니다')
+      const uploadedUrl = await uploadFile(processed)
+      setValue('imageUrl', uploadedUrl)
+      toast('Success', '프로필 이미지 업로드 성공')
+    } catch {
+      toast('Error', '프로필 이미지 업로드 실패')
     }
   }
 
@@ -143,7 +115,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
           nickname: res.data.nickname,
           imageUrl: res.data.imageUrl,
         })
-        router.push(URL.MEMBER.PROFILE.MYPAGE.value)
+        toast('Success', '프로필 수정 성공')
       },
       onError: err => {
         toast('Error', err.message || '프로필 수정에 실패했습니다.\n다시 시도해 주세요!')
@@ -155,15 +127,11 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
 
   const profile: ProfileResponse = profileData.data ?? ({} as ProfileResponse)
 
-  const currentImage = watch('imageUrl') || profile?.profileImageUrl
-
-  //이미지 업로드 시 변경
-  const backgroundImage = imageUrl || currentImage
-
+  const profileImage = watch('imageUrl') || profile?.profileImageUrl
   const watchedNickname = watch('nickname') ?? ''
   const watchedImageUrl = watch('imageUrl') ?? ''
 
-  const isUnchanged =
+  const isUnchanged: boolean =
     watchedNickname === (profile?.nickname ?? '') && watchedImageUrl === (profile?.profileImageUrl ?? '')
 
   return (
@@ -173,8 +141,8 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
       </S.Header>
 
       <S.ProfileWrapper>
-        <S.UploadImageButton htmlFor='profile-image' $hasImage={!!currentImage}>
-          {currentImage && <S.ProfileImage src={backgroundImage} alt='프로필 이미지' />}
+        <S.UploadImageButton htmlFor='profile-image' $hasImage={!!profileImage}>
+          {profileImage && <S.ProfileImage src={profileImage} alt='프로필 이미지' />}
           <S.CameraWrapper>
             <LucideIcon size={14} name='Pencil' color='lfBlack' />
             수정
@@ -184,7 +152,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
             type='file'
             accept='image/*'
             onChange={handleImageChange}
-            disabled={isUploading}
+            disabled={uploading}
           />
         </S.UploadImageButton>
       </S.ProfileWrapper>
@@ -207,8 +175,8 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
         </S.InputWrapper>
       </S.InputSection>
 
-      <S.SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || isUploading}>
-        {isUploading ? '업로드 중...' : '수정하기'}
+      <S.SubmitButton onClick={handleSubmit(onSubmit)} disabled={isUnchanged || uploading}>
+        {uploading ? '업로드 중...' : '수정하기'}
       </S.SubmitButton>
     </S.Container>
   )

@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { URL } from '@/shared/constants'
 import { ISOFormatString } from '@/shared/type'
 
-import LeafIcon from '@public/icon/leaf.png'
+import LeafIcon from '@public/icon/leaf.svg'
 
 import * as S from './styles'
 

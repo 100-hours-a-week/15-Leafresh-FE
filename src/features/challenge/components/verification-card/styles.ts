@@ -2,6 +2,8 @@ import Image from 'next/image'
 
 import styled from '@emotion/styled'
 
+import { ASPECT_RATIO } from '@/shared/constants'
+
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -66,7 +68,7 @@ export const VerificationWrapper = styled.div`
 
 export const ImageWrapper = styled.div`
   position: relative;
-  aspect-ratio: 5 / 3;
+  aspect-ratio: ${ASPECT_RATIO.CHALLENGE.VERIFICATION};
   overflow: hidden;
 `
 

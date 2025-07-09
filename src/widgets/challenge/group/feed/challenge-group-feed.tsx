@@ -39,6 +39,11 @@ export const FeedPage = ({ className }: FeedPageProps): ReactNode => {
 
   return (
     <S.Wrapper className={className}>
+      <S.TextWrapper>
+        <S.FeedTitle>단체 챌린지 인증 피드</S.FeedTitle>
+        <S.FeedSubtitle>* 개인 챌린지 미포함</S.FeedSubtitle>
+      </S.TextWrapper>
+
       <S.CategoryGrid>
         {categories.map(cat => (
           <S.CategoryItem

@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { CheckIcon, LucideIcon, SwitchTap, VerificationGuideModal } from '@/shared/components'
+import { CheckIcon, ErrorText, LucideIcon, SwitchTap, VerificationGuideModal } from '@/shared/components'
 import { useCameraModalStore } from '@/shared/context'
-import { useImageUpload, useScrollLock, useToast } from '@/shared/hooks'
+import { useUploadImageToBucket, useScrollLock, useToast } from '@/shared/hooks'
 
 import * as S from './styles'
 
@@ -16,7 +16,7 @@ export const CameraModal = () => {
   const { toast } = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
 
-  const { uploadFile, isUploading, error: uploadError } = useImageUpload()
+  const { uploadFile, loading: uploading, error: uploadError } = useUploadImageToBucket()
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -28,6 +28,7 @@ export const CameraModal = () => {
   const [description, setDescription] = useState<string>('')
   const [showGuide, setShowGuide] = useState<boolean>(false)
   const [scrollTop, setScrollTop] = useState<number>(0)
+  const [errorText, setErrorText] = useState<string | undefined>(undefined)
 
   const [facingMode, setFacingMode] = useState<FacingMode>('environment')
 
@@ -121,7 +122,10 @@ export const CameraModal = () => {
 
   const handleConfirm = async () => {
     if (!previewUrl) return
-    if (hasDescription && !description) return
+    if (hasDescription && !description) {
+      setErrorText('설명은 필수입니다.')
+      return
+    }
 
     try {
       // 1) Base64 → Blob → File
@@ -143,6 +147,7 @@ export const CameraModal = () => {
       close()
       setPreviewUrl(null)
       setDescription('')
+      setErrorText(undefined)
     }
   }
 
@@ -157,6 +162,7 @@ export const CameraModal = () => {
   const handleRestart = () => {
     setPreviewUrl(null)
     setDescription('')
+    setErrorText(undefined)
     setTab(0)
   }
 
@@ -209,6 +215,7 @@ export const CameraModal = () => {
         <S.TextAreaLabel status={status}>{label}</S.TextAreaLabel>
         <S.TextAreaDescription>인증 참여 이미지를 사람들에게 설명해주세요.</S.TextAreaDescription>
         <S.TextArea value={description} onChange={e => setDescription(e.target.value)} placeholder='예) Placeholder' />
+        <ErrorText message={errorText} />
       </S.TextAreaWrapper>
     )
   }

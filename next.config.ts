@@ -6,10 +6,10 @@ let gcsHostname: string
 
 switch (runtimeEnv) {
   case 'local':
-    gcsHostname = 'leafresh-images'
+    gcsHostname = 'leafresh-gcs-images'
     break
   case 'dev':
-    gcsHostname = 'leafresh-images'
+    gcsHostname = 'leafresh-gcs-images'
     break
   case 'prod':
     gcsHostname = 'leafresh-prod-images'

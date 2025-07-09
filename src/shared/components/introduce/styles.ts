@@ -16,15 +16,12 @@ export const Wrapper = styled.section`
 export const ItemWrapper = styled.div`
   margin-top: 28px;
   padding-bottom: 16px;
-  display: grid;
-  grid-template-columns: 100px 120px 100px 120px; // 4열 구성
-  place-items: center;
 
-  gap: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
 
   border-bottom: 1px solid #03452e;
-
-  align-items: center;
 `
 
 export const DataWrapper = styled.div`
@@ -60,4 +57,10 @@ export const IntroduceText = styled.span`
   font-size: 28px;
   color: #2a5237;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+`
+
+export const StatItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `
