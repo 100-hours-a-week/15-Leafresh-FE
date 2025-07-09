@@ -1,7 +1,7 @@
 'use client'
 
 import styled from '@emotion/styled'
-import ServiceReadyImage from '@/shared/assets/service_ready.svg'
+import ServiceReadyImage from '@/shared/assets/images/service_ready.svg'
 
 import { media, theme } from '@/shared/config'
 
