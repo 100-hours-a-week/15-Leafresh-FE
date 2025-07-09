@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 
 import styled from '@emotion/styled'
-import LogoImage from '@public/image/logo.svg'
+import LogoImage from '@/shared/assets/images/logo.svg'
 import { useQuery } from '@tanstack/react-query'
 
 import { Login } from '@/entities/member/api'
@@ -17,7 +17,7 @@ import { QUERY_KEYS, QUERY_OPTIONS, theme } from '@/shared/config'
 import { ToastType, useOAuthStateStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
-import KakaoLoginButton from '@public/image/kakao_login.svg'
+import KakaoLoginButton from '@/shared/assets/images/kakao_login.svg'
 
 const LoginPage = () => {
   const openToast = useToast()
@@ -69,17 +69,13 @@ const LoginPage = () => {
 
   return (
     <Container>
-      <Logo src={LogoImage} alt='Leafresh' width={160} height={60} />
+      <LogoImage width={160} height={60} />
       <DividerWrapper>
         <Line />
         <Text>로그인 / 회원가입</Text>
         <Line />
       </DividerWrapper>
-      {!isLoading ? (
-        <KakaoImage src={KakaoLoginButton} alt='kakao' onClick={() => handleLogin('kakao')} />
-      ) : (
-        <Loading />
-      )}
+      {!isLoading ? <KakaoLoginButton onClick={() => handleLogin('kakao')} /> : <Loading />}
     </Container>
   )
 }
