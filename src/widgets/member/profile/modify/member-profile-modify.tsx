@@ -198,7 +198,7 @@ export const ProfileModifyPage = ({ className }: ProfileModifyPageProps): ReactN
           <Label>닉네임</Label>
           <TextInput type='text' {...register('nickname')} placeholder={profile?.nickname || '나의 닉네임'} />
           <InputMeta hasError={!!errors.nickname}>
-            <StyledErrorText message={errors.nickname?.message} />
+            <StyledErrorText text={errors.nickname?.message} />
             <CountText hasError={!!errors.nickname}>
               {watch('nickname')?.length || 0}/{maxLength}
             </CountText>
