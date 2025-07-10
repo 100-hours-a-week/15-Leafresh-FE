@@ -72,7 +72,12 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
         <Embla ref={emblaRef}>
           <EmblaTrack>
             {data.map((deal, index) => (
-              <OngoingTimeDealCard key={deal.productId} data={deal} remainingSec={remainingTimes[index] ?? 0} />
+              <OngoingTimeDealCard
+                key={deal.productId}
+                data={deal}
+                remainingSec={remainingTimes[index] ?? 0}
+                memberLeafCount={memberLeafCount}
+              />
             ))}
           </EmblaTrack>
         </Embla>
@@ -90,7 +95,7 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
       <TitleBox>
         <SectionTitle>🔥 지금만 이 가격</SectionTitle>
         <SubText>세상은 1등만 기억해!</SubText>
-        {memberLeafCount && <StyledLeafReward reward={memberLeafCount} />}
+        {memberLeafCount !== undefined && <StyledLeafReward reward={memberLeafCount} />}
       </TitleBox>
       {timeDealContents}
     </Container>

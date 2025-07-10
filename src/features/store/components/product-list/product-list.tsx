@@ -76,7 +76,7 @@ export const ProductList = ({ memberLeafCount, className }: ProductListProps): R
       <>
         <ProductGrid>
           {products.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} memberLeafCount={memberLeafCount} />
           ))}
           {isFetchingNextPage && <StyledLoading />}
           {hasNextPage && <ObserverTrigger ref={observerRef} />}
@@ -96,7 +96,7 @@ export const ProductList = ({ memberLeafCount, className }: ProductListProps): R
           onChange={e => setInput(e.target.value)}
         />
       </SearchBar>
-      {memberLeafCount && (
+      {memberLeafCount !== undefined && (
         // <LeafCountWrapper>
         <StyledLeafReward reward={memberLeafCount} />
         // </LeafCountWrapper>
