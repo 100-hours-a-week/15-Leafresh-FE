@@ -1,1 +1,1 @@
-export * from './useUploadImageToBucket'
+export * from './use-upload-image-to-bucket'

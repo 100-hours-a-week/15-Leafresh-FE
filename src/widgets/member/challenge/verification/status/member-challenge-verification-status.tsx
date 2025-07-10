@@ -2,7 +2,6 @@
 
 import { useMemo } from 'react'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { VerificationCarousel } from '@/features/challenge/components'
@@ -15,13 +14,14 @@ import {
 import { ParticipantChallengeItem } from '@/entities/member/api'
 
 import { Loading } from '@/shared/components'
-import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore, getQueryClient } from '@/shared/config'
-import { ToastType, useCameraModalStore, usePollingStore } from '@/shared/context'
+import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore, getQueryClient } from '@/shared/config'
+import { useCameraModalStore, usePollingStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
-import { responsiveHorizontalPadding } from '@/shared/styles'
+
+import * as S from './styles'
 
 export function GroupVerificationPage({ challengeId }: { challengeId: number }) {
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const { open: openCameraModal } = useCameraModalStore()
   const { addGroupChallengeId } = usePollingStore()
@@ -53,7 +53,7 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
   }, [completedQuery, challengeId])
 
   if (isPending) return <Loading />
-  if (error) return <Message>Error: {error.message}</Message>
+  if (error) return <S.Message>Error: {error.message}</S.Message>
 
   const verifications = verificationData!.data
 
@@ -74,7 +74,7 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
           {
             onSuccess: () => {
               addGroupChallengeId(challengeId) // 인증 결과 롱폴링 시작
-              openToast(ToastType.Success, `인증 제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
+              toast('Success', `인증 제출 성공!\nAI 판독 결과를 기다려주세요`) // 성공 메시지
             },
           },
         )
@@ -94,124 +94,48 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
   }
 
   const renderButton = () => {
-    if (isCompleted) return <DisabledButton>기간 종료</DisabledButton>
+    if (isCompleted) return <S.DisabledButton>기간 종료</S.DisabledButton>
     switch (verifications.todayStatus) {
       case 'NOT_SUBMITTED':
-        return <ActionButton onClick={handleCapture}>인증하기</ActionButton>
+        return <S.ActionButton onClick={handleCapture}>인증하기</S.ActionButton>
       case 'PENDING_APPROVAL':
-        return <DisabledButton>인증 중</DisabledButton>
+        return <S.DisabledButton>인증 중</S.DisabledButton>
       case 'DONE':
-        return <DisabledButton>오늘 참여 완료</DisabledButton>
+        return <S.DisabledButton>오늘 참여 완료</S.DisabledButton>
       default:
         return null
     }
   }
 
   return (
-    <Container>
-      <Title>{verifications.title} 챌린지</Title>
-      <Stats>
-        <Stat>
-          <Label>인증 성공</Label>
-          <Count>{verifications.achievement.success}회</Count>
-        </Stat>
-        <Stat>
-          <Label>인증 실패</Label>
-          <Count>{verifications.achievement.failure}회</Count>
-        </Stat>
-        <Stat>
-          <Label>남은 인증</Label>
-          <Count>{verifications.achievement.remaining}회</Count>
-        </Stat>
-      </Stats>
-      <CarouselWrapper>
+    <S.Container>
+      <S.Title>{verifications.title} 챌린지</S.Title>
+      <S.Stats>
+        <S.Stat>
+          <S.Label>인증 성공</S.Label>
+          <S.Count>{verifications.achievement.success}회</S.Count>
+        </S.Stat>
+        <S.Stat>
+          <S.Label>인증 실패</S.Label>
+          <S.Count>{verifications.achievement.failure}회</S.Count>
+        </S.Stat>
+        <S.Stat>
+          <S.Label>남은 인증</S.Label>
+          <S.Count>{verifications.achievement.remaining}회</S.Count>
+        </S.Stat>
+      </S.Stats>
+      <S.CarouselWrapper>
         {verifications.verifications.length !== 0 ? (
           <VerificationCarousel verifications={verifications.verifications} />
         ) : (
-          <NoneContent>인증 목록이 없습니다.</NoneContent>
+          <S.NoneContent>인증 목록이 없습니다.</S.NoneContent>
         )}
-      </CarouselWrapper>
+      </S.CarouselWrapper>
 
-      <ButtonGroup>
+      <S.ButtonGroup>
         {/* <QuestionButton>문의하기</QuestionButton> */}
         {renderButton()}
-      </ButtonGroup>
-    </Container>
+      </S.ButtonGroup>
+    </S.Container>
   )
 }
-
-const Container = styled.div`
-  ${responsiveHorizontalPadding};
-
-  max-width: 500px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`
-const Title = styled.h2`
-  align-self: center;
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-`
-const Stats = styled.div`
-  padding: 0 20px;
-
-  display: flex;
-  justify-content: space-between;
-`
-const Stat = styled.div`
-  text-align: center;
-`
-const Label = styled.div`
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfDarkGray.base};
-`
-const Count = styled.div`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.bold};
-  margin-top: 4px;
-`
-const CarouselWrapper = styled.div`
-  width: 100%;
-
-  position: relative;
-`
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const ActionButton = styled.button`
-  padding: 12px;
-  background: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 4px;
-  font-size: ${theme.fontSize.md};
-  cursor: pointer;
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-`
-const DisabledButton = styled.button`
-  padding: 12px;
-  background: ${theme.colors.lfGreenInactive.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 4px;
-  font-size: ${theme.fontSize.md};
-  cursor: default;
-`
-const Message = styled.div`
-  padding: 40px;
-  text-align: center;
-`
-
-const NoneContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`

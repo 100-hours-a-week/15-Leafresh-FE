@@ -2,15 +2,15 @@
 
 import { ReactNode, useEffect, useState } from 'react'
 
-import styled from '@emotion/styled'
 import useEmblaCarousel from 'embla-carousel-react'
 
 import { TimeDealProduct } from '@/entities/store/api'
 
-import { ApologizeContent, LeafReward, LucideIcon } from '@/shared/components'
-import { media, theme } from '@/shared/config'
+import { LucideIcon } from '@/shared/components'
 
 import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
+
+import * as S from './styles'
 
 interface Props {
   data: TimeDealProduct[]
@@ -54,7 +54,7 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
   /** 예외: 타임딜 상품이 없는 경우 */
   if (!data || data.length === 0) {
     timeDealContents = (
-      <StyledApologizeContent
+      <S.StyledApologizeContent
         title='진행 중인 특가 상품이 없습니다'
         description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
       />
@@ -62,15 +62,15 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
   } else {
     /** 타임딜 상품이 있는 경우 */
     timeDealContents = (
-      <CarouselWrapper>
+      <S.CarouselWrapper>
         {canScrollPrev && (
-          <LeftButton onClick={() => emblaApi?.scrollPrev()}>
+          <S.LeftButton onClick={() => emblaApi?.scrollPrev()}>
             <LucideIcon name='ChevronLeft' size={24} />
-          </LeftButton>
+          </S.LeftButton>
         )}
 
-        <Embla ref={emblaRef}>
-          <EmblaTrack>
+        <S.Embla ref={emblaRef}>
+          <S.EmblaTrack>
             {data.map((deal, index) => (
               <OngoingTimeDealCard
                 key={deal.productId}
@@ -79,105 +79,25 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
                 memberLeafCount={memberLeafCount}
               />
             ))}
-          </EmblaTrack>
-        </Embla>
+          </S.EmblaTrack>
+        </S.Embla>
 
         {canScrollNext && (
-          <RightButton onClick={() => emblaApi?.scrollNext()}>
+          <S.RightButton onClick={() => emblaApi?.scrollNext()}>
             <LucideIcon name='ChevronRight' size={24} />
-          </RightButton>
+          </S.RightButton>
         )}
-      </CarouselWrapper>
+      </S.CarouselWrapper>
     )
   }
   return (
-    <Container className={className}>
-      <TitleBox>
-        <SectionTitle>🔥 지금만 이 가격</SectionTitle>
-        <SubText>세상은 1등만 기억해!</SubText>
-        {memberLeafCount !== undefined && <StyledLeafReward reward={memberLeafCount} />}
-      </TitleBox>
+    <S.Container className={className}>
+      <S.TitleBox>
+        <S.SectionTitle>🔥 지금만 이 가격</S.SectionTitle>
+        <S.SubText>세상은 1등만 기억해!</S.SubText>
+        {memberLeafCount && <S.StyledLeafReward reward={memberLeafCount} />}
+      </S.TitleBox>
       {timeDealContents}
-    </Container>
+    </S.Container>
   )
 }
-
-const Container = styled.section`
-  margin: 20px 0;
-  width: 100%;
-  position: relative;
-  cursor: pointer;
-`
-const TitleBox = styled.div`
-  position: relative;
-  margin-bottom: 12px;
-`
-
-const SectionTitle = styled.h2`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-`
-
-const SubText = styled.p`
-  margin: 8px 0px;
-  color: ${theme.colors.lfDarkGray.base};
-  font-size: ${theme.fontSize.sm};
-
-  ${media.afterMobile} {
-    font-size: ${theme.fontSize.base};
-  }
-`
-
-const CarouselWrapper = styled.div`
-  width: 100%;
-
-  position: relative;
-`
-const Embla = styled.div`
-  padding: 6px 0;
-  overflow: hidden;
-`
-const EmblaTrack = styled.div`
-  display: flex;
-`
-
-const MoveButton = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.full};
-  box-shadow: ${theme.shadow.lfInput};
-  width: 36px;
-  height: 36px;
-  z-index: 10;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${theme.colors.lfInputBackground.base};
-  }
-`
-
-const LeftButton = styled(MoveButton)`
-  left: 0;
-`
-const RightButton = styled(LeftButton)`
-  left: auto;
-  right: 0;
-`
-
-const StyledApologizeContent = styled(ApologizeContent)`
-  margin: 24px 0;
-`
-
-const LeafCountText = styled.span`
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-`
-
-const StyledLeafReward = styled(LeafReward)`
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-`

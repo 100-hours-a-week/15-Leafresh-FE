@@ -75,7 +75,7 @@ export const getTimeDiff = (dateString: ISOFormatString): string => {
   const diffDay = Math.floor(diffMs / (1000 * 60 * 60 * 24))
 
   // 1분 이내
-  if (diffMin < 1) return '방금'
+  if (diffMin < 1) return '방금 전'
   if (diffMin < 60) return `${diffMin}분 전`
   if (diffHour < 24) return `${diffHour}시간 전`
   if (diffDay < 2) return `어제`

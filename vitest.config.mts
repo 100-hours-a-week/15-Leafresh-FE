@@ -12,13 +12,12 @@ dotenv.config({ path: path.resolve(__dirname, '.env.test') })
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
+    exclude: ['**/node_modules/**', '**/dist/**', '**/.next/**', '**/index.ts', '**/*.spec.ts'],
     environment: 'jsdom',
-    exclude: [
-      'node_modules',
-      'dist',
-      'build',
-      'tests', // ignore tests/
-      '**/*.spec.ts', // ignore playwright test files
-    ],
+    coverage: {
+      provider: 'v8', // or 'istanbul'
+      reporter: ['text', 'html', 'json'],
+      exclude: ['**/node_modules/**', '**/dist/**', '**/.next/**', '**/index.ts'],
+    },
   },
 })

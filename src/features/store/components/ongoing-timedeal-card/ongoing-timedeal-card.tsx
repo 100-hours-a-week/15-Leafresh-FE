@@ -5,8 +5,6 @@ import { ReactNode, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
-
 import { getMemberLeafCount, MemberLeafCountResponse } from '@/entities/member/api'
 import {
   OrderTimeDealProductBody,
@@ -17,11 +15,13 @@ import {
 } from '@/entities/store/api'
 
 import { LucideIcon } from '@/shared/components'
-import { getQueryClient, media, MUTATION_KEYS, QUERY_KEYS, useMutationStore } from '@/shared/config'
+import { getQueryClient, MUTATION_KEYS, QUERY_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
+import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 import { ApiResponse, formatSecondToTime } from '@/shared/lib'
+
+import * as S from './styles'
 
 interface OngoingTimeDealCardProps {
   data: TimeDealProduct
@@ -38,8 +38,8 @@ export const OngoingTimeDealCard = ({
 }: OngoingTimeDealCardProps): ReactNode => {
   const router = useRouter()
   const queryClient = getQueryClient()
-  const openToast = useToast()
-  const { isLoggedIn } = useAuth()
+  const { toast } = useToast()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
   const { IdempotencyKey, regenerateIdempotencyKey } = useIdempotencyKeyStore()
 
@@ -66,13 +66,13 @@ export const OngoingTimeDealCard = ({
 
     // #2. 재고 부족
     if (isSoldOut) {
-      openToast(ToastType.Error, '품절된 상품입니다')
+      toast('Error', '품절된 상품입니다')
       return
     }
 
     // #3. 나뭇잎 부족
     if (memberLeafCount !== undefined && memberLeafCount < data.discountedPrice) {
-      openToast(ToastType.Error, '나뭇잎 개수가 부족합니다')
+      toast('Error', '나뭇잎 개수가 부족합니다')
       return
     }
 
@@ -82,7 +82,7 @@ export const OngoingTimeDealCard = ({
     const end = new Date(deal.dealEndTime).getTime()
 
     if (now < start || now > end) {
-      openToast(ToastType.Error, '현재는 특가 구매 가능한 시간이 아닙니다.')
+      toast('Error', '현재는 특가 구매 가능한 시간이 아닙니다.')
       return
     }
 
@@ -117,7 +117,7 @@ export const OngoingTimeDealCard = ({
         return PurchaseMutate(
           { productId: deal.dealId, headers, body },
           {
-            onSuccess: () => openToast(ToastType.Success, '구매가 완료되었습니다'),
+            onSuccess: () => toast('Success', '구매가 완료되었습니다'),
             onError: () => {
               // 롤백
               setLocalStock(prevStock)
@@ -125,7 +125,7 @@ export const OngoingTimeDealCard = ({
                 queryClient.setQueryData(QUERY_KEYS.MEMBER.LEAVES, prevLeafCountData)
               }
 
-              openToast(ToastType.Error, '구매에 실패했습니다\n다시 시도해주세요')
+              toast('Error', '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
               regenerateIdempotencyKey()
@@ -137,123 +137,29 @@ export const OngoingTimeDealCard = ({
   }
 
   return (
-    <EmblaSlide key={data.productId} className={className}>
-      <Timer isRunningOut={isRunningOut}>
+    <S.EmblaSlide key={data.productId} className={className}>
+      <S.Timer isRunningOut={isRunningOut}>
         <LucideIcon name='Hourglass' size={18} strokeWidth={2.5} color={isRunningOut ? 'lfRed' : 'lfBlack'} />
         {formatted}
-      </Timer>
-      <Card>
-        <ImageBox>
+      </S.Timer>
+      <S.Card>
+        <S.ImageBox>
           <Image src={data.imageUrl} alt={data.title} fill style={{ objectFit: 'cover' }} />
-        </ImageBox>
-        <DescriptionSection>
-          <Title>{data.title}</Title>
-          <Description>{data.description}</Description>
-          <PriceRow>
-            <Discount>{data.discountedPercentage}%</Discount>
-            <Price>
+        </S.ImageBox>
+        <S.DescriptionSection>
+          <S.Title>{data.title}</S.Title>
+          <S.Description>{data.description}</S.Description>
+          <S.PriceRow>
+            <S.Discount>{data.discountedPercentage}%</S.Discount>
+            <S.Price>
               <Image src='/icon/leaf.svg' alt='leaf' width={18} height={18} /> {data.discountedPrice}
-            </Price>
-            <Origin>{data.defaultPrice}</Origin>
-          </PriceRow>
-          <Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${localStock}개`}</Stock>
-          <BuyButton onClick={() => handlePurchase(data)}>구매하기</BuyButton>
-        </DescriptionSection>
-      </Card>
-    </EmblaSlide>
+            </S.Price>
+            <S.Origin>{data.defaultPrice}</S.Origin>
+          </S.PriceRow>
+          <S.Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${localStock}개`}</S.Stock>
+          <S.BuyButton onClick={() => handlePurchase(data)}>구매하기</S.BuyButton>
+        </S.DescriptionSection>
+      </S.Card>
+    </S.EmblaSlide>
   )
 }
-
-const EmblaSlide = styled.div`
-  flex: 0 0 100%;
-  padding: 0 12px;
-  box-sizing: border-box;
-`
-const Card = styled.div`
-  background: ${({ theme }) => theme.colors.lfWhite.base};
-  border-radius: ${({ theme }) => theme.radius.base};
-  box-shadow: ${({ theme }) => theme.shadow.lfInput};
-  overflow: hidden;
-`
-
-const Timer = styled.div<{ isRunningOut: boolean }>`
-  font-size: ${({ theme }) => theme.fontSize.lg};
-  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
-  margin: 4px 0;
-  color: ${({ isRunningOut, theme }) => (isRunningOut ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`
-const ImageBox = styled.div`
-  position: relative;
-  aspect-ratio: 2/1;
-`
-const DescriptionSection = styled.div`
-  padding: 10px 14px;
-`
-
-const Title = styled.h3`
-  padding: 4px 0;
-  font-size: ${({ theme }) => theme.fontSize.base};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-
-  ${media.afterMobile} {
-    font-size: ${({ theme }) => theme.fontSize.lg};
-  }
-`
-
-const Description = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  margin: 8px 0;
-
-  ${media.afterMobile} {
-    font-size: ${({ theme }) => theme.fontSize.base};
-    margin: 12px 0;
-  }
-`
-
-const PriceRow = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 16px;
-  gap: 12px;
-`
-
-const Discount = styled.span`
-  color: #ff7043;
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`
-
-const Price = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.base};
-  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
-
-  display: flex;
-  align-items: center;
-  gap: 3px;
-`
-
-const Origin = styled.del`
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.lfGray.base};
-`
-
-const Stock = styled.div<{ soldout: boolean }>`
-  margin: 8px 0;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ soldout, theme }) => (soldout ? theme.colors.lfRed.base : theme.colors.lfDarkGray.base)};
-`
-const BuyButton = styled.button`
-  margin-top: 12px;
-  width: 100%;
-  height: 44px;
-  background: ${({ theme }) => theme.colors.lfGreenMain.base};
-  color: ${({ theme }) => theme.colors.lfWhite.base};
-  border-radius: ${({ theme }) => theme.radius.base};
-  font-size: ${({ theme }) => theme.fontSize.base};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-
-  cursor: pointer;
-`
