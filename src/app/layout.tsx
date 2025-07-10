@@ -1,17 +1,15 @@
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import type { Metadata } from 'next'
 
-import CameraModal from '@shared/components/modal/camera-modal/CameraModal'
-import ConfirmModal from '@shared/components/modal/ConfirmModal'
-import InfoModal from '@shared/components/modal/InfoModal'
-import Toast from '@shared/components/toast/Toast'
-import ImageZoomModal from '@shared/components/zoommodal/ImageZoomModal/ImageZoomModal'
-import { pretendard } from '@shared/config/font'
-import { Providers } from '@shared/config/providers/Providers'
-import LayoutWrapper from '@shared/styles/LayoutWrapper'
+import { pretendard, Providers } from '@/shared/config'
 
 export const metadata: Metadata = {
   title: 'Leafresh',
   description: '친환경 챌린지 서비스 Leafresh',
+  icons: {
+    icon: '/icon/favicon.ico',
+  },
 }
 
 const RootLayout = ({
@@ -22,15 +20,9 @@ const RootLayout = ({
   return (
     <html lang='ko' className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
-        <Providers>
-          <LayoutWrapper>{children}</LayoutWrapper>
-          <ConfirmModal />
-          <CameraModal />
-          <InfoModal />
-          <Toast />
-          <ImageZoomModal />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
     </html>
   )
 }
