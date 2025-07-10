@@ -46,7 +46,7 @@ export const MainPage = (): ReactNode => {
 
   return (
     <S.Container>
-      <EventSection eventChallenges={eventChallenges} />
+      {eventChallenges.length !== 0 && <EventSection eventChallenges={eventChallenges} />}
       <PersonalChallengeSection personalChallenges={personalChallenges} />
       <GroupChallengeSections categories={categories} />
     </S.Container>
