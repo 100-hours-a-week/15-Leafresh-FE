@@ -15,6 +15,9 @@ export interface SwitchTapProps {
 }
 
 export const SwitchTap = ({ tabs, currentIndex, onChange, className }: SwitchTapProps) => {
+  if (tabs.length < 2) {
+    return <></>
+  }
   return (
     <S.Container role='tablist' tabsCount={tabs.length} currentIndex={currentIndex} className={className}>
       {tabs.map((label, i) => (
