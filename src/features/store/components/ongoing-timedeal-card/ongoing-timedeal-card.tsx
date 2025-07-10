@@ -5,6 +5,7 @@ import { ReactNode, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+import { getMemberLeafCount, MemberLeafCountResponse } from '@/entities/member/api'
 import {
   OrderTimeDealProductBody,
   OrderTimeDealProductHeaders,
@@ -14,22 +15,29 @@ import {
 } from '@/entities/store/api'
 
 import { LucideIcon } from '@/shared/components'
-import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
+import { getQueryClient, MUTATION_KEYS, QUERY_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
-import { formatSecondToTime } from '@/shared/lib'
+import { ApiResponse, formatSecondToTime } from '@/shared/lib'
 
 import * as S from './styles'
 
 interface OngoingTimeDealCardProps {
   data: TimeDealProduct
   remainingSec: number
+  memberLeafCount?: number
   className?: string
 }
 
-export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTimeDealCardProps): ReactNode => {
+export const OngoingTimeDealCard = ({
+  data,
+  remainingSec,
+  memberLeafCount,
+  className,
+}: OngoingTimeDealCardProps): ReactNode => {
   const router = useRouter()
+  const queryClient = getQueryClient()
   const { toast } = useToast()
   const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
@@ -46,6 +54,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
   )
 
   const handlePurchase = (deal: TimeDealProduct) => {
+    // #1. 미로그인 상태
     if (!isLoggedIn) {
       openConfirmModal({
         title: '로그인이 필요합니다.',
@@ -55,11 +64,19 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
       return
     }
 
-    if (deal.stock <= 0) {
-      toast('Error', '품절된 상품입니다.')
+    // #2. 재고 부족
+    if (isSoldOut) {
+      toast('Error', '품절된 상품입니다')
       return
     }
 
+    // #3. 나뭇잎 부족
+    if (memberLeafCount !== undefined && memberLeafCount < data.discountedPrice) {
+      toast('Error', '나뭇잎 개수가 부족합니다')
+      return
+    }
+
+    // #4. 기간 지남
     const now = new Date().getTime()
     const start = new Date(deal.dealStartTime).getTime()
     const end = new Date(deal.dealEndTime).getTime()
@@ -69,6 +86,7 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
       return
     }
 
+    // #5. 구매
     openConfirmModal({
       title: `${deal.title}를 구매하시겠습니까?`,
       description: `할인된 가격은 나뭇잎 ${deal.discountedPrice}개 입니다.`,
@@ -80,12 +98,33 @@ export const OngoingTimeDealCard = ({ data, remainingSec, className }: OngoingTi
         const prevStock = localStock
         setLocalStock(prev => prev - 1) // 낙관적 업데이트
 
+        // 낙관적 업데이트: 나뭇잎 수
+        const prevLeafCountData = queryClient.getQueryData<Awaited<ReturnType<typeof getMemberLeafCount>>>(
+          QUERY_KEYS.MEMBER.LEAVES,
+        )
+
+        queryClient.setQueryData<ApiResponse<MemberLeafCountResponse>>(QUERY_KEYS.MEMBER.LEAVES, old => {
+          if (!old?.data) return old
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              currentLeafPoints: old.data.currentLeafPoints - deal.discountedPrice,
+            },
+          }
+        })
+
         return PurchaseMutate(
           { productId: deal.dealId, headers, body },
           {
             onSuccess: () => toast('Success', '구매가 완료되었습니다'),
             onError: () => {
-              setLocalStock(prevStock) // 실패 시 rollback
+              // 롤백
+              setLocalStock(prevStock)
+              if (prevLeafCountData) {
+                queryClient.setQueryData(QUERY_KEYS.MEMBER.LEAVES, prevLeafCountData)
+              }
+
               toast('Error', '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {

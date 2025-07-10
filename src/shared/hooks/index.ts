@@ -1,5 +1,4 @@
 export * from './use-count-up'
-export * from './use-upload-image-to-bucket'
 export * from './use-key-close'
 export * from './use-local-storage'
 export * from './use-object-state'

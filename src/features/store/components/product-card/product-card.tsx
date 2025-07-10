@@ -4,6 +4,9 @@ import { useState } from 'react'
 
 import { useRouter } from 'next/navigation'
 
+import { useQueryClient } from '@tanstack/react-query'
+
+import { MemberLeafCountResponse } from '@/entities/member/api'
 import {
   OrderProductBody,
   OrderProductHeaders,
@@ -12,19 +15,23 @@ import {
   Product,
 } from '@/entities/store/api'
 
-import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
+import { MUTATION_KEYS, useMutationStore, QUERY_KEYS } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
+import { ApiResponse } from '@/shared/lib'
 
 import * as S from './styles'
 
 interface ProductCardProps {
   product: Product
+  memberLeafCount?: number
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, memberLeafCount }: ProductCardProps) => {
   const router = useRouter()
+  const queryClient = useQueryClient()
+
   const { toast } = useToast()
   const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
@@ -59,7 +66,13 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     // #1. 에러 케이스
     // 재고 없음
     if (isSoldOut) {
-      toast('Error', '품절된 상품입니다.')
+      toast('Error', '품절된 상품입니다')
+      return
+    }
+
+    // #2. 나뭇잎 개수 부족
+    if (memberLeafCount !== undefined && memberLeafCount < price) {
+      toast('Error', '나뭇잎 개수가 부족합니다')
       return
     }
 
@@ -76,6 +89,19 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         const prevStock = localStock
         setLocalStock(prev => prev - 1)
 
+        const prevLeafData = queryClient.getQueryData<ApiResponse<MemberLeafCountResponse>>(QUERY_KEYS.MEMBER.LEAVES)
+
+        queryClient.setQueryData<ApiResponse<MemberLeafCountResponse>>(QUERY_KEYS.MEMBER.LEAVES, old => {
+          if (!old?.data) return old
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              currentLeafPoints: old.data.currentLeafPoints - price,
+            },
+          }
+        })
+
         PurchaseMutate(
           { productId: id, headers, body },
           {
@@ -83,7 +109,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               toast('Success', '구매가 완료되었습니다')
             },
             onError: () => {
-              setLocalStock(prevStock) // 실패 시 롤백
+              // 실패 시 롤백
+              setLocalStock(prevStock)
+              if (prevLeafData) {
+                queryClient.setQueryData(QUERY_KEYS.MEMBER.LEAVES, prevLeafData)
+              }
+
               toast('Error', '구매에 실패했습니다\n다시 시도해주세요')
             },
             onSettled: () => {
