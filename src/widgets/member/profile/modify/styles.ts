@@ -1,16 +1,17 @@
 import styled from '@emotion/styled'
 
 import { ErrorText } from '@/shared/components'
+import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const Container = styled.div`
-  max-width: 24rem;
-  margin: 0 auto;
-  background-color: #fff;
+  ${responsiveHorizontalPadding}
+
+  width: 100%;
   min-height: 100vh;
 `
 
 export const Header = styled.div`
-  padding: 10px 0;
+  /* padding: 10px 0; */
   border-bottom: 1px solid ${({ theme }) => theme.colors.lfLightGray.base};
 `
 
@@ -23,7 +24,7 @@ export const Title = styled.h1`
 export const ProfileWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 2rem 0;
+  margin: 2rem 0;
 `
 
 export const UploadImageButton = styled.label<{ $hasImage: boolean }>`
@@ -47,11 +48,12 @@ export const ProfileImage = styled.img`
 `
 
 export const CameraWrapper = styled.div`
+  padding: 5px;
+
   position: absolute;
   bottom: 10px;
   right: 0px;
   gap: 3px;
-  padding: 5px 5px;
 
   background-color: ${({ theme }) => theme.colors.lfWhite.base};
   color: ${({ theme }) => theme.colors.lfBlack.base};
