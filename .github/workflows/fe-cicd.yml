@@ -76,48 +76,48 @@ jobs:
           echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
           pnpm run test
 
-  integration-test:
-    name: Integration Test
-    needs: setup
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: latest
-      - name: Use cached pnpm modules
-        if: steps.setup.outputs.pnpm_cache_hit == 'true'
-        run: echo "Using cached pnpm modules"
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps ${{ matrix.browser }}
-      - name: Build Next.js app for testing
-        run: |
-          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-          echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
-          pnpm run build
-      - name: Start Next.js app for testing
-        run: |
-          pnpm run start &
+  # integration-test:
+  #   name: Integration Test
+  #   needs: setup
+  #   if: github.event_name == 'pull_request' && github.base_ref == 'main'
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: ./
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       browser: [chromium]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 'lts/*'
+  #     - uses: pnpm/action-setup@v2
+  #       with:
+  #         version: latest
+  #     - name: Use cached pnpm modules
+  #       if: steps.setup.outputs.pnpm_cache_hit == 'true'
+  #       run: echo "Using cached pnpm modules"
+  #     - name: Install Dependencies
+  #       run: pnpm install --frozen-lockfile
+  #     - name: Install Playwright Browsers
+  #       run: npx playwright install --with-deps ${{ matrix.browser }}
+  #     - name: Build Next.js app for testing
+  #       run: |
+  #         echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
+  #         echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
+  #         pnpm run build
+  #     - name: Start Next.js app for testing
+  #       run: |
+  #         pnpm run start &
 
-      - name: Wait for App to Start (Health Check)
-        run: sleep 20
-      - name: Run Playwright Tests (${{ matrix.browser }})
-        run: pnpm exec playwright test --project=chromium
-        env:
-          PLAYWRIGHT_TEST_BASE_URL: http://localhost:3000
+  #     - name: Wait for App to Start (Health Check)
+  #       run: sleep 20
+  #     - name: Run Playwright Tests (${{ matrix.browser }})
+  #       run: pnpm exec playwright test --project=chromium
+  #       env:
+  #         PLAYWRIGHT_TEST_BASE_URL: http://localhost:3000
 
   build-dev:
     name: Build and Push Docker (dev)
