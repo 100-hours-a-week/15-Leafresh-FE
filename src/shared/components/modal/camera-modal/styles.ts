@@ -36,7 +36,8 @@ export const Wrapper = styled.div`
 
 export const Header = styled.div`
   width: 100%;
-  height: 90px;
+  min-height: 90px;
+
   background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
   color: ${({ theme }) => theme.colors.lfWhite.base};
   font-size: ${({ theme }) => theme.fontSize.xl};
