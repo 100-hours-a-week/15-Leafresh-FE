@@ -85,7 +85,7 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
           </Label>
           <SubText>매력적인 글귀로 챌린지를 소개해보세요.</SubText>
           <TextArea {...register('description')} placeholder='예) Placeholder' />
-          <ErrorText message={isSubmitted ? errors.description?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.description?.message : ''} />
         </FieldWrapper>
 
         <FieldWrapper>
@@ -108,7 +108,7 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
             cameraTitle='챌린지 썸네일'
             aspectRatio='FIVE_THREE'
           /> */}
-          <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.thumbnailUrl?.message : ''} />
         </FieldWrapper>
 
         <FieldWrapper>

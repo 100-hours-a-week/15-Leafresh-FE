@@ -161,7 +161,7 @@ const SignupPage = () => {
         <CheckButton type='button' onClick={handleCheckDuplicate}>
           중복 확인
         </CheckButton>
-        <ErrorText message={errors.nickname?.message} />
+        <ErrorText text={errors.nickname?.message} />
       </FieldWrapper>
 
       <SubmitButton type='submit'>회원가입</SubmitButton>

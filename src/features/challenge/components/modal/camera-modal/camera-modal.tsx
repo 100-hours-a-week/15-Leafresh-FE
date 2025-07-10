@@ -8,10 +8,12 @@ import styled from '@emotion/styled'
 
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
-import { CheckIcon, ErrorText, LucideIcon, SwitchTap, VerificationGuideModal } from '@/shared/components'
+import { CheckIcon, ErrorText, LucideIcon, SwitchTap } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { ToastType, useCameraModalStore } from '@/shared/context'
 import { useImageUpload, useScrollLock, useToast } from '@/shared/hooks'
+
+import { VerificationGuideModal } from '../verification-guide-modal'
 
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
@@ -220,7 +222,7 @@ export const CameraModal = () => {
         <TextAreaLabel status={status}>{label}</TextAreaLabel>
         <TextAreaDescription>인증 참여 이미지를 사람들에게 설명해주세요.</TextAreaDescription>
         <TextArea value={description} onChange={e => setDescription(e.target.value)} placeholder='예) Placeholder' />
-        <ErrorText message={errorText} />
+        <ErrorText text={errorText} />
       </TextAreaWrapper>
     )
   }

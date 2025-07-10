@@ -5,13 +5,13 @@ import styled from '@emotion/styled'
 import { theme } from '@/shared/config'
 
 interface ErrorTextProps {
-  message?: string
+  text?: string
   className?: string
 }
 
-export const ErrorText = ({ message, className }: ErrorTextProps) => {
-  if (!message) return null
-  return <Text className={className}>{message}</Text>
+export const ErrorText = ({ text, className }: ErrorTextProps) => {
+  if (!text) return null
+  return <Text className={className}>{text}</Text>
 }
 
 const Text = styled.p`

@@ -94,7 +94,7 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
       <FieldGroup>
         <FieldWrapper>
           <Input label='챌린지 제목' value={title} required {...register('title')} />
-          <ErrorText message={isSubmitted ? errors.title?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.title?.message : ''} />
         </FieldWrapper>
 
         <FieldWrapper>
@@ -110,7 +110,7 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
               />
             )}
           />
-          <ErrorText message={isSubmitted ? errors.category?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.category?.message : ''} />
         </FieldWrapper>
 
         <FieldWrapper>
@@ -133,8 +133,8 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             }}
             required
           />
-          <ErrorText message={isSubmitted ? errors.startDate?.message : ''} />
-          <ErrorText message={isSubmitted ? errors.endDate?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.startDate?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.endDate?.message : ''} />
         </FieldWrapper>
 
         <FieldWrapper>
@@ -151,8 +151,8 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
               trigger('endTime')
             }}
           />
-          <ErrorText message={isSubmitted ? errors.startTime?.message : ''} />
-          <ErrorText message={isSubmitted ? errors.endTime?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.startTime?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.endTime?.message : ''} />
         </FieldWrapper>
 
         <FieldWrapper>
@@ -168,7 +168,7 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
               />
             )}
           />
-          <ErrorText message={isSubmitted ? errors.maxParticipant?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.maxParticipant?.message : ''} />
         </FieldWrapper>
 
         <FieldWrapper>
@@ -180,7 +180,7 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             onChange={handleExamplesChange}
             required
           />
-          <ErrorText message={isSubmitted ? errors.examples?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.examples?.message : ''} />
         </FieldWrapper>
       </FieldGroup>
 
