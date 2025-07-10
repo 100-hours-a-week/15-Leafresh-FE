@@ -1,6 +1,6 @@
 export const CHALLENGE_RATIOS = {
   THUMBNAIL: '14/9',
-  VERIFICATION: '5/3',
+  VERIFICATION: 1.43, // 인증 찍은 이후 사진
 }
 export const ASPECT_RATIOS = {
   SQUARE: '1/1',

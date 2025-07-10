@@ -26,6 +26,8 @@ export const Wrapper = styled.div`
   max-width: 500px;
   width: 100%;
   height: 100dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; // ✅ iOS 부드러운 스크롤
 
   display: flex;
   flex-direction: column;
@@ -36,7 +38,7 @@ export const Wrapper = styled.div`
 
 export const Header = styled.div`
   width: 100%;
-  min-height: 90px;
+  padding: 20px 0px;
 
   background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
   color: ${({ theme }) => theme.colors.lfWhite.base};
@@ -80,7 +82,7 @@ export const ImagePreview = styled(Image)`
 
 export const ContentWrapper = styled.div`
   width: 100%;
-  height: 250px;
+  height: 150px;
   padding: 18px 36px 0px 36px;
 
   position: relative;
