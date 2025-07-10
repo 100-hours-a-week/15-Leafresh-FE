@@ -23,7 +23,7 @@ export const Toast = () => {
     const timers = toasts.map(toast => {
       const timer = setTimeout(() => {
         remove(toast.id)
-      }, 3000000)
+      }, 2000)
       return () => clearTimeout(timer)
     })
     return () => {

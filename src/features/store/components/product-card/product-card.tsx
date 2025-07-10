@@ -137,7 +137,9 @@ export const ProductCard = ({ product, memberLeafCount }: ProductCardProps) => {
       <S.TextContent>
         <S.Title>{title}</S.Title>
         <S.Description>{description}</S.Description>
-        <S.StockNotice isSoldOut={isSoldOut}>{isSoldOut ? `남은 재고 없음` : `남은 재고 ${stock}개`}</S.StockNotice>
+        <S.StockNotice isSoldOut={isSoldOut}>
+          {isSoldOut ? `남은 재고 없음` : `남은 재고 ${localStock}개`}
+        </S.StockNotice>
         <S.PriceRow>
           <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
           <S.Price>{price.toLocaleString()}</S.Price>

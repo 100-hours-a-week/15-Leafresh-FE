@@ -69,24 +69,13 @@ export const ProductList = ({ memberLeafCount, className }: ProductListProps): R
   } else {
     /** 일반 상품이 있는 경우 */
     contents = (
-      <>
-        <S.SearchBar onSubmit={handleSearchSubmit}>
-          <S.SearchInput
-            type='text'
-            inputMode='search'
-            placeholder='무엇을 찾아드릴까요?'
-            value={input}
-            onChange={e => setInput(e.target.value)}
-          />
-        </S.SearchBar>
-        <S.ProductGrid>
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} memberLeafCount={memberLeafCount} />
-          ))}
-          {isFetchingNextPage && <S.StyledLoading />}
-          {hasNextPage && <S.ObserverTrigger ref={observerRef} />}
-        </S.ProductGrid>
-      </>
+      <S.ProductGrid>
+        {products.map(product => (
+          <ProductCard key={product.id} product={product} memberLeafCount={memberLeafCount} />
+        ))}
+        {isFetchingNextPage && <S.StyledLoading />}
+        {hasNextPage && <S.ObserverTrigger ref={observerRef} />}
+      </S.ProductGrid>
     )
   }
 

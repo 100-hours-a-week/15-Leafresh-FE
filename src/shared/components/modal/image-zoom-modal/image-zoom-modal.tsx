@@ -51,7 +51,7 @@ export const ImageZoomModal = () => {
         <span>
           {targetIndex + 1}/{IMAGE_COUNT}
         </span>
-        <S.StyledLucideIcon name='X' size={20} onClick={close} />
+        <S.StyledLucideIcon name='X' size={24} onClick={close} color='lfWhite' />
       </S.Header>
 
       <S.ResultBar result={result}>{result === 'SUCCESS' ? '성공 인증샷' : '실패 인증샷'}</S.ResultBar>

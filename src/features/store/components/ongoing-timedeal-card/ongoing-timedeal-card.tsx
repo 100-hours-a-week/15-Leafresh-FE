@@ -156,7 +156,7 @@ export const OngoingTimeDealCard = ({
             </S.Price>
             <S.Origin>{data.defaultPrice}</S.Origin>
           </S.PriceRow>
-          <S.Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${data.stock}개`}</S.Stock>
+          <S.Stock soldout={isSoldOut}>{isSoldOut ? '품절' : `남은 재고 ${localStock}개`}</S.Stock>
           <S.BuyButton onClick={() => handlePurchase(data)}>구매하기</S.BuyButton>
         </S.DescriptionSection>
       </S.Card>

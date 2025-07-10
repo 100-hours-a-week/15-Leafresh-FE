@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 export const EmptySection = styled.div`
   display: flex;
-  flex-dsirection: column;
+  flex-direction: column;
   align-items: center;
 `
 
