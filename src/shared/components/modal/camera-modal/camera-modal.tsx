@@ -55,9 +55,6 @@ export const CameraModal = () => {
 
     try {
       // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
-      // const constraints = {
-      //   video: { facingMode: mode },
-      // }
       const constraints = {
         video: {
           facingMode: mode,
