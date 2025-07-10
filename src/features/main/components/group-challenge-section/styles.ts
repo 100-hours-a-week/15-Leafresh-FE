@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 
 import { Loading, NoContent } from '@/shared/components'
+import { media } from '@/shared/config'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const Section = styled.section`
@@ -36,9 +37,8 @@ export const SearchInput = styled.input`
 export const CategoryGrid = styled.div`
   padding: 0 20px;
   margin-top: 8px;
-  display: grid;
+  display: flex;
   gap: 4px;
-  grid-template-columns: repeat(9, 1fr);
   overflow-x: auto;
 
   &::-webkit-scrollbar {
@@ -49,14 +49,16 @@ export const CategoryGrid = styled.div`
 `
 
 export const CategoryItem = styled.div<{ isActive: boolean }>`
+  padding: 4px;
+  width: 20%;
   aspect-ratio: 1/1;
+  flex-shrink: 0;
   border-radius: ${({ theme }) => theme.radius.lg};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 12px;
-  font-size: ${({ theme }) => theme.fontSize.sm};
   cursor: pointer;
 
   background-color: ${({ isActive }) => (isActive ? '#f5eee4' : 'transparent')};
@@ -64,12 +66,20 @@ export const CategoryItem = styled.div<{ isActive: boolean }>`
   &:hover {
     background-color: #f5eee4;
   }
+
+  ${media.afterMobile} {
+    padding: 5px 6px;
+  }
 `
 
 export const CategoryLabel = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-size: ${({ theme }) => theme.fontSize.xss};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.lfBlack.base};
+
+  ${media.afterMobile} {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
 `
 
 export const ChallengeList = styled.div`
