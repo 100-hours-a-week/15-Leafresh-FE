@@ -1,5 +1,5 @@
 export * from './auth-gaurd'
 export * from './chakra-provider'
-export * from './modal-provider'
+export * from './common-modal-provider'
 export * from './Providers'
 export * from './tanstack-provider'

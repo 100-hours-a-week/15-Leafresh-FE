@@ -1,7 +1,8 @@
-import { GlobalWrapper, PollingWatcher } from '@/features/common/components'
+import { ChallengeModalProvider, PollingWatcher } from '@/features/challenge/config'
+import { GlobalWrapper } from '@/features/common/components'
 
 import { Toast } from '@/shared/components'
-import { AuthGuard, ModalProvider } from '@/shared/config'
+import { AuthGuard, CommonModalProvider } from '@/shared/config'
 
 const RootLayout = ({
   children,
@@ -14,7 +15,8 @@ const RootLayout = ({
         <PollingWatcher /> {/* 롱폴링 상태 조회  */}
         {children}
         <Toast />
-        <ModalProvider />
+        <CommonModalProvider />
+        <ChallengeModalProvider />
       </GlobalWrapper>
     </AuthGuard>
   )
