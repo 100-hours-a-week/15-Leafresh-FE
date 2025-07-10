@@ -1,1 +1,1 @@
-export * from './time-dropdown'
+export * from './dropdown'

@@ -5,10 +5,9 @@ import { AnimatePresence, motion } from 'motion/react'
 
 import styled from '@emotion/styled'
 
+import { LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { ToastType, useToastStore } from '@/shared/context'
-
-import { LucideIcon } from '../lucide-icon'
 
 export const Toast = () => {
   const { isOpen, type, description, close: closeToast } = useToastStore()

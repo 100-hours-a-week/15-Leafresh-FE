@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react'
 
-import { Dropdown } from '../../dropdown'
+import { Dropdown } from '@/shared/components'
 
 /**
  * T: 선택지의 타입
