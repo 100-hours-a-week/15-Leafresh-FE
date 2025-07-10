@@ -84,7 +84,6 @@ export const GroupChallengeParticipantCard = ({
               />
             ))}
           </S.SegmentedBar>
-
           <S.SuccessRate>
             {successCount}/{maxCount}
           </S.SuccessRate>
