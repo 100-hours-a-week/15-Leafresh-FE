@@ -36,7 +36,11 @@ export const DataWrapper = styled.div`
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
 `
 export const Count = styled.div`
+  text-align: center;
   font-size: 36px;
+`
+export const LeafCount = styled(Count)`
+  min-width: 7ch;
 `
 
 export const Text = styled.p`
