@@ -4,6 +4,7 @@ on:
   pull_request:
     branches: ['develop', 'main']
   push:
+    branches: ['develop', 'main']
     tags:
       - 'v*-dev'
       - 'v*'
@@ -143,36 +144,34 @@ jobs:
             ${{ secrets.ENV_FE_ANALYTICS }}
             ${{ secrets.ENV_FE_DEV_PROD }}
 
-  build-prod:
-    name: Build and Push Docker (prod)
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
-    needs: [integration-test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  # build-prod:
+  #   name: Build and Push Docker (prod)
+  #   if: github.event_name == 'pull_request' && github.base_ref == 'main'
+  #   needs: [integration-test]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Docker Login
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+  #     - name: Set short commit SHA
+  #       run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: jchanho99/frontend-prod:latest
-          build-args: |
-            ${{ secrets.ENV_FE_ANALYTICS }}
-            ${{ secrets.ENV_FE_PROD }}
-            ${{ secrets.ENV_FE_ANALYTICS }}
-            ${{ secrets.ENV_FE_PROD }}
+  #     - name: Docker Login
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_TOKEN }}
+
+  #     - name: Build and Push Docker Image
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: .
+  #         file: ./Dockerfile
+  #         push: true
+  #         tags: jchanho99/frontend-prod:${{ env.SHORT_SHA }}
 
   deploy-dev:
     name: Deploy to Dev Server
-    if: startsWith(github.ref, 'refs/tags/v') && endsWith(github.ref, '-dev')
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     outputs:
       status: ${{ steps.set-status.outputs.status }}
@@ -205,31 +204,6 @@ jobs:
             sudo docker compose up -d
             sudo docker compose ps
 
-      - name: Upload tag-versioned image to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Tag and Push Docker Image (tag = ${{ env.TAG_NAME }})
-        env:
-          TAG_NAME: ${{ env.TAG_NAME }}
-        run: |
-          docker pull jchanho99/frontend-develop:latest
-          docker image tag jchanho99/frontend-develop:latest temp-image-with-label
-
-          # 임시 컨테이너 생성 후 레이블 추가로 digest 변경
-          docker container create --name temp-container temp-image-with-label
-          docker commit --change "LABEL force-push-tag=${TAG_NAME}-$(date +%s)" temp-container jchanho99/frontend-develop:${TAG_NAME}
-
-          # 정리
-          docker container stop temp-container
-          docker container rm temp-container
-          docker image rm temp-image-with-label
-
-          # 푸시
-          docker push jchanho99/frontend-develop:${TAG_NAME}
-
       - name: Set Status (Dev)
         id: set-status
         if: success()
@@ -241,102 +215,28 @@ jobs:
 
   deploy-prod:
     name: Deploy to Prod Server (Blue-Green)
-    if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-dev')
-    outputs:
-      status: ${{ steps.set-status.outputs.status }}
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout for git access
         uses: actions/checkout@v3
 
-      - name: Extract commit SHA from tag
-        run: |
-          TAG="${GITHUB_REF#refs/tags/}"
-          COMMIT_SHA=$(git rev-list -n 1 "$TAG")
-          SHORT_SHA=${COMMIT_SHA:0:7}
-          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
-
-      - name: Deploy to Prod
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
         with:
-          host: ${{ secrets.SSH_HOST_PROD }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            # dir 추가 필요
-            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-            echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+          project_id: ${{ secrets.PROJECT_ID }}
+          credentials_json: ${{ secrets.GCP_SA_KEY_JSON }}
 
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
 
-
-
-            set -e # 오류 발생 시 즉시 스크립트 중단
-            VERSION="${{ github.ref }}"             # ex: refs/tags/v2.0.6
-            VERSION="${VERSION#refs/tags/}"         # remove prefix
-            IMAGE="jchanho99/frontend-prod:${{ env.VERSION }}"
-            HEALTH_CHECK_URL="http://localhost:3001" # 헬스 체크 URL
-
-            echo "🚀 Starting Prod Blue-Green Deployment to host: ${{ secrets.LEAFRESH_PROD_HOST }}"
-            echo "🖼️ Using image: $IMAGE"
-
-            cd /opt/frontend/
-            echo "PWD: $(pwd)"
-
-            echo "🚚 Pulling Docker image: $IMAGE"
-            sudo docker pull "$IMAGE"
-
-            CURRENT=$(cat /opt/frontend-current 2>/dev/null || echo blue)
-            NEXT=$([ "$CURRENT" = "blue" ] && echo green || echo blue)
-
-            echo "🔵 Current active environment: $CURRENT"
-            echo "🟢 Next environment to deploy: $NEXT"
-
-            echo "🚀 Bringing up $NEXT environment (frontend-$NEXT)..."
-            # 만약 docker-compose.yml에서 $NEXT에 해당하는 특정 서비스를 지정해야 한다면,
-            # 예: sudo docker compose up -d service-$NEXT
-            sudo docker compose up -d # 이 명령이 frontend-$NEXT 컨테이너를 시작/업데이트해야 함
-
-            echo "🩺 Performing health check for $NEXT on $HEALTH_CHECK_URL..."
-            HEALTH_CHECK_PASSED=false
-            for i in {1..60}; do
-              if nc -z localhost 3001 2>/dev/null; then
-                HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_CHECK_URL")
-                if [ "$HTTP_CODE" -eq 200 ]; then
-                  CONTENT_STATUS=$(curl -s "$HEALTH_CHECK_URL" | grep "<title>")
-                  if [ ! -z "$CONTENT_STATUS" ]; then
-                    echo "✅ Health check passed for $NEXT on attempt $i (HTTP $HTTP_CODE with <title>)."
-                    HEALTH_CHECK_PASSED=true
-                    break
-                  fi
-                fi
-              fi
-              echo "⏳ Waiting ($i)..."
-              sleep 1
-            done
-
-            if [ "$HEALTH_CHECK_PASSED" != "true" ]; then
-              echo "❌ Health check failed for $NEXT environment after 60 attempts."
-              echo "💣 Rolling back: Attempting to stop and remove $NEXT environment (frontend-$NEXT)..."
-              sudo docker stop "frontend-$NEXT" || true
-              sudo docker rm "frontend-$NEXT" || true
-              exit 1
-            fi
-
-            echo "✅ Health check successful for $NEXT environment."
-            echo "🔄 Switching traffic..."
-
-            echo "🛑 Stopping and removing $CURRENT environment (frontend-$CURRENT)..."
-            sudo docker stop "frontend-$CURRENT" || true
-            sudo docker rm "frontend-$CURRENT" || true
-
-            echo "⚠️ Force restarting $NEXT environment as per original script logic (stop, rm, up)..."
-            sudo docker stop "frontend-$NEXT" || true
-            sudo docker rm "frontend-$NEXT" || true
-            sudo docker compose up -d # $NEXT 환경을 다시 시작
-
-            echo "$NEXT" > /opt/frontend-current
-            echo "🎉 Prod Blue-Green deployment to $NEXT complete. $NEXT is now active."
+      - name: Deploy on VM via IAP (using transferred file)
+        run: |
+          gcloud compute ssh ${{ secrets.SSH_USER }}@leafresh-fe-tester-a \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.AZ }} \
+            --tunnel-through-iap \
+            --command="bash -c 'cd fe && ./deploy.sh'"
 
       - name: Set Status (Prod)
         id: set-status
@@ -344,40 +244,43 @@ jobs:
         run: echo "status=success" >> "$GITHUB_OUTPUT"
 
       - name: Set Status (Prod Failure)
-        if: failure() && steps.deploy-prod.outcome == 'failure' # deploy-step이 실패했을 때만
+        if: failure() && steps.deploy-step.outcome == 'failure'
         run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   notify:
     name: Discord Notification
-    needs: [deploy-dev, deploy-prod] # 명시적으로 종속성 추가
+    needs: [deploy-dev, deploy-prod]
     if: |
-      always() &&
-      (
-        needs.deploy-dev.result != 'skipped' || 
-        needs.deploy-prod.result != 'skipped'
-      )
+      (needs.deploy-dev.result != 'skipped') || (needs.deploy-prod.result != 'skipped')
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Message
         run: |
-          TAG="${GITHUB_REF#refs/tags/}"
-          if [[ "${{ needs.deploy-dev.result }}" != 'skipped' ]]; then
-            STATUS="${{ needs.deploy-dev.outputs.status }}"
-          elif [[ "${{ needs.deploy-prod.result }}" != 'skipped' ]]; then
-            STATUS="${{ needs.deploy-prod.outputs.status }}"
-          else
-            STATUS="unknown"
+          MESSAGE=""
+
+          # Check Dev Deploy Status
+          if [ "${{ needs.deploy-dev.result }}" != "" ]; then
+            STATUS_DEV="${{ needs.deploy-dev.outputs.status }}"
+            if [ "$STATUS_DEV" = "success" ]; then
+              MESSAGE="${MESSAGE}✅ \`[FE develop]\` 배포 완료\n"
+            elif [ "$STATUS_DEV" = "failure" ]; then
+              MESSAGE="${MESSAGE}🚨 \`[FE develop]\` 배포 실패\n"
+            fi
           fi
 
-          if [[ "$STATUS" == "success" ]]; then
-            MESSAGE="✅ [${TAG}] 배포 완료"
-          elif [[ "$STATUS" == "failure" ]]; then
-            MESSAGE="🚨 [${TAG}] 배포 실패. actions에서 로그를 확인하세요."
-          else
-            MESSAGE="⚠️ [${TAG}] 배포 상태를 알 수 없습니다."
+          # Check Prod Deploy Status
+          if [ "${{ needs.deploy-prod.result }}" != "" ]; then
+            STATUS_PROD="${{ needs.deploy-prod.outputs.status }}"
+            if [ "$STATUS_PROD" = "success" ]; then
+              MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료 (Blue-Green)\n"
+            elif [ "$STATUS_PROD" = "failure" ]; then
+              MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패 (헬스체크 실패 등)\n"
+            fi
           fi
 
-          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+          if [ -z "$MESSAGE" ]; then
+            MESSAGE="⚠️ 배포 상태 정보를 찾을 수 없습니다."
+          fi
 
           curl -H "Content-Type: application/json" \
                -X POST \
