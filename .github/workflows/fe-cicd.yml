@@ -104,12 +104,12 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
       - name: Build Next.js app for testing
-        run: pnpm run build
-      - name: Start Next.js app for testing
         run: |
           echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
           echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
-
+          pnpm run build
+      - name: Start Next.js app for testing
+        run: |
           pnpm run start &
 
       - name: Wait for App to Start (Health Check)
