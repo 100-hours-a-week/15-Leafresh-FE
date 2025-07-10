@@ -129,7 +129,7 @@ export const ProductCard = ({ product, memberLeafCount }: ProductCardProps) => {
   return (
     <S.Card>
       <S.ThumbnailWrapper>
-        <S.Thumbnail src={imageUrl} alt={title} width={180} height={180} />
+        <S.Thumbnail src={imageUrl} alt={title} fill />
       </S.ThumbnailWrapper>
       <S.BuyButton type='button' onClick={handlePurchase}>
         구매하기

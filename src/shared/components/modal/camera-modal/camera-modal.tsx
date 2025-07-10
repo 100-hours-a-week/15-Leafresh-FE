@@ -56,7 +56,12 @@ export const CameraModal = () => {
     try {
       // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
       const constraints = {
-        video: { facingMode: mode },
+        video: {
+          facingMode: mode,
+          width: { min: 640, ideal: 1280, max: 1920 },
+          height: { min: 480, ideal: 720, max: 1080 },
+          aspectRatio: 1, // 4:3
+        },
       }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints)

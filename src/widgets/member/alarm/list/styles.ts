@@ -26,6 +26,8 @@ export const AlarmCard = styled.div`
   padding: 16px;
   border-radius: ${({ theme }) => theme.radius.base};
   box-shadow: ${({ theme }) => theme.shadow.lfInput};
+
+  cursor: pointer;
 `
 
 export const AlarmImage = styled.img`

@@ -13,6 +13,7 @@ export const Card = styled.div`
 `
 
 export const ThumbnailWrapper = styled.div`
+  position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: ${({ theme }) => theme.radius.base};
@@ -20,8 +21,6 @@ export const ThumbnailWrapper = styled.div`
 `
 
 export const Thumbnail = styled(Image)`
-  width: 100%;
-  height: 100%;
   object-fit: cover;
 `
 

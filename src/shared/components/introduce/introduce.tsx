@@ -45,7 +45,7 @@ export const Introduce = () => {
         <S.StatItem>
           <S.StyledImage src='/image/main/leaf.svg' alt='친환경 인증' width={100} height={100} />
           <S.DataWrapper>
-            <S.Count>{isLeafLoading ? '불러오는 중...' : animatedLeafCount?.toLocaleString()}</S.Count>
+            <S.LeafCount>{isLeafLoading ? '불러오는 중...' : animatedLeafCount?.toLocaleString()}</S.LeafCount>
             <S.Text>나뭇잎 수</S.Text>
           </S.DataWrapper>
         </S.StatItem>
