@@ -172,6 +172,7 @@ jobs:
   deploy-dev:
     name: Deploy to Dev Server
     if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
     outputs:
       status: ${{ steps.set-status.outputs.status }}
     steps:
@@ -215,6 +216,7 @@ jobs:
   deploy-prod:
     name: Deploy to Prod Server (Blue-Green)
     if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout for git access
         uses: actions/checkout@v3
