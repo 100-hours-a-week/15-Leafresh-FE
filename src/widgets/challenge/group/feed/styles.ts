@@ -14,9 +14,11 @@ export const CategoryGrid = styled.div`
   ${responsiveHorizontalPadding};
 
   margin-top: 8px;
-  display: grid;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
   gap: 4px;
-  grid-template-columns: repeat(9, 1fr);
+
   overflow-x: auto;
 
   &::-webkit-scrollbar {
@@ -27,7 +29,11 @@ export const CategoryGrid = styled.div`
 `
 
 export const CategoryItem = styled.div<{ isActive: boolean }>`
+  padding: 4px;
+  width: 20%;
   aspect-ratio: 1/1;
+  flex-shrink: 0;
+
   border-radius: ${({ theme }) => theme.radius.lg};
   display: flex;
   flex-direction: column;
