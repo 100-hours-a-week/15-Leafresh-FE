@@ -55,9 +55,15 @@ export const EventSection = ({ eventChallenges, className }: EventSectionProps):
       <CarouselWrapper ref={emblaRef}>
         <CarouselInner>
           {eventChallenges.length !== 0 ? (
-            eventChallenges.map(ch => (
+            eventChallenges.map((ch, index) => (
               <EventCard key={ch.id} onClick={() => handleClickCard(ch)}>
-                <EventImage src={ch.thumbnailUrl} alt={ch.description} fill sizes='100vw' loading='eager' />
+                <EventImage
+                  src={ch.thumbnailUrl}
+                  alt={ch.description}
+                  fill
+                  sizes='(max-width: 690px)100vw, 430px'
+                  priority={index === 0}
+                />
                 <EventGradientOverlay />
                 <EventTitleOverlay>{ch.title}</EventTitleOverlay>
                 <Badge className='badge'>이벤트 챌린지</Badge>
