@@ -1,12 +1,17 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
+
+import { useRouter } from 'next/navigation'
 
 import useEmblaCarousel from 'embla-carousel-react'
 
 import { TimeDealProduct } from '@/entities/store/api'
 
 import { LucideIcon } from '@/shared/components'
+import { URL } from '@/shared/constants'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 
 import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
 
@@ -14,11 +19,48 @@ import * as S from './styles'
 
 interface Props {
   ongoingData: TimeDealProduct[]
+  upcomingData: TimeDealProduct[]
   memberLeafCount?: number // 보유 나뭇잎 수
   className?: string
 }
 
-export const OngoingTimeDealList = ({ ongoingData, memberLeafCount, className }: Props): ReactNode => {
+export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount, className }: Props): ReactNode => {
+  const router = useRouter()
+  const { isLoggedIn } = useUserStore()
+  const { toast } = useToast()
+  const { openConfirmModal } = useConfirmModalStore()
+
+  // ✅ 토스트 중복 방지 ref
+  const loginToastShownRef = useRef(false)
+  const startToastShownRef = useRef(false)
+  useEffect(() => {
+    if (ongoingData.length > 0 || upcomingData.length === 0) return
+
+    const interval = setInterval(() => {
+      const now = Date.now()
+      const nextStartTime = new Date(upcomingData[0].dealStartTime).getTime()
+      const diff = Math.floor((nextStartTime - now) / 1000) // 초 단위 차이
+
+      // 타임딜 시작 10초 전
+      if (!startToastShownRef.current && diff > 0 && diff <= 10) {
+        toast('Success', '다음 타임딜이 곧 시작됩니다!')
+        startToastShownRef.current = true
+      }
+
+      // 타임딜 시작 60초 전 & 미로그인
+      if (!loginToastShownRef.current && !isLoggedIn && diff <= 60 && diff > 5) {
+        openConfirmModal({
+          title: '타임딜이 곧 시작됩니다!',
+          description: '로그인 페이지로 이동하시겠습니까?',
+          onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+        })
+        loginToastShownRef.current = true
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [ongoingData, upcomingData, isLoggedIn, toast])
+
   /** 각 재고의 남은 시간 트래킹 */
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위
   useEffect(() => {
