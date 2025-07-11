@@ -2,7 +2,7 @@
 
 import { useToggle } from '@/shared/hooks'
 
-import { TimeDropdown } from '../dropdown'
+import { TimeDropdown } from '../time-dropdown'
 
 import * as S from './styles'
 

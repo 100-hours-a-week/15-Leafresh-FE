@@ -32,7 +32,7 @@ export const TimeDealList = ({ memberLeafCount, className }: TimeDealListProps):
 
   return (
     <S.Container className={className}>
-      <OngoingTimeDealList data={ongoing} memberLeafCount={memberLeafCount} />
+      <OngoingTimeDealList ongoingData={ongoing} upcomingData={upcoming} memberLeafCount={memberLeafCount} />
       <UpcomingTimeDealList data={upcoming} />
     </S.Container>
   )
