@@ -190,6 +190,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           type: 'message',
           role: 'bot',
           text: responseMessage,
+          loading: loading,
           subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
           buttonText: '카테고리 재선택',
           isAnswer: true,
@@ -295,6 +296,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           type: 'message',
           role: 'bot',
           text: responseMessage,
+          loading: loading,
           subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
           buttonText: '카테고리 재선택',
           isAnswer: true,
@@ -334,7 +336,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             {/* 메시지 타입 */}
             {item.type === 'message' && item.role && (
               <ChatBubble
-                loading={loading}
+                loading={item.loading}
                 role={item.role}
                 subDescription={item.subDescription}
                 buttonText={item.buttonText}
