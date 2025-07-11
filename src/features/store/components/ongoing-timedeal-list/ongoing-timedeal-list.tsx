@@ -13,18 +13,18 @@ import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
 import * as S from './styles'
 
 interface Props {
-  data: TimeDealProduct[]
+  ongoingData: TimeDealProduct[]
   memberLeafCount?: number // 보유 나뭇잎 수
   className?: string
 }
 
-export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props): ReactNode => {
+export const OngoingTimeDealList = ({ ongoingData, memberLeafCount, className }: Props): ReactNode => {
   /** 각 재고의 남은 시간 트래킹 */
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위
   useEffect(() => {
     const updateTimes = () => {
       const now = Date.now()
-      const updated = data.map(deal => {
+      const updated = ongoingData.map(deal => {
         const end = new Date(deal.dealEndTime).getTime()
         const diffInSec = Math.max(0, Math.floor((end - now) / 1000)) // 초 단위
         return diffInSec
@@ -35,7 +35,7 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
     updateTimes()
     const interval = setInterval(updateTimes, 1000)
     return () => clearInterval(interval)
-  }, [data])
+  }, [ongoingData])
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
   const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false)
@@ -52,7 +52,7 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
 
   let timeDealContents
   /** 예외: 타임딜 상품이 없는 경우 */
-  if (!data || data.length === 0) {
+  if (!ongoingData || ongoingData.length === 0) {
     timeDealContents = (
       <S.StyledApologizeContent
         title='진행 중인 특가 상품이 없습니다'
@@ -71,7 +71,7 @@ export const OngoingTimeDealList = ({ data, memberLeafCount, className }: Props)
 
         <S.Embla ref={emblaRef}>
           <S.EmblaTrack>
-            {data.map((deal, index) => (
+            {ongoingData.map((deal, index) => (
               <OngoingTimeDealCard
                 key={deal.productId}
                 data={deal}
