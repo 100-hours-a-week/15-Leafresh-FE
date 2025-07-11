@@ -17,6 +17,7 @@ export type ChatHistoryItem = {
   type: 'message' | 'selection' | 'horizontal-cards'
   role?: 'bot' | 'user'
   text?: React.ReactNode
+  loading?: boolean
   selectionProps?: ChatSelectionProps
   subDescription?: string
   buttonText?: string
