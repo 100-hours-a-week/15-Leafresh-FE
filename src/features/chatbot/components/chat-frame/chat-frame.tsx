@@ -190,6 +190,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           type: 'message',
           role: 'bot',
           text: responseMessage,
+          loading: loading,
           subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
           buttonText: '카테고리 재선택',
           isAnswer: true,
@@ -250,9 +251,8 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   }
 
   // 재선택 핸들러
-  const handleRetry = useCallback((): void => {
+  const handleRetry = (): void => {
     if (loading) {
-      setTimeout(() => handleRetry(), 1000)
       return
     }
     addChatItem({ type: 'message', role: 'bot', text: '참여하고 싶은 챌린지 유형을 선택해주세요!' })
@@ -265,12 +265,12 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         options: CHAT_CHALLENGE_OPTIONS,
         selectionType: 'challenge',
         buttonText: '카테고리 설명',
-        onExplainClick: handleExplainCategory,
-        onSelect: handleChallengeSelect,
+        onExplainClick: () => handleExplainCategory(),
+        onSelect: value => handleChallengeSelect(value),
       },
     })
     onRetry()
-  }, [loading, addChatItem, onRetry, handleExplainCategory, handleChallengeSelect])
+  }
 
   // 자유 텍스트 전송 핸들러
   const handleSendMessage = useCallback(
@@ -296,6 +296,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           type: 'message',
           role: 'bot',
           text: responseMessage,
+          loading: loading,
           subDescription: '* 카테고리 재선택 혹은 채팅으로 참여하고 싶은\n챌린지를 언급해주세요!',
           buttonText: '카테고리 재선택',
           isAnswer: true,
@@ -335,7 +336,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             {/* 메시지 타입 */}
             {item.type === 'message' && item.role && (
               <ChatBubble
-                loading={loading}
+                loading={item.loading}
                 role={item.role}
                 subDescription={item.subDescription}
                 buttonText={item.buttonText}
