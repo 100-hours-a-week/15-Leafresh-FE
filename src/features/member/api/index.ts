@@ -1,4 +1,5 @@
 export * from './alarm'
+export * from './profile'
 export * from './store'
 
 // 파일

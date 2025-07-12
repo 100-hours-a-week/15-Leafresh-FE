@@ -57,7 +57,7 @@ const LoginPage = () => {
         window.location.href = parsedUrl.toString()
       }
     } catch (_error) {
-      toast('Error', `${provider} 로그인 실패\n재시도 해주세요`)
+      toast('Error', `로그인 실패\n재시도 해주세요`)
     }
   }
 
