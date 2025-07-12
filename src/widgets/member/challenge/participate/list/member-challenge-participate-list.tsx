@@ -47,7 +47,6 @@ export function ChallengeParticipatePage() {
 
   const challenges = (challengeData?.pages ?? []).flatMap(page => page?.data?.challenges ?? [])
 
-  // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
     `인증 대기 (${counts?.notStarted ?? 0})`,
     `진행 중 (${counts?.ongoing ?? 0})`,
