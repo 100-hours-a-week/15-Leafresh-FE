@@ -14,6 +14,7 @@ const NO_CACHE = {
   staleTime: 0,
   gcTime: 0,
 }
+
 export const QUERY_DEFAULT = {
   staleTime: getSecond(1),
   gcTime: getMinute(5),
