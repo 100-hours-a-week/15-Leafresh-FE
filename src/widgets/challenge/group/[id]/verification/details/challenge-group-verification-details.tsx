@@ -153,7 +153,7 @@ export const VerificationDetails = ({
 
   /** 클립보드 복사 */
   const handleCopyVerificationUrl = () => {
-    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
+    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.DETAILS.value(challengeId, verificationId)}`
     copyToClipboard(url)
   }
 
