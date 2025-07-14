@@ -7,8 +7,8 @@ const options = {
     queries: {
       retry: 0,
       refetchOnWindowFocus: false,
-      ...(isServer ? { gcTime: Infinity } : {}), // TC의 서버에서는 gcTime = Infinity인 경우 요청이 종료되면 자동으로 GC를 수행한다.
       ...QUERY_DEFAULT,
+      ...(isServer ? { gcTime: Infinity } : {}), // TC의 서버에서는 gcTime = Infinity인 경우 요청이 종료되면 자동으로 GC를 수행한다.
     },
     mutations: {
       retry: 0, // 실패시 재시도하지 않음 (필요시 지정)
