@@ -12,7 +12,7 @@ on:
 jobs:
   setup:
     name: Setup and Install Dependencies
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
     outputs:
       pnpm_cache_hit: ${{ steps.cache-pnpm.outputs.cache-hit }}
@@ -40,7 +40,7 @@ jobs:
 
   lint-and-unit-test:
     name: Lint and Unit test
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     needs: [setup]
     runs-on: ubuntu-latest
     defaults:
