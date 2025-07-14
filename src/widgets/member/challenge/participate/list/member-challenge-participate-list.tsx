@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import { useQuery } from '@tanstack/react-query'
 
@@ -16,30 +16,16 @@ import { URL } from '@/shared/constants'
 
 import * as S from './styles'
 
-const statusMap: Record<ChallengeStatus, number> = {
-  not_started: 0,
-  ongoing: 1,
-  completed: 2,
-}
-const reverseStatusMap: Record<number, ChallengeStatus> = {
+const statusMap: Record<number, ChallengeStatus> = {
   0: 'not_started',
   1: 'ongoing',
   2: 'completed',
 }
 
 export function ChallengeParticipatePage() {
+  const [tab, setTab] = useState(1)
+  const status = statusMap[tab]
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const status: ChallengeStatus = (searchParams.get('status') as ChallengeStatus) || 'ongoing'
-
-  const [tab, setTab] = useState(statusMap[status])
-
-  /** 탭 변경 핸들러 */
-  const handleChangeTab = (tab: number) => {
-    const status = reverseStatusMap[tab]
-    setTab(tab)
-    router.push(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value(status))
-  }
 
   // 실제 API 훅
   const {
@@ -61,6 +47,7 @@ export function ChallengeParticipatePage() {
 
   const challenges = (challengeData?.pages ?? []).flatMap(page => page?.data?.challenges ?? [])
 
+  // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
     `인증 대기 (${counts?.notStarted ?? 0})`,
     `진행 중 (${counts?.ongoing ?? 0})`,
@@ -123,7 +110,7 @@ export function ChallengeParticipatePage() {
   return (
     <S.Container>
       <S.SwitchTapContainer>
-        <SwitchTap tabs={tabLabels} currentIndex={tab} onChange={handleChangeTab} />
+        <SwitchTap tabs={tabLabels} currentIndex={tab} onChange={setTab} />
       </S.SwitchTapContainer>
 
       <S.CardListContainer isChallengeExists={isChallengeExists}>

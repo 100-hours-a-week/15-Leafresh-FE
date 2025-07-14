@@ -94,12 +94,12 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
   }
 
   const renderButton = () => {
-    if (isCompleted) return <S.DisabledButton>챌린지 기간 종료</S.DisabledButton>
+    if (isCompleted) return <S.DisabledButton>기간 종료</S.DisabledButton>
     switch (verifications.todayStatus) {
       case 'NOT_SUBMITTED':
         return <S.ActionButton onClick={handleCapture}>인증하기</S.ActionButton>
       case 'PENDING_APPROVAL':
-        return <S.DisabledButton>AI 인증 판단중</S.DisabledButton>
+        return <S.DisabledButton>인증 중</S.DisabledButton>
       case 'DONE':
         return <S.DisabledButton>오늘 참여 완료</S.DisabledButton>
       default:
