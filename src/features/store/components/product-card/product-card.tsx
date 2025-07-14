@@ -15,12 +15,11 @@ import {
   Product,
 } from '@/entities/store/api'
 
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
 import { media, theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
-
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
 
 interface ProductCardProps {
   product: Product

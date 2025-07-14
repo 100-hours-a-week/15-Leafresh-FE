@@ -18,15 +18,14 @@ import {
 } from '@/entities/challenge/api'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@/entities/challenge/model'
 
+import ActiveLikeIcon from '@/shared/assets/icon/like_active.svg'
+import InActiveLikeIcon from '@/shared/assets/icon/like_inactive.svg'
 import { LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { copyToClipboard, getTimeDiff } from '@/shared/lib'
-
-import ActiveLikeIcon from '@/shared/assets/icon/like_active.svg'
-import InActiveLikeIcon from '@/shared/assets/icon/like_inactive.svg'
 
 interface VerificationCardProps {
   challengeId: number

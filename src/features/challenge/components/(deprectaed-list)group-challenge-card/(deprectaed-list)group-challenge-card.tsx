@@ -2,15 +2,13 @@
 
 import React from 'react'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
 import { URL } from '@/shared/constants'
 import { ISOFormatString } from '@/shared/type'
-
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
 
 interface GroupChallengeProps {
   challenge: {

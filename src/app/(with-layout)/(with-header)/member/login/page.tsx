@@ -6,18 +6,17 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 
 import styled from '@emotion/styled'
-import LogoImage from '@/shared/assets/images/logo.svg'
 import { useQuery } from '@tanstack/react-query'
 
 import { Login } from '@/entities/member/api'
 import { LowercaseOAuthType } from '@/entities/member/model'
 
+import KakaoLoginButton from '@/shared/assets/images/kakao_login.svg'
+import LogoImage from '@/shared/assets/images/logo.svg'
 import { Loading } from '@/shared/components'
 import { QUERY_KEYS, QUERY_OPTIONS, theme } from '@/shared/config'
 import { ToastType, useOAuthStateStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
-
-import KakaoLoginButton from '@/shared/assets/images/kakao_login.svg'
 
 const LoginPage = () => {
   const openToast = useToast()

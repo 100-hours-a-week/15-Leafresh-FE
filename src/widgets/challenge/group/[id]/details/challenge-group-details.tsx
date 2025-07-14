@@ -20,14 +20,13 @@ import {
 } from '@/entities/challenge/api'
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
 import { BackButton, DatePicker, Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore } from '@/shared/context'
 import { useAuth, useToast } from '@/shared/hooks'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
 
 type WarningType = {
   isWarning: boolean

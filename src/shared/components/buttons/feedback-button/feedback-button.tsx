@@ -2,8 +2,6 @@
 
 import { ReactNode } from 'react'
 
-import Image from 'next/image'
-
 import styled from '@emotion/styled'
 
 import FeedBackIcon from '@/shared/assets/icon/feedback_button.svg'

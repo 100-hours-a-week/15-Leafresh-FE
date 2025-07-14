@@ -2,8 +2,6 @@
 
 import { ReactNode } from 'react'
 
-import Image from 'next/image'
-
 import styled from '@emotion/styled'
 
 import LeafIcon from '@/shared/assets/icon/leaf.svg'

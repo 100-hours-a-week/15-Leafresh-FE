@@ -2,8 +2,6 @@
 
 import { ReactNode } from 'react'
 
-import Image from 'next/image'
-
 import styled from '@emotion/styled'
 
 import LogoCharacterImage from '@/shared/assets/images/main-icon.svg'
