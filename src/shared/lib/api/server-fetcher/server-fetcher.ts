@@ -2,13 +2,11 @@
 
 import { cookies } from 'next/headers'
 
-import { BASE_API_URL } from '@shared/constants/api-url'
-import { EndpointType } from '@shared/constants/endpoint/endpoint'
-
+import { EndpointType } from '../consts'
 import { ApiResponse, ErrorResponse, OptionsType } from '../type'
-import { refreshServerAccessToken } from './server-reissue'
+import { getServerFetchOrigin } from '../utils'
 
-const BASE_URL = BASE_API_URL
+import { refreshServerAccessToken } from './server-reissue'
 
 export async function serverFetchRequest<T>(
   endpoint: EndpointType,
@@ -16,7 +14,8 @@ export async function serverFetchRequest<T>(
   isRetry = false,
 ): Promise<ApiResponse<T>> {
   const { method, path } = endpoint
-  const url = new URL(BASE_URL + path)
+  const origin = getServerFetchOrigin()
+  const url = new URL(origin + path)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))

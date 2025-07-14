@@ -1,36 +1,29 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 import { useRouter } from 'next/navigation'
 
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
 
-import { useOAuthUserStore } from '@entities/member/context/OAuthUserStore'
-import { UserInfo, useUserStore } from '@entities/member/context/UserStore'
-import { OAuthType } from '@entities/member/type'
-import { NicknameDuplicate } from '@features/member/api/nickname-duplicate'
-import { ProfileResponse } from '@features/member/api/profile/get-member-profile'
-import { SignUpBody, SignUpResponse, SignUpVariables } from '@features/member/api/signup'
-import { SignupFormType, signupSchema } from '@features/member/signup/schema'
-import ErrorText from '@shared/components/errortext'
-import { useMutationStore } from '@shared/config/tanstack-query/mutation-defaults'
-import { MUTATION_KEYS } from '@shared/config/tanstack-query/mutation-keys'
-import { QUERY_OPTIONS } from '@shared/config/tanstack-query/query-defaults'
-import { QUERY_KEYS } from '@shared/config/tanstack-query/query-keys'
-import { ENDPOINTS } from '@shared/constants/endpoint/endpoint'
-import { URL } from '@shared/constants/route/route'
-import { ToastType } from '@shared/context/toast/type'
-import { useToast } from '@shared/hooks/useToast/useToast'
-import { fetchRequest } from '@shared/lib/api'
-import { theme } from '@shared/styles/theme'
+import { NicknameDuplicate, ProfileResponse, SignUpBody, SignUpResponse, SignUpVariables } from '@/entities/member/api'
+import { OAuthType, SignupFormType, signupSchema } from '@/entities/member/model'
+
+import { ErrorText } from '@/shared/components'
+import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
+import { URL } from '@/shared/constants'
+import { useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
+import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 const SignupPage = () => {
   const router = useRouter()
   const { OAuthUserInfo } = useOAuthUserStore()
-  const openToast = useToast()
+  const { toast } = useToast()
   const { setUserInfo } = useUserStore()
 
   const [isDuplicateChecked, setIsDuplicateChecked] = useState<boolean>(false)
@@ -85,13 +78,13 @@ const SignupPage = () => {
           message: '이미 사용 중인 닉네임입니다.',
         })
       } else {
-        openToast(ToastType.Success, '중복 검사 성공')
+        toast('Success', '중복 검사 성공')
         setIsDuplicateChecked(true)
         setLastCheckedNickname(nickname)
         clearErrors('nickname')
       }
     } catch (error) {
-      openToast(ToastType.Error, '중복 확인 중 오류가 발생했습니다.')
+      toast('Error', '중복 확인 중 오류가 발생했습니다.')
     }
   }
 
@@ -105,7 +98,7 @@ const SignupPage = () => {
     }
 
     if (!OAuthUserInfo) {
-      openToast(ToastType.Error, '로그인 정보가 없습니다.')
+      toast('Error', '로그인 정보가 없습니다.')
       return
     }
 

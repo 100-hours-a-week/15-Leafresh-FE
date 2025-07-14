@@ -18,18 +18,17 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@app/*": ["./src/app/*"],
-      "@entities/*": ["./src/entities/*"],
-      "@features/*": ["./src/features/*"],
-      "@shared/*": ["./src/shared/*"],
-      "@public/*": ["./public/*"]
+      "@public/*": ["./public/*"],
+      "@/*": ["./src/*"],
+      "@/app": ["./src/app/*"],
+      "@/widgets": ["./src/widgets/*"],
+      "@/features": ["./src/features/*"],
+      "@/entities": ["./src/entities/*"],
+      "@/shared": ["./src/shared/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": [
-    "node_modules",
-    "playwright.config.ts",
-    "tests"
-  ]
+  "exclude": ["node_modules", "playwright.config.ts", "tests"]
 }

@@ -1,10 +1,12 @@
-import Image from 'next/image'
+'use client'
 
 import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 
-import { theme } from '@shared/styles/theme'
+import Image from 'next/image'
+
 import ApologizeImage from '@public/image/apologize_character.svg'
+
+import * as S from './styles'
 
 interface ApologizeContentProps {
   title: string
@@ -12,38 +14,13 @@ interface ApologizeContentProps {
   className?: string
 }
 
-const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
+export const ApologizeContent = ({ title, description, className }: ApologizeContentProps): ReactNode => {
   return (
-    <EmptySection className={className}>
+    <S.EmptySection className={className}>
       <Image src={ApologizeImage} alt='사죄 이미지' width={140} height={140} />
-      <EmptyTitle>{title}</EmptyTitle>
-      <EmptyDescription>{description}</EmptyDescription>
-      <EmptyDescription>감사합니다.</EmptyDescription>
-    </EmptySection>
+      <S.EmptyTitle>{title}</S.EmptyTitle>
+      <S.EmptyDescription>{description}</S.EmptyDescription>
+      <S.EmptyDescription>감사합니다.</S.EmptyDescription>
+    </S.EmptySection>
   )
 }
-
-export default ApologizeContent
-
-const EmptySection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
-const EmptyTitle = styled.div`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
-  margin: 16px 0 16px 0;
-`
-
-const EmptyDescription = styled.p`
-  font-size: ${theme.fontSize.base};
-  color: ${theme.colors.lfDarkGray.base};
-
-  margin-top: 6px;
-  text-align: center;
-
-  white-space: pre-wrap;
-  word-break: break-word;
-`

@@ -1,31 +1,35 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { CreateChallenge } from '@features/challenge/api/create-group-challenge'
-import { DeleteGroupChallenge } from '@features/challenge/api/delete-group-challenge'
-import { ModifyChallenge } from '@features/challenge/api/modify-group-challenge'
-import { deleteVerificationComment } from '@features/challenge/api/participate/verification/delete-verification-comment'
-import { PostGroupVerification } from '@features/challenge/api/participate/verification/group-verification'
-import { CreateVerificationLike } from '@features/challenge/api/participate/verification/likes/create-like'
-import { DeleteVerificationLike } from '@features/challenge/api/participate/verification/likes/delete-like'
-import { postVerificationComment } from '@features/challenge/api/participate/verification/post-verification-comment'
-import { postVerificationReply } from '@features/challenge/api/participate/verification/post-verification-reply'
-import { putVerificationComment } from '@features/challenge/api/participate/verification/put-verification-comment'
-import { ParticipateGroupChallenge } from '@features/challenge/api/participate-group-challenge'
-import { VerifyGroupChallenge } from '@features/challenge/api/verify-personal-challenge'
-import { Logout } from '@features/member/api/logout'
-import { PatchMemberInfo } from '@features/member/api/profile/patch-member-info'
-import { RequestFeedback } from '@features/member/api/profile/post-member-feedback'
-import { readAllAlarms } from '@features/member/api/read-all-alarms'
-import { SignUp } from '@features/member/api/signup'
-import { Unregister } from '@features/member/api/unregister'
-import { OrderProduct } from '@features/store/api/order-proudcts'
-import { OrderTimeDealProduct } from '@features/store/api/order-timedeal'
-import { ApiResponse, ErrorResponse } from '@shared/lib/api/type'
+import {
+  CreateChallenge,
+  CreateVerificationLike,
+  DeleteGroupChallenge,
+  deleteVerificationComment,
+  DeleteVerificationLike,
+  ModifyChallenge,
+  ParticipateGroupChallenge,
+  PostGroupVerification,
+  postVerificationComment,
+  postVerificationReply,
+  putVerificationComment,
+  VerifyGroupChallenge,
+} from '@/entities/challenge/api'
+import {
+  ChallengeStatus,
+  Logout,
+  PatchMemberInfo,
+  readAllAlarms,
+  RequestFeedback,
+  SignUp,
+  Unregister,
+} from '@/entities/member/api'
+import { OrderProduct, OrderTimeDealProduct } from '@/entities/store/api'
+
+import { ApiResponse, ErrorResponse, handleError } from '@/shared/lib'
 
 import { MUTATION_KEYS } from './mutation-keys'
+import { getQueryClient } from './query-client'
 import { QUERY_KEYS } from './query-keys'
-import { getQueryClient } from './queryClient'
-import { handleError } from './utils'
 
 const queryClient = getQueryClient()
 
@@ -135,7 +139,9 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.PARTICIPATE, {
     const { challengeId } = variables
 
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId) }) // 단체 챌린지 상세 조회
-    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS }) // member - 참여한 단체 챌린지 목록 조회
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS(status as ChallengeStatus),
+    }) // member - 참여한 단체 챌린지 목록 조회
   },
   onError(error: ErrorResponse, variables, context) {
     handleError(error)
@@ -175,7 +181,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHALLENGE.GROUP.VERIFICATION.SUBMI
 
     //참여한 단체 챌린지 목록 -> 성공률
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS,
+      queryKey: QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS(status as ChallengeStatus),
     })
 
     //알림 목록

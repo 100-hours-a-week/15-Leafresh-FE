@@ -1,5 +1,8 @@
-import { ChallengeCategoryType, DayType } from '@entities/challenge/type'
-import { LowercaseOAuthType } from '@entities/member/type'
+import { ChallengeCategoryType, FilterChallengeCategoryType } from '@/entities/challenge/model'
+import { ChallengeStatus } from '@/entities/member/api'
+import { LowercaseOAuthType } from '@/entities/member/model'
+
+import { DayType } from '@/shared/lib'
 
 const CHALLENGE_QUERY_KEYS = {
   /** 이벤트 챌린지 */
@@ -29,7 +32,7 @@ const CHALLENGE_QUERY_KEYS = {
     // 상세
     DETAILS: (challengeId: number) => ['challenges', 'group', challengeId],
     // 목록
-    LIST: (category: ChallengeCategoryType, input: string | undefined) => [
+    LIST: (category: FilterChallengeCategoryType, input: string | undefined) => [
       'challenges',
       'group',
       category,
@@ -113,7 +116,7 @@ const MEMBER_QUERY_KEYS = {
     GROUP: {
       CREATIONS: ['member', 'challenges', 'group', 'creations'], // 생성한 챌린지
       COUNT: ['member', 'challenges', 'group', 'participations', 'count'], // 참여한 단체 챌린지 카운트
-      PARTICIPATIONS: ['member', 'challenges', 'group', 'participations'], // 내가 참여한 챌린지
+      PARTICIPATIONS: (status: ChallengeStatus) => ['member', 'challenges', 'group', 'participations', status], // 내가 참여한 챌린지
 
       // 인증 내역을 일별로 확인
       VERIFICATIONS: (challengeId: number) => [

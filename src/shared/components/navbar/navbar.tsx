@@ -1,22 +1,21 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import { usePathname, useRouter } from 'next/navigation'
 
-import { ReactNode } from 'react'
-import styled from '@emotion/styled'
 import { sendGAEvent } from '@next/third-parties/google'
 
-import { useAuth } from '@shared/hooks/useAuth/useAuth'
-import LucideIcon from '@shared/lib/ui/LucideIcon'
-import { theme } from '@shared/styles/theme'
+import { LucideIcon, NAVBAR_TABS } from '@/shared/components'
+import { useUserStore } from '@/shared/context'
 
-import { NAVBAR_TABS } from './tabs'
+import * as S from './styles'
 
 export const Navbar = (): ReactNode => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
 
   // 현재 경로가 어떤 탭인지 판단
   const isCurrentTab = (label: string) => {
@@ -26,15 +25,25 @@ export const Navbar = (): ReactNode => {
         pathname === '/' ||
         (pathname.startsWith('/challenge') &&
           !pathname.startsWith('/challenge/participate') &&
-          !pathname.startsWith('/challenge/group/feed'))
+          !pathname.startsWith('/challenge/group/feed') &&
+          !(pathname.startsWith('/challenge/group') && pathname.includes('/verification/')))
       )
 
-    if (label === '인증') return pathname.startsWith('/challenge/participate')
-    if (label === '피드') return pathname.startsWith('/challenge/group/feed')
+    if (label === '인증') {
+      return pathname.startsWith('/member/challenge') && !pathname.startsWith('/member/challenge/create/list')
+    }
+    if (label === '피드')
+      return (
+        pathname.startsWith('/challenge/group/feed') ||
+        (pathname.startsWith('/challenge/group') && pathname.includes('/verification/'))
+      )
 
-    if (label === '피드') return false
     if (label === '상점') return pathname.startsWith('/store')
-    if (label === '마이페이지') return pathname.startsWith('/member')
+    if (label === '마이페이지')
+      return (
+        pathname.startsWith('/member') &&
+        (!pathname.startsWith('/member/challenge') || pathname === '/member/challenge/create/list')
+      )
     return false
   }
 
@@ -46,61 +55,21 @@ export const Navbar = (): ReactNode => {
   }
 
   return (
-    <NavbarWrapper>
+    <S.NavbarWrapper>
       {NAVBAR_TABS.map(({ label, icon, href }, index) => {
         const isActive: boolean = isCurrentTab(label)
         return (
-          <NavButton key={label} onClick={() => navHandler(label, href, index)}>
+          <S.NavButton key={label} onClick={() => navHandler(label, href, index)}>
             <LucideIcon
               name={icon}
               size={24}
               color={isActive ? 'lfBlack' : 'lfGray'}
               strokeWidth={isActive ? 2.2 : 2}
             />
-            <Label active={isActive}>{label}</Label>
-          </NavButton>
+            <S.Label active={isActive}>{label}</S.Label>
+          </S.NavButton>
         )
       })}
-    </NavbarWrapper>
+    </S.NavbarWrapper>
   )
 }
-
-const NavbarWrapper = styled.nav`
-  min-width: 300px;
-  max-width: 430px;
-  width: 100%;
-
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  right: 0;
-
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-
-  height: 72px;
-  background-color: ${theme.colors.lfWhite.base};
-  border-top: 1px solid ${theme.colors.lfLightGray.base};
-
-  z-index: 99;
-`
-
-const NavButton = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-
-  background: none;
-  border: none;
-  cursor: pointer;
-`
-
-const Label = styled.span<{ active: boolean }>`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-  margin-top: 4px;
-  color: ${({ active }) => (active ? theme.colors.lfBlack.base : theme.colors.lfGray.base)};
-`
