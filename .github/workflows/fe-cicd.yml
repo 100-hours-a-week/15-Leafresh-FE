@@ -10,14 +10,14 @@ on:
       - 'v*'
 
 env:
-  REGION: asia-northeast3
-  PROJECT_ID_PROD: leafresh-prod2
-  BLUE_MIG_NAME: leafresh-fe-blue-template
-  GREEN_MIG_NAME: leafresh-fe-green-template
-  LOAD_BALANCER_NAME: leafresh-https-lb
-  URL_MAP_NAME: leafresh-https-lb  # URL Map 이름
-  BLUE_BACKEND_SERVICE_NAME: leafresh-fe-blue-bs
-  GREEN_BACKEND_SERVICE_NAME: leafresh-fe-green-bs
+  # REGION: asia-northeast3
+  # PROJECT_ID_PROD: leafresh-prod2
+  # BLUE_MIG_NAME: leafresh-fe-blue-template
+  # GREEN_MIG_NAME: leafresh-fe-green-template
+  # LOAD_BALANCER_NAME: leafresh-https-lb
+  # URL_MAP_NAME: leafresh-https-lb  # URL Map 이름
+  # BLUE_BACKEND_SERVICE_NAME: leafresh-fe-blue-bs
+  # GREEN_BACKEND_SERVICE_NAME: leafresh-fe-green-bs
 
 
 jobs:
@@ -417,7 +417,7 @@ jobs:
   #     - name: Set Status (Prod Failure)
   #       if: failure() && steps.deploy-prod.outcome == 'failure' # deploy-step이 실패했을 때만
   #       run: echo "status=failure" >> "$GITHUB_OUTPUT"
-  upload-artifact:
+  remote-deploy:
     name: Build and Upload FE Artifact to PROD Server
     needs: build-prod
     runs-on: ubuntu-latest
@@ -434,8 +434,7 @@ jobs:
           version: latest
 
       - name: Install dependencies and build
-        run: |
-          pnpm install
+        run: pnpm install
       
       - name: Create .env and .env.production
         run: |
@@ -447,30 +446,30 @@ jobs:
 
       - name: Archive build result
         run: |
-          tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/
+          tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/ next.config.ts
 
       - name: Upload via IAP SCP to FE PROD server
         run: |
           gcloud compute scp fe-build.tar.gz \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_PROD }}:~/fe-build.tar.gz \
-            --zone=asia-northeast3-a \
+            ${{ secrets.SSH_USER }}@leafresh-fe-tester-a:~/fe/fe-build.tar.gz \
+            --zone=${{ secrets.AZ }} \
             --tunnel-through-iap \
-            --project=${{ env.PROJECT_ID_PROD }}
+            --project=${{ secrets.PROJECT_ID }}
 
-  remote-deploy:
-    name: Run deploy.sh on FE server
-    needs: upload-artifact
-    runs-on: ubuntu-latest
-    steps:
-      - name: SSH into FE server and run deploy script
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST_PROD }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            bash ~/deploy.sh
+          gcloud compute ssh ${{ secrets.SSH_USER }}@leafresh-fe-tester-a \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.AZ }} \
+            --tunnel-through-iap \
+            --command="bash -c 'cd fe && ./deploy.sh'"
+
+      - name: Set Status (Prod)
+        id: set-status
+        if: success()
+        run: echo "status=success" >> "$GITHUB_OUTPUT"
+
+      - name: Set Status (Prod Failure)
+        if: failure() && steps.deploy-step.outcome == 'failure'
+        run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   notify:
     name: Discord Notification
