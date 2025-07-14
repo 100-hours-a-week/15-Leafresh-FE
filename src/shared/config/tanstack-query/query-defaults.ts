@@ -1,12 +1,8 @@
-export const getSecond = (second: number) => {
-  return 1000 * second
-}
-
-export const getMinute = (minute: number) => {
+const getMinute = (minute: number) => {
   return 1000 * 60 * minute
 }
 
-export const getHour = (hour: number) => {
+const getHour = (hour: number) => {
   return 1000 * 60 * 60 * hour
 }
 
@@ -14,9 +10,8 @@ const NO_CACHE = {
   staleTime: 0,
   gcTime: 0,
 }
-
-export const QUERY_DEFAULT = {
-  staleTime: getSecond(1),
+const DEFAULT = {
+  staleTime: 0,
   gcTime: getMinute(5),
 }
 
@@ -45,7 +40,7 @@ const CHALLENGE_QUERY_DEFAULTS = {
       gcTime: getHour(24),
     },
     // 인증 결과 조회 (롱폴링)
-    VERIFICATION_RESULT: QUERY_DEFAULT,
+    VERIFICATION_RESULT: DEFAULT,
   },
 
   /** 단체 챌린지 */
@@ -56,24 +51,24 @@ const CHALLENGE_QUERY_DEFAULTS = {
       gcTime: Infinity,
     },
     // 상세
-    DETAILS: QUERY_DEFAULT,
+    DETAILS: DEFAULT,
     // 목록 (검색 포함)
-    LIST: QUERY_DEFAULT,
+    LIST: DEFAULT,
 
     // 규약 조회
-    RULES: QUERY_DEFAULT,
+    RULES: DEFAULT,
 
     VERIFICATION: {
       // 인증 내역 목록 조회
-      LIST: QUERY_DEFAULT,
+      LIST: DEFAULT,
 
       // 인증 결과 조회 (롱폴링)
-      RESULT: QUERY_DEFAULT,
+      RESULT: DEFAULT,
 
       //인증 상세
       DETAILS: NO_CACHE,
       //인증 댓글
-      COMMENT: QUERY_DEFAULT,
+      COMMENT: DEFAULT,
     },
 
     // 인증 내역 목록 조회 (피드) - 무작위 챌린지
@@ -96,9 +91,9 @@ const MEMBER_QUERY_DEFAULTS = {
   DUPLICATE_NICKNAME: NO_CACHE,
 
   // 회원 정보
-  DETAILS: QUERY_DEFAULT,
-  PROFILE_CARD: QUERY_DEFAULT,
-  LEAVES: QUERY_DEFAULT,
+  DETAILS: DEFAULT,
+  PROFILE_CARD: DEFAULT,
+  LEAVES: DEFAULT,
   FEEDBACK: {
     GET_FEEDBACK: {
       staleTime: getHour(24),
@@ -118,13 +113,13 @@ const MEMBER_QUERY_DEFAULTS = {
 
   // 알림
   NOTIFICATION: {
-    LIST: QUERY_DEFAULT,
+    LIST: DEFAULT,
   },
 
   // 나뭇잎 상점
   STORE: {
     ORDERS: {
-      LIST: QUERY_DEFAULT,
+      LIST: DEFAULT,
     },
   },
 
@@ -132,16 +127,16 @@ const MEMBER_QUERY_DEFAULTS = {
   CHALLENGE: {
     GROUP: {
       // 생성한 챌린지
-      CREATIONS: QUERY_DEFAULT,
+      CREATIONS: DEFAULT,
 
       // 참여한 단체 챌린지 카운트
-      COUNT: QUERY_DEFAULT,
+      COUNT: DEFAULT,
 
       // 내가 참여한 챌린지
-      PARTICIPATIONS: QUERY_DEFAULT,
+      PARTICIPATIONS: DEFAULT,
 
       // 인증 내역을 일별로 확인
-      VERIFICATIONS: QUERY_DEFAULT,
+      VERIFICATIONS: DEFAULT,
     },
   },
 }
@@ -149,11 +144,11 @@ const MEMBER_QUERY_DEFAULTS = {
 const STORE_QUERY_DEFAULTS = {
   TIME_DEAL: {
     // 타임딜 상품 목록
-    LIST: QUERY_DEFAULT,
+    LIST: DEFAULT,
   },
   PRODUCTS: {
     // 일반 상품 목록
-    LIST: QUERY_DEFAULT,
+    LIST: DEFAULT,
   },
   ETC: {
     COUNT: {

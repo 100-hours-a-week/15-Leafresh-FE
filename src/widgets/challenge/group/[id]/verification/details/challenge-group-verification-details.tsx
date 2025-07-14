@@ -58,6 +58,9 @@ export const VerificationDetails = ({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
     queryFn: () => getVerificationDetails({ challengeId, verificationId }),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
+    // enabled: isClient,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   })
 
   const { data: commentData } = useQuery({

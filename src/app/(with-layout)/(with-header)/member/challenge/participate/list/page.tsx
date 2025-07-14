@@ -6,13 +6,9 @@ import { ChallengeStatus, getGroupParticipations, getGroupParticipationsCount } 
 
 import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
-interface PageProps {
-  params: Promise<{ status: ChallengeStatus }>
-}
-
-const Page = async ({ params }: PageProps) => {
+export default async function Page() {
   try {
-    const { status } = await params
+    const status: ChallengeStatus = 'ongoing'
 
     const queryClient = getQueryClient()
 
@@ -43,5 +39,3 @@ const Page = async ({ params }: PageProps) => {
     return <div>챌린지 정보를 불러오는 데 실패했습니다.</div>
   }
 }
-
-export default Page
