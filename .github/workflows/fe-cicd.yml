@@ -250,8 +250,7 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v2'
 
       - name: Verify The Installation of gcloud CLI
-        run: |
-          'gcloud info'
+        run: gcloud info
 
       - name: Upload via IAP SCP to FE PROD server
         run: |
