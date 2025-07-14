@@ -264,30 +264,31 @@ jobs:
     name: Discord Notification
     needs: [deploy-dev, deploy-prod]
     if: |
-      (
         needs.deploy-dev.result != 'skipped' || 
         needs.deploy-prod.result != 'skipped'
-      )
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Message
-        run: |
-          TAG="${GITHUB_REF#refs/tags/}"
+        run: | 
+          MESSAGE=""
+
+          # Dev 결과 처리
           if [[ "${{ needs.deploy-dev.result }}" != 'skipped' ]]; then
-            STATUS="${{ needs.deploy-dev.outputs.status }}"
-          elif [[ "${{ needs.remote-deploy.result }}" != 'skipped' ]]; then
-            STATUS="success"
-          else
-            STATUS="unknown"
+            STATUS_DEV="${{ needs.deploy-dev.outputs.status }}"
+            if [ "$STATUS_DEV" = "success" ]; then
+              MESSAGE="${MESSAGE}✅ \`[FE dev]\` 배포 완료\n"
+            elif [ "$STATUS_DEV" = "failure" ]; then
+              MESSAGE="${MESSAGE}🚨 \`[FE dev]\` 배포 실패\n"
+            fi
           fi
 
-          # Check Prod Deploy Status
-          if [ "${{ needs.remote-prod.result }}" != "" ]; then
-            STATUS_PROD="${{ needs.remote-deploy.outputs.status }}"
+          # Prod 결과 처리
+          if [[ "${{ needs.deploy-prod.result }}" != 'skipped' ]]; then
+            STATUS_PROD="${{ needs.deploy-prod.outputs.status }}"
             if [ "$STATUS_PROD" = "success" ]; then
-              MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료 (Blue-Green)\n"
+              MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료\n"
             elif [ "$STATUS_PROD" = "failure" ]; then
-              MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패 (헬스체크 실패 등)\n"
+              MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패\n"
             fi
           fi
 
@@ -298,4 +299,4 @@ jobs:
           curl -H "Content-Type: application/json" \
                -X POST \
                -d "{\"content\": \"$MESSAGE\"}" \
-               ${{ secrets.DISCORD_WEBHOOK_URL }}
+             ${{ secrets.DISCORD_WEBHOOK_URL }}
