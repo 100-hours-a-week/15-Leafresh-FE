@@ -240,6 +240,19 @@ jobs:
         run: |
           tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/ next.config.ts
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+          credentials_json: ${{ secrets.SA_KEY_JSON }}
+
+      - name: Setup Google Cloud SDK and Set GCP Project
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Verify The Installation of gcloud CLI
+        run: |
+          'gcloud info'
+
       - name: Upload via IAP SCP to FE PROD server
         run: |
           gcloud compute scp fe-build.tar.gz \
