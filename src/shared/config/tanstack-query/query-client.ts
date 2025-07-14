@@ -1,12 +1,14 @@
 import { isServer, QueryClient } from '@tanstack/react-query'
 
+import { QUERY_DEFAULT } from './query-defaults'
+
 const options = {
   defaultOptions: {
     queries: {
       retry: 0,
       refetchOnWindowFocus: false,
-      staleTime: 0, // 즉시 무효화 처리 (지정한 경우에만 즉시 캐싱)
-      gcTime: 1000 * 60 * 5, // 언마운트 후 5분 동안 메모리 캐시 유지
+      ...QUERY_DEFAULT,
+      ...(isServer ? { gcTime: Infinity } : {}), // TC의 서버에서는 gcTime = Infinity인 경우 요청이 종료되면 자동으로 GC를 수행한다.
     },
     mutations: {
       retry: 0, // 실패시 재시도하지 않음 (필요시 지정)
