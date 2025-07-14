@@ -10,14 +10,14 @@ on:
       - 'v*'
 
 env:
-  REGION: asia-northeast3
-  PROJECT_ID_PROD: leafresh-prod2
-  BLUE_MIG_NAME: leafresh-fe-blue-template
-  GREEN_MIG_NAME: leafresh-fe-green-template
-  LOAD_BALANCER_NAME: leafresh-https-lb
-  URL_MAP_NAME: leafresh-https-lb  # URL Map 이름
-  BLUE_BACKEND_SERVICE_NAME: leafresh-fe-blue-bs
-  GREEN_BACKEND_SERVICE_NAME: leafresh-fe-green-bs
+  # REGION: asia-northeast3
+  # PROJECT_ID_PROD: leafresh-prod2
+  # BLUE_MIG_NAME: leafresh-fe-blue-template
+  # GREEN_MIG_NAME: leafresh-fe-green-template
+  # LOAD_BALANCER_NAME: leafresh-https-lb
+  # URL_MAP_NAME: leafresh-https-lb  # URL Map 이름
+  # BLUE_BACKEND_SERVICE_NAME: leafresh-fe-blue-bs
+  # GREEN_BACKEND_SERVICE_NAME: leafresh-fe-green-bs
 
 
 jobs:
@@ -51,8 +51,8 @@ jobs:
 
   lint-and-unit-test:
     name: Lint and Unit test
-    needs: setup
-    if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+    if: github.event_name == 'pull_request'
+    needs: [setup]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -132,8 +132,9 @@ jobs:
 
   build-dev:
     name: Build and Push Docker (dev)
-    if: github.event_name == 'pull_request' && github.base_ref == 'develop'
-    needs: [lint-and-unit-test]
+    #if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+    if: github.ref == 'refs/heads/develop'
+    # needs: [lint-and-unit-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -152,37 +153,39 @@ jobs:
           push: true
           tags: jchanho99/frontend-develop:latest
           build-args: |
-            ${{ secrets.ENV_FE_ANALYTICS }}
             ${{ secrets.ENV_FE_DEV_PROD }}
+            ${{ secrets.ENV_FE_ANALYTICS }}
 
-  build-prod:
-    name: Build and Push Docker (prod)
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
-    # needs: [integration-test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  # build-prod:
+  #   name: Build and Push Docker (prod)
+  #   # if: github.event_name == 'pull_request' && github.base_ref == 'main'
+  #   if: github.ref == 'refs/heads/main'
+  #   # needs: [integration-test]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Set short commit SHA
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+  #     - name: Set short commit SHA
+  #       run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
-      - name: Docker Login
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+  #     - name: Docker Login
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: jchanho99/frontend-prod:${{ env.SHORT_SHA }}
+  #     - name: Build and Push Docker Image
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: .
+  #         file: ./Dockerfile
+  #         push: true
+  #         tags: jchanho99/frontend-prod:${{ env.SHORT_SHA }}
 
   deploy-dev:
     name: Deploy to Dev Server
     if: github.ref == 'refs/heads/develop'
+    needs: [build-dev]
     runs-on: ubuntu-latest
     outputs:
       status: ${{ steps.set-status.outputs.status }}
@@ -417,9 +420,10 @@ jobs:
   #     - name: Set Status (Prod Failure)
   #       if: failure() && steps.deploy-prod.outcome == 'failure' # deploy-step이 실패했을 때만
   #       run: echo "status=failure" >> "$GITHUB_OUTPUT"
-  upload-artifact:
+  remote-deploy:
     name: Build and Upload FE Artifact to PROD Server
-    needs: build-prod
+    if: github.ref == 'refs/heads/main'
+    # needs: build-prod
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -434,8 +438,7 @@ jobs:
           version: latest
 
       - name: Install dependencies and build
-        run: |
-          pnpm install
+        run: pnpm install
       
       - name: Create .env and .env.production
         run: |
@@ -447,30 +450,30 @@ jobs:
 
       - name: Archive build result
         run: |
-          tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/
+          tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/ next.config.ts
 
       - name: Upload via IAP SCP to FE PROD server
         run: |
           gcloud compute scp fe-build.tar.gz \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_PROD }}:~/fe-build.tar.gz \
-            --zone=asia-northeast3-a \
+            ${{ secrets.SSH_USER }}@leafresh-fe-tester-a:~/fe/fe-build.tar.gz \
+            --zone=${{ secrets.AZ }} \
             --tunnel-through-iap \
-            --project=${{ env.PROJECT_ID_PROD }}
+            --project=${{ secrets.PROJECT_ID }}
 
-  remote-deploy:
-    name: Run deploy.sh on FE server
-    needs: upload-artifact
-    runs-on: ubuntu-latest
-    steps:
-      - name: SSH into FE server and run deploy script
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST_PROD }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            bash ~/deploy.sh
+          gcloud compute ssh ${{ secrets.SSH_USER }}@leafresh-fe-tester-a \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.AZ }} \
+            --tunnel-through-iap \
+            --command="bash -c 'cd fe && ./deploy.sh'"
+
+      - name: Set Status (Prod)
+        id: set-status
+        if: success()
+        run: echo "status=success" >> "$GITHUB_OUTPUT"
+
+      - name: Set Status (Prod Failure)
+        if: failure() && steps.deploy-step.outcome == 'failure'
+        run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   notify:
     name: Discord Notification
