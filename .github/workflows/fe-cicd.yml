@@ -120,7 +120,7 @@ jobs:
   #         PLAYWRIGHT_TEST_BASE_URL: http://localhost:3000
 
   build-dev:
-    name: Build and Push Docker (dev)
+    name: Build and Push Docker Image (dev)
     if: >
       (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
       (github.event_name == 'pull_request' && github.base_ref == 'develop' && github.event.action == 'closed' && github.event.pull_request.merged == true)
@@ -146,7 +146,7 @@ jobs:
             ${{ secrets.ENV_FE_ANALYTICS }}
 
   build-prod:
-    name: Build and Push Docker (prod)
+    name: Build and Push Docker Image (Prod)
     if: >
       (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main')) ||
       (github.event_name == 'pull_request' && github.base_ref == 'main' && github.event.action == 'closed' && github.event.pull_request.merged == true)
@@ -167,6 +167,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: jchanho99/frontend-prod:latest
+          build-args: |
+            ${{ secrets.ENV_FE_PROD }}
+            ${{ secrets.ENV_FE_ANALYTICS }}
 
   deploy-dev:
     name: Deploy to Dev Server
@@ -207,7 +210,7 @@ jobs:
         run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   deploy-prod:
-    name: Build and Upload FE Artifact to PROD Server
+    name: Deploy to Prod Server
     needs: [build-prod]
     runs-on: ubuntu-latest
     steps:
