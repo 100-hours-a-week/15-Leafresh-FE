@@ -1,6 +1,6 @@
 import { use } from 'react'
 
-import LoginPage from './loginpage'
+import { LoginPage } from '@/widgets/member'
 
 export default function Page({
   searchParams,

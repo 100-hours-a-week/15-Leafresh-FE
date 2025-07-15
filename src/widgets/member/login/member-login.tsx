@@ -2,28 +2,27 @@
 
 import { useEffect, useRef } from 'react'
 
-import Image from 'next/image'
-
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { Login } from '@/entities/member/api'
 import { LowercaseOAuthType } from '@/entities/member/model'
 
 import { Loading } from '@/shared/components'
-import { QUERY_KEYS, QUERY_OPTIONS, theme } from '@/shared/config'
+import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { useOAuthStateStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
 import KakaoLoginButton from '@public/image/kakao_login.svg'
 import LogoImage from '@public/image/logo.svg'
 
+import * as S from './styles'
+
 interface LoginPageProps {
   authorized?: string | string[] | undefined
   isExpired?: boolean
 }
 
-const LoginPage = ({ authorized, isExpired }: LoginPageProps) => {
+export const LoginPage = ({ authorized, isExpired }: LoginPageProps) => {
   const { toast } = useToast()
 
   const { setState } = useOAuthStateStore()
@@ -80,62 +79,18 @@ const LoginPage = ({ authorized, isExpired }: LoginPageProps) => {
   }, [authorized])
 
   return (
-    <Container>
-      <Logo src={LogoImage} alt='Leafresh' width={160} height={60} />
-      <DividerWrapper>
-        <Line />
-        <Text>로그인 / 회원가입</Text>
-        <Line />
-      </DividerWrapper>
+    <S.Container>
+      <S.Logo src={LogoImage} alt='Leafresh' width={160} height={60} />
+      <S.DividerWrapper>
+        <S.Line />
+        <S.Text>로그인 / 회원가입</S.Text>
+        <S.Line />
+      </S.DividerWrapper>
       {!isLoading ? (
-        <KakaoImage src={KakaoLoginButton} alt='kakao' onClick={() => handleLogin('kakao')} />
+        <S.KakaoImage src={KakaoLoginButton} alt='kakao' onClick={() => handleLogin('kakao')} />
       ) : (
         <Loading />
       )}
-    </Container>
+    </S.Container>
   )
 }
-
-export default LoginPage
-
-const Container = styled.div`
-  height: calc(100dvh - 60px);
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  padding: 64px 24px;
-  background-color: ${theme.colors.lfWhite.base};
-`
-
-const Logo = styled(Image)`
-  margin-bottom: 40px;
-`
-
-const DividerWrapper = styled.div`
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-`
-
-const Line = styled.div`
-  flex: 1;
-  height: 1px;
-  background-color: ${theme.colors.lfGray.base};
-`
-
-const Text = styled.div`
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.medium};
-`
-
-const KakaoImage = styled(Image)`
-  width: 100%;
-  height: 50px;
-`
