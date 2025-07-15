@@ -24,7 +24,12 @@ export const ChatBubble = ({ role, loading, children, subDescription, isAnswer, 
   <Container role={role}>
     {role === 'bot' && (
       <Avatar role={role}>
-        <Image src='/image/chatbot/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
+        <Image
+          src='https://storage.googleapis.com/leafresh-prod-images/init/chatbot/chatbot_bubble.png'
+          alt='chatbot'
+          width={30}
+          height={30}
+        />
       </Avatar>
     )}
     <BubbleWrapper>

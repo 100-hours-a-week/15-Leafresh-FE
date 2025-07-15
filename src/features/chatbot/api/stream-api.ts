@@ -29,7 +29,7 @@ export function createCategoryStream(
   category: string,
 ): EventSource {
   const params = new URLSearchParams({ sessionId, location, workType, category })
-  return new EventSource(`${BASE_API_URL}/api/chatbot/recommendation/base-info?${params}`, {
+  return new EventSource(`https://springboot.dev-leafresh.app/api/chatbot/recommendation/base-info?${params}`, {
     withCredentials: true,
   })
 }
@@ -37,5 +37,5 @@ export function createCategoryStream(
 // SSE 스트림 생성 함수 (자유 텍스트)
 export function createFreeTextStream(sessionId: string, message: string): EventSource {
   const params = new URLSearchParams({ sessionId, message })
-  return new EventSource(`${BASE_API_URL}/api/chatbot/recommendation/free-text?${params}`)
+  return new EventSource(`https://springboot.dev-leafresh.app/api/chatbot/recommendation/free-text?${params}`)
 }

@@ -164,7 +164,8 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
+      profileImageUrl:
+        userInfo?.imageUrl ?? 'https://storage.googleapis.com/leafresh-prod-images/init/chatbot/chatbot.png',
       parentCommentId: null,
       isMine: true,
       deleted: false,
@@ -218,7 +219,8 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
+      profileImageUrl:
+        userInfo?.imageUrl ?? 'https://storage.googleapis.com/leafresh-prod-images/init/chatbot/chatbot.png',
       parentCommentId,
       isMine: true,
       deleted: false,
