@@ -14,12 +14,18 @@ export async function serverFetchRequest<T>(
   isRetry = false,
 ): Promise<ApiResponse<T>> {
   const { method, path } = endpoint
+  console.log('endpoint: ', endpoint)
+
   const origin = getServerFetchOrigin()
-  const url = new URL(origin + path)
+  console.log('origin : ', origin)
+  console.log('path : ', path)
+
+  const url = new URL(path, origin)
 
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
   }
+  console.log('✅URL :', url.toString())
 
   const isFormData = options.body instanceof FormData
   const headers: HeadersInit = {
@@ -40,6 +46,8 @@ export async function serverFetchRequest<T>(
     .map(({ name, value }) => `${name}=${value}`)
     .join('; ')
 
+  console.log('cookies: ', cookieHeader)
+
   const response = await fetch(url.toString(), {
     method,
     headers: {
@@ -55,8 +63,29 @@ export async function serverFetchRequest<T>(
   if (!response.ok) {
     if ((response.status === 401 || response.status === 403) && !isRetry) {
       try {
-        await refreshServerAccessToken()
-        return serverFetchRequest<T>(endpoint, options, true)
+        console.log('⭕️ 리프레시 시도중!!')
+
+        const newAccessToken = await refreshServerAccessToken()
+        // return serverFetchRequest<T>(endpoint, options, true)
+        // ✅ 새 accessToken을 직접 헤더에 주입
+        const updatedCookie = [
+          ...cookieStore.getAll().map(({ name, value }) => `${name}=${value}`),
+          `accessToken=${newAccessToken}`,
+        ].join('; ')
+
+        return fetch(url.toString(), {
+          method,
+          headers: {
+            ...headers,
+            Cookie: updatedCookie,
+          },
+          body,
+        }).then(async retryRes => {
+          const contentType = retryRes.headers.get('Content-Type')
+          const retryData = contentType?.includes('application/json') ? await retryRes.json() : await retryRes.text()
+          if (!retryRes.ok) throw retryData
+          return retryData as ApiResponse<T>
+        })
       } catch (refreshError) {
         const error: ErrorResponse = {
           status: 401,
