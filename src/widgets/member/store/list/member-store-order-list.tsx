@@ -11,14 +11,13 @@ import { useInfiniteMemberStoreOrderList } from '@/features/member/api'
 
 import { PurchaseProduct } from '@/entities/member/api'
 
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
 import { NoContent } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { getTimeDiff } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
-
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
 
 /** 더미 데이터 */
 const dummyMemberStoreOrderList: PurchaseProduct[] = [

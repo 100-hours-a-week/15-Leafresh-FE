@@ -44,7 +44,7 @@ export const UpcomingTimeDealList = ({ data, className }: UpcomingTimeDealListPr
                   src={item.imageUrl}
                   alt={item.title}
                   fill
-                  sizes='(max-width: 690px) 100vw, 420px'
+                  sizes='(max-width: 900px) 100vw, 420px'
                   style={{ objectFit: 'cover' }}
                 />
                 <UpcomingDateText>{format(new Date(item.dealStartTime), 'M월 d일 HH:mm')} 오픈</UpcomingDateText>

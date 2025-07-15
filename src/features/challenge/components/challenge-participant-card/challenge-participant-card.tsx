@@ -66,7 +66,7 @@ export const GroupChallengeParticipantCard = ({
           src={imageUrl}
           alt={title}
           fill
-          sizes='(max-width: 640px) 33vw, 150px'
+          sizes='(max-width: 900px) 33vw, 150px'
           priority={imagePriority}
         />
       </LeftSection>

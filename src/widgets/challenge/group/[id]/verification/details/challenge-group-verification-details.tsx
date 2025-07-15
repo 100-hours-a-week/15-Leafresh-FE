@@ -26,6 +26,8 @@ import {
   VerificationDetailResponse,
 } from '@/entities/challenge/api'
 
+import LikeIcon from '@/shared/assets/icon/like_active.svg'
+import UnLikeIcon from '@/shared/assets/icon/like_inactive.svg'
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -35,9 +37,6 @@ import { getTimeDiff } from '@/shared/lib'
 import { copyToClipboard } from '@/shared/lib/utils'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 import { ISOFormatString } from '@/shared/type'
-
-import LikeIcon from '@/shared/assets/icon/like_active.svg'
-import UnLikeIcon from '@/shared/assets/icon/like_inactive.svg'
 
 interface VerificationDetailsProps {
   challengeId: number
@@ -180,7 +179,8 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
+      profileImageUrl:
+        userInfo?.imageUrl ?? 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot.png',
       parentCommentId: null,
       isMine: true,
       deleted: false,
@@ -233,7 +233,8 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
+      profileImageUrl:
+        userInfo?.imageUrl ?? 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot.png',
       parentCommentId,
       isMine: true,
       deleted: false,
@@ -396,7 +397,7 @@ export const VerificationDetails = ({
           src={verifications.imageUrl}
           alt='Leafresh'
           fill
-          sizes='(max-width: 640px) 100vw, 420px'
+          sizes='(max-width: 900px) 100vw, 420px'
           priority
         />
       </ImageWrapper>

@@ -235,7 +235,7 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
                           src={badge.imageUrl}
                           alt={badge.name}
                           fill
-                          sizes='(max-width: 390px) 30vw, 100px'
+                          sizes='(max-width: 900px) 30vw, 100px'
                           style={{ objectFit: 'cover' }}
                         />
                       </BadgeImage>

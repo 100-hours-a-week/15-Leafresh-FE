@@ -18,6 +18,7 @@ import {
 } from '@/entities/challenge/api'
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
+import LeafIcon from '@/shared/assets/icon/leaf.svg'
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -25,8 +26,6 @@ import { ToastType, useCameraModalStore, useConfirmModalStore, usePollingStore }
 import { useAuth, useToast } from '@/shared/hooks'
 import { DayType } from '@/shared/lib'
 import { responsiveHorizontalPadding } from '@/shared/styles'
-
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
 
 type WarningType = {
   isWarning: boolean
@@ -188,7 +187,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     <Wrapper className={className}>
       <DescriptionSection>
         <ThumbnailImageWrapper>
-          <Thumbnail src={thumbnailUrl} alt='썸네일' fill sizes='(max-width: 640px) 100vw, 400px' priority />
+          <Thumbnail src={thumbnailUrl} alt='썸네일' fill sizes='(max-width: 900px) 100vw, 400px' priority />
         </ThumbnailImageWrapper>
 
         <Descriptions>

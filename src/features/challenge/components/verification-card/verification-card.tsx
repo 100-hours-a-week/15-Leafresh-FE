@@ -130,7 +130,7 @@ export const VerificationCard = ({
             src={verificationImageUrl}
             alt='인증 이미지'
             fill
-            sizes='(max-width: 640px) 100vw, 420px'
+            sizes='(max-width: 900px) 100vw, 420px'
             priority={isPriority}
           />
           <Badge className='badge'>{category_kor}</Badge>
