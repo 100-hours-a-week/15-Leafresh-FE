@@ -3,7 +3,6 @@
 import { useEffect, useRef } from 'react'
 
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
 
 import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
@@ -26,12 +25,10 @@ interface LoginPageProps {
 
 const LoginPage = ({ authorized, isExpired }: LoginPageProps) => {
   const { toast } = useToast()
-  const searchParams = useSearchParams()
 
   const { setState } = useOAuthStateStore()
 
-  const isUnauthorized = searchParams.get('authorized')
-  // const isExpired = searchParams.get('expired') === 'true'
+  const isUnauthorized: boolean = authorized !== undefined
 
   const providerRef = useRef<LowercaseOAuthType>('kakao')
 
@@ -75,10 +72,12 @@ const LoginPage = ({ authorized, isExpired }: LoginPageProps) => {
     }
     // 미인증 유저
     if (isUnauthorized) {
+      console.log('execetued!')
+
       toast('Error', '로그인이 필요합니다')
       return
     }
-  }, [authorized, isExpired])
+  }, [authorized])
 
   return (
     <Container>
