@@ -17,7 +17,12 @@ export const ChatHeader = ({ close }: ChatHeaderProps): ReactNode => {
   return (
     <HeaderWrapper>
       <IconWrapper>
-        <Image src='/image/chatbot/chatbot_bubble.png' alt='챗봇' width={36} height={36} />
+        <Image
+          src='https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot_bubble.png'
+          alt='챗봇'
+          width={36}
+          height={36}
+        />
         수피
       </IconWrapper>
       <CloseButton onClick={close}>

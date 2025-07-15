@@ -104,7 +104,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           selectionProps: {
             title: '챌린지 선택',
             subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
-            imageUrl: '/image/chatbot/chatbotcategory.png',
+            imageUrl: 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbotcategory.png',
             options: CHAT_CHALLENGE_OPTIONS,
             selectionType: 'challenge',
             buttonText: '카테고리 설명',
@@ -232,7 +232,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
         selectionProps: {
           title: '챌린지 선택',
           subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
-          imageUrl: '/image/chatbot/chatbotcategory.png',
+          imageUrl: 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbotcategory.png',
           options: CHAT_CHALLENGE_OPTIONS,
           selectionType: 'challenge',
           buttonText: '카테고리 설명',
@@ -257,7 +257,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
       selectionProps: {
         title: '챌린지 선택',
         subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
-        imageUrl: '/image/chatbot/chatbotcategory.png',
+        imageUrl: 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbotcategory.png',
         options: CHAT_CHALLENGE_OPTIONS,
         selectionType: 'challenge',
         buttonText: '카테고리 설명',
