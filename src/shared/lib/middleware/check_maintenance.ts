@@ -27,14 +27,14 @@ export async function checkMaintenance(request: NextRequest) {
   const shouldBlock = isUnderMaintenance && isProd // or add !isWithinServiceTime
 
   // ✅ 로그 출력
-  // console.log('[MIDDLEWARE LOG]', {
-  //   isProd,
-  //   isUnderMaintenance,
-  //   hour,
-  //   isWithinServiceTime,
-  //   shouldBlock,
-  //   pathname: url.pathname,
-  // })
+  console.log('[MIDDLEWARE LOG]', {
+    isProd,
+    isUnderMaintenance,
+    hour,
+    isWithinServiceTime,
+    shouldBlock,
+    pathname: url.pathname,
+  })
 
   if (shouldBlock && !pathname.startsWith('/maintenance')) {
     url.pathname = '/maintenance'

@@ -14,18 +14,12 @@ export async function serverFetchRequest<T>(
   isRetry = false,
 ): Promise<ApiResponse<T>> {
   const { method, path } = endpoint
-  console.log('endpoint: ', endpoint)
 
   const origin = getServerFetchOrigin()
-  console.log('origin : ', origin)
-  console.log('path : ', path)
-
   const url = new URL(path, origin)
-
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
   }
-  console.log('✅URL :', url.toString())
 
   const isFormData = options.body instanceof FormData
   const headers: HeadersInit = {
@@ -46,8 +40,6 @@ export async function serverFetchRequest<T>(
     .map(({ name, value }) => `${name}=${value}`)
     .join('; ')
 
-  console.log('cookies: ', cookieHeader)
-
   const response = await fetch(url.toString(), {
     method,
     headers: {
@@ -63,8 +55,6 @@ export async function serverFetchRequest<T>(
   if (!response.ok) {
     if ((response.status === 401 || response.status === 403) && !isRetry) {
       try {
-        console.log('⭕️ 리프레시 시도중!!')
-
         const newAccessToken = await refreshServerAccessToken()
         // return serverFetchRequest<T>(endpoint, options, true)
         // ✅ 새 accessToken을 직접 헤더에 주입
