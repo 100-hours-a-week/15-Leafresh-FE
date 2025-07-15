@@ -1,9 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-
-import styled from '@emotion/styled'
-
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useChatHistory, useChatbotSSE, useRecommendationStream } from '@/features/chatbot/api'
 import { ChatBubble, ChatSelection, HorizontalCards } from '@/features/chatbot/components'
 
@@ -22,6 +19,8 @@ import {
 
 import { LucideIcon } from '@/shared/components'
 
+import * as S from './styles'
+
 export interface ChatFrameProps {
   step: FrameStep
   onSelect: (value: string, step: FrameStep) => void
@@ -29,6 +28,13 @@ export interface ChatFrameProps {
 }
 
 export type FrameStep = 1 | 2 | 3
+// <<<<<<< HEAD
+// =======
+
+// function formatChallengeResponse(challenges: { title: string; description: string }[]): string {
+//   return challenges.map((ch, i) => `${i + 1}. ${ch.title}\n  ${ch.description}`).join('\n\n')
+// }
+// >>>>>>> f454b755454ce09cd89f3fb1fb8b2137c71a72d3
 
 export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [inputText, setInputText] = useState('')
@@ -38,7 +44,6 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const [chatSelections, setChatSelections] = useState(() => loadSelectionsFromSession() || {})
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [selectedWorkType, setSelectedWorkType] = useState<string | null>(null)
-
   const [liveImage] = useState(() => getRandomLiveImage())
   const [workImage] = useState(() => getRandomWorkImage())
 
@@ -217,16 +222,16 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   }
 
   return (
-    <Container>
-      <MessagesContainer>
+    <S.Container>
+      <S.MessagesContainer>
         {chatHistory.map((item, idx) => {
           const { type, role, text, subDescription, actions, isAnswer, selectionProps } = item
           return (
             <div key={idx}>
               {type === 'message' && role && (
-                <ChatBubble role={role} subDescription={subDescription} isAnswer={isAnswer} actions={actions}>
+                <S.ChatBubble role={role} subDescription={subDescription} isAnswer={isAnswer} actions={actions}>
                   {text}
-                </ChatBubble>
+                </S.ChatBubble>
               )}
 
               {type === 'selection' && selectionProps && <ChatSelection {...selectionProps} />}
@@ -243,11 +248,11 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           </ChatBubble>
         )}
         <div ref={messagesEndRef} />
-      </MessagesContainer>
+      </S.MessagesContainer>
 
       {step >= 2 && (
-        <InputContainer>
-          <Input
+        <S.InputContainer>
+          <S.Input
             type='text'
             placeholder='메시지를 입력하세요 (최대 100자)'
             maxLength={100}
@@ -260,7 +265,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             }}
             disabled={catLoading || freeLoading}
           />
-          <SendButton
+          <S.SendButton
             onClick={() => {
               if (inputText.trim()) {
                 handleSendMessage(inputText)
@@ -268,57 +273,76 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
             }}
           >
             <LucideIcon name='ArrowUpRight' size={22} />
-          </SendButton>
-        </InputContainer>
+          </S.SendButton>
+        </S.InputContainer>
       )}
-    </Container>
+    </S.Container>
   )
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  height: 100%;
-`
+//   return (
+//     <S.Container>
+//       <S.MessagesContainer>
+//         {chatHistory.map((item, idx) => (
+//           <div key={idx}>
+//             {/* 메시지 타입 */}
+//             {item.type === 'message' && item.role && (
+//               <ChatBubble
+//                 loading={item.loading}
+//                 role={item.role}
+//                 subDescription={item.subDescription}
+//                 buttonText={item.buttonText}
+//                 isAnswer={item.isAnswer}
+//                 onClick={item.onClick}
+//               >
+//                 {item.text}
+//               </ChatBubble>
+//             )}
 
-const MessagesContainer = styled.div`
-  display: flex;
-  width: 100%;
-  padding-right: 20px;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-left: 10px;
-`
+//             {/* 일반 선택지 타입 */}
+//             {item.type === 'selection' && item.selectionProps && (
+//               <S.SelectionWrapper>
+//                 <ChatSelection {...item.selectionProps} />
+//               </S.SelectionWrapper>
+//             )}
 
-const InputContainer = styled.div`
-  display: flex;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-top: 8px;
-`
+//             {/* 가로 스크롤 카드 타입 */}
+//             {item.type === 'horizontal-cards' && (
+//               <HorizontalCards visibleIndex={visibleCardIndex} renderCards={renderHorizontalCards} />
+//             )}
+//           </div>
+//         ))}
 
-const Input = styled.input`
-  flex: 1;
-  padding: 12px 16px;
-  border: none;
-  outline: none;
-  font-size: 14px;
+//         {/* 자동 스크롤용 ref */}
+//         <div ref={messagesEndRef} />
+//       </S.MessagesContainer>
 
-  &::placeholder {
-    color: #888888;
-  }
-`
-
-const SendButton = styled.button`
-  width: 44px;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+//       {step >= 2 && (
+//         <S.InputContainer>
+//           <S.Input
+//             type='text'
+//             placeholder='메시지를 입력하세요 (최대 100자)'
+//             maxLength={100}
+//             value={inputText}
+//             onChange={e => setInputText(e.target.value)}
+//             onKeyDown={e => {
+//               if (e.key === 'Enter' && inputText.trim()) {
+//                 handleSendMessage(inputText)
+//               }
+//             }}
+//             disabled={catLoading || freeLoading}
+//           />
+//           <S.SendButton
+//             onClick={() => {
+//               if (inputText.trim()) {
+//                 handleSendMessage(inputText)
+//               }
+//             }}
+//           >
+//             <LucideIcon name='ArrowUpRight' size={22} />
+//           </S.SendButton>
+//         </S.InputContainer>
+//       )}
+//     </S.Container>
+//   )
+// }

@@ -1,9 +1,9 @@
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
-import { CommentResponse } from './get-comment-list'
+import { RepliesType } from './get-comment-list'
 
 export type PostReplyBody = {
-  comment: string
+  content: string
 }
 
 export type PostReplyVariables = {
@@ -14,7 +14,7 @@ export type PostReplyVariables = {
 }
 
 export const postVerificationReply = ({ challengeId, verificationId, commentId, body }: PostReplyVariables) => {
-  return fetchRequest<CommentResponse>(
+  return fetchRequest<RepliesType>(
     ENDPOINTS.CHALLENGE.GROUP.VERIFICATION.COMMENT.REPLY(challengeId, verificationId, commentId),
     {
       body,

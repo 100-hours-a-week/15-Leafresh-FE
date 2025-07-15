@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-import styled from '@emotion/styled'
 import useEmblaCarousel from 'embla-carousel-react'
 
 import { VerificationStatus, VerificationStatusCard } from '../verification-status-card'
+
+import * as S from './styles'
 
 interface Verification {
   day: number
@@ -78,24 +79,24 @@ export const VerificationCarousel = ({ verifications }: Props) => {
   }, [emblaApi, onInit, onSelect])
 
   return (
-    <Wrapper>
-      <CarouselViewport ref={emblaRef}>
-        <CarouselContainer>
+    <>
+      <S.CarouselViewport ref={emblaRef}>
+        <S.CarouselContainer>
           {chunks.map((group, index) => (
-            <Slide key={index}>
-              <Grid>
+            <S.Slide key={index}>
+              <S.Grid>
                 {group.map(v => (
                   <VerificationStatusCard key={v.day} day={v.day} imageUrl={v.imageUrl} status={v.status} />
                 ))}
-              </Grid>
-            </Slide>
+              </S.Grid>
+            </S.Slide>
           ))}
-        </CarouselContainer>
-      </CarouselViewport>
+        </S.CarouselContainer>
+      </S.CarouselViewport>
 
-      <Dots>
+      <S.Dots>
         {scrollSnaps.map((_, index) => (
-          <Dot
+          <S.Dot
             key={index}
             isActive={index === selectedIndex}
             onClick={() => scrollTo(index)}
@@ -104,52 +105,7 @@ export const VerificationCarousel = ({ verifications }: Props) => {
             disabled={false}
           />
         ))}
-      </Dots>
-    </Wrapper>
+      </S.Dots>
+    </>
   )
 }
-
-// === 스타일 ===
-const Wrapper = styled.div`
-  width: 100%;
-`
-
-const CarouselViewport = styled.div`
-  overflow: hidden;
-  /* width: 100%; */
-  display: flex;
-  justify-content: center;
-`
-
-const CarouselContainer = styled.div`
-  display: flex;
-  margin: 0 auto; /* 화면 중앙 정렬 */
-`
-
-const Slide = styled.div`
-  flex: 0 0 100%;
-  display: flex;
-  padding: 8px 0;
-`
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-`
-
-const Dots = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
-`
-
-const Dot = styled.button<{ isActive: boolean }>`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: ${({ isActive }) => (isActive ? '#2e7d32' : '#ccc')};
-  border: none;
-  cursor: pointer;
-`

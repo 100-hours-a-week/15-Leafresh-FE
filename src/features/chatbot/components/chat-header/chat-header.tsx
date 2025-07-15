@@ -4,10 +4,9 @@ import { ReactNode } from 'react'
 
 import Image from 'next/image'
 
-import styled from '@emotion/styled'
-
 import { LucideIcon } from '@/shared/components'
-import { theme } from '@/shared/config'
+
+import * as S from './styles'
 
 interface ChatHeaderProps {
   close: () => void
@@ -15,8 +14,8 @@ interface ChatHeaderProps {
 
 export const ChatHeader = ({ close }: ChatHeaderProps): ReactNode => {
   return (
-    <HeaderWrapper>
-      <IconWrapper>
+    <S.HeaderWrapper>
+      <S.IconWrapper>
         <Image
           src='https://storage.googleapis.com/leafresh-prod-images/init/chatbot/chatbot_bubble.png'
           alt='챗봇'
@@ -24,33 +23,10 @@ export const ChatHeader = ({ close }: ChatHeaderProps): ReactNode => {
           height={36}
         />
         수피
-      </IconWrapper>
-      <CloseButton onClick={close}>
+      </S.IconWrapper>
+      <S.CloseButton onClick={close}>
         <LucideIcon name='X' size={20} color='lfDarkGray' />
-      </CloseButton>
-    </HeaderWrapper>
+      </S.CloseButton>
+    </S.HeaderWrapper>
   )
 }
-
-const HeaderWrapper = styled.div`
-  display: flex;
-  height: 50px;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 12px;
-  background: #f5fff2;
-  border-bottom: solid 1px ${theme.colors.lfBlack.base};
-`
-
-const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-const CloseButton = styled.button`
-  background: transparent;
-  border: none;
-  cursor: pointer;
-`

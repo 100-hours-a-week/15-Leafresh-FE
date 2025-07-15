@@ -1,10 +1,10 @@
 'use client'
-import styled from '@emotion/styled'
 
-import { theme } from '@/shared/config'
 import { useToggle } from '@/shared/hooks'
 
-import { TimeDropdown } from '../dropdown'
+import { TimeDropdown } from '../time-dropdown'
+
+import * as S from './styles'
 
 export interface TimePickerProps {
   label?: string
@@ -21,16 +21,16 @@ export const TimePicker = ({ label, startValue, endValue, onChangeStart, onChang
   const { value: endOpen, toggle: toggleEnd, setValue: setEndOpen } = useToggle(false)
 
   return (
-    <Wrapper className={className}>
-      {label && <Title>{label}</Title>}
-      <RangeWrapper isOpen={startOpen || endOpen}>
-        <Panel
+    <S.Wrapper className={className}>
+      {label && <S.Title>{label}</S.Title>}
+      <S.RangeWrapper isOpen={startOpen || endOpen}>
+        <S.Panel
           onClick={() => {
             setStartOpen(true)
             setEndOpen(false)
           }}
         >
-          <PanelLabel>시작시간</PanelLabel>
+          <S.PanelLabel>시작시간</S.PanelLabel>
           <TimeDropdown
             value={startValue}
             isOpen={startOpen}
@@ -41,15 +41,15 @@ export const TimePicker = ({ label, startValue, endValue, onChangeStart, onChang
               setEndOpen(false)
             }}
           />
-        </Panel>
-        <Divider />
-        <Panel
+        </S.Panel>
+        <S.Divider />
+        <S.Panel
           onClick={() => {
             setStartOpen(false)
             setEndOpen(true)
           }}
         >
-          <PanelLabel>종료시간</PanelLabel>
+          <S.PanelLabel>종료시간</S.PanelLabel>
           <TimeDropdown
             value={endValue}
             isOpen={endOpen}
@@ -60,58 +60,8 @@ export const TimePicker = ({ label, startValue, endValue, onChangeStart, onChang
               setStartOpen(false)
             }}
           />
-        </Panel>
-      </RangeWrapper>
-    </Wrapper>
+        </S.Panel>
+      </S.RangeWrapper>
+    </S.Wrapper>
   )
 }
-
-/* ===== 스타일 ===== */
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-const Title = styled.h2`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.medium};
-  margin-bottom: 12px;
-  color: ${theme.colors.lfBlack.base};
-`
-const RangeWrapper = styled.div<{ isOpen: boolean }>`
-  position: relative;
-  display: flex;
-  background: #fafafa;
-  border-radius: ${theme.radius.xs};
-  width: 100%;
-  height: 72px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: ${theme.colors.lfBlack.base};
-
-    transform-origin: center;
-    transform: scaleX(${props => (props.isOpen ? 1 : 0)});
-    transition: transform 0.2s ease;
-  }
-`
-const Panel = styled.div`
-  flex: 1;
-  padding: 12px 16px;
-  cursor: pointer;
-`
-const PanelLabel = styled.div`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfBlack.base};
-  margin-bottom: 15px;
-`
-const Divider = styled.div`
-  width: 0.1px;
-  margin: 5px 0;
-  background: #d3d3d3;
-`

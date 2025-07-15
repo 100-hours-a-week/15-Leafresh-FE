@@ -1,92 +1,80 @@
 'use client'
-import { useEffect } from 'react'
 
-import { AnimatePresence, motion } from 'motion/react'
+import { useEffect, useState } from 'react'
 
-import styled from '@emotion/styled'
+import { AnimatePresence } from 'motion/react'
 
-import { theme } from '@/shared/config'
-import { ToastType, useToastStore } from '@/shared/context'
+import { toastStore } from '@/shared/context'
 
 import { LucideIcon } from '../lucide-icon'
 
+import * as S from './styles'
+
 export const Toast = () => {
-  const { isOpen, type, description, close: closeToast } = useToastStore()
+  const toasts = toastStore(state => state.toasts)
+  const remove = toastStore(state => state.remove)
 
+  const [isPaused, setIsPaused] = useState<boolean>(false)
+
+  // 각 Toast마다 타이머 개별 설정
   useEffect(() => {
-    if (!isOpen || !description) return
-    const timer = setTimeout(() => {
-      closeToast()
-    }, 2000)
-    return () => clearTimeout(timer)
-  }, [isOpen, description, closeToast])
+    if (isPaused) return
 
-  const iconName = type === ToastType.Success ? 'CheckCheck' : 'CircleAlert'
-  const color = type === ToastType.Success ? 'lfBlue' : 'lfRed'
+    const timers = toasts.map(toast => {
+      const timer = setTimeout(() => {
+        remove(toast.id)
+      }, 2000)
+      return () => clearTimeout(timer)
+    })
+    return () => {
+      timers.forEach(clear => clear())
+    }
+  }, [toasts, isPaused, remove])
 
   return (
-    <AnimatePresence>
-      {isOpen && description && (
-        <MotionContainer
-          key='toast'
-          toastType={type}
-          initial={{ opacity: 0, x: '-50%', y: 50 }}
-          animate={{ opacity: 1, x: '-50%', y: 0 }}
-          exit={{ opacity: 0, x: '-50%', y: 20 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Wrapper>
-            <LucideIcon name={iconName} size={20} color={color} />
-          </Wrapper>
-          <Message>{description}</Message>
-          <CloseIcon onClick={closeToast}>
-            <LucideIcon name='X' size={16} color='lfBlack' />
-          </CloseIcon>
-        </MotionContainer>
-      )}
-    </AnimatePresence>
+    <S.Wrapper
+      $toastCount={toasts.length}
+      $isPaused={isPaused}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <AnimatePresence initial={false}>
+        {[...toasts].reverse().map((toast, index) => {
+          const maxWidth = 250
+          const shrinkPerStep = 10
+          const width = isPaused ? maxWidth : maxWidth - index * shrinkPerStep
+          const gap = isPaused ? 70 : 20
+          const bottom = index * gap
+
+          return (
+            <S.ToastItem
+              key={toast.id}
+              style={{
+                bottom: `${bottom}px`,
+                width: `${width}px`,
+                zIndex: 999 - index,
+              }}
+              $isPaused={isPaused}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{
+                duration: 0.1,
+              }}
+            >
+              <LucideIcon
+                name={toast.type === 'Success' ? 'CheckCheck' : 'CircleAlert'}
+                size={20}
+                color={toast.type === 'Success' ? 'lfBlue' : 'lfRed'}
+              />
+              <S.Message>{toast.description}</S.Message>
+              <S.CloseIcon onClick={() => remove(toast.id)}>
+                <LucideIcon name='X' color='lfBlack' />
+              </S.CloseIcon>
+            </S.ToastItem>
+          )
+        })}
+      </AnimatePresence>
+    </S.Wrapper>
   )
 }
-
-const MotionContainer = styled(motion.div)<{ toastType: ToastType }>`
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  min-width: ${({ toastType }) => (toastType === ToastType.Success ? '209px' : '256px')};
-  height: 60px;
-  width: 250px;
-  padding: 0px 20px;
-
-  background-color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  box-shadow: ${theme.shadow.lfInput};
-  color: ${({ toastType }) => (toastType === ToastType.Success ? theme.colors.lfBlack.base : theme.colors.lfRed.base)};
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-`
-
-const Wrapper = styled.div`
-  display: flex;
-  align-self: center;
-`
-
-const Message = styled.span`
-  flex: 1;
-  text-align: center;
-  white-space: pre-line;
-  line-height: 1.3;
-`
-
-const CloseIcon = styled.div`
-  position: absolute;
-  right: 7px;
-  top: 4px;
-  cursor: pointer;
-`

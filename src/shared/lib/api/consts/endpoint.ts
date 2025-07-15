@@ -2,8 +2,6 @@ import { LowercaseOAuthType } from '@/entities/member/model'
 
 import { HttpMethod } from './http'
 
-export const BASE_API_URL = '/api/proxy'
-
 export type EndpointType = {
   method: HttpMethod
   path: string
@@ -173,12 +171,6 @@ const CHALLENGE_ENDPOINTS = {
       VERIFICATION: { method: HttpMethod.GET, path: `/api/challenges/verifications/count` },
     },
   },
-}
-
-const a = {
-  1: 2,
-  2: 3,
-  3: 4,
 }
 
 const MEMBER_ENDPOINTS = {

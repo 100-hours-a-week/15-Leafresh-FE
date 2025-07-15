@@ -1,9 +1,8 @@
-import { BASE_API_URL, ENDPOINTS } from '../consts'
+import { ENDPOINTS } from '../consts'
+import { getClientFetchOrigin } from '../utils'
 
 let isRefreshing = false
 let refreshPromise: Promise<void> | null = null
-
-const BASE_URL = BASE_API_URL
 
 export async function refreshClientAccessToken(): Promise<void> {
   if (isRefreshing) return refreshPromise ?? Promise.resolve()
@@ -12,11 +11,13 @@ export async function refreshClientAccessToken(): Promise<void> {
 
   refreshPromise = (async () => {
     try {
-      const response = await fetch(`${BASE_URL}${ENDPOINTS.MEMBERS.AUTH.RE_ISSUE.path}`, {
-        method: 'POST',
-        credentials: 'include', // 재발급은 쿠키 포함
-      })
+      const origin = getClientFetchOrigin()
+      const url = new URL(origin + ENDPOINTS.MEMBERS.AUTH.RE_ISSUE.path)
 
+      const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'include',
+      })
       if (!response.ok) {
         throw new Error('Refresh failed')
       }
