@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import styled from '@emotion/styled'
 
-import NotFoundImage from '@/shared/assets/images/404.svg'
+import { NotFoundImage } from '@/shared/assets'
 import { media } from '@/shared/config'
 import { URL } from '@/shared/constants'
 

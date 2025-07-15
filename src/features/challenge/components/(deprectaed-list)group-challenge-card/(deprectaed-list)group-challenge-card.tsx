@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
+import { LeafIcon } from '@/shared/assets'
 import { URL } from '@/shared/constants'
 import { ISOFormatString } from '@/shared/type'
 

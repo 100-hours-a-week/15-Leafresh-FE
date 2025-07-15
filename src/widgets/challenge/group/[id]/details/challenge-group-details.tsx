@@ -20,7 +20,7 @@ import {
 } from '@/entities/challenge/api'
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
+import { LeafIcon } from '@/shared/assets'
 import { BackButton, DatePicker, Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'

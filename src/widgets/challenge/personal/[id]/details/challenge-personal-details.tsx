@@ -18,7 +18,7 @@ import {
 } from '@/entities/challenge/api'
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
+import { LeafIcon } from '@/shared/assets'
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'

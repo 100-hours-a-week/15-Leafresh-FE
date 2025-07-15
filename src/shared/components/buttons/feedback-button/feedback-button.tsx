@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 
 import styled from '@emotion/styled'
 
-import FeedBackIcon from '@/shared/assets/icon/feedback_button.svg'
+import { FeedBackIcon } from '@/shared/assets'
 interface FeedBackButtonProps {
   className?: string
 }

@@ -15,7 +15,7 @@ import {
   Product,
 } from '@/entities/store/api'
 
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
+import { LeafIcon } from '@/shared/assets'
 import { media, theme, MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { ToastType, useConfirmModalStore, useIdempotencyKeyStore } from '@/shared/context'

@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import styled from '@emotion/styled'
 
-import LogoImage from '@/shared/assets/images/logo.svg'
+import { LogoImage } from '@/shared/assets'
 import { BackButton, LucideIcon } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'

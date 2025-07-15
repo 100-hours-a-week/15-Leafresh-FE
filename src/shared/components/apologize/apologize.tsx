@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 
 import styled from '@emotion/styled'
 
-import ApologizeImage from '@/shared/assets/images/apologize_character.svg'
+import { ApologizeImage } from '@/shared/assets'
 import { theme } from '@/shared/config'
 
 interface ApologizeContentProps {

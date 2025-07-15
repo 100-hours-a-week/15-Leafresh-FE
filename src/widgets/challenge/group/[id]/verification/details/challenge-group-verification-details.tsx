@@ -26,8 +26,7 @@ import {
   VerificationDetailResponse,
 } from '@/entities/challenge/api'
 
-import LikeIcon from '@/shared/assets/icon/like_active.svg'
-import UnLikeIcon from '@/shared/assets/icon/like_inactive.svg'
+import { ActiveLikeIcon, InActiveLikeIcon } from '@/shared/assets'
 import { Loading, LucideIcon } from '@/shared/components'
 import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -408,7 +407,7 @@ export const VerificationDetails = ({
         <LeftStat>
           <LikeButton onClick={handleLikeToggle}>
             {/* <LikeIconImage src={isLiked ? LikeIcon : UnLikeIcon} alt='좋아요 아이콘' /> */}
-            {isLiked ? <LikeIcon width={16} height={16} /> : <UnLikeIcon width={16} height={16} />}
+            {isLiked ? <ActiveLikeIcon width={16} height={16} /> : <InActiveLikeIcon width={16} height={16} />}
             {likeCount}
           </LikeButton>
           <Stat>

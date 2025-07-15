@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 
 import styled from '@emotion/styled'
 
-import LogoCharacterImage from '@/shared/assets/images/main-icon.svg'
+import { LogoCharacterImage } from '@/shared/assets'
 import { theme } from '@/shared/config'
 
 interface NoContentProps {

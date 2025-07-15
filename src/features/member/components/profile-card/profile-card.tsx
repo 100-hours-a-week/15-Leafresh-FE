@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 
 import { treeLevelMap } from '@/entities/member/model'
 
+import { LogoCharacterImage } from '@/shared/assets'
 import { theme } from '@/shared/config'
 import { useScrollLock } from '@/shared/hooks'
 
@@ -250,13 +251,7 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
           </CardFace>
           {/* 뒷면 */}
           <CardFace className='back'>
-            <Image
-              src='/image/main-icon.svg'
-              alt='supy2'
-              width={160}
-              height={125}
-              style={{ width: 'auto', height: 'auto', maxWidth: 160, maxHeight: 160 }}
-            />
+            <LogoCharacterImage width={160} />
           </CardFace>
         </Card>
       </CardContainer>

@@ -18,8 +18,7 @@ import {
 } from '@/entities/challenge/api'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@/entities/challenge/model'
 
-import ActiveLikeIcon from '@/shared/assets/icon/like_active.svg'
-import InActiveLikeIcon from '@/shared/assets/icon/like_inactive.svg'
+import { ActiveLikeIcon, InActiveLikeIcon } from '@/shared/assets'
 import { LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'

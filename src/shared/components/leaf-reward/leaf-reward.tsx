@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 
 import styled from '@emotion/styled'
 
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
+import { LeafIcon } from '@/shared/assets'
 
 interface LeafRewardProps {
   reward: number

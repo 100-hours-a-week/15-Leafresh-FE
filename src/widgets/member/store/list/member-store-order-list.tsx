@@ -11,7 +11,7 @@ import { useInfiniteMemberStoreOrderList } from '@/features/member/api'
 
 import { PurchaseProduct } from '@/entities/member/api'
 
-import LeafIcon from '@/shared/assets/icon/leaf.svg'
+import { LeafIcon } from '@/shared/assets'
 import { NoContent } from '@/shared/components'
 import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
