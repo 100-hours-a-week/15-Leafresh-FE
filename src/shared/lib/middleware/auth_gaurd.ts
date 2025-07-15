@@ -24,6 +24,7 @@ export async function checkAuth(request: NextRequest) {
 
     return null
   } catch (error) {
-    return NextResponse.redirect(new URL('/member/login', request.url))
+    const timestamp = Date.now()
+    return NextResponse.redirect(new URL(`/member/login?authorized=${timestamp}`, request.url))
   }
 }

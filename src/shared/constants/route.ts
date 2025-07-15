@@ -65,7 +65,7 @@ const MAIN_URL = {
 const MEMBER_URL = {
   LOGIN: {
     name: '로그인',
-    value: buildURI('/member/login'),
+    value: (authorized: boolean, expired: boolean) => buildURI('/member/login', { query: { authorized, expired } }),
   },
   CALLBACK: {
     name: '소셜 로그인 콜백',
