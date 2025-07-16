@@ -1,1 +1,1 @@
-export * from './useObjectState'
+export * from './use-object-state'

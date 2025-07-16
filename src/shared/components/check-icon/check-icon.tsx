@@ -2,13 +2,10 @@
 
 import { motion } from 'motion/react'
 
-import styled from '@emotion/styled'
-
-import { theme } from '@/shared/config'
-
+import * as S from './styles'
 export const CheckIcon = () => {
   return (
-    <CheckSvg
+    <S.CheckSvg
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 24 24'
       fill='none'
@@ -23,13 +20,6 @@ export const CheckIcon = () => {
         animate={{ pathLength: 1 }}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
       />
-    </CheckSvg>
+    </S.CheckSvg>
   )
 }
-
-const CheckSvg = styled.svg`
-  width: 50px;
-  height: 50px;
-
-  color: ${theme.colors.lfBlack.base};
-`

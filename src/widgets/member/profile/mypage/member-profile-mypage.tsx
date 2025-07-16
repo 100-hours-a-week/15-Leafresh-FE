@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useRouter } from 'next/navigation'
 
-import { keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { ProfileBox, ProfileCard, RecentBadgeBox } from '@/features/member/components'
@@ -23,22 +21,12 @@ import {
 } from '@/entities/member/api'
 
 import { Loading, LucideIcon } from '@/shared/components'
-import { theme, MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
+import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useOAuthUserStore, usePollingStore, useUserStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
-import { responsiveHorizontalPadding } from '@/shared/styles'
+import { useOAuthUserStore, usePollingStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 
-const slideRotateIn = keyframes`
-  0% {
-    transform: translateX(-50%) translateY(200px) rotateY(0deg); /* 뷰포트 아래쪽에서 시작 */
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(-50%) translateY(-50%) rotateY(360deg); /* 화면 중앙 + 360도 회전 */
-    opacity: 1;
-  }
-`
+import * as S from './styles'
 
 export const Mypage = () => {
   const router = useRouter()
@@ -48,7 +36,7 @@ export const Mypage = () => {
 
   const { OAuthUserInfo, clearOAuthUserInfo } = useOAuthUserStore()
   const { clearUserInfo } = useUserStore()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { setFeedbackPolling } = usePollingStore()
 
   const {
@@ -57,7 +45,7 @@ export const Mypage = () => {
     },
   } = usePollingStore()
 
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const { mutate: requestFeedback, isPending } = useMutationStore<null, void>(
     MUTATION_KEYS.MEMBER.FEEDBACK.POST_FEEDBACK,
@@ -166,7 +154,7 @@ export const Mypage = () => {
           onSuccess: response => {
             clearOAuthUserInfo()
             clearUserInfo()
-            openToast(ToastType.Success, '로그아웃 성공')
+            toast('Success', '로그아웃 성공')
             router.push(URL.MAIN.INDEX.value)
           },
         },
@@ -174,8 +162,8 @@ export const Mypage = () => {
     }
   }
   return (
-    <Container isScroll={showProfileCard}>
-      <ProfileSection>
+    <S.Container isScroll={showProfileCard}>
+      <S.ProfileSection>
         <ProfileBox
           nickName={profile.nickname}
           profileImageUrl={profile.profileImageUrl}
@@ -183,205 +171,67 @@ export const Mypage = () => {
           treeImageUrl={profile.treeImageUrl}
           onClick={handleProfileCardOpen}
         />
-        <FeedbackBox>
-          <FeedbackText>나의 친환경 활동 피드백</FeedbackText>
+        <S.FeedbackBox>
+          <S.FeedbackText>나의 친환경 활동 피드백</S.FeedbackText>
           {(shouldPoll || isFetching) && <Loading />}
 
           {/* 피드백 */}
-          {feedback?.content && !shouldPoll && <Feedback>{feedback.content}</Feedback>}
+          {feedback?.content && !shouldPoll && <S.Feedback>{feedback.content}</S.Feedback>}
 
           {/* 피드백 요청 버튼 조건 분기 */}
           {feedback?.content === null && !shouldPoll && !pollError && (
-            <FeedbackButton onClick={handleRequestFeedback}>AI 피드백 받기</FeedbackButton>
+            <S.FeedbackButton onClick={handleRequestFeedback}>AI 피드백 받기</S.FeedbackButton>
           )}
 
           {/* 에러 발생 시 다시 시도 버튼만 표시 */}
           {pollError && !shouldPoll && (
             <>
-              <FeedbackButton onClick={handleRequestFeedback}>다시 시도</FeedbackButton>
-              <ErrorMessage>{pollError}</ErrorMessage>
+              <S.FeedbackButton onClick={handleRequestFeedback}>다시 시도</S.FeedbackButton>
+              <S.ErrorMessage>{pollError}</S.ErrorMessage>
             </>
           )}
-        </FeedbackBox>
-      </ProfileSection>
+        </S.FeedbackBox>
+      </S.ProfileSection>
 
-      <BadgeSection>
+      <S.BadgeSection>
         <RecentBadgeBox badges={recentbadges} />
-      </BadgeSection>
+      </S.BadgeSection>
 
-      <RouteSection>
-        <SectionTitle>나의 이용 내역</SectionTitle>
-        <MenuList>
-          <MenuItem onClick={() => router.push(URL.MEMBER.CHALLENGE.CREATE.LIST.value)}>
-            <MenuText>생성한 챌린지</MenuText>
+      <S.RouteSection>
+        <S.SectionTitle>나의 이용 내역</S.SectionTitle>
+        <S.MenuList>
+          <S.MenuItem onClick={() => router.push(URL.MEMBER.CHALLENGE.CREATE.LIST.value)}>
+            <S.MenuText>생성한 챌린지</S.MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
-          </MenuItem>
-          <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.BADGE.value)}>
-            <MenuText>활동 뱃지</MenuText>
+          </S.MenuItem>
+          <S.MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.BADGE.value)}>
+            <S.MenuText>활동 뱃지</S.MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
-          </MenuItem>
-          <MenuItem onClick={() => router.push(URL.MEMBER.STORE.PURCHASED.value)}>
-            <MenuText>구매 목록</MenuText>
+          </S.MenuItem>
+          <S.MenuItem onClick={() => router.push(URL.MEMBER.STORE.PURCHASED.value)}>
+            <S.MenuText>구매 목록</S.MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
-          </MenuItem>
-        </MenuList>
-      </RouteSection>
-      <RouteSection>
-        <SectionTitle>설정</SectionTitle>
-        <MenuList>
-          <MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.MODIFY.value)}>
-            <MenuText>프로필 수정</MenuText>
+          </S.MenuItem>
+        </S.MenuList>
+      </S.RouteSection>
+      <S.RouteSection>
+        <S.SectionTitle>설정</S.SectionTitle>
+        <S.MenuList>
+          <S.MenuItem onClick={() => router.push(URL.MEMBER.PROFILE.MODIFY.value)}>
+            <S.MenuText>프로필 수정</S.MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
-          </MenuItem>
-          <MenuItem onClick={handleLogout}>
-            <MenuText style={{ color: 'red' }}>로그아웃</MenuText>
+          </S.MenuItem>
+          <S.MenuItem onClick={handleLogout}>
+            <S.MenuText style={{ color: 'red' }}>로그아웃</S.MenuText>
             <LucideIcon name='ChevronRight' size={24} strokeWidth={1.5} />
-          </MenuItem>
-        </MenuList>
-      </RouteSection>
+          </S.MenuItem>
+        </S.MenuList>
+      </S.RouteSection>
       {showProfileCard && (
-        <AnimatedCardWrapper>
+        <S.AnimatedCardWrapper>
           <ProfileCard data={profileCard} onDismiss={() => setShowProfileCard(false)} />
-        </AnimatedCardWrapper>
+        </S.AnimatedCardWrapper>
       )}
-    </Container>
+    </S.Container>
   )
 }
-
-const Container = styled.div<{ isScroll: boolean }>`
-  ${responsiveHorizontalPadding};
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 20px;
-  overflow: ${({ isScroll }) => (isScroll ? 'hidden' : 'auto')};
-`
-
-const ProfileSection = styled.div`
-  justify-content: center;
-`
-
-const FeedbackBox = styled.div`
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
-  display: flex;
-  padding: 15px;
-  flex-direction: column;
-  background-color: #eff9e8;
-
-  gap: 16px;
-  align-items: center;
-  justify-self: center;
-  text-align: start;
-
-  border-radius: ${theme.radius.base};
-  box-shadow: ${theme.shadow.lfPrime};
-`
-
-const FeedbackText = styled.p`
-  font-size: ${theme.fontSize.md};
-  /* padding-left: 20px; */
-  font-weight: ${theme.fontWeight.semiBold};
-  align-self: flex-start;
-`
-const Feedback = styled.p`
-  white-space: pre-line;
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-`
-
-const FeedbackButton = styled.button`
-  width: 80%;
-  height: 40px;
-
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.medium};
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${theme.colors.lfGreenMain.hover};
-    transform: scale(1.02);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-`
-const BadgeSection = styled.div`
-  justify-content: center;
-`
-const AnimatedCardWrapper = styled.div`
-  animation: ${slideRotateIn} 1.6s ease forwards;
-  position: absolute; /* ✅ 수정 */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* ✅ 중앙 정렬 */
-  transform-origin: center center;
-  z-index: 1000;
-`
-const RouteSection = styled.div`
-  align-self: center;
-  width: 100%;
-  background-color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  box-shadow: ${theme.shadow.lfPrime};
-  overflow: hidden;
-
-  :last-child {
-    margin-bottom: 10px;
-  }
-`
-
-const SectionTitle = styled.h3`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfWhite.base};
-  padding: 11px 20px;
-  margin: 0;
-  background-color: ${theme.colors.lfGreenMain.base};
-`
-
-const MenuList = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-const MenuItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: ${theme.colors.lfInputBackground.base};
-  }
-
-  &:active {
-    background-color: #eff9e8;
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-`
-
-const MenuText = styled.span`
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfBlack.base};
-`
-
-const ErrorMessage = styled.div`
-  color: ${theme.colors.lfRed.base};
-  font-size: ${theme.fontSize.sm};
-  padding: 4px 0;
-`

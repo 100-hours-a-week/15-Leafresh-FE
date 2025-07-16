@@ -2,12 +2,10 @@
 
 import React from 'react'
 
-import Image from 'next/image'
-
-import styled from '@emotion/styled'
-
 import { LucideIcon, LucideIconProps } from '@/shared/components'
 import { theme, ThemeColorType } from '@/shared/config'
+
+import * as S from './styles'
 
 export type VerificationStatus = 'SUCCESS' | 'FAILURE' | 'PENDING_APPROVAL'
 
@@ -51,71 +49,20 @@ export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({
   const { barColor, iconName, iconColorKey } = statusMap[status]
 
   return (
-    <Card>
-      <ImageWrapper>
-        <StyledImg
+    <S.Card>
+      <S.ImageWrapper>
+        <S.StyledImg
           src={imageUrl}
           alt={`${day}일차 인증`}
           fill
           sizes='(max-width: 900px) 100vw, 220px'
           priority={isPriority}
         />
-        <DayLabel>{day}일차</DayLabel>
-      </ImageWrapper>
-      <BottomBar bg={barColor}>
+        <S.DayLabel>{day}일차</S.DayLabel>
+      </S.ImageWrapper>
+      <S.BottomBar bg={barColor}>
         <LucideIcon name={iconName} size={20} color={iconColorKey} />
-      </BottomBar>
-    </Card>
+      </S.BottomBar>
+    </S.Card>
   )
 }
-
-/* ===== Styled ===== */
-const Card = styled.div`
-  width: 100%;
-  /* aspect-ratio: 1/1; */
-
-  overflow: hidden;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-
-  border-radius: ${theme.radius.sm};
-  background: ${theme.colors.lfLightGray.base};
-  box-shadow: ${theme.shadow.lfPrime};
-`
-
-const ImageWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1/1;
-  background: #eee;
-`
-
-const StyledImg = styled(Image)`
-  object-fit: cover;
-`
-
-const DayLabel = styled.div`
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 2px 4px;
-  border-radius: ${theme.radius.xs};
-  font-size: ${theme.fontSize.xs};
-  color: ${theme.colors.lfBlack.base};
-`
-
-const BottomBar = styled.div<{ bg: string }>`
-  width: 100%;
-  height: 28px;
-
-  bottom: 0;
-  background: ${({ bg }) => bg};
-
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`

@@ -4,12 +4,12 @@ import { useState } from 'react'
 
 import { UseFormReturn } from 'react-hook-form'
 
-import styled from '@emotion/styled'
-
 import { FullFormValues } from '@/entities/challenge/model'
 
-import { ErrorText, ImageInput, Loading, LucideIcon } from '@/shared/components'
-import { theme } from '@/shared/config'
+import { ErrorText, LucideIcon } from '@/shared/components'
+
+import * as S from './styles'
+import { UploadThumbnailInput } from './thumbnail-image-input'
 
 interface DetailsStepProps {
   form: UseFormReturn<FullFormValues>
@@ -74,185 +74,59 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
   const FORM_TITLE: string = isEdit ? '단체 챌린지 수정하기' : '단체 챌린지 만들기'
   const BUTTON_TEXT = isEdit ? '수정하기' : '생성하기'
   return (
-    <Container onSubmit={handleSubmit(handleDetailSubmit)}>
-      <DividerWrapper>
-        <Text>{FORM_TITLE}</Text>
-      </DividerWrapper>
-      <FieldGroup>
-        <FieldWrapper>
-          <Label>
-            챌린지 설명 <RequiredMark>*</RequiredMark>
-          </Label>
-          <SubText>매력적인 글귀로 챌린지를 소개해보세요.</SubText>
-          <TextArea {...register('description')} placeholder='예) Placeholder' />
+    <S.Container onSubmit={handleSubmit(handleDetailSubmit)}>
+      <S.DividerWrapper>
+        <S.Text>{FORM_TITLE}</S.Text>
+      </S.DividerWrapper>
+      <S.FieldGroup>
+        <S.FieldWrapper>
+          <S.Label>
+            챌린지 설명 <S.RequiredMark>*</S.RequiredMark>
+          </S.Label>
+          <S.SubText>매력적인 글귀로 챌린지를 소개해보세요.</S.SubText>
+          <S.TextArea {...register('description')} placeholder='예) Placeholder' />
           <ErrorText message={isSubmitted ? errors.description?.message : ''} />
-        </FieldWrapper>
+        </S.FieldWrapper>
 
-        <FieldWrapper>
-          <LabelRow>
-            <Label>
-              챌린지 썸네일 이미지 <RequiredMark>*</RequiredMark>
-            </Label>
-            <InfoIcon>ⓘ</InfoIcon>
-          </LabelRow>
-          <SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</SubText>
-          <StyledImageInput
-            label='이미지를 업로드해주세요'
-            icon={<LucideIcon name='Image' size={24} />}
+        <S.FieldWrapper>
+          <S.LabelRow>
+            <S.Label>
+              챌린지 썸네일 이미지 <S.RequiredMark>*</S.RequiredMark>
+            </S.Label>
+          </S.LabelRow>
+          <S.SubText>썸네일 사진을 통해 챌린지를 홍보해보세요.</S.SubText>
+          <UploadThumbnailInput
             imageUrl={formValue.thumbnailUrl || null}
             onChange={({ imageUrl }) => {
               setValue('thumbnailUrl', imageUrl ?? '')
               trigger('thumbnailUrl')
             }}
-            backgroundColor='lfWhite'
-            cameraTitle='챌린지 썸네일'
-            aspectRatio='FIVE_THREE'
           />
-          <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
-        </FieldWrapper>
 
-        <FieldWrapper>
-          <Label>유의사항</Label>
-          <WarningList>
+          <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
+        </S.FieldWrapper>
+
+        <S.FieldWrapper>
+          <S.Label>유의사항</S.Label>
+          <S.WarningList>
             {CHALLENGE_DETAILS_WARNINGS.map(warnings => (
-              <Warning key={warnings.value} isWarning={warnings.isWarning}>
+              <S.Warning key={warnings.value} isWarning={warnings.isWarning}>
                 <LucideIcon name='Check' size={20} />
                 <li>{warnings.value}</li>
-              </Warning>
+              </S.Warning>
             ))}
-          </WarningList>
-        </FieldWrapper>
-      </FieldGroup>
+          </S.WarningList>
+        </S.FieldWrapper>
+      </S.FieldGroup>
 
-      <ButtonWrapper>
-        <BackButton onClick={() => handleStepChange(1)} type='button' disabled={isCreating}>
+      <S.ButtonWrapper>
+        <S.BackButton onClick={() => handleStepChange(1)} type='button' disabled={isCreating}>
           이전
-        </BackButton>
-        <SubmitButton type='submit' disabled={!isValid} $active={isValid}>
-          {!isCreating ? BUTTON_TEXT : <StyledLoading hasText={false} />}
-        </SubmitButton>
-      </ButtonWrapper>
-    </Container>
+        </S.BackButton>
+        <S.SubmitButton type='submit' disabled={!isValid} $active={isValid}>
+          {!isCreating ? BUTTON_TEXT : <S.StyledLoading hasText={false} />}
+        </S.SubmitButton>
+      </S.ButtonWrapper>
+    </S.Container>
   )
 }
-
-// === Styles ===
-const Container = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`
-
-const DividerWrapper = styled.div`
-  width: 100%;
-
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const ButtonWrapper = styled.div`
-  width: 100%;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-`
-
-const Text = styled.div`
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
-  text-decoration: underline;
-  text-underline-offset: 4px;
-`
-
-const FieldGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-`
-const FieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`
-const LabelRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`
-const Label = styled.label`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.medium};
-`
-const RequiredMark = styled.span`
-  color: ${theme.colors.lfGreenBorder.base};
-`
-const SubText = styled.p`
-  color: ${theme.colors.lfDarkGray.base};
-  font-size: ${theme.fontSize.xs};
-  margin-bottom: 4px;
-`
-const InfoIcon = styled.span`
-  font-size: 14px;
-`
-const TextArea = styled.textarea`
-  border: 1px solid ${theme.colors.lfGray.base};
-  border-radius: ${theme.radius.base};
-  padding: 12px;
-  font-size: ${theme.fontSize.xs};
-  resize: none;
-  min-height: 120px;
-`
-
-const WarningList = styled.ul`
-  font-size: ${theme.fontSize.sm};
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 5px;
-`
-
-const Warning = styled.div<{ isWarning: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-`
-
-const BackButton = styled.button<{ disabled?: boolean }>`
-  width: 100%;
-  height: 50px;
-  border-radius: ${theme.radius.base};
-  color: ${theme.colors.lfBlack.base};
-  background-color: ${theme.colors.lfWhite.base};
-  font-weight: ${theme.fontWeight.regular};
-  border: 1px solid ${theme.colors.lfGray.base};
-
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-`
-
-const SubmitButton = styled.button<{ $active: boolean; disabled?: boolean }>`
-  width: 100%;
-  height: 50px;
-  border-radius: ${theme.radius.base};
-  background-color: ${({ $active }) => ($active ? theme.colors.lfGreenMain.base : theme.colors.lfGreenInactive.base)};
-  color: ${theme.colors.lfWhite.base};
-  font-weight: ${theme.fontWeight.semiBold};
-  border: none;
-
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-`
-
-const StyledImageInput = styled(ImageInput)`
-  width: 100%;
-  border: 1px solid ${theme.colors.lfGray.base};
-`
-
-const StyledLoading = styled(Loading)`
-  margin: 0;
-`

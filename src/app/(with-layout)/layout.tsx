@@ -1,4 +1,4 @@
-import { PollingWatcher } from '@/features/common/components'
+import { PollingWatcher, TokenDeleter } from '@/features/common/components'
 
 import { Toast } from '@/shared/components'
 import { AuthGuard, GlobalWrapper, ModalProvider } from '@/shared/config'
@@ -12,6 +12,7 @@ const RootLayout = ({
     <AuthGuard>
       <GlobalWrapper>
         <PollingWatcher /> {/* 롱폴링 상태 조회  */}
+        <TokenDeleter />
         {children}
         <Toast />
         <ModalProvider />

@@ -24,6 +24,7 @@ RUN pnpm install --frozen-lockfile
 
 # Copy source and build
 COPY . .
+COPY next.config.ts next.config.ts
 RUN pnpm run build
 
 
@@ -43,11 +44,13 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/next.config.ts ./next.config.ts
 
 USER nodejs
 
 EXPOSE 3000
+EXPOSE 9103
 
-CMD ["pnpm", "run", "start"]
-
+#CMD ["pnpm", "run", "start"]
+CMD sh -c "node scripts/metrics-server.js & pnpm run start"

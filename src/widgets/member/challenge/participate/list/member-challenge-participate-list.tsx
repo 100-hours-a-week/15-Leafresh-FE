@@ -1,9 +1,8 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { useInfiniteGroupParticipations } from '@/features/challenge/api'
@@ -14,18 +13,33 @@ import { ChallengeStatus, getGroupParticipationsCount } from '@/entities/member/
 import { Loading, NoContent, SwitchTap } from '@/shared/components'
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { responsiveHorizontalPadding } from '@/shared/styles'
 
-const statusMap: Record<number, ChallengeStatus> = {
+import * as S from './styles'
+
+const statusMap: Record<ChallengeStatus, number> = {
+  not_started: 0,
+  ongoing: 1,
+  completed: 2,
+}
+const reverseStatusMap: Record<number, ChallengeStatus> = {
   0: 'not_started',
   1: 'ongoing',
   2: 'completed',
 }
 
 export function ChallengeParticipatePage() {
-  const [tab, setTab] = useState(1)
-  const status = statusMap[tab]
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const status: ChallengeStatus = (searchParams.get('status') as ChallengeStatus) || 'ongoing'
+
+  const [tab, setTab] = useState(statusMap[status])
+
+  /** 탭 변경 핸들러 */
+  const handleChangeTab = (tab: number) => {
+    const status = reverseStatusMap[tab]
+    setTab(tab)
+    router.push(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value(status))
+  }
 
   // 실제 API 훅
   const {
@@ -47,7 +61,6 @@ export function ChallengeParticipatePage() {
 
   const challenges = (challengeData?.pages ?? []).flatMap(page => page?.data?.challenges ?? [])
 
-  // const url = URL.CHALLENGE.PARTICIPATE.DETAILS
   const tabLabels = [
     `인증 대기 (${counts?.notStarted ?? 0})`,
     `진행 중 (${counts?.ongoing ?? 0})`,
@@ -76,7 +89,7 @@ export function ChallengeParticipatePage() {
   const isChallengeExists: boolean = challenges && challenges.length > 0
   if (isChallengeExists) {
     challengeContents = (
-      <ListWrapper>
+      <S.ListWrapper>
         {challenges.map((challenge, index) => {
           const { id, title, thumbnailUrl, startDate, endDate, achievement, achievementRecords } = challenge
           const isPriorityCard = tab === 1 && index === 0
@@ -95,7 +108,7 @@ export function ChallengeParticipatePage() {
             />
           )
         })}
-      </ListWrapper>
+      </S.ListWrapper>
     )
   } else {
     challengeContents = !isLoading && (
@@ -110,74 +123,19 @@ export function ChallengeParticipatePage() {
   }
 
   return (
-    <Container>
-      <SwitchTapContainer>
-        <SwitchTap tabs={tabLabels} currentIndex={tab} onChange={setTab} />
-      </SwitchTapContainer>
+    <S.Container>
+      <S.SwitchTapContainer>
+        <SwitchTap tabs={tabLabels} currentIndex={tab} onChange={handleChangeTab} />
+      </S.SwitchTapContainer>
 
-      <CardListContainer isChallengeExists={isChallengeExists}>
+      <S.CardListContainer isChallengeExists={isChallengeExists}>
         {challengeContents}
         {(isFetchingNextPage || isLoading) && <Loading />}
-        {!hasNextPage && !isLoading && challenges.length > 0 && <EndMessage>모든 챌린지를 불러왔습니다</EndMessage>}
+        {!hasNextPage && !isLoading && challenges.length > 0 && <S.EndMessage>모든 챌린지를 불러왔습니다</S.EndMessage>}
         {!error && hasNextPage && isLoading && (
-          <ObserverTrigger ref={loadMoreRef}>{isFetchingNextPage ? '불러오는 중…' : ''}</ObserverTrigger>
+          <S.ObserverTrigger ref={loadMoreRef}>{isFetchingNextPage ? '불러오는 중…' : ''}</S.ObserverTrigger>
         )}
-      </CardListContainer>
-    </Container>
+      </S.CardListContainer>
+    </S.Container>
   )
 }
-
-// 전체 페이지 컨테이너
-const Container = styled.div`
-  ${responsiveHorizontalPadding};
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-
-  margin: 0 auto;
-
-  height: 100%;
-`
-
-// 상단 탭 컨테이너
-const SwitchTapContainer = styled.div`
-  width: 100%;
-
-  align-self: center;
-  flex-shrink: 0; /* 헤더 크기 고정 */
-`
-
-// 카드 리스트 컨테이너
-const CardListContainer = styled.div<{ isChallengeExists: boolean }>`
-  width: 100%;
-  height: ${({ isChallengeExists }) => (!isChallengeExists ? '100%' : 'fit-content')};
-
-  display: flex;
-  align-self: center;
-  flex-direction: column; /* 세로 방향으로 설정 */
-  overflow: hidden; /* 내부 스크롤만 보이도록 설정 */
-  gap: 24px;
-`
-
-const ListWrapper = styled.div`
-  margin-top: 10px;
-  flex: 1;
-
-  flex-direction: column;
-  gap: 16px;
-  overflow-y: auto; /* 내부 스크롤 활성화 */
-`
-
-const ObserverTrigger = styled.div`
-  height: 1px;
-  padding: 0 20px;
-  flex-shrink: 0; /* 크기 고정 */
-`
-
-const EndMessage = styled.div`
-  text-align: center;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.lfDarkGray.base};
-`

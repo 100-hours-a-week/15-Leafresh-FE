@@ -2,13 +2,10 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
-
-import { LogoImage } from '@/shared/assets'
-import { BackButton, LucideIcon } from '@/shared/components'
-import { theme } from '@/shared/config'
+import { BackButton } from '@/shared/components'
 import { URL } from '@/shared/constants'
 
+import * as S from './styles'
 interface HeaderProps {
   padding: number
 }
@@ -50,67 +47,19 @@ export const Header = ({ padding }: HeaderProps) => {
   })
 
   return (
-    <HeaderContainer>
-      <CustomWidthWrapper padding={padding}>
+    <S.HeaderContainer>
+      <S.CustomWidthWrapper padding={padding}>
         {!hasBackButton ? (
-          <LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
-            <StyledImage />
-          </LogoWrapper>
+          <S.LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
+            <S.StyledImage />
+          </S.LogoWrapper>
         ) : (
           <BackButton />
         )}
-        <MenuButtons>
-          <AlarmButton name='Bell' size={24} strokeWidth={2.5} onClick={() => router.push(URL.MEMBER.ALARM.value)} />
-        </MenuButtons>
-      </CustomWidthWrapper>
-    </HeaderContainer>
+        <S.MenuButtons>
+          <S.AlarmButton name='Bell' size={24} strokeWidth={2.5} onClick={() => router.push(URL.MEMBER.ALARM.value)} />
+        </S.MenuButtons>
+      </S.CustomWidthWrapper>
+    </S.HeaderContainer>
   )
 }
-
-const HeaderContainer = styled.header`
-  width: 100%;
-  height: 60px;
-  flex-shrink: 0;
-
-  position: relative;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${theme.colors.lfWhite.base};
-  border-bottom: 1px solid ${theme.colors.lfLightGray.base};
-`
-
-const CustomWidthWrapper = styled.div<{ padding: number }>`
-  width: 100%;
-  padding: ${({ padding }) => `0px ${padding}px`};
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
-const LogoWrapper = styled.div`
-  cursor: pointer;
-`
-
-const StyledImage = styled(LogoImage)`
-  height: 40px;
-  width: auto;
-`
-
-const MenuButtons = styled.button`
-  position: absolute;
-  right: 35px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-
-  background: none;
-  border: none;
-  cursor: pointer;
-`
-
-const AlarmButton = styled(LucideIcon)``

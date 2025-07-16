@@ -4,9 +4,7 @@ import React, { ReactNode } from 'react'
 
 import Image from 'next/image'
 
-import styled from '@emotion/styled'
-
-import { theme } from '@/shared/config'
+import * as S from './styles'
 
 export interface ChatBubbleProps {
   role: 'bot' | 'user'
@@ -45,102 +43,25 @@ export const ChatBubble: React.FC<ChatBubbleProps> = React.memo(function ChatBub
   }
 
   return (
-    <Container role={role}>
+    <S.Container role={role}>
       {role === 'bot' && (
-        <Avatar role={role}>
+        <S.Avatar role={role}>
           <Image
             src='https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot_bubble.png'
             alt='chatbot'
             width={30}
             height={30}
           />
-        </Avatar>
+        </S.Avatar>
       )}
-      <BubbleWrapper>
-        <NameText role={role}>{role === 'bot' ? '수피' : ''}</NameText>
-        <Bubble role={role} isAnswer={isAnswer}>
+      <S.BubbleWrapper>
+        <S.NameText role={role}>{role === 'bot' ? '수피' : ''}</S.NameText>
+        <S.Bubble role={role} isAnswer={isAnswer}>
           {content}
-          {subDescription && <SubDescription role={role}>{subDescription}</SubDescription>}
-          {buttonText && onClick && <RetryButton onClick={onClick}>{buttonText}</RetryButton>}
-        </Bubble>
-      </BubbleWrapper>
-    </Container>
+          {subDescription && <S.SubDescription role={role}>{subDescription}</S.SubDescription>}
+          {buttonText && onClick && <S.RetryButton onClick={onClick}>{buttonText}</S.RetryButton>}
+        </S.Bubble>
+      </S.BubbleWrapper>
+    </S.Container>
   )
 })
-
-const Container = styled.div<{ role: 'bot' | 'user' }>`
-  display: flex;
-  align-items: flex-start;
-  justify-content: ${({ role }) => (role === 'bot' ? 'flex-start' : 'flex-end')};
-  gap: 8px;
-`
-
-const Avatar = styled.div<{ role: 'bot' | 'user' }>`
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  order: ${({ role }) => (role === 'user' ? 1 : 0)};
-`
-
-const BubbleWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-width: 260px;
-`
-
-const NameText = styled.p<{ role: 'bot' | 'user' }>`
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
-  margin: 8px 0 0 0;
-  color: ${({ role }) => (role === 'bot' ? theme.colors.lfBlack.base : theme.colors.lfBlack.base)};
-`
-
-const Bubble = styled.div<{ role: 'bot' | 'user'; isAnswer?: boolean }>`
-  max-width: 250px;
-  min-width: 60px;
-  padding: 16px 12px;
-  background: ${({ role, isAnswer }) =>
-    isAnswer ? theme.colors.lfWhite.base : role === 'bot' ? '#AFF9BB' : theme.colors.lfWhite.base};
-  color: ${({ role }) => (role === 'bot' ? '#333333' : `${theme.colors.lfBlack.base}`)};
-  border: ${({ isAnswer }) => (isAnswer ? `solid 1px ${theme.colors.lfGreenBorder.base}` : 'none')};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 20px;
-  white-space: pre-wrap;
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.semiBold};
-  box-shadow: ${theme.shadow.lfPrime};
-`
-
-const SubDescription = styled.div<{ role: 'bot' | 'user' }>`
-  font-size: 10px;
-  color: ${theme.colors.lfGreenMain.base};
-  text-align: center;
-  margin-bottom: 10px;
-  white-space: pre-wrap;
-  line-height: 1.4;
-  max-width: 235px;
-`
-
-const RetryButton = styled.button`
-  width: 164px;
-  height: 37px;
-  align-self: center;
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: 10px;
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.medium};
-  cursor: pointer;
-  margin-top: 4px;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: ${theme.colors.lfGreenMain.base};
-  }
-`

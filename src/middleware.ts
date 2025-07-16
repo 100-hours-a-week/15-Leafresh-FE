@@ -27,7 +27,9 @@ export async function middleware(request: NextRequest) {
   const hour = getKSTHour()
   const isWithinServiceTime = hour >= 7 && hour < 19
 
-  const shouldBlock = isUnderMaintenance || (isProd && !isWithinServiceTime)
+  // const shouldBlock = isUnderMaintenance || (isProd && !isWithinServiceTime)
+
+  const shouldBlock = isUnderMaintenance && isProd // 시간 제약 없이 사용
 
   // ✅ 로그 출력
   console.log('[MIDDLEWARE LOG]', {

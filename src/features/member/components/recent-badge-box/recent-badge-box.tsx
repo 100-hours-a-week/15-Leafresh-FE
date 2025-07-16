@@ -2,13 +2,9 @@
 
 import { ReactNode } from 'react'
 
-import Image from 'next/image'
-
-import styled from '@emotion/styled'
-
 import { RecentBadge } from '@/entities/member/api'
 
-import { theme } from '@/shared/config'
+import * as S from './styles'
 
 interface RecentBadgeBoxProps {
   className?: string
@@ -17,93 +13,22 @@ interface RecentBadgeBoxProps {
 
 export const RecentBadgeBox = ({ className, badges }: RecentBadgeBoxProps): ReactNode => {
   return (
-    <Container>
-      <TitleWrapper>
-        <Title>나의 뱃지</Title>
-      </TitleWrapper>
+    <S.Container>
+      <S.TitleWrapper>
+        <S.Title>나의 뱃지</S.Title>
+      </S.TitleWrapper>
       {badges.length > 0 ? (
-        <BadgeWrapper>
+        <S.BadgeWrapper>
           {badges.map((badge, index) => (
-            <BadgeCard key={badge.id ?? index}>
-              <BadgeImage src={badge.imageUrl} alt={badge.name} width={50} height={50} />
-              <BadgeName>{badge.name}</BadgeName>
-            </BadgeCard>
+            <S.BadgeCard key={badge.id ?? index}>
+              <S.BadgeImage src={badge.imageUrl} alt={badge.name} width={50} height={50} />
+              <S.BadgeName>{badge.name}</S.BadgeName>
+            </S.BadgeCard>
           ))}
-        </BadgeWrapper>
+        </S.BadgeWrapper>
       ) : (
-        <NoContentWrapper>아직 획득한 뱃지가 없습니다</NoContentWrapper>
+        <S.NoContentWrapper>아직 획득한 뱃지가 없습니다</S.NoContentWrapper>
       )}
-    </Container>
+    </S.Container>
   )
 }
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  align-self: center;
-  justify-self: center;
-  flex-direction: column;
-
-  width: 100%;
-  background-color: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.base};
-  box-shadow: ${theme.shadow.lfPrime};
-  overflow: hidden;
-
-  /* padding: 15px; */
-  border-radius: ${theme.radius.base};
-`
-
-const TitleWrapper = styled.div`
-  height: 45px;
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  display: flex;
-  align-items: center;
-`
-const Title = styled.p`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.medium};
-  padding: 0 0 0 20px;
-  margin: 0;
-`
-
-const BadgeWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-
-  @media (max-width: 390px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-`
-
-const BadgeCard = styled.div`
-  padding: 10px;
-  text-align: center;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-`
-
-const BadgeImage = styled(Image)`
-  width: auto;
-  width: 48px;
-  height: 48px;
-  object-fit: cover;
-`
-const BadgeName = styled.p`
-  font-size: ${theme.fontSize.xs};
-`
-
-const NoContentWrapper = styled.div`
-  height: 80px;
-
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`

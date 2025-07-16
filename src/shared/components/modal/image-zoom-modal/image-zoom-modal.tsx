@@ -2,17 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import Image from 'next/image'
-
-import styled from '@emotion/styled'
 import useEmblaCarousel from 'embla-carousel-react'
-import { X } from 'lucide-react'
 
-import { ChallengeVerificationResultType } from '@/entities/challenge/model'
-
-import { theme } from '@/shared/config'
 import { useImageZoomStore } from '@/shared/context'
 import { useKeyClose, useScrollLock } from '@/shared/hooks'
+
+import * as S from './styles'
 
 export const ImageZoomModal = () => {
   const [isInitial, setIsInitial] = useState(true)
@@ -51,131 +46,28 @@ export const ImageZoomModal = () => {
   const { result } = data[targetIndex]
 
   return (
-    <Wrapper ref={wrapperRef}>
-      <Header>
+    <S.Wrapper ref={wrapperRef}>
+      <S.Header>
         <span>
           {targetIndex + 1}/{IMAGE_COUNT}
         </span>
-        <CloseIcon size={20} onClick={close} />
-      </Header>
+        <S.StyledLucideIcon name='X' size={24} onClick={close} color='lfWhite' />
+      </S.Header>
 
-      <ResultBar result={result}>{result === 'SUCCESS' ? '성공 인증샷' : '실패 인증샷'}</ResultBar>
+      <S.ResultBar result={result}>{result === 'SUCCESS' ? '성공 인증샷' : '실패 인증샷'}</S.ResultBar>
 
-      <Viewport ref={emblaRef}>
-        <Container className={!isInitial ? 'animate' : ''}>
+      <S.Viewport ref={emblaRef}>
+        <S.Container className={!isInitial ? 'animate' : ''}>
           {data.map(({ imageSrc, description }, idx) => (
-            <Slide key={idx}>
-              <ImageArea>
-                <StyledImage src={imageSrc} alt='zoom-image' fill />
-              </ImageArea>
-              <Description>{description}</Description>
-            </Slide>
+            <S.Slide key={idx}>
+              <S.ImageArea>
+                <S.StyledImage src={imageSrc} alt='zoom-image' fill />
+              </S.ImageArea>
+              <S.Description>{description}</S.Description>
+            </S.Slide>
           ))}
-        </Container>
-      </Viewport>
-    </Wrapper>
+        </S.Container>
+      </S.Viewport>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  position: absolute;
-  min-width: 320px;
-  max-width: 500px;
-  width: 100%;
-  height: 100dvh;
-  top: 0;
-  z-index: 300;
-  display: flex;
-  flex-direction: column;
-  background-color: black;
-`
-
-const Header = styled.div`
-  padding: 24px 0;
-
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  position: relative;
-
-  span {
-    font-size: ${theme.fontSize.base};
-  }
-`
-
-const CloseIcon = styled(X)`
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-`
-
-const ResultBar = styled.div<{ result: ChallengeVerificationResultType }>`
-  background-color: ${({ result }) => (result === 'SUCCESS' ? '#2e7d32' : '#c62828')};
-  color: #fff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: ${theme.fontSize.lg};
-  padding: 12px 0;
-`
-
-const Viewport = styled.div`
-  width: 100%;
-  overflow: hidden;
-
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding-top: 20px;
-  background-color: black;
-  flex: 1;
-`
-
-const Container = styled.div`
-  display: flex;
-  height: 100%;
-  width: 100%;
-
-  &.animate {
-    transition: transform 0.3s ease;
-  }
-`
-const Slide = styled.div`
-  position: relative;
-  flex: 0 0 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
-const ImageArea = styled.div`
-  width: 100%; // 슬라이드 전체 너비
-  aspect-ratio: 1 / 1; // 정사각형 유지
-
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-`
-
-const StyledImage = styled(Image)`
-  object-fit: cover;
-`
-
-const Description = styled.div`
-  flex: 1;
-  text-align: center;
-  font-size: ${theme.fontSize.base};
-  background-color: black;
-  color: #fff;
-  padding: 30px 20px;
-`
