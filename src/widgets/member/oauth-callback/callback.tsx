@@ -46,7 +46,7 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
       })
     },
     ...QUERY_OPTIONS.MEMBER.AUTH.CALLBACK,
-    enabled: typeof code === 'string' && code.length > 0,
+    enabled: typeof code === 'string' && code.length > 0 && state !== null,
   })
 
   useEffect(() => {

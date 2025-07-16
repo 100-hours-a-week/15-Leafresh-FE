@@ -1,4 +1,3 @@
-export * from './auth-gaurd'
 export * from './chakra-provider'
 export * from './global-wrapper'
 export * from './modal-provider'
