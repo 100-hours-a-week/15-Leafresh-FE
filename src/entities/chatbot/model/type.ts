@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { ChatSelectionProps } from '@/features/chatbot/components/chat-selection'
+import { ChatSelectionProps } from '@/features/chatbot/components'
 
 export type ChatOption = {
   label: string
@@ -17,10 +17,11 @@ export type ChatHistoryItem = {
   type: 'message' | 'selection' | 'horizontal-cards'
   role?: 'bot' | 'user'
   text?: React.ReactNode
-  loading?: boolean
   selectionProps?: ChatSelectionProps
   subDescription?: string
-  buttonText?: string
   isAnswer?: boolean
-  onClick?: () => void
+  actions?: {
+    buttonText: string
+    onClick: () => void
+  }[]
 }

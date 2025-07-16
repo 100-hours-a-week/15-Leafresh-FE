@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import { useChatHistory, useChatbotSSE, useRecommendationStream } from '@/features/chatbot/api'
 import { ChatBubble, ChatSelection, HorizontalCards } from '@/features/chatbot/components'
 
@@ -18,6 +19,7 @@ import {
 } from '@/entities/chatbot/model'
 
 import { LucideIcon } from '@/shared/components'
+import { GCS_BUCKET } from '@/shared/constants'
 
 import * as S from './styles'
 
@@ -213,7 +215,7 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
   const challengeSelectionProps = {
     title: '챌린지 선택',
     subtitle: '*참여하고 싶은 챌린지를 선택해주세요.',
-    imageUrl: 'https://storage.googleapis.com/leafresh-prod-images/init/chatbot/chatbotcategory.png',
+    imageUrl: `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbotcategory.png`,
     options: CHAT_CHALLENGE_OPTIONS,
     selectionType: 'challenge' as const,
     buttonText: '카테고리 설명',
@@ -229,9 +231,9 @@ export function ChatFrame({ step, onSelect, onRetry }: ChatFrameProps) {
           return (
             <div key={idx}>
               {type === 'message' && role && (
-                <S.ChatBubble role={role} subDescription={subDescription} isAnswer={isAnswer} actions={actions}>
+                <ChatBubble role={role} subDescription={subDescription} isAnswer={isAnswer} actions={actions}>
                   {text}
-                </S.ChatBubble>
+                </ChatBubble>
               )}
 
               {type === 'selection' && selectionProps && <ChatSelection {...selectionProps} />}

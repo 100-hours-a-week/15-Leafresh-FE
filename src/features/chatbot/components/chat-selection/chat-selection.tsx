@@ -4,13 +4,6 @@ import React, { useMemo } from 'react'
 
 import { CHAT_CHALLENGE_OPTIONS, ChatOption, LOCATION_OPSIONS, WORKTYPE_OPTIONS } from '@/entities/chatbot/model'
 
-// <<<<<<< HEAD
-// import styled from '@emotion/styled'
-
-// import { CHAT_CHALLENGE_OPTIONS, LOCATION_OPSIONS, WORKTYPE_OPTIONS, ChatOption } from '@/entities/chatbot/model'
-
-// import { theme } from '@/shared/config'
-// =======
 import * as S from './styles'
 
 export interface ChatSelectionProps {

@@ -4,6 +4,8 @@ import React, { ReactNode } from 'react'
 
 import Image from 'next/image'
 
+import { GCS_BUCKET } from '@/shared/constants'
+
 import * as S from './styles'
 
 export interface ChatBubbleProps {
@@ -31,7 +33,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = React.memo(function ChatBub
       {role === 'bot' && (
         <S.Avatar role={role}>
           <Image
-            src='https://storage.googleapis.com/leafresh-prod-images/init/chatbot/chatbot_bubble.png'
+            src={`https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbot_bubble.png`}
             alt='chatbot'
             width={30}
             height={30}

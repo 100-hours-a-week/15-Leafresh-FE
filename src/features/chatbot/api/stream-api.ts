@@ -1,5 +1,3 @@
-import { BASE_API_URL } from '@/shared/lib'
-
 export type RecommendationEvent = {
   event?: string
   status: number
