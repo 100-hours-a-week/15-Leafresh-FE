@@ -46,7 +46,7 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
       })
     },
     ...QUERY_OPTIONS.MEMBER.AUTH.CALLBACK,
-    enabled: typeof code === 'string' && code.length > 0,
+    enabled: typeof code === 'string' && code.length > 0 && state !== null,
   })
 
   useEffect(() => {
@@ -88,20 +88,14 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
     }
   }, [data])
 
-  if (isLoading) {
-    return (
-      <S.LoadingWrapper>
-        <Loading />
-      </S.LoadingWrapper>
-    )
-  }
-
   if (isError) {
-    // toast("Error", `${provider} 로그인 실패\n재시도 해주세요`)
-
-    return <p>로그인 실패</p>
+    toast('Error', `${provider} 로그인 실패\n재시도 해주세요`)
+    router.replace(URL.MEMBER.LOGIN.value)
   }
 
-  // 데이터 로드 후 라우팅될 것이므로 빈 상태 반환
-  return null
+  return (
+    <S.LoadingWrapper>
+      <Loading />
+    </S.LoadingWrapper>
+  )
 }
