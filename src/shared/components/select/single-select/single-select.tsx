@@ -12,6 +12,7 @@ interface SelectProps<T> {
 
   options: T[]
   renderOption: (option: T) => ReactNode // T: object인 경우 대비
+  getOptionKey: (option: T) => string | number
 }
 
 export const SingleSelect = <T,>({
@@ -20,13 +21,14 @@ export const SingleSelect = <T,>({
   onSelect,
   options,
   renderOption,
+  getOptionKey,
 }: SelectProps<T>): ReactNode => {
   return (
     <Dropdown<T> onSelect={onSelect}>
       <Dropdown.Trigger as={trigger} />
       <Dropdown.Menu>
         {options.map(option => (
-          <Dropdown.Item<T> key={String(option)} value={option}>
+          <Dropdown.Item<T> key={getOptionKey(option)} value={option}>
             {renderOption(option)}
           </Dropdown.Item>
         ))}

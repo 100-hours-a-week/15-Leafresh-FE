@@ -107,6 +107,7 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
                 onSelect={val => field.onChange(val)}
                 options={CHALLENGE_CATEGORIES_KOR.slice(0, -1)}
                 renderOption={option => <SelectItem option={option} />}
+                getOptionKey={option => option}
               />
             )}
           />
@@ -165,6 +166,7 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
                 onSelect={val => field.onChange(val)}
                 options={PARTICIPANT_OPTIONS}
                 renderOption={option => <SelectItem option={option} />}
+                getOptionKey={option => option}
               />
             )}
           />
