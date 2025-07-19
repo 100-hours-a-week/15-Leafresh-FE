@@ -49,7 +49,6 @@ export function useRecommendationStream() {
   }
 
   /** 자유 텍스트 기반 스트림 시작 */
-  /** 자유 텍스트 기반 스트림 시작 */
   function startFreeTextStream(
     sessionId: string,
     message: string,

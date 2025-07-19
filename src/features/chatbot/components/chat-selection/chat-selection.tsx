@@ -17,9 +17,6 @@ export interface ChatSelectionProps {
   onSelect: (value: string) => void
 }
 
-// <<<<<<< HEAD
-// export const ChatSelection = ({
-// =======
 export const ChatSelection: React.FC<ChatSelectionProps> = ({
   selectionType,
   title,
