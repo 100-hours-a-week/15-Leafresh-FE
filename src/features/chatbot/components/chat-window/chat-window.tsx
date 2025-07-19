@@ -51,6 +51,10 @@ export function ChatWindow({ open, onClose }: ChatWindowProps) {
         setSelections({})
         setCurrentStep(1)
       }
+
+      return () => {
+        setCurrentStep(1)
+      }
     }
   }, [open])
 

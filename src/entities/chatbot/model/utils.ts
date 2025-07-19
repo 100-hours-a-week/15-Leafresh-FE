@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { liveImages, workImages, ChatSelections } from '@/entities/chatbot/model'
+import { ChatSelections, liveImages, workImages } from '@/entities/chatbot/model'
 
 export function useScrollToBottom(trigger: unknown) {
-  const ref = useRef<HTMLDivElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' })
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [trigger])
-  return ref
+
+  return messagesEndRef
 }
 
 export function useChatSession() {
