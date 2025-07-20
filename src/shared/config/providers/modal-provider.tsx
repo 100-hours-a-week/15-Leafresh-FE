@@ -2,7 +2,9 @@
 
 import { useEffect } from 'react'
 
-import { CameraModal, ConfirmModal, ImageZoomModal, InfoModal } from '@/shared/components'
+import { CameraModal, ImageZoomModal } from '@/features/challenge/components'
+
+import { ConfirmModal, InfoModal } from '@/shared/components'
 import { useCameraModalStore, useConfirmModalStore, useImageZoomStore, useInfoModalStore } from '@/shared/context'
 
 export const ModalProvider = () => {
@@ -26,10 +28,10 @@ export const ModalProvider = () => {
 
   return (
     <>
-      <ConfirmModal />
       <CameraModal />
-      <InfoModal />
       <ImageZoomModal />
+      <ConfirmModal />
+      <InfoModal />
     </>
   )
 }
