@@ -25,7 +25,7 @@ export const SelectInput = <T extends string | number>({
       </S.Label>
 
       <S.SelectBox onClick={onClick} isFocused={isOpen || !!selected}>
-        {selected !== undefined && selected !== 0 && <S.SelectedText>{selected}</S.SelectedText>}
+        {selected !== undefined && <S.SelectedText>{selected}</S.SelectedText>}
         <S.IconWrapper isFocused={isOpen}>
           <LucideIcon name='ChevronDown' size={16} />
         </S.IconWrapper>
