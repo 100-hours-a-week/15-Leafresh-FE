@@ -229,20 +229,6 @@ const FieldWrapper = styled.div`
   gap: 4px;
 `
 
-// const CategoryDropdown = StyledGeneric<DropdownProps<string>>(
-//   Dropdown,
-//   `
-//   width: 100%;
-// `,
-// )
-// const ParticipantDropdown = StyledGeneric<DropdownProps<number>>(
-//   Dropdown,
-//   `
-//   width: 100%;
-
-// `,
-// )
-
 const SubmitButton = styled.button`
   height: 50px;
   border-radius: ${theme.radius.base};
