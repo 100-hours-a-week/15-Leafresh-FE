@@ -15,7 +15,7 @@ const Page = async () => {
     endDate: DateToKst(new Date(Date.now() + 24 * 60 * 60 * 1000)),
     startTime: '00:00',
     endTime: '23:50',
-    maxParticipant: 0,
+    maxParticipant: undefined,
     examples: [
       { url: null, description: '', type: 'SUCCESS' },
       { url: null, description: '', type: 'FAILURE' },

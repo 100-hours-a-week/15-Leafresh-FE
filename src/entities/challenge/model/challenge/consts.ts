@@ -39,7 +39,13 @@ export const metaSchema = z.object({
   endDate: z.date({ required_error: '종료일을 선택해주세요.' }),
   startTime: z.string().min(1, '시작 시간을 선택해주세요.'),
   endTime: z.string().min(1, '종료 시간을 선택해주세요.'),
-  maxParticipant: z.number({ required_error: '최대 인원을 선택해주세요.' }).min(1, '최대 인원을 선택해주세요.'),
+  // maxParticipant: z.number({ required_error: '최대 인원을 선택해주세요.' }).min(1, '최대 인원을 선택해주세요.'),
+  maxParticipant: z
+    .number()
+    .optional()
+    .refine(val => typeof val === 'number' && val >= 1, {
+      message: '최대 인원을 선택해주세요.',
+    }),
   examples: z
     .array(
       z.object({
