@@ -83,12 +83,12 @@ const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
   return (
     <S.Card key={orderId}>
       <S.ThumbnailWrapper>
-        <Image src={imageUrl} alt={title} fill sizes='(max-width: 900px) 50vw, 230px' style={{ objectFit: 'cover' }} />
+        <Image src={imageUrl} alt={title} fill style={{ objectFit: 'cover' }} />
       </S.ThumbnailWrapper>
       <S.ProductTitle>{title}</S.ProductTitle>
       <S.InfoRow>
         <S.PriceRow>
-          <LeafIcon width={24} height={24} />
+          <Image src={LeafIcon} alt='leaf' width={24} height={24} />
           <S.Price>{price}</S.Price>
         </S.PriceRow>
         <S.TimeAgo>{getTimeDiff(purchasedAt)}</S.TimeAgo>

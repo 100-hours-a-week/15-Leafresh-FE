@@ -1,9 +1,12 @@
+import { Suspense } from 'react'
+
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { ChallengeParticipatePage } from '@/widgets/member'
 
 import { ChallengeStatus, getGroupParticipations, getGroupParticipationsCount } from '@/entities/member/api'
 
+import { Loading } from '@/shared/components'
 import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 
 interface PageProps {
@@ -35,7 +38,9 @@ const Page = async ({ params }: PageProps) => {
 
     return (
       <HydrationBoundary state={dehydratedState}>
-        <ChallengeParticipatePage />
+        <Suspense fallback={<Loading />}>
+          <ChallengeParticipatePage />
+        </Suspense>
       </HydrationBoundary>
     )
   } catch (err) {

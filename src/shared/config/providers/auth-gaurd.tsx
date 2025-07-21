@@ -1,15 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-
 import { usePathname, useRouter } from 'next/navigation'
 
-import { ProfileResponse } from '@/entities/member/api'
+import { useValidateMemberProfile } from '@/features/member/api'
 
 import { URL } from '@/shared/constants'
-import { UserInfo, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
-import { ENDPOINTS, fetchRequest } from '@/shared/lib'
 
 /** 보호가 필요한 경로 목록 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,54 +37,24 @@ interface Props {
   children: React.ReactNode
 }
 
-export const AuthGuard = ({ children }: Props) => {
+export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
   const router = useRouter()
   const { toast } = useToast()
 
-  const { userInfo, setUserInfo, clearUserInfo } = useUserStore()
-  const [isVerified, setIsVerified] = useState(false)
+  const isProtectedRoute = PROTECTED_ROUTES.some(pattern => new RegExp(`^${pattern}$`).test(pathname))
 
-  // 보호 경로인지 판별
-  const isProtectedRoute = PROTECTED_ROUTES.some(pattern => {
-    const regex = new RegExp(`^${pattern}$`)
-    return regex.test(pathname)
+  const onAuthGuardError = () => {
+    toast('Error', '로그인이 필요합니다')
+    router.replace(URL.MEMBER.LOGIN.value)
+  }
+
+  const { isAuthVerified } = useValidateMemberProfile({
+    enabled: isProtectedRoute,
+    onError: onAuthGuardError,
   })
 
-  useEffect(() => {
-    if (!isProtectedRoute) {
-      // 보호 경로가 아니면 검사 안 하고 바로 통과
-      setIsVerified(true)
-      return
-    }
-
-    const validate = async () => {
-      try {
-        const { data } = await fetchRequest<ProfileResponse>(ENDPOINTS.MEMBERS.DETAILS)
-        const { nickname, email, profileImageUrl, treeImageUrl, treeLevelId, treeLevelName } = data
-        const userInfo: UserInfo = {
-          nickname,
-          email,
-          imageUrl: profileImageUrl,
-          treeState: {
-            level: treeLevelId,
-            name: treeLevelName,
-            imageUrl: treeImageUrl,
-          },
-        }
-        setUserInfo(userInfo)
-        setIsVerified(true)
-      } catch (e) {
-        clearUserInfo()
-        toast('Error', '로그인이 필요합니다')
-        router.replace(URL.MEMBER.LOGIN.value)
-      }
-    }
-
-    validate()
-  }, [pathname, isProtectedRoute])
-
-  if (!isVerified) return null
+  if (!isAuthVerified) return null
 
   return <>{children}</>
 }

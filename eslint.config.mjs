@@ -34,16 +34,16 @@ const eslintConfig = [
     },
 
     rules: {
-      // // FSD 레이어 간 의존성 규칙 강제
+      // FSD 레이어 간 의존성 규칙 강제
       // 'boundaries/element-types': [
       //   'error',
       //   {
       //     default: 'disallow',
       //     rules: [
-      //       { from: 'app', allow: ['app', 'widgets', 'features', 'entities', 'shared'] },
-      //       { from: 'widgets', allow: ['widgets', 'features', 'entities', 'shared'] },
-      //       { from: 'features', allow: ['features', 'entities', 'shared'] },
-      //       { from: 'entities', allow: ['entities', 'shared'] },
+      //       { from: 'app', allow: ['widgets', 'features', 'entities', 'shared'] },
+      //       { from: 'widgets', allow: ['features', 'entities', 'shared'] },
+      //       { from: 'features', allow: ['entities', 'shared'] },
+      //       { from: 'entities', allow: ['shared'] },
       //       { from: 'shared', allow: ['shared'] },
       //     ],
       //   },

@@ -4,9 +4,9 @@ import { useEffect, useRef } from 'react'
 
 import { useRouter } from 'next/navigation'
 
-import { useInfiniteMemberAlarmList } from '@/features/member/api'
+import { useInfiniteChallengeAlarmList } from '@/features/member/api'
 
-import { AlarmType } from '@/entities/member/api'
+import { ChallengeAlarmType } from '@/entities/challenge/api'
 
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -17,7 +17,7 @@ import * as S from './styles'
 export const MemberAlarmList = () => {
   const router = useRouter()
 
-  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteMemberAlarmList()
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteChallengeAlarmList()
   const { mutate: ReadAlarmMutate } = useMutationStore<null, void>(MUTATION_KEYS.MEMBER.NOTIFICATION.READ)
 
   const alarms = data?.pages.flatMap(page => page?.data?.notifications || []) ?? []
@@ -42,7 +42,7 @@ export const MemberAlarmList = () => {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
   /** 알림 클릭시 라우팅 */
-  const handleAlarmClick = (alarm: AlarmType) => {
+  const handleAlarmClick = (alarm: ChallengeAlarmType) => {
     const { type, challengeId } = alarm
 
     if (type === 'PERSONAL') {

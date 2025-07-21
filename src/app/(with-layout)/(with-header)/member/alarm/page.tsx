@@ -2,7 +2,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import { MemberAlarmList } from '@/widgets/member'
 
-import { getMemberAlarmList } from '@/entities/member/api'
+import { getChallengeAlarmList } from '@/entities/challenge/api'
 
 import { getQueryClient, QUERY_KEYS } from '@/shared/config'
 
@@ -12,7 +12,7 @@ const MemberAlarmPage = async () => {
   try {
     await queryClient.prefetchInfiniteQuery({
       queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
-      queryFn: ({ pageParam = {} }) => getMemberAlarmList({ ...pageParam }),
+      queryFn: ({ pageParam = {} }) => getChallengeAlarmList({ ...pageParam }),
       initialPageParam: {},
     })
 

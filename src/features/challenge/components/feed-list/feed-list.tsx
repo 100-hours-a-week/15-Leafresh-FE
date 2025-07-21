@@ -51,7 +51,8 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
 
     return () => {
       if (observerRef.current) {
-        observer.unobserve(observerRef.current)
+        observer.disconnect()
+        // observer.unobserve(observerRef.current)
       }
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])

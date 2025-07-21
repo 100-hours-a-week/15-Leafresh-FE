@@ -139,7 +139,9 @@ const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio }: Preview
       <S.PreviewImage alt='preview' src={imageUrl} fill sizes='(max-width: 900px) 30vw, 120px' quality={80} />
       {!readOnly && (
         <S.RemoveButton type='button' onClick={onRemove}>
-          <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
+          <S.RemoveButton type='button' onClick={onRemove}>
+            <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
+          </S.RemoveButton>
         </S.RemoveButton>
       )}
     </S.ImageBox>
