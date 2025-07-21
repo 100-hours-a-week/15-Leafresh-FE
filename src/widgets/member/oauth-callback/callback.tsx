@@ -90,7 +90,7 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
 
   if (isError) {
     toast('Error', `${provider} 로그인 실패\n재시도 해주세요`)
-    router.replace(URL.MEMBER.LOGIN.value)
+    router.replace(URL.MEMBER.LOGIN.value())
   }
 
   return (
