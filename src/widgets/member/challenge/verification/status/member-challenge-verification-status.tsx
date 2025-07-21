@@ -30,7 +30,6 @@ export function GroupVerificationPage({ challengeId }: { challengeId: number }) 
   const completedQuery = queryClient.getQueryData<{
     pages: { data: { challenges: ParticipantChallengeItem[] } }[]
   }>(QUERY_KEYS.MEMBER.CHALLENGE.GROUP.PARTICIPATIONS('completed'))
-  console.log(completedQuery)
 
   const {
     data: verificationData,
