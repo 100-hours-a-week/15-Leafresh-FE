@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { CheckIcon, ErrorText, LucideIcon, SwitchTap, VerificationGuideModal } from '@/shared/components'
+import { CheckIcon, ErrorText, LucideIcon, SwitchTap } from '@/shared/components'
 import { useCameraModalStore } from '@/shared/context'
 import { useUploadImageToBucket, useScrollLock, useToast } from '@/shared/hooks'
+
+import { VerificationGuideModal } from '../verification-guide-modal'
 
 import * as S from './styles'
 

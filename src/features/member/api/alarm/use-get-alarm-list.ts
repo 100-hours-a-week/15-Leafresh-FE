@@ -2,22 +2,22 @@
 
 import { type InfiniteData, useInfiniteQuery } from '@tanstack/react-query'
 
-import { getMemberAlarmList, MemberAlarmList, MemberAlarmListParams } from '@/entities/member/api'
+import { ChallengeAlarmList, ChallengeAlarmListParams, getChallengeAlarmList } from '@/entities/challenge/api'
 
 import { QUERY_KEYS } from '@/shared/config'
 import { ApiResponse } from '@/shared/lib'
 
-export const useInfiniteMemberAlarmList = () => {
+export const useInfiniteChallengeAlarmList = () => {
   return useInfiniteQuery<
-    ApiResponse<MemberAlarmList>, // fetch 반환 타입
+    ApiResponse<ChallengeAlarmList>, // fetch 반환 타입
     Error,
-    InfiniteData<ApiResponse<MemberAlarmList>>,
+    InfiniteData<ApiResponse<ChallengeAlarmList>>,
     typeof QUERY_KEYS.MEMBER.NOTIFICATION.LIST
   >({
     queryKey: QUERY_KEYS.MEMBER.NOTIFICATION.LIST,
     queryFn: async ({ pageParam = {} }) => {
-      const { cursorId, cursorTimestamp } = pageParam as MemberAlarmListParams
-      return getMemberAlarmList({ cursorId, cursorTimestamp })
+      const { cursorId, cursorTimestamp } = pageParam as ChallengeAlarmListParams
+      return getChallengeAlarmList({ cursorId, cursorTimestamp })
     },
     getNextPageParam: lastPage => {
       const { hasNext, cursorInfo } = lastPage.data

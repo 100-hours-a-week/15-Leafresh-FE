@@ -24,6 +24,7 @@ RUN pnpm install --frozen-lockfile
 
 # Copy source and build
 COPY . .
+COPY next.config.ts next.config.ts
 RUN pnpm run build
 
 
