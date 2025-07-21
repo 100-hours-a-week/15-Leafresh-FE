@@ -1,15 +1,14 @@
-import { Suspense } from 'react'
+import { use } from 'react'
 
 import { LoginPage } from '@/widgets/member'
 
-import { Loading } from '@/shared/components'
+export default function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const authorized = use(searchParams).authorized
+  const isExpired = use(searchParams).expired === 'true'
 
-const Page = () => {
-  return (
-    <Suspense fallback={<Loading />}>
-      <LoginPage />
-    </Suspense>
-  )
+  return <LoginPage authorized={authorized} isExpired={isExpired} />
 }
-
-export default Page

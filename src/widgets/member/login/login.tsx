@@ -2,8 +2,6 @@
 
 import { useEffect, useRef } from 'react'
 
-import { useSearchParams } from 'next/navigation'
-
 import { useQuery } from '@tanstack/react-query'
 
 import { Login } from '@/entities/member/api'
@@ -16,13 +14,17 @@ import { useToast } from '@/shared/hooks'
 
 import * as S from './styles'
 
-export const LoginPage = () => {
+interface LoginPageProps {
+  authorized?: string | string[] | undefined
+  isExpired?: boolean
+}
+
+export const LoginPage = ({ authorized, isExpired }: LoginPageProps) => {
   const { toast } = useToast()
-  const searchParams = useSearchParams()
 
   const { setState } = useOAuthStateStore()
 
-  const isExpired = searchParams.get('expired') === 'true'
+  const isUnauthorized: boolean = authorized !== undefined
 
   const providerRef = useRef<LowercaseOAuthType>('kakao')
 
@@ -54,15 +56,24 @@ export const LoginPage = () => {
         window.location.href = parsedUrl.toString()
       }
     } catch (_error) {
-      toast('Error', `로그인 실패\n재시도 해주세요`)
+      toast('Error', `${provider} 로그인 실패\n재시도 해주세요`)
     }
   }
 
   useEffect(() => {
+    // 토큰이 만료된 경우
     if (isExpired) {
       toast('Error', '세션이 만료되었습니다\n다시 로그인해주세요')
+      return
     }
-  }, [isExpired])
+    // 미인증 유저
+    if (isUnauthorized) {
+      console.log('execetued!')
+
+      toast('Error', '로그인이 필요합니다')
+      return
+    }
+  }, [authorized])
 
   return (
     <S.Container>

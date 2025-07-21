@@ -14,9 +14,9 @@ export async function serverFetchRequest<T>(
   isRetry = false,
 ): Promise<ApiResponse<T>> {
   const { method, path } = endpoint
-  const origin = getServerFetchOrigin()
-  const url = new URL(origin + path)
 
+  const origin = getServerFetchOrigin()
+  const url = new URL(path, origin)
   if (options.query) {
     Object.entries(options.query).forEach(([key, value]) => url.searchParams.append(key, String(value)))
   }
@@ -55,8 +55,27 @@ export async function serverFetchRequest<T>(
   if (!response.ok) {
     if ((response.status === 401 || response.status === 403) && !isRetry) {
       try {
-        await refreshServerAccessToken()
-        return serverFetchRequest<T>(endpoint, options, true)
+        const newAccessToken = await refreshServerAccessToken()
+        // return serverFetchRequest<T>(endpoint, options, true)
+        // ✅ 새 accessToken을 직접 헤더에 주입
+        const updatedCookie = [
+          ...cookieStore.getAll().map(({ name, value }) => `${name}=${value}`),
+          `accessToken=${newAccessToken}`,
+        ].join('; ')
+
+        return fetch(url.toString(), {
+          method,
+          headers: {
+            ...headers,
+            Cookie: updatedCookie,
+          },
+          body,
+        }).then(async retryRes => {
+          const contentType = retryRes.headers.get('Content-Type')
+          const retryData = contentType?.includes('application/json') ? await retryRes.json() : await retryRes.text()
+          if (!retryRes.ok) throw retryData
+          return retryData as ApiResponse<T>
+        })
       } catch (refreshError) {
         const error: ErrorResponse = {
           status: 401,

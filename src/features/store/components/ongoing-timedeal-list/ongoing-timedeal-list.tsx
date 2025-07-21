@@ -52,7 +52,7 @@ export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount
         openConfirmModal({
           title: '타임딜이 곧 시작됩니다!',
           description: '로그인 페이지로 이동하시겠습니까?',
-          onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+          onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
         })
         loginToastShownRef.current = true
       }
