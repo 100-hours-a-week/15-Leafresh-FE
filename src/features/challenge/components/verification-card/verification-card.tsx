@@ -71,7 +71,7 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
       openConfirmModal({
         title: '로그인이 필요합니다.',
         description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
       })
       return
     }
