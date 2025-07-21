@@ -4,8 +4,6 @@ import { useEffect, useRef } from 'react'
 
 import { useSearchParams } from 'next/navigation'
 
-import KakaoLoginButton from '@public/image/kakao_login.svg'
-import LogoImage from '@public/image/logo.svg'
 import { useQuery } from '@tanstack/react-query'
 
 import { Login } from '@/entities/member/api'
@@ -68,17 +66,13 @@ export const LoginPage = () => {
 
   return (
     <S.Container>
-      <S.Logo src={LogoImage} alt='Leafresh' width={160} height={60} />
+      <S.Logo width={160} height={60} />
       <S.DividerWrapper>
         <S.Line />
         <S.Text>로그인 / 회원가입</S.Text>
         <S.Line />
       </S.DividerWrapper>
-      {!isLoading ? (
-        <S.KakaoImage src={KakaoLoginButton} alt='kakao' onClick={() => handleLogin('kakao')} />
-      ) : (
-        <Loading />
-      )}
+      {!isLoading ? <S.KakaoImage onClick={() => handleLogin('kakao')} /> : <Loading />}
     </S.Container>
   )
 }
