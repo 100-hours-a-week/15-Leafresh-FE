@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 
 import { sendGAEvent } from '@next/third-parties/google'
 
-import { URL } from '@/shared/constants'
+import { GCS_BUCKET, URL } from '@/shared/constants'
 import { useScrollLock, useToggle } from '@/shared/hooks'
 
 import { ChatWindow } from '../chat-window'
@@ -38,7 +38,7 @@ export const Chatbot = () => {
     <>
       {!isOpen && (
         <S.StyledImage
-          src='/image/chatbot/chatbot.svg'
+          src={`https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbot.svg`}
           alt='챗봇 아이콘'
           width={48}
           height={48}
