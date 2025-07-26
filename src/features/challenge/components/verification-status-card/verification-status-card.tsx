@@ -55,7 +55,7 @@ export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({
           src={imageUrl}
           alt={`${day}일차 인증`}
           fill
-          sizes='(max-width: 900px) 100vw, 220px'
+          sizes='(max-width: 430px) 100vw, 220px'
           priority={isPriority}
         />
         <S.DayLabel>{day}일차</S.DayLabel>

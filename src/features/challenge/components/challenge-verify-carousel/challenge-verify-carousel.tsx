@@ -36,7 +36,7 @@ export const ChallengeVerifyCarousel = ({ images, className }: ChallengeVerifyCa
         <S.Track>
           {images.map((url, idx) => (
             <S.Slide key={idx}>
-              <S.StyledImage src={url} alt='인증 이미지' fill sizes='(max-width: 900px) 33.3vw, 200px' />
+              <S.StyledImage src={url} alt='인증 이미지' fill sizes='(max-width: 430px) 33.3vw, 200px' />
             </S.Slide>
           ))}
         </S.Track>

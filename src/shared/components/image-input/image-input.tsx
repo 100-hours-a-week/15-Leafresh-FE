@@ -136,7 +136,7 @@ interface PreviewImageViewProps {
 const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio }: PreviewImageViewProps) => {
   return (
     <S.ImageBox aspectRatio={aspectRatio}>
-      <S.PreviewImage alt='preview' src={imageUrl} fill sizes='(max-width: 900px) 30vw, 120px' quality={80} />
+      <S.PreviewImage alt='preview' src={imageUrl} fill sizes='(max-width: 430px) 30vw, 120px' quality={80} />
       {!readOnly && (
         <S.RemoveButton type='button' onClick={onRemove}>
           <S.RemoveButton type='button' onClick={onRemove}>

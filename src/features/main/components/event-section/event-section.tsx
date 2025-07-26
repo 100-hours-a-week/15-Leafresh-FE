@@ -59,7 +59,7 @@ export const EventSection = ({ eventChallenges, className }: EventSectionProps):
                   src={ch.thumbnailUrl}
                   alt={ch.description}
                   fill
-                  sizes='(max-width: 900px)100vw, 430px'
+                  sizes='(max-width: 430px)100vw, 430px'
                   priority={index === 0}
                 />
                 <S.EventGradientOverlay />

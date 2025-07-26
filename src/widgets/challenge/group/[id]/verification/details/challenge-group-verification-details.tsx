@@ -392,7 +392,7 @@ export const VerificationDetails = ({
           src={verifications.imageUrl}
           alt='Leafresh'
           fill
-          sizes='(max-width: 900px) 100vw, 420px'
+          sizes='(max-width: 430px) 100vw, 420px'
           priority
         />
       </S.ImageWrapper>

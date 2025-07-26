@@ -149,7 +149,7 @@ export const OngoingTimeDealCard = ({
             src={data.imageUrl}
             alt={data.title}
             fill
-            sizes='(max-width: 900px) 100vw, 420px'
+            sizes='(max-width: 430px) 100vw, 420px'
             priority
             style={{ objectFit: 'cover' }}
           />

@@ -146,7 +146,7 @@ export const GroupChallengeCard = ({
           src={imageUrl}
           alt='챌린지 이미지'
           fill
-          sizes='(max-width: 900px) 100vw, 400px'
+          sizes='(max-width: 430px) 100vw, 400px'
           loading={isAuth ? 'eager' : 'lazy'}
         />
         <S.Badge className='badge'>{KOR_category}</S.Badge>
