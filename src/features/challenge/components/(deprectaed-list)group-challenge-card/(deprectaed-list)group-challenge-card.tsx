@@ -2,13 +2,11 @@
 
 import React from 'react'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+import { LeafIcon } from '@/shared/assets'
 import { URL } from '@/shared/constants'
 import { ISOFormatString } from '@/shared/type'
-
-import LeafIcon from '@public/icon/leaf.svg'
 
 import * as S from './styles'
 
@@ -54,7 +52,7 @@ export const DeprecatedGroupChallengeCard: React.FC<GroupChallengeProps> = ({ ch
         </S.TagsContainer>
 
         <S.RewardBadge>
-          <Image src={LeafIcon} alt='재화' width={24} height={24} />
+          <LeafIcon width={24} height={24} />
           <S.RewardText>{challenge?.leafReward || 30}개</S.RewardText>
         </S.RewardBadge>
       </S.ContentContainer>

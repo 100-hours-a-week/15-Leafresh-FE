@@ -37,15 +37,15 @@ export const categoryDescriptions: [string, string][] = [
 ]
 
 export const liveImages = [
-  '/image/chatbot/beach.jpg',
-  '/image/chatbot/city.jpg',
-  '/image/chatbot/mountain.jpg',
-  '/image/chatbot/farm.jpg',
+  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/beach.jpg',
+  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/city.jpg',
+  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/mountain.jpg',
+  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/farm.jpg',
 ]
 
 export const workImages = [
-  '/image/chatbot/athome.jpg',
-  '/image/chatbot/sales.jpg',
-  '/image/chatbot/fieldwork.jpg',
-  '/image/chatbot/business.jpg',
+  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/athome.jpg',
+  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/sales.jpg',
+  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/fieldwork.jpg',
+  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/business.jpg',
 ]

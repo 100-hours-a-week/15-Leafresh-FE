@@ -1,0 +1,6 @@
+export { default as LogoImage } from './logo.svg'
+export { default as KakaoLoginButton } from './kakao_login.svg'
+export { default as LogoCharacterImage } from './main-icon.svg'
+export { default as NotFoundImage } from './404.svg'
+export { default as ServiceReadyImage } from './service_ready.svg'
+export { default as ApologizeImage } from './apologize_character.svg'

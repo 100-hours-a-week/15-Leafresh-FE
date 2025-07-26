@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
 
 export const Card = styled.div`
@@ -22,12 +24,7 @@ export const ImageWrapper = styled.div`
   background: #eee;
 `
 
-export const StyledImg = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+export const StyledImg = styled(Image)`
   object-fit: cover;
 `
 

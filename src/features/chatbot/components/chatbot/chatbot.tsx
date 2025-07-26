@@ -38,7 +38,7 @@ export const Chatbot = () => {
     <>
       {!isOpen && (
         <S.StyledImage
-          src='/image/chatbot/chatbot.svg'
+          src='https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot.png'
           alt='챗봇 아이콘'
           width={48}
           height={48}

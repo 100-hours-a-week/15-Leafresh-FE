@@ -48,11 +48,19 @@ export const EmblaSlideContainer = styled.div`
   display: flex;
 `
 
-export const EmblaSlide = styled.div`
+export const EmblaSlide = styled.div<{ index?: number }>`
   position: relative;
   flex: 0 0 100%;
   padding: 0 20px;
   box-sizing: border-box;
+
+  ${({ index }) =>
+    index === 0 &&
+    `
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  `}
 `
 
 export const DailyCard = styled.div`

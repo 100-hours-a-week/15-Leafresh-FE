@@ -46,7 +46,12 @@ export const ChatBubble: React.FC<ChatBubbleProps> = React.memo(function ChatBub
     <S.Container role={role}>
       {role === 'bot' && (
         <S.Avatar role={role}>
-          <Image src='/image/chatbot/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
+          <Image
+            src='https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot_bubble.png'
+            alt='chatbot'
+            width={30}
+            height={30}
+          />
         </S.Avatar>
       )}
       <S.BubbleWrapper>

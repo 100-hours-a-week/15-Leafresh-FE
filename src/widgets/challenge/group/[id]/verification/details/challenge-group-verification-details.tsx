@@ -24,6 +24,7 @@ import {
   VerificationDetailResponse,
 } from '@/entities/challenge/api'
 
+import { ActiveLikeIcon, InActiveLikeIcon } from '@/shared/assets'
 import { Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -32,9 +33,6 @@ import { useToast } from '@/shared/hooks'
 import { getTimeDiff } from '@/shared/lib'
 import { copyToClipboard } from '@/shared/lib/utils'
 import { ISOFormatString } from '@/shared/type'
-
-import LikeIcon from '@public/icon/like.svg'
-import UnLikeIcon from '@public/icon/unLike.svg'
 
 import * as S from './styles'
 
@@ -176,7 +174,8 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
+      profileImageUrl:
+        userInfo?.imageUrl ?? 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot.png',
       parentCommentId: null,
       isMine: true,
       deleted: false,
@@ -229,7 +228,8 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
+      profileImageUrl:
+        userInfo?.imageUrl ?? 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot.png',
       parentCommentId,
       isMine: true,
       deleted: false,
@@ -388,7 +388,13 @@ export const VerificationDetails = ({
       </S.Header>
 
       <S.ImageWrapper>
-        <S.ContentImage src={verifications.imageUrl} alt='Leafresh' fill />
+        <S.ContentImage
+          src={verifications.imageUrl}
+          alt='Leafresh'
+          fill
+          sizes='(max-width: 430px) 100vw, 420px'
+          priority
+        />
       </S.ImageWrapper>
 
       <S.Content>{verifications.content}</S.Content>
@@ -396,7 +402,7 @@ export const VerificationDetails = ({
       <S.Stats>
         <S.LeftStat>
           <S.LikeButton onClick={handleLikeToggle}>
-            <S.LikeIconImage src={isLiked ? LikeIcon : UnLikeIcon} alt='좋아요 아이콘' />
+            {isLiked ? <ActiveLikeIcon width={16} height={16} /> : <InActiveLikeIcon width={16} height={16} />}
             {likeCount}
           </S.LikeButton>
           <S.Stat>
