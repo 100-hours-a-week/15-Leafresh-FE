@@ -130,45 +130,50 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
       })
       return
     }
+    /** 참여하지 않음 */
+    if (status === 'NOT_PARTICIPATED') {
+      const now = new Date()
+      const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
 
-    const now = new Date()
-    const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const localStartDate: Date = new Date(startDate)
+      const startDateOnly = new Date(localStartDate.getFullYear(), localStartDate.getMonth(), localStartDate.getDate())
 
-    const localStartDate: Date = new Date(startDate)
-    const startDateOnly = new Date(localStartDate.getFullYear(), localStartDate.getMonth(), localStartDate.getDate())
+      const localEndDate: Date = new Date(endDate)
+      const endDateOnly = new Date(localEndDate.getFullYear(), localEndDate.getMonth(), localEndDate.getDate())
 
-    const localEndDate: Date = new Date(endDate)
-    const endDateOnly = new Date(localEndDate.getFullYear(), localEndDate.getMonth(), localEndDate.getDate())
+      // 1. 오늘이 챌린지 날짜 범위 내에 있는지 확인
+      if (todayDateOnly < startDateOnly || todayDateOnly > endDateOnly) {
+        toast('Error', '챌린지 진행 기간이 아닙니다!')
+        return
+      }
 
-    // 1. 오늘이 챌린지 날짜 범위 내에 있는지 확인
-    if (todayDateOnly < startDateOnly || todayDateOnly > endDateOnly) {
-      toast('Error', '챌린지 진행 기간이 아닙니다!')
-      return
-    }
+      // 2. 현재 시간이 인증 가능 시간 범위 내에 있는지 확인
+      const nowMinutes = now.getHours() * 60 + now.getMinutes()
 
-    // 2. 현재 시간이 인증 가능 시간 범위 내에 있는지 확인
-    const nowMinutes = now.getHours() * 60 + now.getMinutes()
+      const [startHour, startMinute] = verificationStartTime.split(':').map(Number)
+      const [endHour, endMinute] = verificationEndTime.split(':').map(Number)
+      const startMinutes = startHour * 60 + startMinute
+      const endMinutes = endHour * 60 + endMinute
 
-    const [startHour, startMinute] = verificationStartTime.split(':').map(Number)
-    const [endHour, endMinute] = verificationEndTime.split(':').map(Number)
-    const startMinutes = startHour * 60 + startMinute
-    const endMinutes = endHour * 60 + endMinute
+      if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
+        toast('Error', '현재는 인증 가능한 시간이 아닙니다!')
+        return
+      }
 
-    if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
-      toast('Error', '현재는 인증 가능한 시간이 아닙니다!')
-      return
-    }
-
-    /** 제출하기 */
-    ParticipateMutate(
-      { challengeId },
-      {
-        onSuccess: () => {
-          toast('Success', `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
-          router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value('not_started')) // 참여중인 챌린지로 이동
+      /** 제출하기 */
+      ParticipateMutate(
+        { challengeId },
+        {
+          onSuccess: () => {
+            toast('Success', `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
+            router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value('not_started')) // 참여중인 챌린지로 이동
+          },
         },
-      },
-    )
+      )
+    } else if (status === 'NOT_SUBMITTED') {
+      /** 참여한 경우 */
+      router.push(URL.MEMBER.CHALLENGE.VERIFICATION.STATUS.value(challengeId)) // 참여중인 챌린지 인증 페이지로 이동
+    }
   }
 
   /** 단체 챌린지 참여 이력 페이지로 이동 */
