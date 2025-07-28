@@ -37,7 +37,9 @@ export const Introduce = () => {
         <S.StatItem>
           <S.StyledImage src='/image/main/verification.svg' alt='챌린지 인증' width={100} height={100} />
           <S.DataWrapper>
-            <S.Count>{isVerificationLoading ? '불러오는 중...' : animatedVerificationCount?.toLocaleString()}</S.Count>
+            <S.VerificationCount>
+              {isVerificationLoading ? '불러오는 중...' : animatedVerificationCount?.toLocaleString()}
+            </S.VerificationCount>
             <S.Text>인증 수</S.Text>
           </S.DataWrapper>
         </S.StatItem>
