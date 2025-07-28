@@ -25,9 +25,9 @@ export const UpcomingTimeDealList = ({ data, className }: UpcomingTimeDealListPr
   /** 다가오는 특가 상품이 없는 경우 */
   if (data.length === 0) {
     content = (
-      <S.StyledApologizeContent
+      <S.StyledApologizeFeedback
         title='예정된 특가 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+        description={`빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다\n감사합니다`}
       />
     )
   } else {

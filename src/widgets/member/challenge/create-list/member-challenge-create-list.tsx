@@ -49,7 +49,7 @@ export const MemberChallengeCreationsPage = (): ReactNode => {
     contents = null
   } else if (groupChallenges.length === 0) {
     contents = (
-      <S.StyledNoContent
+      <S.StyledNoContentFeedback
         title='생성한 챌린지가 없습니다!'
         buttonText='챌린지 생성하러 가기'
         clickHandler={handleCreateChallenge}

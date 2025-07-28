@@ -67,6 +67,7 @@ export const VerificationImageInput = ({
           hasDescription
           type={status}
           onChange={readOnly ? () => {} : onChange}
+          onZoom={onZoom}
           readOnly={readOnly}
         />
         {imageUrl && (

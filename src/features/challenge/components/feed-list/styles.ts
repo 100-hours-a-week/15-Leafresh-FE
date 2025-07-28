@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { NoContent } from '@/shared/components'
+import { NoContentFeedback } from '@/shared/components'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const Wrapper = styled.section<{ isLoading: boolean }>`
@@ -14,7 +14,7 @@ export const Wrapper = styled.section<{ isLoading: boolean }>`
   justify-content: ${({ isLoading }) => (isLoading ? 'center' : 'flex-start')};
   gap: 28px;
 `
-export const StyledNoContent = styled(NoContent)`
+export const StyledNoContentFeedback = styled(NoContentFeedback)`
   margin: 60px 0;
 `
 

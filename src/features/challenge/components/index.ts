@@ -1,4 +1,3 @@
-export * from './(deprectaed-list)group-challenge-card'
 export * from './challenge-create-button'
 export * from './challenge-participant-card'
 export * from './challenge-verify-carousel'

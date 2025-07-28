@@ -85,7 +85,7 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
           </S.Label>
           <S.SubText>매력적인 글귀로 챌린지를 소개해보세요.</S.SubText>
           <S.TextArea {...register('description')} placeholder='예) Placeholder' />
-          <ErrorText message={isSubmitted ? errors.description?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.description?.message : ''} />
         </S.FieldWrapper>
 
         <S.FieldWrapper>
@@ -103,7 +103,7 @@ export const DetailStep = ({ form, handleStepChange, onSubmit, isCreating, isEdi
             }}
           />
 
-          <ErrorText message={isSubmitted ? errors.thumbnailUrl?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.thumbnailUrl?.message : ''} />
         </S.FieldWrapper>
 
         <S.FieldWrapper>

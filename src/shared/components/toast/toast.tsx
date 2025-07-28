@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react'
 
 import { AnimatePresence } from 'motion/react'
 
+import { LucideIcon } from '@/shared/components'
 import { toastStore } from '@/shared/context'
-
-import { LucideIcon } from '../lucide-icon'
 
 import * as S from './styles'
 

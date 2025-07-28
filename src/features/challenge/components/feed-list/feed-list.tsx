@@ -73,7 +73,7 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
       title = `${korCategory}\n 인증 내역이 없습니다`
     }
     contents = (
-      <S.StyledNoContent
+      <S.StyledNoContentFeedback
         title={title}
         buttonText='챌린지 참여하기'
         clickHandler={() => {

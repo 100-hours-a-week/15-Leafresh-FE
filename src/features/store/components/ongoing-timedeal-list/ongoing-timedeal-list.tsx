@@ -100,9 +100,9 @@ export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount
   /** 예외: 타임딜 상품이 없는 경우 */
   if (!ongoingData || ongoingData.length === 0) {
     timeDealContents = (
-      <S.StyledApologizeContent
+      <S.StyledApologizeFeedback
         title='진행 중인 특가 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+        description={`빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다\n감사합니다`}
       />
     )
   } else {

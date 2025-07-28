@@ -1,7 +1,8 @@
-import { PollingWatcher, TokenDeleter } from '@/features/common/components'
+import { ChallengeModalProvider, PollingWatcher } from '@/features/challenge/config'
+import { GlobalWrapper, TokenDeleter } from '@/features/common/components'
 
 import { Toast } from '@/shared/components'
-import { GlobalWrapper, ModalProvider } from '@/shared/config'
+import { CommonModalProvider } from '@/shared/config'
 
 const RootLayout = ({
   children,
@@ -14,7 +15,8 @@ const RootLayout = ({
       <TokenDeleter />
       {children}
       <Toast />
-      <ModalProvider />
+      <CommonModalProvider />
+      <ChallengeModalProvider />
     </GlobalWrapper>
   )
 }

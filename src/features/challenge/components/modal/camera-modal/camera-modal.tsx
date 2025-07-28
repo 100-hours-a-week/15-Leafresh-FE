@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { CheckIcon, ErrorText, LucideIcon, SwitchTap } from '@/shared/components'
 import { useCameraModalStore } from '@/shared/context'
-import { useUploadImageToBucket, useScrollLock, useToast } from '@/shared/hooks'
+import { useScrollLock, useToast, useUploadImageToBucket } from '@/shared/hooks'
 
 import { VerificationGuideModal } from '../verification-guide-modal'
 
@@ -58,12 +58,7 @@ export const CameraModal = () => {
     try {
       // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
       const constraints = {
-        video: {
-          facingMode: mode,
-          width: { min: 640, ideal: 1280, max: 1920 },
-          height: { min: 480, ideal: 720, max: 1080 },
-          aspectRatio: 1, // 4:3
-        },
+        video: { facingMode: mode },
       }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
@@ -222,7 +217,7 @@ export const CameraModal = () => {
         <S.TextAreaLabel status={status}>{label}</S.TextAreaLabel>
         <S.TextAreaDescription>인증 참여 이미지를 사람들에게 설명해주세요.</S.TextAreaDescription>
         <S.TextArea value={description} onChange={e => setDescription(e.target.value)} placeholder='예) Placeholder' />
-        <ErrorText message={errorText} />
+        <ErrorText text={errorText} />
       </S.TextAreaWrapper>
     )
   }
@@ -235,7 +230,7 @@ export const CameraModal = () => {
           {previewUrl ? (
             <S.BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
           ) : (
-            <S.CloseButton name='X' onClick={close} size={30} />
+            <LucideIcon name='X' onClick={close} size={30} />
           )}
           <S.Title>{title}</S.Title>
         </S.Header>

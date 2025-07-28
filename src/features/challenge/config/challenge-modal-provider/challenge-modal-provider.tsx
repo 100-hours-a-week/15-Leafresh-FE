@@ -2,36 +2,29 @@
 
 import { useEffect } from 'react'
 
-import { CameraModal, ImageZoomModal } from '@/features/challenge/components'
+import { CameraModal, ImageZoomModal } from '@/features/challenge/components/modal'
 
-import { ConfirmModal, InfoModal } from '@/shared/components'
-import { useCameraModalStore, useConfirmModalStore, useImageZoomStore, useInfoModalStore } from '@/shared/context'
+import { useCameraModalStore, useImageZoomStore } from '@/shared/context'
 
-export const ModalProvider = () => {
+export const ChallengeModalProvider = () => {
   const { isOpen: isCameraOpen, close: closeCameraModal } = useCameraModalStore()
-  const { isOpen: isConfirmOpen, closeConfirmModal } = useConfirmModalStore()
-  const { isOpen: isInfoOpen, closeInfoModal } = useInfoModalStore()
   const { isOpen: isImageModalOpen, close: closeImageModal } = useImageZoomStore()
 
   /** 뒤로가기(popstate) 시 모든 모달 닫기 */
   useEffect(() => {
     const handlePopState = () => {
       if (isCameraOpen) closeCameraModal()
-      if (isConfirmOpen) closeConfirmModal()
-      if (isInfoOpen) closeInfoModal()
       if (isImageModalOpen) closeImageModal()
     }
 
     window.addEventListener('popstate', handlePopState)
     return () => window.removeEventListener('popstate', handlePopState)
-  }, [isCameraOpen, isConfirmOpen, isInfoOpen, isImageModalOpen])
+  }, [isCameraOpen, isImageModalOpen])
 
   return (
     <>
       <CameraModal />
       <ImageZoomModal />
-      <ConfirmModal />
-      <InfoModal />
     </>
   )
 }

@@ -80,7 +80,7 @@ export const ChallengeGroupParticipateList = ({ challengeId }: ChallengeGroupPar
             <VerificationCard key={verificationData.id} challengeId={challengeId} verificationData={verificationData} />
           ))
         ) : (
-          <S.StyledNoContent
+          <S.StyledNoContentFeedback
             title='아직 인증 내역이 없습니다'
             buttonText='참여하러 가기'
             clickHandler={handleParticipateChallenge}

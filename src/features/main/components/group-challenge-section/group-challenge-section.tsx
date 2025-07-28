@@ -99,10 +99,12 @@ export const GroupChallengeSections = ({ categories, className }: GroupChallenge
       title = `${korCategory}\n 챌린지가 없습니다`
     }
     contents = (
-      <S.StyledNoContent
+      <S.StyledNoContentFeedback
         title={title}
         buttonText='챌린지 생성하기'
-        clickHandler={() => router.push(URL.CHALLENGE.GROUP.CREATE.value(category === 'ALL' ? undefined : category))} // 해당 카테고리로 생성하러 가기
+        clickHandler={() => {
+          router.push(URL.CHALLENGE.GROUP.CREATE.value(category === 'ALL' ? undefined : category))
+        }} // 해당 카테고리로 생성하러 가기
       />
     )
   } else {

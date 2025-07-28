@@ -120,7 +120,7 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
         'kor',
         'eng',
       )(category as ChallengeCategoryTypeKor) as ChallengeCategoryType,
-      maxParticipantCount: maxParticipant,
+      maxParticipantCount: maxParticipant as number,
       thumbnailImageUrl: thumbnailUrl,
       startDate: getKstMidnightToUtcISOString(startDate),
       endDate: getKstMidnightToUtcISOString(endDate),
@@ -128,7 +128,6 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
       verificationEndTime: endTime as TimeFormatString,
       exampleImages: exampleImages,
     }
-
     CreateChallengeMutate(
       { body },
       {
@@ -199,7 +198,7 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
         'kor',
         'eng',
       )(category as ChallengeCategoryTypeKor) as ChallengeCategoryType,
-      maxParticipantCount: maxParticipant,
+      maxParticipantCount: maxParticipant as number,
       thumbnailImageUrl: thumbnailUrl,
       startDate: getKstMidnightToUtcISOString(startDate),
       endDate: getKstMidnightToUtcISOString(endDate),
