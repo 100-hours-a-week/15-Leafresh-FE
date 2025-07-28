@@ -25,6 +25,8 @@ RUN pnpm install --frozen-lockfile
 # Copy source and build
 COPY . .
 COPY next.config.ts next.config.ts
+RUN echo "Correctly Copied: NEXT_PUBLIC_RUNTIME=$NEXT_PUBLIC_RUNTIME"
+RUN echo "Correctly Copied: NEXT_PUBLIC_GOOGLE_ANALYTICS=$NEXT_PUBLIC_GOOGLE_ANALYTICS"
 RUN pnpm run build
 
 
