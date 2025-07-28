@@ -87,7 +87,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
   }))
 
   /** 제출 버튼 비활성화 여부 */
-  const isButtonDisabled: boolean = status !== 'NOT_SUBMITTED'
+  const isButtonDisabled: boolean = status === 'SUCCESS' || status === 'FAILURE' || status === 'PENDING_APPROVAL'
   const getSubmitButtonLabel = (status: GroupChallengeStatus): string => {
     let label: string = ''
     switch (status) {
