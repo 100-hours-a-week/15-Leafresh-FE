@@ -11,7 +11,7 @@ import { useCameraModalStore } from '@/shared/context'
 
 import * as S from './styles'
 
-interface ImageInputProps {
+interface CameraImageInputProps {
   icon: React.ReactNode
   label: string
   fontSize?: ThemeFontSizeType
@@ -21,15 +21,16 @@ interface ImageInputProps {
 
   cameraTitle: string
   hasDescription?: boolean // 해당 이미지에 대한 설명을 받을지 여부
-  type?: ChallengeVerificationStatusType // TODO:(component) @entities/ 를 받아오므로, 확장성있는 공통 컴포넌트로 설계하지 않은 거임
+  type?: ChallengeVerificationStatusType
 
+  onZoom: () => void
   onChange: (data: { imageUrl: string | null; description?: string }) => void
   readOnly?: boolean
 
   className?: string
 }
 
-export const ImageInput = ({
+export const CameraImageInput = ({
   icon,
   label,
   fontSize = 'xs',
@@ -42,9 +43,10 @@ export const ImageInput = ({
   hasDescription = false,
   type = 'SUCCESS',
 
-  readOnly = false,
+  onZoom,
   onChange,
-}: ImageInputProps) => {
+  readOnly = false,
+}: CameraImageInputProps) => {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(imageUrl ?? null)
   const { open: openCameraModal } = useCameraModalStore()
   const aspectRatioValue = ASPECT_RATIOS[aspectRatio]
@@ -93,6 +95,7 @@ export const ImageInput = ({
           onRemove={handleRemoveImage}
           readOnly={readOnly}
           aspectRatio={aspectRatioValue}
+          onZoom={onZoom}
         />
       )}
     </S.Wrapper>
@@ -131,9 +134,10 @@ interface PreviewImageViewProps {
   onRemove: () => void
   readOnly: boolean
   aspectRatio: string
+  onZoom: () => void
 }
 
-const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio }: PreviewImageViewProps) => {
+const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio, onZoom }: PreviewImageViewProps) => {
   return (
     <S.ImageBox aspectRatio={aspectRatio}>
       <S.PreviewImage alt='preview' src={imageUrl} fill />

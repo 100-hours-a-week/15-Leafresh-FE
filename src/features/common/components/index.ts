@@ -1,2 +1,2 @@
-export * from './polling-watcher'
+export * from './global-wrapper'
 export * from './token-deleter'

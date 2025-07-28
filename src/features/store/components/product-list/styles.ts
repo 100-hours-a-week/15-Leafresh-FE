@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { ApologizeContent, LeafReward, Loading } from '@/shared/components'
+import { ApologizeFeedback, LeafReward, Loading } from '@/shared/components'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 export const ContentWrapper = styled.div<{ hasProducts: boolean }>`
   flex: 1;
@@ -49,7 +49,7 @@ export const StyledLoading = styled(Loading)`
   grid-column: span 2;
 `
 
-export const StyledApologizeContent = styled(ApologizeContent)`
+export const StyledApologizeFeedback = styled(ApologizeFeedback)`
   flex: 1;
 
   display: flex;

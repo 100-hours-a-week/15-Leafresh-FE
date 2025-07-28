@@ -153,7 +153,7 @@ export const VerificationDetails = ({
 
   /** 클립보드 복사 */
   const handleCopyVerificationUrl = () => {
-    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
+    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.DETAILS.value(challengeId, verificationId)}`
     copyToClipboard(url)
   }
 
@@ -407,8 +407,7 @@ export const VerificationDetails = ({
             <LucideIcon name='SquareArrowOutUpRight' size={16} strokeWidth={1.5} />
           </S.Stat>
         </S.LeftStat>
-        <S.Stat>조회수 {verifications.counts?.view ?? 0}</S.Stat>
-        {/* <Stat>조회수 {verifications.counts.view}</Stat> */}
+        <S.Views>조회수 {verifications.counts?.view ?? 0}</S.Views>
       </S.Stats>
       <CommentList
         comments={localComments ?? []}

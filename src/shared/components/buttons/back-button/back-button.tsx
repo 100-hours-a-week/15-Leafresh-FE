@@ -1,20 +1,23 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 import { LucideIcon } from '@/shared/components'
 
 import * as S from './styles'
 
 export interface BackButtonProps {
-  onClick?: () => void
+  clickHandler?: () => void
   className?: string
 }
 
-export const BackButton = ({ onClick, className }: BackButtonProps) => {
+export const BackButton = ({ clickHandler, className }: BackButtonProps) => {
+  const router = useRouter()
+
   const handleClick = () => {
-    onClick?.()
+    clickHandler?.()
     if (typeof window !== 'undefined') {
-      // 클라이언트에서만 뒤로가기 수행
-      window.history.back()
+      router.back()
     }
   }
 

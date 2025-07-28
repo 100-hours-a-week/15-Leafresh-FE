@@ -1,85 +1,114 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { cloneElement, isValidElement, useRef } from 'react'
+import { ReactElement } from 'react'
 
-import { LucideIcon } from '@/shared/components'
 import { useKeyClose, useOutsideClick, useToggle } from '@/shared/hooks'
 
+import { DropdownContext, useDropdownContext } from './context'
 import * as S from './styles'
+import {
+  ComponentProps,
+  DropdownProps,
+  InjectedComponentProps,
+  InjectedItemProps,
+  InjectedTriggerProps,
+  ItemProps,
+  MenuProps,
+  TriggerProps,
+} from './types'
 
-export interface DropdownProps<OptionType> {
-  label: string
-  getOptionLabel: (option: OptionType) => string
+export const Dropdown = <T,>({ initialOpen = false, children, onSelect, className }: DropdownProps<T>) => {
+  const { value: isOpen, toggle, setValue } = useToggle(initialOpen)
 
-  options: OptionType[]
-  getOptionKey: (option: OptionType) => string | number
-  selected?: OptionType
-
-  onChange: (value: OptionType) => void
-
-  maxVisibleCount?: number
-  className?: string
-  required?: boolean
-}
-
-export const Dropdown = <OptionType,>({
-  label,
-  options,
-  selected,
-  onChange,
-  getOptionLabel,
-  getOptionKey,
-  maxVisibleCount = 4,
-  className,
-  required,
-}: DropdownProps<OptionType>) => {
-  const { value: isOpen, toggle, setValue: setIsOpen } = useToggle(false)
-  const dropdownRef = useRef<HTMLUListElement>(null)
-
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
-  const handleSelect = (value: OptionType) => {
-    onChange(value)
-    setIsOpen(false)
-  }
-
-  useOutsideClick(dropdownRef as React.RefObject<HTMLElement>, toggle)
-  useKeyClose('Escape', dropdownRef as React.RefObject<HTMLElement>, toggle)
+  // 외부 클릭시 닫기
+  const ref = useRef<HTMLDivElement>(null)
+  useOutsideClick(ref as React.RefObject<HTMLElement>, () => setValue(false))
+  useKeyClose('Escape', ref as React.RefObject<HTMLElement>, () => setValue(false))
 
   return (
-    <S.Wrapper className={className}>
-      <S.Label isFocused={isOpen || !!selected}>
-        {label}
-        {required && <S.RequiredMark>*</S.RequiredMark>}
-      </S.Label>
-      <S.SelectBox
-        onClick={toggle}
-        isFocused={isOpen || !!selected}
-        role='combobox'
-        aria-expanded={isOpen}
-        aria-required={required}
-        tabIndex={0}
-      >
-        <S.SelectedText>{selected ? getOptionLabel(selected) : ''}</S.SelectedText>
-        <S.IconWrapper isFocused={isOpen}>
-          <LucideIcon name='ChevronDown' size={16} />
-        </S.IconWrapper>
-      </S.SelectBox>
-      {isOpen && (
-        <S.DropdownBox ref={dropdownRef} maxHeight={maxVisibleCount * 40}>
-          {options.map((option, index) => (
-            <S.Item
-              key={getOptionKey(option)}
-              onClick={() => handleSelect(option)}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              isHovered={hoveredIndex === index}
-            >
-              {getOptionLabel(option)}
-            </S.Item>
-          ))}
-        </S.DropdownBox>
-      )}
-    </S.Wrapper>
+    <DropdownContext.Provider
+      value={{
+        onSelect,
+        isOpen,
+        toggle,
+      }}
+    >
+      <S.Wrapper ref={ref} className={className}>
+        {children}
+      </S.Wrapper>
+    </DropdownContext.Provider>
   )
 }
+
+/**
+ * 드롭다운 트리거 요소
+ * @param as 드롭다운 트리거 컴포넌트
+ */
+const Trigger = ({ as }: TriggerProps) => {
+  const { isOpen, toggle } = useDropdownContext()
+
+  if (!isValidElement(as)) return null
+
+  const child = as as ReactElement<InjectedTriggerProps>
+
+  return cloneElement(child, {
+    isOpen,
+    onClick: (e: React.MouseEvent<HTMLElement>) => {
+      child.props.onClick?.(e)
+
+      toggle()
+    },
+  })
+}
+
+/**
+ * 열린 드롭다운의 영역
+ */
+const Menu = ({ children, maxVisibleCount = 4 }: MenuProps) => {
+  const { isOpen } = useDropdownContext()
+  if (!isOpen) return null
+
+  return <S.MenuWrapper maxHeight={maxVisibleCount * 40}>{children}</S.MenuWrapper>
+}
+
+/**
+ * 하나의 드롭다운
+ */
+const Item = <T,>({ value, children }: ItemProps<T>) => {
+  const { onSelect, toggle } = useDropdownContext()
+
+  const handleClick = () => {
+    onSelect(value)
+    toggle()
+  }
+
+  const child = children as ReactElement<InjectedItemProps>
+
+  return cloneElement(child, {
+    onClick: (e: React.MouseEvent<HTMLElement>) => {
+      child.props.onClick?.(e)
+      handleClick()
+    },
+  })
+}
+
+/**
+ * 통째로 컴포넌트 보여주는 경우
+ */
+const Component = <T,>({ as }: ComponentProps<T>) => {
+  const { isOpen, toggle } = useDropdownContext()
+  if (!isOpen) return null
+
+  const child = as
+
+  return cloneElement(child, {
+    isOpen,
+    toggle,
+  }) as ReactElement<InjectedComponentProps>
+}
+
+Dropdown.Trigger = Trigger
+Dropdown.Menu = Menu
+Dropdown.Item = Item
+Dropdown.Component = Component

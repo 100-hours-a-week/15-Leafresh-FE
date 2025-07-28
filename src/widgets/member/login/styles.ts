@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styled from '@emotion/styled'
 
 export const Container = styled.div`
-  height: calc(100dvh - 60px);
+  height: 100%;
 
   position: relative;
   display: flex;
