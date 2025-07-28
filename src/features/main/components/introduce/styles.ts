@@ -39,6 +39,9 @@ export const Count = styled.div`
   text-align: center;
   font-size: 36px;
 `
+export const VerificationCount = styled(Count)`
+  min-width: 3ch;
+`
 export const LeafCount = styled(Count)`
   min-width: 7ch;
 `

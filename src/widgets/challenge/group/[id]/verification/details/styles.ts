@@ -64,8 +64,10 @@ export const ContentImage = styled(Image)`
 
 export const Content = styled.p`
   padding: 16px 0;
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.base};
   color: ${({ theme }) => theme.colors.lfBlack.base};
+
+  white-space: pre-line;
 `
 
 export const Stats = styled.div`
@@ -74,6 +76,10 @@ export const Stats = styled.div`
   justify-content: space-between;
   padding: 0 0 10px 0;
   font-size: ${({ theme }) => theme.fontSize.base};
+`
+export const Views = styled.div`
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
 `
 
 export const LeftStat = styled.div`
@@ -86,6 +92,8 @@ export const Stat = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.colors.lfBlack.base};
   gap: 4px;
+
+  cursor: pointer;
 `
 
 export const LikeButton = styled.button`

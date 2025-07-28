@@ -109,7 +109,7 @@ export const Description = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
-  white-space: normal;
+  white-space: pre-line;
 `
 
 export const InteractionWrapper = styled.div`

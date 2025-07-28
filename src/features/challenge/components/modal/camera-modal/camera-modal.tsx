@@ -9,11 +9,11 @@ import { useScrollLock, useToast, useUploadImageToBucket } from '@/shared/hooks'
 import { VerificationGuideModal } from '../verification-guide-modal'
 
 import * as S from './styles'
+import { FacingMode } from './types'
 
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
 
-type FacingMode = 'user' | 'environment'
 export const CameraModal = () => {
   const { toast } = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
@@ -105,9 +105,20 @@ export const CameraModal = () => {
     if (!canvasRef.current || !videoRef.current) return
     const ctx = canvasRef.current.getContext('2d')
     if (!ctx) return
-    canvasRef.current.width = videoRef.current.videoWidth
-    canvasRef.current.height = videoRef.current.videoHeight
-    ctx.drawImage(videoRef.current, 0, 0)
+
+    const width = videoRef.current.videoWidth
+    const height = videoRef.current.videoHeight
+
+    canvasRef.current.width = width
+    canvasRef.current.height = height
+
+    if (facingMode === 'environment') {
+      // ✅ 좌우 반전
+      ctx.translate(width, 0)
+      ctx.scale(-1, 1)
+    }
+
+    ctx.drawImage(videoRef.current, 0, 0, width, height)
 
     /** S3 이미지 업로드 */
     canvasRef.current.toBlob(async blob => {
@@ -238,7 +249,7 @@ export const CameraModal = () => {
           {previewUrl ? (
             <S.ImagePreview src={previewUrl} alt='촬영된 이미지' fill />
           ) : (
-            <S.CameraView ref={videoRef} autoPlay playsInline />
+            <S.CameraView ref={videoRef} autoPlay playsInline facingMode={facingMode} />
           )}
         </S.CameraWrapper>
         <canvas ref={canvasRef} style={{ display: 'none' }} />
