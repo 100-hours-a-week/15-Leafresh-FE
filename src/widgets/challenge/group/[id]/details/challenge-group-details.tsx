@@ -9,10 +9,10 @@ import { ChallengeVerifyCarousel, VerificationImageData } from '@/features/chall
 
 import {
   getGroupChallengeDetails,
+  GroupChallengeStatus,
   ParticipateGroupChallengeResponse,
   ParticipateGroupChallengeVariables,
 } from '@/entities/challenge/api'
-import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
 import { Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
@@ -77,6 +77,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
     leafReward,
     status,
   } = challengeData
+  console.log(challengeData)
 
   const totalDays = differenceInCalendarDays(new Date(endDate), new Date(startDate)) + 1 /** 지속일 */
   const verificationExampleImages: VerificationImageData[] = exampleImages.map(img => ({
@@ -87,10 +88,30 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
 
   /** 제출 버튼 비활성화 여부 */
   const isButtonDisabled: boolean = status !== 'NOT_SUBMITTED'
-  const getSubmitButtonLabel = (status: ChallengeVerificationStatusType): string => {
-    if (status === 'PENDING_APPROVAL') return '인증여부 판단 중'
-    if (status === 'SUCCESS' || status === 'FAILURE' || status === 'DONE') return '참여 완료'
-    return '참여하기'
+  const getSubmitButtonLabel = (status: GroupChallengeStatus): string => {
+    let label: string = ''
+    switch (status) {
+      // 1. 참여하지 않은 경우
+      case 'NOT_PARTICIPATED':
+        label = '참여하기'
+        break
+      // 2. 참여한 경우
+      // TODO: 인증이 올바르게 AI펍섭에 들어가지 않은 경우 핸들링 필요 (협업)
+      case 'PENDING_APPROVAL':
+        // addChallengeId(challengeId)
+        label = '인증여부 판단 중'
+        break
+      case 'SUCCESS':
+        label = '오늘 인증 성공'
+        break
+      case 'FAILURE':
+        label = '오늘 인증 실패'
+        break
+      case 'NOT_SUBMITTED': // 참여는 하였지만 인증을 하지 않은 경우
+        label = '인증하기'
+        break
+    }
+    return label
   }
 
   /** 제출하기 */
