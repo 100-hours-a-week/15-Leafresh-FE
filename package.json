@@ -7,10 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:hooks": "vitest run --coverage && open coverage/index.html",
     "test:e2e": "playwright test",
+    "find-deadStyleCode": "ts-prune",
     "metrics": "ts-node scripts/metrics-server.ts",
-    "start:with-methrics": "concurrently \"pnpm run metrics\" \"pnpm run start\""
+    "start:with-metrics": "concurrently \"pnpm run metrics\" \"pnpm run start\"",
+    "prepare": "husky"
   },
   "dependencies": {
     "@chakra-ui/react": "3.16.0",
@@ -50,6 +53,7 @@
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
     "@vitejs/plugin-react": "^4.4.1",
+    "@vitest/coverage-v8": "^3.2.4",
     "concurrently": "^9.2.0",
     "dotenv": "^16.5.0",
     "eslint": "^9.24.0",
@@ -63,10 +67,11 @@
     "jsdom": "^26.1.0",
     "lint-staged": "^15.5.2",
     "prettier": "3.5.3",
+    "ts-prune": "^0.10.3",
     "ts-node": "^10.9.2",
     "typescript": "^5",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "3.1.1"
+    "vitest": "3.2.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

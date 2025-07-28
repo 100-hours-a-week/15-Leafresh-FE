@@ -2,14 +2,13 @@
 
 import { useEffect } from 'react'
 
-import styled from '@emotion/styled'
-
 import { CHALLENGE_VERIFICATION_RESULT, ChallengeVerificationResultType } from '@/entities/challenge/model'
 
-import { theme } from '@/shared/config'
 import { ImageZoomModalData, useImageZoomStore } from '@/shared/context'
 
 import { VerificationImageInput } from '../verification-image-input'
+
+import * as S from './styles'
 
 export interface VerificationImageData {
   id?: number
@@ -149,16 +148,16 @@ export const ChallengeVerifyExamples = ({
   }
 
   return (
-    <Wrapper className={className}>
-      <Header>
-        <Label>
+    <S.Wrapper className={className}>
+      <S.Header>
+        <S.Label>
           {title}
-          {required && <RequiredMark>*</RequiredMark>}
-        </Label>
-      </Header>
-      {description && <Description>{description}</Description>}
+          {required && <S.RequiredMark>*</S.RequiredMark>}
+        </S.Label>
+      </S.Header>
+      {description && <S.Description>{description}</S.Description>}
 
-      <ScrollArea>
+      <S.ScrollArea>
         {examples
           /** 보존용 데이터는 보여주지 않음 (단체 챌린지 수정 과정) */
           .filter(example => !(example.id && !example.url))
@@ -180,43 +179,7 @@ export const ChallengeVerifyExamples = ({
               />
             )
           })}
-      </ScrollArea>
-    </Wrapper>
+      </S.ScrollArea>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-`
-
-const Label = styled.h3`
-  font-size: ${theme.fontSize.md};
-  color: ${theme.colors.lfBlack.base};
-`
-
-const RequiredMark = styled.span`
-  color: ${theme.colors.lfGreenBorder.base};
-`
-
-const Description = styled.p`
-  font-size: ${theme.fontSize.xs};
-  color: ${theme.colors.lfGreenMain.base};
-`
-
-const ScrollArea = styled.div`
-  width: 100%;
-
-  position: relative;
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-`

@@ -1,8 +1,5 @@
 'use client'
-
-import styled from '@emotion/styled'
-
-import { theme } from '@/shared/config'
+import * as S from './styles'
 
 interface ErrorTextProps {
   text?: string
@@ -11,12 +8,5 @@ interface ErrorTextProps {
 
 export const ErrorText = ({ text, className }: ErrorTextProps) => {
   if (!text) return null
-  return <Text className={className}>{text}</Text>
+  return <S.Text className={className}>{text}</S.Text>
 }
-
-const Text = styled.p`
-  margin-top: 6px;
-  font-size: ${theme.fontSize.xs};
-  color: ${theme.colors.lfRed.base};
-  font-weight: ${theme.fontWeight.medium};
-`

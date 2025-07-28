@@ -6,7 +6,7 @@ import { ReactElement } from 'react'
 import { useKeyClose, useOutsideClick, useToggle } from '@/shared/hooks'
 
 import { DropdownContext, useDropdownContext } from './context'
-import * as S from './style'
+import * as S from './styles'
 import {
   ComponentProps,
   DropdownProps,

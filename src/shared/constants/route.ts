@@ -1,4 +1,7 @@
 import { ChallengeCategoryType } from '@/entities/challenge/model'
+import { ChallengeStatus } from '@/entities/member/api'
+
+import { buildURI } from '../lib'
 
 type URL = {
   name: string
@@ -14,66 +17,40 @@ const CHALLENGE_URL = {
   PERSONAL: {
     DETAILS: {
       name: '개인 챌린지 상세',
-      value: (personalId: number) => `/challenge/personal/${personalId}`,
-      dynamicPath: '/challenge/personal/[id]', // 👈 추가
-      isProtected: false,
-      hasBackButton: true,
+      value: (personalId: number) => buildURI(`/challenge/personal/${personalId}`),
     },
   },
   GROUP: {
-    // TODO: 단체 챌린지 목록 페이지 제거하기
     LIST: {
       name: '단체 챌린지 목록',
-      value: (category?: ChallengeCategoryType) =>
-        category ? `/challenge/group/list?category=${category}` : '/challenge/group/list',
-      dynamicPath: '/challenge/group/list',
-      isProtected: false,
-      hasBackButton: true,
+      value: (category?: ChallengeCategoryType) => buildURI('/challenge/group/list', { query: { category } }),
     },
     CREATE: {
       name: '단체 챌린지 생성',
-      value: (category?: ChallengeCategoryType) =>
-        category ? `/challenge/group/create?category=${category}` : `/challenge/group/create`,
-      dynamicPath: '/challenge/group/create',
-      isProtected: true,
-      hasBackButton: true,
+      value: (category?: ChallengeCategoryType) => buildURI('/challenge/group/create', { query: { category } }),
     },
     MODIFY: {
       name: '단체 챌린지 수정',
-      value: (challengeId: number) => `/challenge/group/${challengeId}/modify`,
-      dynamicPath: '/challenge/group/[challengeId]/modify',
-      isProtected: true,
-      hasBackButton: true,
+      value: (challengeId: number) => buildURI(`/challenge/group/${challengeId}/modify`),
     },
     DETAILS: {
       name: '단체 챌린지 상세',
-      value: (challengeId: number) => `/challenge/group/${challengeId}`,
-      dynamicPath: '/challenge/group/[challengeId]',
-      isProtected: false,
-      hasBackButton: true,
+      value: (challengeId: number) => buildURI(`/challenge/group/${challengeId}`),
     },
     VERIFICATION: {
       LIST: {
         name: '이용자 인증 내역 목록',
-        value: (challengeId: number) => `/challenge/group/${challengeId}/verification/list`,
-        dynamicPath: '/challenge/group/[challengeId]/verification/list',
-        isProtected: false,
-        hasBackButton: true,
+        value: (challengeId: number) => buildURI(`/challenge/group/${challengeId}/verification/list`),
       },
       DETAILS: {
         name: '챌린지 인증 상세',
         value: (challengeId: number, verificationId: number) =>
-          `/challenge/group/${challengeId}/verification/${verificationId}`,
-        dynamicPath: '/challenge/group/[challengeId]/verification/[verificationId]',
-        isProtected: false,
-        hasBackButton: true,
+          buildURI(`/challenge/group/${challengeId}/verification/${verificationId}`),
       },
     },
     FEED: {
       name: '챌린지 인증 피드',
-      value: `/challenge/group/feed`,
-      isProtected: false,
-      hasBackButton: false,
+      value: buildURI(`/challenge/group/feed`),
     },
   },
 }
@@ -81,95 +58,65 @@ const CHALLENGE_URL = {
 const MAIN_URL = {
   INDEX: {
     name: '메인',
-    value: '/',
-    isProtected: false,
-    hasBackButton: false,
+    value: buildURI('/'),
   } as URL,
 }
 
 const MEMBER_URL = {
   LOGIN: {
     name: '로그인',
-    value: '/member/login',
-    isProtected: false,
-    hasBackButton: true,
+    value: (authorized?: boolean, expired?: boolean) => buildURI('/member/login', { query: { authorized, expired } }),
   },
   CALLBACK: {
     name: '소셜 로그인 콜백',
-    value: (provider: string) => `/member/${provider}/callback`,
-    dynamicPath: '/member/[provider]/callback',
-    isProtected: false,
-    hasBackButton: false,
+    value: (provider: string) => buildURI(`/member/${provider}/callback`),
   },
   SIGNUP: {
     name: '회원가입',
-    value: '/member/signup',
-    isProtected: false,
-    hasBackButton: true,
+    value: buildURI('/member/signup'),
   },
   PROFILE: {
     MYPAGE: {
       name: '마이페이지',
-      value: '/member/profile/mypage',
-      isProtected: true,
-      hasBackButton: false,
+      value: buildURI('/member/profile/mypage'),
     },
-
     MODIFY: {
       name: '프로필 수정',
-      value: '/member/profile/modify',
-      isProtected: true,
-      hasBackButton: true,
+      value: buildURI('/member/profile/modify'),
     },
     BADGE: {
       name: '뱃지 조회',
-      value: '/member/profile/badge',
-      isProtected: true,
-      hasBackButton: true,
+      value: buildURI('/member/profile/badge'),
     },
   },
   ALARM: {
     name: '알림 확인',
-    value: '/member/alarm',
-    isProtected: true,
-    hasBackButton: true,
+    value: buildURI('/member/alarm'),
   },
   CHALLENGE: {
     PARTICIPATE: {
-      // 참여 중인 챌린지
       LIST: {
         name: '참여중인 챌린지',
-        value: `/member/challenge/participate/list`,
-        isProtected: true,
-        hasBackButton: false,
+        value: (status?: ChallengeStatus) => buildURI('/member/challenge/participate/list', { query: { status } }),
       },
     },
     VERIFICATION: {
-      // 특정 챌린지 인증 현황
       STATUS: {
         name: '특정 챌린지 인증 현황',
-        value: (challengeId: number) => `/member/challenge/${challengeId}/verification/status`,
-        isProtected: true,
-        hasBackButton: true,
+        value: (challengeId: number) => buildURI(`/member/challenge/${challengeId}/verification/status`),
       },
     },
-
     CREATE: {
-      // 생성한 챌린지
       LIST: {
         name: '생성한 챌린지',
-        value: '/member/challenge/create/list',
-        isProtected: true,
-        hasBackButton: true,
+        value: buildURI('/member/challenge/create/list'),
       },
     },
   },
   STORE: {
     PURCHASED: {
       name: '나뭇잎 상점 구매 목록',
-      value: '/member/store/list',
-      isProtected: true,
-      hasBackButton: true,
+      value: buildURI('/member/store/list'),
     },
   },
 }
@@ -177,9 +124,7 @@ const MEMBER_URL = {
 const STORE_URL = {
   INDEX: {
     name: '나뭇잎 상점',
-    value: `/store`,
-    isProtected: false,
-    hasBackButton: false,
+    value: buildURI('/store'),
   },
 }
 
@@ -189,3 +134,43 @@ export const URL = {
   CHALLENGE: CHALLENGE_URL,
   STORE: STORE_URL,
 } as const
+
+export const PROTECTED_ROUTES = [
+  '/challenge/group/create',
+  '/challenge/group/[challengeId]/modify',
+  '/member/profile/mypage',
+  '/member/profile/modify',
+  '/member/profile/badge',
+  '/member/alarm',
+  '/member/challenge/participate/list',
+  '/member/challenge/[challengeId]/verification/status',
+  '/member/challenge/create/list',
+  '/member/store/list',
+]
+
+export const BACK_BUTTON_ROUTES = [
+  '/challenge/personal/[id]',
+  '/challenge/group/list',
+  '/challenge/group/create',
+  '/challenge/group/[challengeId]/modify',
+  '/challenge/group/[challengeId]',
+  '/challenge/group/[challengeId]/verification/list',
+  '/challenge/group/[challengeId]/verification/[verificationId]',
+  '/member/login',
+  '/member/signup',
+  '/member/profile/modify',
+  '/member/profile/badge',
+  '/member/alarm',
+  '/member/challenge/[challengeId]/verification/status',
+  '/member/challenge/create/list',
+  '/member/store/list',
+]
+
+/**
+ * 동적 경로를 정규표현식으로 변환
+ * 예: /challenge/group/[challengeId] → ^/challenge/group/[^/]+$
+ */
+export const convertToRegexPattern = (path: string): RegExp => {
+  const pattern = path.replace(/\[.*?Id\]/g, '\\d+').replace(/\[.*?\]/g, '[^/]+')
+  return new RegExp(`^${pattern}$`)
+}

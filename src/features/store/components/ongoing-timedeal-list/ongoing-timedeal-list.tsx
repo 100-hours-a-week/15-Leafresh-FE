@@ -1,29 +1,76 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 
-import styled from '@emotion/styled'
+import { useRouter } from 'next/navigation'
+
 import useEmblaCarousel from 'embla-carousel-react'
+
+import { useValidateMemberProfile } from '@/features/member/api'
 
 import { TimeDealProduct } from '@/entities/store/api'
 
-import { ApologizeFeedback, LucideIcon } from '@/shared/components'
-import { media, theme } from '@/shared/config'
+import { LucideIcon } from '@/shared/components'
+import { URL } from '@/shared/constants'
+import { useConfirmModalStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 
 import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
 
+import * as S from './styles'
+
 interface Props {
-  data: TimeDealProduct[]
+  ongoingData: TimeDealProduct[]
+  upcomingData: TimeDealProduct[]
+  memberLeafCount?: number // 보유 나뭇잎 수
   className?: string
 }
 
-export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
+export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount, className }: Props): ReactNode => {
+  const router = useRouter()
+  // const { userInfo, isLoggedIn } = useUserStore()
+  const { isAuthVerified } = useValidateMemberProfile({ enabled: true }) // 로그인 상태 갱신을 위해
+
+  const { toast } = useToast()
+  const { openConfirmModal } = useConfirmModalStore()
+
+  // ✅ 토스트 중복 방지 ref
+  const loginToastShownRef = useRef(false)
+  const startToastShownRef = useRef(false)
+  useEffect(() => {
+    if (ongoingData.length > 0 || upcomingData.length === 0) return
+
+    const interval = setInterval(() => {
+      const now = Date.now()
+      const nextStartTime = new Date(upcomingData[0].dealStartTime).getTime()
+      const diff = Math.floor((nextStartTime - now) / 1000) // 초 단위 차이
+
+      // 타임딜 시작 10초 전
+      if (!startToastShownRef.current && diff > 0 && diff <= 10) {
+        toast('Success', '다음 타임딜이 곧 시작됩니다!')
+        startToastShownRef.current = true
+      }
+
+      // 타임딜 시작 60초 전 & 미로그인
+      if (!loginToastShownRef.current && !isAuthVerified && diff <= 60 && diff > 5) {
+        openConfirmModal({
+          title: '타임딜이 곧 시작됩니다!',
+          description: '로그인 페이지로 이동하시겠습니까?',
+          onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
+        })
+        loginToastShownRef.current = true
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [ongoingData, upcomingData, isAuthVerified, toast])
+
   /** 각 재고의 남은 시간 트래킹 */
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위
   useEffect(() => {
     const updateTimes = () => {
       const now = Date.now()
-      const updated = data.map(deal => {
+      const updated = ongoingData.map(deal => {
         const end = new Date(deal.dealEndTime).getTime()
         const diffInSec = Math.max(0, Math.floor((end - now) / 1000)) // 초 단위
         return diffInSec
@@ -34,7 +81,7 @@ export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
     updateTimes()
     const interval = setInterval(updateTimes, 1000)
     return () => clearInterval(interval)
-  }, [data])
+  }, [ongoingData])
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
   const [canScrollPrev, setCanScrollPrev] = useState<boolean>(false)
@@ -51,9 +98,9 @@ export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
 
   let timeDealContents
   /** 예외: 타임딜 상품이 없는 경우 */
-  if (!data || data.length === 0) {
+  if (!ongoingData || ongoingData.length === 0) {
     timeDealContents = (
-      <StyledApologizeFeedback
+      <S.StyledApologizeFeedback
         title='진행 중인 특가 상품이 없습니다'
         description={`빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다\n감사합니다`}
       />
@@ -61,104 +108,42 @@ export const OngoingTimeDealList = ({ data, className }: Props): ReactNode => {
   } else {
     /** 타임딜 상품이 있는 경우 */
     timeDealContents = (
-      <CarouselWrapper>
+      <S.CarouselWrapper>
         {canScrollPrev && (
-          <LeftButton onClick={() => emblaApi?.scrollPrev()}>
+          <S.LeftButton onClick={() => emblaApi?.scrollPrev()}>
             <LucideIcon name='ChevronLeft' size={24} />
-          </LeftButton>
+          </S.LeftButton>
         )}
 
-        <Embla ref={emblaRef}>
-          <EmblaTrack>
-            {data.map((deal, index) => (
-              <OngoingTimeDealCard key={deal.productId} data={deal} remainingSec={remainingTimes[index] ?? 0} />
+        <S.Embla ref={emblaRef}>
+          <S.EmblaTrack>
+            {ongoingData.map((deal, index) => (
+              <OngoingTimeDealCard
+                key={deal.productId}
+                data={deal}
+                remainingSec={remainingTimes[index] ?? 0}
+                memberLeafCount={memberLeafCount}
+              />
             ))}
-          </EmblaTrack>
-        </Embla>
+          </S.EmblaTrack>
+        </S.Embla>
 
         {canScrollNext && (
-          <RightButton onClick={() => emblaApi?.scrollNext()}>
+          <S.RightButton onClick={() => emblaApi?.scrollNext()}>
             <LucideIcon name='ChevronRight' size={24} />
-          </RightButton>
+          </S.RightButton>
         )}
-      </CarouselWrapper>
+      </S.CarouselWrapper>
     )
   }
   return (
-    <Container className={className}>
-      <TitleBox>
-        <SectionTitle>🔥 지금만 이 가격</SectionTitle>
-        <SubText>세상은 1등만 기억해!</SubText>
-      </TitleBox>
+    <S.Container className={className}>
+      <S.TitleBox>
+        <S.SectionTitle>🔥 지금만 이 가격</S.SectionTitle>
+        <S.SubText>세상은 1등만 기억해!</S.SubText>
+        {memberLeafCount !== undefined && <S.StyledLeafReward reward={memberLeafCount} />}
+      </S.TitleBox>
       {timeDealContents}
-    </Container>
+    </S.Container>
   )
 }
-
-const Container = styled.section`
-  margin: 20px 0;
-  width: 100%;
-  position: relative;
-  cursor: pointer;
-`
-const TitleBox = styled.div`
-  margin-bottom: 12px;
-`
-
-const SectionTitle = styled.h2`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-`
-
-const SubText = styled.p`
-  margin: 8px 0px;
-  color: ${theme.colors.lfDarkGray.base};
-  font-size: ${theme.fontSize.sm};
-
-  ${media.afterMobile} {
-    font-size: ${theme.fontSize.base};
-  }
-`
-
-const CarouselWrapper = styled.div`
-  width: 100%;
-
-  position: relative;
-`
-const Embla = styled.div`
-  padding: 6px 0;
-  overflow: hidden;
-`
-const EmblaTrack = styled.div`
-  display: flex;
-`
-
-const MoveButton = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: ${theme.colors.lfWhite.base};
-  border-radius: ${theme.radius.full};
-  box-shadow: ${theme.shadow.lfInput};
-  width: 36px;
-  height: 36px;
-  z-index: 10;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${theme.colors.lfInputBackground.base};
-  }
-`
-
-const LeftButton = styled(MoveButton)`
-  left: 0;
-`
-const RightButton = styled(LeftButton)`
-  left: auto;
-  right: 0;
-`
-
-const StyledApologizeFeedback = styled(ApologizeFeedback)`
-  margin: 24px 0;
-`

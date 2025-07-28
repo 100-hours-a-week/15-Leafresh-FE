@@ -2,17 +2,16 @@ import { ReactNode, useEffect, useRef } from 'react'
 
 import { useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
-
 import { useInfiniteGroupChallengeFeedList } from '@/features/challenge/api'
 
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage, FilterChallengeCategoryType } from '@/entities/challenge/model'
 
-import { Loading, NoContentFeedback } from '@/shared/components'
+import { Loading } from '@/shared/components'
 import { URL } from '@/shared/constants'
-import { responsiveHorizontalPadding } from '@/shared/styles'
 
 import { VerificationCard } from '../verification-card'
+
+import * as S from './styles'
 
 interface FeedListProps {
   category: FilterChallengeCategoryType
@@ -52,7 +51,8 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
 
     return () => {
       if (observerRef.current) {
-        observer.unobserve(observerRef.current)
+        observer.disconnect()
+        // observer.unobserve(observerRef.current)
       }
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
@@ -73,7 +73,7 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
       title = `${korCategory}\n 인증 내역이 없습니다`
     }
     contents = (
-      <StyledNoContentFeedback
+      <S.StyledNoContentFeedback
         title={title}
         buttonText='챌린지 참여하기'
         clickHandler={() => {
@@ -93,39 +93,10 @@ export const FeedList = ({ category, className }: FeedListProps): ReactNode => {
   }
 
   return (
-    <Wrapper className={className} isLoading={isLoading}>
+    <S.Wrapper className={className} isLoading={isLoading}>
       {contents}
-      {!hasNextPage && !isLoading && verifications.length > 0 && <EndMessage>피드를 모두 불러왔습니다</EndMessage>}
-      <ObserverTrigger ref={observerRef} />
-    </Wrapper>
+      {!hasNextPage && !isLoading && verifications.length > 0 && <S.EndMessage>피드를 모두 불러왔습니다</S.EndMessage>}
+      <S.ObserverTrigger ref={observerRef} />
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.section<{ isLoading: boolean }>`
-  ${responsiveHorizontalPadding};
-  margin-top: 24px;
-
-  flex: 1;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: ${({ isLoading }) => (isLoading ? 'center' : 'flex-start')};
-  gap: 28px;
-`
-const StyledNoContentFeedback = styled(NoContentFeedback)`
-  margin: 60px 0;
-`
-
-const ObserverTrigger = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-`
-
-const EndMessage = styled.div`
-  text-align: center;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.lfDarkGray.base};
-`

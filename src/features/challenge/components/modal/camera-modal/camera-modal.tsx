@@ -2,28 +2,23 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import Image from 'next/image'
-
-import styled from '@emotion/styled'
-
-import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
-
 import { CheckIcon, ErrorText, LucideIcon, SwitchTap } from '@/shared/components'
-import { theme } from '@/shared/config'
-import { ToastType, useCameraModalStore } from '@/shared/context'
-import { useImageUpload, useScrollLock, useToast } from '@/shared/hooks'
+import { useCameraModalStore } from '@/shared/context'
+import { useScrollLock, useToast, useUploadImageToBucket } from '@/shared/hooks'
 
 import { VerificationGuideModal } from '../verification-guide-modal'
+
+import * as S from './styles'
 
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
 
 type FacingMode = 'user' | 'environment'
 export const CameraModal = () => {
-  const openToast = useToast()
+  const { toast } = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
 
-  const { uploadFile, loading: uploading, error: uploadError } = useImageUpload()
+  const { uploadFile, loading: uploading, error: uploadError } = useUploadImageToBucket()
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -52,7 +47,7 @@ export const CameraModal = () => {
 
   const startCamera = async (mode: FacingMode = facingMode) => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      openToast(ToastType.Error, '해당 기기에서는 카메라를 사용할 수 없습니다.')
+      toast('Error', '해당 기기에서는 카메라를 사용할 수 없습니다.')
       close()
       return
     }
@@ -74,9 +69,9 @@ export const CameraModal = () => {
       }
     } catch (error) {
       if (mode === 'environment') {
-        openToast(ToastType.Error, '해당 방향을 지원하지 않습니다!')
+        toast('Error', '해당 방향을 지원하지 않습니다!')
       } else {
-        openToast(ToastType.Error, '잠시만 기다려주세요.')
+        toast('Error', '잠시만 기다려주세요.')
       }
 
       /** 후면 카메라 미지원시 */
@@ -122,7 +117,7 @@ export const CameraModal = () => {
         const uploadedUrl = await uploadFile(file)
         setPreviewUrl(uploadedUrl)
       } catch (err) {
-        openToast(ToastType.Error, '이미지 업로드 실패')
+        toast('Error', '이미지 업로드 실패')
       }
     }, 'image/jpeg')
   }
@@ -180,28 +175,28 @@ export const CameraModal = () => {
     // 촬영 후
     if (previewUrl) {
       content = (
-        <ShootWrapper type='button'>
-          <ShootButtonWrapper onClick={capture}>
+        <S.ShootWrapper type='button'>
+          <S.ShootButtonWrapper onClick={capture}>
             <CheckIcon />
-          </ShootButtonWrapper>
-        </ShootWrapper>
+          </S.ShootButtonWrapper>
+        </S.ShootWrapper>
       )
     }
     // 촬영 전
     else {
       content = (
-        <ShootWrapper type='button'>
-          <ShootButtonWrapper onClick={capture}>
+        <S.ShootWrapper type='button'>
+          <S.ShootButtonWrapper onClick={capture}>
             <LucideIcon name='Camera' size={50} />
-            <ShootText>촬영하기</ShootText>
-          </ShootButtonWrapper>
-          <CovertCameraButton
+            <S.ShootText>촬영하기</S.ShootText>
+          </S.ShootButtonWrapper>
+          <S.CovertCameraButton
             name='SwitchCamera'
             size={40}
             strokeWidth={2}
             onClick={() => setFacingMode(prev => (prev === 'user' ? 'environment' : 'user'))}
           />
-        </ShootWrapper>
+        </S.ShootWrapper>
       )
     }
   } else if (hasDescription) {
@@ -218,232 +213,50 @@ export const CameraModal = () => {
         break
     }
     content = (
-      <TextAreaWrapper>
-        <TextAreaLabel status={status}>{label}</TextAreaLabel>
-        <TextAreaDescription>인증 참여 이미지를 사람들에게 설명해주세요.</TextAreaDescription>
-        <TextArea value={description} onChange={e => setDescription(e.target.value)} placeholder='예) Placeholder' />
+      <S.TextAreaWrapper>
+        <S.TextAreaLabel status={status}>{label}</S.TextAreaLabel>
+        <S.TextAreaDescription>인증 참여 이미지를 사람들에게 설명해주세요.</S.TextAreaDescription>
+        <S.TextArea value={description} onChange={e => setDescription(e.target.value)} placeholder='예) Placeholder' />
         <ErrorText text={errorText} />
-      </TextAreaWrapper>
+      </S.TextAreaWrapper>
     )
   }
 
   if (!isOpen) return null
   return (
-    <Overlay>
-      <Wrapper>
-        <Header>
+    <S.Overlay>
+      <S.Wrapper>
+        <S.Header>
           {previewUrl ? (
-            <BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
+            <S.BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
           ) : (
-            <CloseButton name='X' onClick={close} size={30} />
+            <LucideIcon name='X' onClick={close} size={30} />
           )}
-          <Title>{title}</Title>
-        </Header>
-        <CameraWrapper>
+          <S.Title>{title}</S.Title>
+        </S.Header>
+        <S.CameraWrapper>
           {previewUrl ? (
-            <ImagePreview src={previewUrl} alt='촬영된 이미지' fill />
+            <S.ImagePreview src={previewUrl} alt='촬영된 이미지' fill />
           ) : (
-            <CameraView ref={videoRef} autoPlay playsInline />
+            <S.CameraView ref={videoRef} autoPlay playsInline />
           )}
-        </CameraWrapper>
+        </S.CameraWrapper>
         <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-        <ContentWrapper>{content}</ContentWrapper>
+        <S.ContentWrapper>{content}</S.ContentWrapper>
 
-        <SwitchWrapper>
+        <S.SwitchWrapper>
           {!previewUrl ? (
             <SwitchTap tabs={TABS} currentIndex={tab} onChange={handleTabChange} />
           ) : (
-            <ConfirmButton onClick={handleConfirm}>{confirmText}</ConfirmButton>
+            <S.ConfirmButton onClick={handleConfirm}>{confirmText}</S.ConfirmButton>
           )}
 
           {challengeData && (
             <VerificationGuideModal isOpen={showGuide} challengeData={challengeData} onClose={() => setTab(0)} />
           )}
-        </SwitchWrapper>
-      </Wrapper>
-    </Overlay>
+        </S.SwitchWrapper>
+      </S.Wrapper>
+    </S.Overlay>
   )
 }
-
-const Overlay = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(1.5px);
-  z-index: 199;
-`
-
-const Wrapper = styled.div`
-  position: fixed;
-  top: 0%;
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 320px;
-  max-width: 500px;
-  width: 100%;
-  height: 100dvh;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: ${theme.colors.lfInputBackground.base};
-  z-index: 200;
-`
-
-const Header = styled.div`
-  width: 100%;
-  height: 90px;
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  font-size: ${theme.fontSize.xl};
-  font-weight: ${theme.fontWeight.medium};
-
-  position: relative;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-`
-
-const BackButton = styled(LucideIcon)`
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-`
-
-const CameraWrapper = styled.div`
-  gap: 16px;
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-
-  position: relative;
-  background-color: ${theme.colors.lfInputBackground.base};
-`
-
-const CameraView = styled.video`
-  width: 100%;
-  object-fit: cover;
-`
-
-const ImagePreview = styled(Image)`
-  object-position: center;
-  object-fit: cover;
-`
-
-const ContentWrapper = styled.div`
-  width: 100%;
-  height: 250px;
-  padding: 18px 36px 0px 36px;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-
-  background-color: ${theme.colors.lfInputBackground.base};
-`
-const ShootWrapper = styled.button`
-  width: 100%;
-  height: 100%;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-
-  /* position: relative; */
-
-  background-color: ${theme.colors.lfInputBackground.base};
-`
-
-const ShootText = styled.span`
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.semiBold};
-`
-
-const SwitchWrapper = styled.div`
-  width: 100%;
-  flex: 1;
-  padding: 12px 36px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-`
-
-const TextAreaWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-`
-
-const TextAreaLabel = styled.p<{ status: ChallengeVerificationStatusType | undefined }>`
-  color: ${({ status }) =>
-    status === 'SUCCESS'
-      ? theme.colors.lfBlue.base
-      : status === 'FAILURE'
-        ? theme.colors.lfRed.base
-        : theme.colors.lfBlack.base};
-  font-weight: ${theme.fontWeight.semiBold};
-  font-size: ${theme.fontSize.base};
-`
-const TextAreaDescription = styled.p`
-  color: ${theme.colors.lfDarkGray};
-  font-size: ${theme.fontSize.xs};
-
-  margin: 10px 0 14px 0;
-`
-
-const TextArea = styled.textarea`
-  width: 100%;
-  height: 100%;
-  border: 1px solid ${theme.colors.lfGray.base};
-  border-radius: ${theme.radius.base};
-  padding: 12px;
-  font-size: ${theme.fontSize.xs};
-  resize: none;
-`
-
-const ConfirmButton = styled.button`
-  width: 100%;
-  padding: 16px;
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  border: none;
-  border-radius: ${theme.radius.base};
-  cursor: pointer;
-`
-
-const CloseButton = styled(LucideIcon)`
-  cursor: pointer;
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-`
-
-const Title = styled.span`
-  width: 80%;
-
-  white-space: nowrap; // 줄바꿈 방지
-  overflow: hidden; // 넘치는 텍스트 숨김
-  text-overflow: ellipsis; // 말줄임표 표시
-`
-
-const ShootButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-`
-
-const CovertCameraButton = styled(LucideIcon)`
-  position: absolute;
-  right: 25px;
-`

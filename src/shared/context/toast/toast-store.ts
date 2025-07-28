@@ -1,11 +1,18 @@
 import { create } from 'zustand'
 
-import { ToastStore, ToastType } from './type'
+import { ToastState } from './type'
 
-export const useToastStore = create<ToastStore>(set => ({
-  isOpen: false,
-  type: ToastType.Success,
-  description: '',
-  open: (type, description) => set({ isOpen: true, type, description }),
-  close: () => set({ isOpen: false, description: null }),
+export const toastStore = create<ToastState>(set => ({
+  toasts: [],
+  toast: (type, description) =>
+    set(state => {
+      const id = crypto.randomUUID()
+      const nextToasts = [...state.toasts, { id, type, description }]
+      if (nextToasts.length > 2) nextToasts.shift() // 가장 오래된 것 제거
+      return { toasts: nextToasts }
+    }),
+  remove: (id: string) =>
+    set(state => ({
+      toasts: state.toasts.filter(t => t.id !== id),
+    })),
 }))

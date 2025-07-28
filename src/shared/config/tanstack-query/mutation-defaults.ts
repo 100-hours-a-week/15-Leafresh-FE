@@ -12,17 +12,10 @@ import {
   postVerificationComment,
   postVerificationReply,
   putVerificationComment,
+  readAllAlarms,
   VerifyGroupChallenge,
 } from '@/entities/challenge/api'
-import {
-  ChallengeStatus,
-  Logout,
-  PatchMemberInfo,
-  readAllAlarms,
-  RequestFeedback,
-  SignUp,
-  Unregister,
-} from '@/entities/member/api'
+import { ChallengeStatus, Logout, PatchMemberInfo, RequestFeedback, SignUp, Unregister } from '@/entities/member/api'
 import { OrderProduct, OrderTimeDealProduct } from '@/entities/store/api'
 
 import { ApiResponse, ErrorResponse, handleError } from '@/shared/lib'

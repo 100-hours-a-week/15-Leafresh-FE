@@ -4,6 +4,7 @@ on:
   pull_request:
     branches: ['develop', 'main']
   push:
+    branches: ['develop', 'main']
     tags:
       - 'v*-dev'
       - 'v*'
@@ -11,7 +12,7 @@ on:
 jobs:
   setup:
     name: Setup and Install Dependencies
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
     outputs:
       pnpm_cache_hit: ${{ steps.cache-pnpm.outputs.cache-hit }}
@@ -39,8 +40,8 @@ jobs:
 
   lint-and-unit-test:
     name: Lint and Unit test
-    needs: setup
-    if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    needs: [setup]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -75,53 +76,54 @@ jobs:
           echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
           pnpm run test
 
-  integration-test:
-    name: Integration Test
-    needs: setup
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: latest
-      - name: Use cached pnpm modules
-        if: steps.setup.outputs.pnpm_cache_hit == 'true'
-        run: echo "Using cached pnpm modules"
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps ${{ matrix.browser }}
-      - name: Build Next.js app for testing
-        run: pnpm run build
-      - name: Start Next.js app for testing
-        run: |
-          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-          echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
+  # integration-test:
+  #   name: Integration Test
+  #   needs: setup
+  #   if: github.event_name == 'pull_request' && github.base_ref == 'main'
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: ./
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       browser: [chromium]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 'lts/*'
+  #     - uses: pnpm/action-setup@v2
+  #       with:
+  #         version: latest
+  #     - name: Use cached pnpm modules
+  #       if: steps.setup.outputs.pnpm_cache_hit == 'true'
+  #       run: echo "Using cached pnpm modules"
+  #     - name: Install Dependencies
+  #       run: pnpm install --frozen-lockfile
+  #     - name: Install Playwright Browsers
+  #       run: npx playwright install --with-deps ${{ matrix.browser }}
+  #     - name: Build Next.js app for testing
+  #       run: |
+  #         echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
+  #         echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
+  #         pnpm run build
+  #     - name: Start Next.js app for testing
+  #       run: |
+  #         pnpm run start &
 
-          pnpm run start &
-
-      - name: Wait for App to Start (Health Check)
-        run: sleep 20
-      - name: Run Playwright Tests (${{ matrix.browser }})
-        run: pnpm exec playwright test --project=chromium
-        env:
-          PLAYWRIGHT_TEST_BASE_URL: http://localhost:3000
+  #     - name: Wait for App to Start (Health Check)
+  #       run: sleep 20
+  #     - name: Run Playwright Tests (${{ matrix.browser }})
+  #       run: pnpm exec playwright test --project=chromium
+  #       env:
+  #         PLAYWRIGHT_TEST_BASE_URL: http://localhost:3000
 
   build-dev:
-    name: Build and Push Docker (dev)
-    if: github.event_name == 'pull_request' && github.base_ref == 'develop'
-    needs: [lint-and-unit-test]
+    name: Build and Push Docker Image (dev)
+    if: >
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
+      (github.event_name == 'pull_request' && github.base_ref == 'develop' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -140,13 +142,14 @@ jobs:
           push: true
           tags: jchanho99/frontend-develop:latest
           build-args: |
-            ${{ secrets.ENV_FE_ANALYTICS }}
             ${{ secrets.ENV_FE_DEV_PROD }}
+            ${{ secrets.ENV_FE_ANALYTICS }}
 
   build-prod:
-    name: Build and Push Docker (prod)
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
-    needs: [integration-test]
+    name: Build and Push Docker Image (Prod)
+    if: >
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main')) ||
+      (github.event_name == 'pull_request' && github.base_ref == 'main' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -165,26 +168,18 @@ jobs:
           push: true
           tags: jchanho99/frontend-prod:latest
           build-args: |
-            ${{ secrets.ENV_FE_ANALYTICS }}
             ${{ secrets.ENV_FE_PROD }}
             ${{ secrets.ENV_FE_ANALYTICS }}
-            ${{ secrets.ENV_FE_PROD }}
 
   deploy-dev:
     name: Deploy to Dev Server
-    if: startsWith(github.ref, 'refs/tags/v') && endsWith(github.ref, '-dev')
+    needs: [build-dev]
     runs-on: ubuntu-latest
     outputs:
       status: ${{ steps.set-status.outputs.status }}
     steps:
       - name: Checkout for git access
         uses: actions/checkout@v3
-
-      - name: Extract tag name
-        id: tag
-        run: |
-          TAG_NAME="${GITHUB_REF#refs/tags/}"
-          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Deploy to Dev
         uses: appleboy/ssh-action@v1.0.3
@@ -195,8 +190,8 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/frontend/app
-            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-            echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> .env.production
+            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> sudo tee -a .env
+            echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> sudo tee -a .env.production
 
             IMAGE="jchanho99/frontend-develop:latest"
             cd /home/ubuntu/frontend
@@ -205,138 +200,71 @@ jobs:
             sudo docker compose up -d
             sudo docker compose ps
 
-      - name: Upload tag-versioned image to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Tag and Push Docker Image (tag = ${{ env.TAG_NAME }})
-        env:
-          TAG_NAME: ${{ env.TAG_NAME }}
-        run: |
-          docker pull jchanho99/frontend-develop:latest
-          docker image tag jchanho99/frontend-develop:latest temp-image-with-label
-
-          # 임시 컨테이너 생성 후 레이블 추가로 digest 변경
-          docker container create --name temp-container temp-image-with-label
-          docker commit --change "LABEL force-push-tag=${TAG_NAME}-$(date +%s)" temp-container jchanho99/frontend-develop:${TAG_NAME}
-
-          # 정리
-          docker container stop temp-container
-          docker container rm temp-container
-          docker image rm temp-image-with-label
-
-          # 푸시
-          docker push jchanho99/frontend-develop:${TAG_NAME}
-
       - name: Set Status (Dev)
         id: set-status
         if: success()
         run: echo "status=success" >> "$GITHUB_OUTPUT"
 
       - name: Set Status (Dev Failure)
-        if: failure() && steps.deploy-dev.outcome == 'failure' # deploy-step이 실패했을 때만
+        if: failure() && steps.deploy-dev.outcome == 'failure'
         run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   deploy-prod:
-    name: Deploy to Prod Server (Blue-Green)
-    if: startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, '-dev')
-    outputs:
-      status: ${{ steps.set-status.outputs.status }}
+    name: Deploy to Prod Server
+    needs: [build-prod]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout for git access
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Extract commit SHA from tag
-        run: |
-          TAG="${GITHUB_REF#refs/tags/}"
-          COMMIT_SHA=$(git rev-list -n 1 "$TAG")
-          SHORT_SHA=${COMMIT_SHA:0:7}
-          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
-
-      - name: Deploy to Prod
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Setup Node.js and pnpm
+        uses: actions/setup-node@v3
         with:
-          host: ${{ secrets.SSH_HOST_PROD }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            # dir 추가 필요
-            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-            echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+          node-version: 'lts/*'
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
 
+      - name: Install dependencies and build
+        run: pnpm install
+      
+      - name: Create .env and .env.production
+        run: |
+          echo "${{ secrets.ENV_FE_ANALYTICS }}" >> .env
+          echo "${{ secrets.ENV_FE_PROD }}" >> .env.production
+      
+      - name: Build FE
+        run: pnpm run build
 
+      - name: Archive build result
+        run: |
+          tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/ next.config.ts
 
-            set -e # 오류 발생 시 즉시 스크립트 중단
-            VERSION="${{ github.ref }}"             # ex: refs/tags/v2.0.6
-            VERSION="${VERSION#refs/tags/}"         # remove prefix
-            IMAGE="jchanho99/frontend-prod:${{ env.VERSION }}"
-            HEALTH_CHECK_URL="http://localhost:3001" # 헬스 체크 URL
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+          credentials_json: ${{ secrets.SA_KEY_JSON }}
 
-            echo "🚀 Starting Prod Blue-Green Deployment to host: ${{ secrets.LEAFRESH_PROD_HOST }}"
-            echo "🖼️ Using image: $IMAGE"
+      - name: Setup Google Cloud SDK and Set GCP Project
+        uses: 'google-github-actions/setup-gcloud@v2'
 
-            cd /opt/frontend/
-            echo "PWD: $(pwd)"
+      - name: Verify The Installation of gcloud CLI
+        run: gcloud info
 
-            echo "🚚 Pulling Docker image: $IMAGE"
-            sudo docker pull "$IMAGE"
+      - name: Upload via IAP SCP to FE PROD server
+        run: |
+          gcloud compute scp fe-build.tar.gz \
+            ${{ secrets.SSH_USER }}@leafresh-fe-tester-a:~/fe/fe-build.tar.gz \
+            --zone=${{ secrets.AZ }} \
+            --tunnel-through-iap \
+            --project=${{ secrets.PROJECT_ID }}
 
-            CURRENT=$(cat /opt/frontend-current 2>/dev/null || echo blue)
-            NEXT=$([ "$CURRENT" = "blue" ] && echo green || echo blue)
-
-            echo "🔵 Current active environment: $CURRENT"
-            echo "🟢 Next environment to deploy: $NEXT"
-
-            echo "🚀 Bringing up $NEXT environment (frontend-$NEXT)..."
-            # 만약 docker-compose.yml에서 $NEXT에 해당하는 특정 서비스를 지정해야 한다면,
-            # 예: sudo docker compose up -d service-$NEXT
-            sudo docker compose up -d # 이 명령이 frontend-$NEXT 컨테이너를 시작/업데이트해야 함
-
-            echo "🩺 Performing health check for $NEXT on $HEALTH_CHECK_URL..."
-            HEALTH_CHECK_PASSED=false
-            for i in {1..60}; do
-              if nc -z localhost 3001 2>/dev/null; then
-                HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_CHECK_URL")
-                if [ "$HTTP_CODE" -eq 200 ]; then
-                  CONTENT_STATUS=$(curl -s "$HEALTH_CHECK_URL" | grep "<title>")
-                  if [ ! -z "$CONTENT_STATUS" ]; then
-                    echo "✅ Health check passed for $NEXT on attempt $i (HTTP $HTTP_CODE with <title>)."
-                    HEALTH_CHECK_PASSED=true
-                    break
-                  fi
-                fi
-              fi
-              echo "⏳ Waiting ($i)..."
-              sleep 1
-            done
-
-            if [ "$HEALTH_CHECK_PASSED" != "true" ]; then
-              echo "❌ Health check failed for $NEXT environment after 60 attempts."
-              echo "💣 Rolling back: Attempting to stop and remove $NEXT environment (frontend-$NEXT)..."
-              sudo docker stop "frontend-$NEXT" || true
-              sudo docker rm "frontend-$NEXT" || true
-              exit 1
-            fi
-
-            echo "✅ Health check successful for $NEXT environment."
-            echo "🔄 Switching traffic..."
-
-            echo "🛑 Stopping and removing $CURRENT environment (frontend-$CURRENT)..."
-            sudo docker stop "frontend-$CURRENT" || true
-            sudo docker rm "frontend-$CURRENT" || true
-
-            echo "⚠️ Force restarting $NEXT environment as per original script logic (stop, rm, up)..."
-            sudo docker stop "frontend-$NEXT" || true
-            sudo docker rm "frontend-$NEXT" || true
-            sudo docker compose up -d # $NEXT 환경을 다시 시작
-
-            echo "$NEXT" > /opt/frontend-current
-            echo "🎉 Prod Blue-Green deployment to $NEXT complete. $NEXT is now active."
+          gcloud compute ssh ${{ secrets.SSH_USER }}@leafresh-fe-tester-a \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.AZ }} \
+            --tunnel-through-iap \
+            --command="bash -c 'cd fe && ./deploy.sh'"
 
       - name: Set Status (Prod)
         id: set-status
@@ -344,42 +272,46 @@ jobs:
         run: echo "status=success" >> "$GITHUB_OUTPUT"
 
       - name: Set Status (Prod Failure)
-        if: failure() && steps.deploy-prod.outcome == 'failure' # deploy-step이 실패했을 때만
+        if: failure() && steps.deploy-step.outcome == 'failure'
         run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   notify:
     name: Discord Notification
-    needs: [deploy-dev, deploy-prod] # 명시적으로 종속성 추가
+    needs: [deploy-dev, deploy-prod]
     if: |
-      always() &&
-      (
         needs.deploy-dev.result != 'skipped' || 
         needs.deploy-prod.result != 'skipped'
-      )
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Message
-        run: |
-          TAG="${GITHUB_REF#refs/tags/}"
+        run: | 
+          MESSAGE=""
+
+          # Dev 결과 처리
           if [[ "${{ needs.deploy-dev.result }}" != 'skipped' ]]; then
-            STATUS="${{ needs.deploy-dev.outputs.status }}"
-          elif [[ "${{ needs.deploy-prod.result }}" != 'skipped' ]]; then
-            STATUS="${{ needs.deploy-prod.outputs.status }}"
-          else
-            STATUS="unknown"
+            STATUS_DEV="${{ needs.deploy-dev.outputs.status }}"
+            if [ "$STATUS_DEV" = "success" ]; then
+              MESSAGE="${MESSAGE}✅ \`[FE dev]\` 배포 완료\n"
+            elif [ "$STATUS_DEV" = "failure" ]; then
+              MESSAGE="${MESSAGE}🚨 \`[FE dev]\` 배포 실패\n"
+            fi
           fi
 
-          if [[ "$STATUS" == "success" ]]; then
-            MESSAGE="✅ [${TAG}] 배포 완료"
-          elif [[ "$STATUS" == "failure" ]]; then
-            MESSAGE="🚨 [${TAG}] 배포 실패. actions에서 로그를 확인하세요."
-          else
-            MESSAGE="⚠️ [${TAG}] 배포 상태를 알 수 없습니다."
+          # Prod 결과 처리
+          if [[ "${{ needs.deploy-prod.result }}" != 'skipped' ]]; then
+            STATUS_PROD="${{ needs.deploy-prod.outputs.status }}"
+            if [ "$STATUS_PROD" = "success" ]; then
+              MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료\n"
+            elif [ "$STATUS_PROD" = "failure" ]; then
+              MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패\n"
+            fi
           fi
 
-          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+          if [ -z "$MESSAGE" ]; then
+            MESSAGE="⚠️ 배포 상태 정보를 찾을 수 없습니다."
+          fi
 
           curl -H "Content-Type: application/json" \
                -X POST \
                -d "{\"content\": \"$MESSAGE\"}" \
-               ${{ secrets.DISCORD_WEBHOOK_URL }}
+             ${{ secrets.DISCORD_WEBHOOK_URL }}

@@ -1,4 +1,3 @@
-export * from './alarm'
 export * from './participate'
 
 // 파일

@@ -2,7 +2,6 @@
 
 import { ReactNode } from 'react'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { EventSection, GroupChallengeSections, PersonalChallengeSection } from '@/features/main/components'
@@ -18,6 +17,8 @@ import {
 
 import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { DayType, getDayOfWeek } from '@/shared/lib'
+
+import * as S from './styles'
 
 export const MainPage = (): ReactNode => {
   const dayOfWeek: DayType = getDayOfWeek(new Date()) // 클라이언트 기준
@@ -44,19 +45,10 @@ export const MainPage = (): ReactNode => {
   const personalChallenges: PersonalChallengeType[] = personalData?.data.personalChallenges ?? []
 
   return (
-    <Container>
-      <EventSection eventChallenges={eventChallenges} />
+    <S.Container>
+      {eventChallenges.length !== 0 && <EventSection eventChallenges={eventChallenges} />}
       <PersonalChallengeSection personalChallenges={personalChallenges} />
       <GroupChallengeSections categories={categories} />
-    </Container>
+    </S.Container>
   )
 }
-
-// === Styles ===
-
-const Container = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-`

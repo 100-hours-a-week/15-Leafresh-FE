@@ -34,16 +34,16 @@ const eslintConfig = [
     },
 
     rules: {
-      // // FSD 레이어 간 의존성 규칙 강제
+      // FSD 레이어 간 의존성 규칙 강제
       // 'boundaries/element-types': [
       //   'error',
       //   {
       //     default: 'disallow',
       //     rules: [
-      //       { from: 'app', allow: ['app', 'widgets', 'features', 'entities', 'shared'] },
-      //       { from: 'widgets', allow: ['widgets', 'features', 'entities', 'shared'] },
-      //       { from: 'features', allow: ['features', 'entities', 'shared'] },
-      //       { from: 'entities', allow: ['entities', 'shared'] },
+      //       { from: 'app', allow: ['widgets', 'features', 'entities', 'shared'] },
+      //       { from: 'widgets', allow: ['features', 'entities', 'shared'] },
+      //       { from: 'features', allow: ['entities', 'shared'] },
+      //       { from: 'entities', allow: ['shared'] },
       //       { from: 'shared', allow: ['shared'] },
       //     ],
       //   },
@@ -202,22 +202,15 @@ const eslintConfig = [
 
       // unusedImport
       'unused-imports/no-unused-imports': 'error',
-      'unused-imports/no-unused-vars': [
-        'warn',
-        { vars: 'all', varsIgnorePattern: '^_', args: 'none' }, // 매개변수 무시
-      ],
+      'unused-imports/no-unused-vars': 'off', // @typescript-eslint/no-unused-vars로 대체
 
       // react-hooks
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
-      // 추가 규칙
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'prefer-const': 'error',
-
       // typescript
       '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-implicit-any-catch': 'off', // 이걸 켜면 unknown 강제
+      '@typescript-eslint/no-implicit-any-catch': 'off', // unknown 강제
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
@@ -229,6 +222,10 @@ const eslintConfig = [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-interface': 'off', // 빈 인터페이스 허용
       '@typescript-eslint/no-empty-object-type': 'off', // 빈 객체 타입 허용
+
+      // 추가 규칙
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'prefer-const': 'error',
 
       'prettier/prettier': 'warn',
     },

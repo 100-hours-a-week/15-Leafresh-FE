@@ -5,19 +5,16 @@ import { ReactNode, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
-
 import { useInfiniteMemberStoreOrderList } from '@/features/member/api'
 
 import { PurchaseProduct } from '@/entities/member/api'
 
-import { NoContentFeedback } from '@/shared/components'
-import { theme } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { getTimeDiff } from '@/shared/lib'
-import { responsiveHorizontalPadding } from '@/shared/styles'
 
-import LeafIcon from '@public/icon/leaf.png'
+import LeafIcon from '@public/icon/leaf.svg'
+
+import * as S from './styles'
 
 export const MemberOrderListPage = (): ReactNode => {
   const router = useRouter()
@@ -47,7 +44,7 @@ export const MemberOrderListPage = (): ReactNode => {
   // 1. 데이터가 없는 경우
   if (isEmpty) {
     contents = (
-      <StyledNoContentFeedback
+      <S.StyledNoContentFeedback
         title='상품 구매내역이 없습니다'
         buttonText='나뭇잎 상점가기'
         clickHandler={() => {
@@ -59,21 +56,21 @@ export const MemberOrderListPage = (): ReactNode => {
     contents = products.map(product => <ProductCard data={product} key={product.id} />)
   }
   return (
-    <Container>
-      <Header>
-        <Title>나뭇잎 상점 구매내역</Title>
-        <LinkButton
+    <S.Container>
+      <S.Header>
+        <S.Title>나뭇잎 상점 구매내역</S.Title>
+        <S.LinkButton
           onClick={() => {
             router.push(URL.STORE.INDEX.value)
           }}
           type='button'
         >
           상점 가기
-        </LinkButton>
-      </Header>
-      <Grid isEmpty={isEmpty}>{contents}</Grid>
-      {hasNextPage && <Observer ref={observerRef} />}
-    </Container>
+        </S.LinkButton>
+      </S.Header>
+      <S.Grid isEmpty={isEmpty}>{contents}</S.Grid>
+      {hasNextPage && <S.Observer ref={observerRef} />}
+    </S.Container>
   )
 }
 
@@ -86,129 +83,18 @@ const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
   const { id: orderId, price, product, purchasedAt, quantity } = data
   const { id: productId, imageUrl, title } = product
   return (
-    <Card key={orderId}>
-      <ThumbnailWrapper>
+    <S.Card key={orderId}>
+      <S.ThumbnailWrapper>
         <Image src={imageUrl} alt={title} fill style={{ objectFit: 'cover' }} />
-      </ThumbnailWrapper>
-      <ProductTitle>{title}</ProductTitle>
-      <InfoRow>
-        <PriceRow>
+      </S.ThumbnailWrapper>
+      <S.ProductTitle>{title}</S.ProductTitle>
+      <S.InfoRow>
+        <S.PriceRow>
           <Image src={LeafIcon} alt='leaf' width={24} height={24} />
-          <Price>{price}</Price>
-        </PriceRow>
-        <TimeAgo>{getTimeDiff(purchasedAt)}</TimeAgo>
-      </InfoRow>
-    </Card>
+          <S.Price>{price}</S.Price>
+        </S.PriceRow>
+        <S.TimeAgo>{getTimeDiff(purchasedAt)}</S.TimeAgo>
+      </S.InfoRow>
+    </S.Card>
   )
 }
-
-const Container = styled.div`
-  ${responsiveHorizontalPadding};
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`
-
-const Header = styled.div`
-  /* padding: 16px; */
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-const Title = styled.h1`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
-`
-
-const LinkButton = styled.button`
-  margin: 6px 0;
-
-  align-self: flex-end;
-  font-size: ${theme.fontSize.sm};
-  color: ${theme.colors.lfBlue.base};
-  font-weight: ${theme.fontWeight.medium};
-
-  cursor: pointer;
-`
-
-const Grid = styled.div<{ isEmpty?: boolean }>`
-  display: grid;
-
-  ${({ isEmpty }) =>
-    isEmpty
-      ? `
-      height: 100%;
-    grid-template-columns: 1fr;
-    place-items: center;
-    min-height: 40vh;
-  `
-      : `
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 16px;
-    column-gap: 20px;
-  `}
-`
-
-const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`
-
-const ThumbnailWrapper = styled.div`
-  position: relative;
-  aspect-ratio: 1/1;
-  border-radius: ${theme.radius.base};
-  overflow: hidden;
-`
-
-const ProductTitle = styled.div`
-  margin: 12px 0 6px 0;
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2; // 최대 줄 수
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-`
-
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: ${theme.fontSize.sm};
-`
-
-const TimeAgo = styled.span`
-  color: ${theme.colors.lfDarkGray.base};
-`
-
-const PriceRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`
-
-const Price = styled.span`
-  font-weight: ${theme.fontWeight.semiBold};
-  color: ${theme.colors.lfBlack.base};
-`
-
-const Observer = styled.div`
-  height: 1px;
-`
-
-const StyledNoContentFeedback = styled(NoContentFeedback)`
-  height: 100%;
-`
-
-// const dummyMemberStoreOrderList: PurchaseProduct[] = []

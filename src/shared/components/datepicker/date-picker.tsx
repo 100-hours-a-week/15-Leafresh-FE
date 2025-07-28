@@ -2,11 +2,7 @@
 
 import React, { useState } from 'react'
 
-import styled from '@emotion/styled'
-
-import { Calendar, ComponentSelect } from '@/shared/components'
-import { theme } from '@/shared/config'
-
+import * as S from './styles'
 import { DatePickerTrigger } from './trigger'
 
 interface DatePickerProps {
@@ -53,66 +49,20 @@ export const DatePicker = ({
   }
 
   return (
-    <Wrapper className={className}>
-      <LabelWrapper>
+    <S.Wrapper className={className}>
+      <S.LabelWrapper>
         {icon}
-        <Label>
+        <S.Label>
           {label}
-          {required && <RequiredMark>*</RequiredMark>}
-        </Label>
-      </LabelWrapper>
+          {required && <S.RequiredMark>*</S.RequiredMark>}
+        </S.Label>
+      </S.LabelWrapper>
 
-      <StyledComponentSelect
+      <S.StyledComponentSelect
         readOnly={readOnly}
         trigger={<DatePickerTrigger startDate={startDate} endDate={endDate} />}
-        component={<StyledStartCalendar startDate={startDate} endDate={endDate} onDateSelect={handleDateSelect} />}
+        component={<S.StyledStartCalendar startDate={startDate} endDate={endDate} onDateSelect={handleDateSelect} />}
       />
-    </Wrapper>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`
-
-const LabelWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`
-
-const Label = styled.label`
-  color: ${theme.colors.lfBlack.base};
-`
-
-const RequiredMark = styled.span`
-  color: ${theme.colors.lfGreenBorder.base};
-  margin-left: 4px;
-`
-
-const StyledComponentSelect = styled(ComponentSelect)<{ readOnly?: boolean }>`
-  flex: 1;
-
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  font-weight: ${theme.fontWeight.semiBold};
-  cursor: ${({ readOnly }) => (readOnly ? 'default' : 'pointer')};
-`
-
-const StyledCalendar = styled(Calendar)`
-  position: absolute;
-  top: calc(100% + 20px);
-
-  z-index: 10;
-`
-
-const StyledStartCalendar = styled(StyledCalendar)`
-  left: 50%;
-  transform: translateX(-50%);
-`

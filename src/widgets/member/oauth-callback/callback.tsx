@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 
 import { useRouter, useSearchParams } from 'next/navigation'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 
 import { LoginCallback, ProfileResponse } from '@/entities/member/api'
@@ -13,9 +12,11 @@ import { LowercaseOAuthType } from '@/entities/member/model'
 import { Loading } from '@/shared/components'
 import { getQueryClient, QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useOAuthStateStore, useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
+import { useOAuthStateStore, useOAuthUserStore, UserInfo, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { ENDPOINTS, fetchRequest } from '@/shared/lib'
+
+import * as S from './styles'
 
 interface CallbackPageProps {
   provider: LowercaseOAuthType
@@ -25,7 +26,7 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
   const queryClient = getQueryClient()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const openToast = useToast()
+  const { toast } = useToast()
 
   const { setOAuthUserInfo } = useOAuthUserStore()
   const { state } = useOAuthStateStore()
@@ -45,7 +46,7 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
       })
     },
     ...QUERY_OPTIONS.MEMBER.AUTH.CALLBACK,
-    enabled: typeof code === 'string' && code.length > 0,
+    enabled: typeof code === 'string' && code.length > 0 && state !== null,
   })
 
   useEffect(() => {
@@ -82,34 +83,19 @@ export const CallbackPage = ({ provider }: CallbackPageProps) => {
         }
       })()
 
-      openToast(ToastType.Success, '로그인 성공')
+      toast('Success', '로그인 성공')
       router.replace(URL.MAIN.INDEX.value)
     }
   }, [data])
 
-  if (isLoading) {
-    return (
-      <LoadingWrapper>
-        <Loading />
-      </LoadingWrapper>
-    )
-  }
-
   if (isError) {
-    // openToast(ToastType.Error, `${provider} 로그인 실패\n재시도 해주세요`)
-
-    return <p>로그인 실패</p>
+    toast('Error', `${provider} 로그인 실패\n재시도 해주세요`)
+    router.replace(URL.MEMBER.LOGIN.value())
   }
 
-  // 데이터 로드 후 라우팅될 것이므로 빈 상태 반환
-  return null
+  return (
+    <S.LoadingWrapper>
+      <Loading />
+    </S.LoadingWrapper>
+  )
 }
-
-const LoadingWrapper = styled.div`
-  width: 100%;
-  height: 100dvh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`

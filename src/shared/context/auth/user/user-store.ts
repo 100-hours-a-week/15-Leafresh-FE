@@ -15,6 +15,8 @@ export interface UserInfo {
 
 interface UserState {
   userInfo: UserInfo | null
+  isLoggedIn: boolean
+
   setUserInfo: (info: UserInfo) => void
   clearUserInfo: () => void
   updateUserInfo: (updatedFields: Partial<UserInfo>) => void
@@ -25,12 +27,17 @@ export const useUserStore = create<UserState>()(
   persist(
     (set, get) => ({
       userInfo: null,
-      setUserInfo: info => set({ userInfo: info }),
-      clearUserInfo: () => set({ userInfo: null }),
+      isLoggedIn: false,
+
+      setUserInfo: info => set({ userInfo: info, isLoggedIn: true }),
+      clearUserInfo: () => set({ userInfo: null, isLoggedIn: false }),
       updateUserInfo: updatedFields => {
         const prev = get().userInfo
         if (!prev) return
-        set({ userInfo: { ...prev, ...updatedFields } })
+        set({
+          userInfo: { ...prev, ...updatedFields },
+          isLoggedIn: get().isLoggedIn,
+        })
       },
     }),
     {

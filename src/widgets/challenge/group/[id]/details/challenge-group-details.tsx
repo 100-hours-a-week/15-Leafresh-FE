@@ -1,33 +1,26 @@
 'use client'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
 import { useQuery } from '@tanstack/react-query'
 import { differenceInCalendarDays } from 'date-fns'
 
-import {
-  ChallengeVerifyCarousel,
-  ChallengeVerifyExamples,
-  VerificationImageData,
-} from '@/features/challenge/components'
+import { ChallengeVerifyCarousel, VerificationImageData } from '@/features/challenge/components'
 
 import {
   getGroupChallengeDetails,
+  GroupChallengeStatus,
   ParticipateGroupChallengeResponse,
   ParticipateGroupChallengeVariables,
 } from '@/entities/challenge/api'
-import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
-import { BackButton, DatePicker, Loading, LucideIcon } from '@/shared/components'
-import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, theme, useMutationStore } from '@/shared/config'
+import { Loading, LucideIcon } from '@/shared/components'
+import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
-import { ToastType, useConfirmModalStore } from '@/shared/context'
-import { useAuth, useToast } from '@/shared/hooks'
-import { responsiveHorizontalPadding } from '@/shared/styles'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useToast } from '@/shared/hooks'
 
-import LeafIcon from '@public/icon/leaf.png'
+import * as S from './styles'
 
 type WarningType = {
   isWarning: boolean
@@ -48,11 +41,11 @@ interface ChallengeGroupDetailsProps {
 }
 
 export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroupDetailsProps) => {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useUserStore()
   const { openConfirmModal } = useConfirmModalStore()
 
   const router = useRouter()
-  const openToast = useToast()
+  const { toast } = useToast()
   /** 단체 챌린지 상세 가져오기 */
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.DETAILS(challengeId),
@@ -84,6 +77,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
     leafReward,
     status,
   } = challengeData
+  console.log(challengeData)
 
   const totalDays = differenceInCalendarDays(new Date(endDate), new Date(startDate)) + 1 /** 지속일 */
   const verificationExampleImages: VerificationImageData[] = exampleImages.map(img => ({
@@ -93,18 +87,38 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
   }))
 
   /** 제출 버튼 비활성화 여부 */
-  const isButtonDisabled: boolean = status !== 'NOT_SUBMITTED'
-  const getSubmitButtonLabel = (status: ChallengeVerificationStatusType): string => {
-    if (status === 'PENDING_APPROVAL') return '인증여부 판단 중'
-    if (status === 'SUCCESS' || status === 'FAILURE' || status === 'DONE') return '참여 완료'
-    return '참여하기'
+  const isButtonDisabled: boolean = status === 'SUCCESS' || status === 'FAILURE' || status === 'PENDING_APPROVAL'
+  const getSubmitButtonLabel = (status: GroupChallengeStatus): string => {
+    let label: string = ''
+    switch (status) {
+      // 1. 참여하지 않은 경우
+      case 'NOT_PARTICIPATED':
+        label = '참여하기'
+        break
+      // 2. 참여한 경우
+      // TODO: 인증이 올바르게 AI펍섭에 들어가지 않은 경우 핸들링 필요 (협업)
+      case 'PENDING_APPROVAL':
+        // addChallengeId(challengeId)
+        label = '인증여부 판단 중'
+        break
+      case 'SUCCESS':
+        label = '오늘 인증 성공'
+        break
+      case 'FAILURE':
+        label = '오늘 인증 실패'
+        break
+      case 'NOT_SUBMITTED': // 참여는 하였지만 인증을 하지 않은 경우
+        label = '인증하러 가기'
+        break
+    }
+    return label
   }
 
   /** 제출하기 */
   const handleSubmit = () => {
     /** 예외0 : disabled 무시하고 제출 */
     if (isButtonDisabled) {
-      openToast(ToastType.Error, '챌린지에 재참여할 수 없습니다.')
+      toast('Error', '챌린지에 재참여할 수 없습니다.')
       return
     }
     /** 로그인하지 않음 */
@@ -112,49 +126,54 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
       openConfirmModal({
         title: '로그인이 필요합니다.',
         description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
       })
       return
     }
+    /** 참여하지 않음 */
+    if (status === 'NOT_PARTICIPATED') {
+      const now = new Date()
+      const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
 
-    const now = new Date()
-    const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const localStartDate: Date = new Date(startDate)
+      const startDateOnly = new Date(localStartDate.getFullYear(), localStartDate.getMonth(), localStartDate.getDate())
 
-    const localStartDate: Date = new Date(startDate)
-    const startDateOnly = new Date(localStartDate.getFullYear(), localStartDate.getMonth(), localStartDate.getDate())
+      const localEndDate: Date = new Date(endDate)
+      const endDateOnly = new Date(localEndDate.getFullYear(), localEndDate.getMonth(), localEndDate.getDate())
 
-    const localEndDate: Date = new Date(endDate)
-    const endDateOnly = new Date(localEndDate.getFullYear(), localEndDate.getMonth(), localEndDate.getDate())
+      // 1. 오늘이 챌린지 날짜 범위 내에 있는지 확인
+      if (todayDateOnly < startDateOnly || todayDateOnly > endDateOnly) {
+        toast('Error', '챌린지 진행 기간이 아닙니다!')
+        return
+      }
 
-    // 1. 오늘이 챌린지 날짜 범위 내에 있는지 확인
-    if (todayDateOnly < startDateOnly || todayDateOnly > endDateOnly) {
-      openToast(ToastType.Error, '챌린지 진행 기간이 아닙니다!')
-      return
-    }
+      // 2. 현재 시간이 인증 가능 시간 범위 내에 있는지 확인
+      const nowMinutes = now.getHours() * 60 + now.getMinutes()
 
-    // 2. 현재 시간이 인증 가능 시간 범위 내에 있는지 확인
-    const nowMinutes = now.getHours() * 60 + now.getMinutes()
+      const [startHour, startMinute] = verificationStartTime.split(':').map(Number)
+      const [endHour, endMinute] = verificationEndTime.split(':').map(Number)
+      const startMinutes = startHour * 60 + startMinute
+      const endMinutes = endHour * 60 + endMinute
 
-    const [startHour, startMinute] = verificationStartTime.split(':').map(Number)
-    const [endHour, endMinute] = verificationEndTime.split(':').map(Number)
-    const startMinutes = startHour * 60 + startMinute
-    const endMinutes = endHour * 60 + endMinute
+      if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
+        toast('Error', '현재는 인증 가능한 시간이 아닙니다!')
+        return
+      }
 
-    if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
-      openToast(ToastType.Error, '현재는 인증 가능한 시간이 아닙니다!')
-      return
-    }
-
-    /** 제출하기 */
-    ParticipateMutate(
-      { challengeId },
-      {
-        onSuccess: () => {
-          openToast(ToastType.Success, `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
-          router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value) // 참여중인 챌린지로 이동
+      /** 제출하기 */
+      ParticipateMutate(
+        { challengeId },
+        {
+          onSuccess: () => {
+            toast('Success', `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
+            router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value('not_started')) // 참여중인 챌린지로 이동
+          },
         },
-      },
-    )
+      )
+    } else if (status === 'NOT_SUBMITTED') {
+      /** 참여한 경우 */
+      router.push(URL.MEMBER.CHALLENGE.VERIFICATION.STATUS.value(challengeId)) // 참여중인 챌린지 인증 페이지로 이동
+    }
   }
 
   /** 단체 챌린지 참여 이력 페이지로 이동 */
@@ -162,45 +181,45 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
     router.push(URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId))
   }
   return (
-    <Wrapper className={className}>
-      <DescriptionSection>
-        <StyledBackButton clickHandler={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
-        <ThumbnailImageWrapper>
-          <Thumbnail src={thumbnailUrl} alt='썸네일' fill />
-        </ThumbnailImageWrapper>
-        <Participant>
+    <S.Wrapper className={className}>
+      <S.DescriptionSection>
+        <S.StyledBackButton clickHandler={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
+        <S.ThumbnailImageWrapper>
+          <S.Thumbnail src={thumbnailUrl} alt='썸네일' fill />
+        </S.ThumbnailImageWrapper>
+        <S.Participant>
           <LucideIcon name='UsersRound' size={24} color='lfBlue' /> {currentParticipantCount}명 참여중
-        </Participant>
+        </S.Participant>
 
-        <Descriptions>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
-        </Descriptions>
-      </DescriptionSection>
+        <S.Descriptions>
+          <S.Title>{title}</S.Title>
+          <S.Description>{description}</S.Description>
+        </S.Descriptions>
+      </S.DescriptionSection>
 
-      <SectionWrapper>
-        <Section>
-          <SectionTitle>인증 방법</SectionTitle>
-          <WarningList>
-            <Warning isWarning={false}>
+      <S.SectionWrapper>
+        <S.Section>
+          <S.SectionTitle>인증 방법</S.SectionTitle>
+          <S.WarningList>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li>인증샷 예시에 맞는 사진 제출</li>
-            </Warning>
-            <Warning isWarning={false}>
+            </S.Warning>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li>AI가 사진분석을 통해 인증 성공 여부 판단</li>
-            </Warning>
-            <Warning isWarning={false}>
+            </S.Warning>
+            <S.Warning isWarning={false}>
               <LucideIcon name='Check' size={24} />
               <li style={{ display: 'flex', alignItems: 'center' }}>
-                인증 성공시 <Image src={LeafIcon} alt='나뭇잎 아이콘' /> {leafReward}개 지급
+                인증 성공시 <S.StyledLeafReward reward={leafReward} />개 지급
               </li>
-            </Warning>
-          </WarningList>
-        </Section>
+            </S.Warning>
+          </S.WarningList>
+        </S.Section>
 
-        <Section>
-          <StyledDatePicker
+        <S.Section>
+          <S.StyledDatePicker
             icon={<LucideIcon name='CalendarDays' size={24} />}
             label='인증 기간'
             startDate={new Date(startDate)}
@@ -209,15 +228,15 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
             setEndDate={() => {}}
             readOnly
           />
-          <TimeArea>
-            <TimeText>
+          <S.TimeArea>
+            <S.TimeText>
               매일, {totalDays}일간 {verificationStartTime} ~ {verificationEndTime} 인증하기
-            </TimeText>
-          </TimeArea>
-        </Section>
+            </S.TimeText>
+          </S.TimeArea>
+        </S.Section>
 
-        <Section>
-          <StyledChallengeVerifyExamples
+        <S.Section>
+          <S.StyledChallengeVerifyExamples
             title='인증샷 예시'
             description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
@@ -226,265 +245,36 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
             readOnly
             verificationInputClassName='verify-input'
           />
-        </Section>
+        </S.Section>
 
-        <Section>
-          <SectionTitle>
+        <S.Section>
+          <S.SectionTitle>
             <div>참여자 인증 사진</div>
-            <MoreButton onClick={handleRouteToVerificationsPage}>더 보기</MoreButton>
-          </SectionTitle>
+            <S.MoreButton onClick={handleRouteToVerificationsPage}>더 보기</S.MoreButton>
+          </S.SectionTitle>
           {verificationImages.length === 0 ? (
-            <NoVerficiationImageText>아직 인증사진이 없습니다!</NoVerficiationImageText>
+            <S.NoVerficiationImageText>아직 인증사진이 없습니다!</S.NoVerficiationImageText>
           ) : (
             <ChallengeVerifyCarousel images={verificationImages} />
           )}
-        </Section>
+        </S.Section>
 
-        <Section>
-          <SectionTitle>유의사항</SectionTitle>
-          <WarningList>
+        <S.Section>
+          <S.SectionTitle>유의사항</S.SectionTitle>
+          <S.WarningList>
             {CHALLENGE_DETAILS_WARNINGS.map(warnings => (
-              <Warning key={warnings.value} isWarning={warnings.isWarning}>
+              <S.Warning key={warnings.value} isWarning={warnings.isWarning}>
                 <LucideIcon name='Check' size={24} />
                 <li>{warnings.value}</li>
-              </Warning>
+              </S.Warning>
             ))}
-          </WarningList>
-        </Section>
-      </SectionWrapper>
+          </S.WarningList>
+        </S.Section>
+      </S.SectionWrapper>
 
-      <SubmitButton onClick={handleSubmit} disabled={isButtonDisabled}>
+      <S.SubmitButton onClick={handleSubmit} disabled={isButtonDisabled}>
         {!isPending ? getSubmitButtonLabel(status) : <Loading hasText={false} />}
-      </SubmitButton>
-    </Wrapper>
+      </S.SubmitButton>
+    </S.Wrapper>
   )
 }
-
-const Wrapper = styled.div`
-  ${responsiveHorizontalPadding};
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`
-
-const DescriptionSection = styled.section`
-  margin-bottom: 45px;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const ThumbnailImageWrapper = styled.div`
-  width: 100%;
-  aspect-ratio: 14/9;
-
-  position: relative;
-`
-
-const Thumbnail = styled(Image)`
-  object-fit: cover;
-  border-radius: ${theme.radius.base};
-`
-
-const Participant = styled.div`
-  padding: 14px 0;
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfBlue.base};
-
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`
-
-const Descriptions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`
-
-const Title = styled.h2`
-  font-size: 30px;
-  font-weight: ${theme.fontWeight.semiBold};
-`
-const Description = styled.p`
-  font-size: ${theme.fontSize.base};
-  white-space: pre-wrap;
-  word-break: break-word;
-  line-height: 1.6;
-`
-
-const MoreButton = styled.button`
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-
-  font-size: ${theme.fontSize.xs};
-  color: ${theme.colors.lfBlue.base};
-  background: none;
-  border: none;
-  font-weight: ${theme.fontWeight.medium};
-  cursor: pointer;
-`
-
-const SectionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-`
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-
-  gap: 12px;
-`
-
-const SectionTitle = styled.div`
-  font-size: ${theme.fontSize.md};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  position: relative;
-`
-
-const StyledDatePicker = styled(DatePicker)`
-  font-weight: ${theme.fontWeight.semiBold};
-  font-size: ${theme.fontSize.md};
-`
-
-const TimeArea = styled.div`
-  background-color: ${theme.colors.lfInputBackground.base};
-  border-radius: ${theme.radius.sm};
-
-  margin-top: 18px;
-  padding: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const TimeText = styled.span`
-  font-weight: ${theme.fontWeight.medium};
-  font-size: ${theme.fontSize.base};
-`
-
-const StyledChallengeVerifyExamples = styled(ChallengeVerifyExamples)`
-  font-weight: ${theme.fontWeight.semiBold};
-
-  .verify-input {
-    width: 40%;
-  }
-`
-
-const SubmitButton = styled.button`
-  /* padding: 12px; */
-  height: 50px;
-  border-radius: ${theme.radius.base};
-  background-color: ${({ disabled }) => (disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.base)};
-  color: ${({ disabled }) => (disabled ? theme.colors.lfBlack.base : theme.colors.lfWhite.base)};
-  font-weight: ${theme.fontWeight.semiBold};
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  border: none;
-
-  &:hover {
-    background-color: ${({ disabled }) =>
-      disabled ? theme.colors.lfGreenInactive.base : theme.colors.lfGreenMain.hover};
-  }
-`
-
-const WarningList = styled.ul`
-  margin-top: 5px;
-
-  font-size: ${theme.fontSize.base};
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`
-
-const Warning = styled.div<{ isWarning: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  font-weight: ${theme.fontWeight.medium};
-  color: ${({ isWarning }) => (isWarning ? theme.colors.lfRed.base : theme.colors.lfBlack.base)};
-`
-
-const StyledBackButton = styled(BackButton)`
-  position: absolute;
-`
-
-const NoVerficiationImageText = styled.div`
-  text-align: center;
-  padding: 30px;
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfRed.base};
-`
-
-// export const dummyGroupChallengeDetail: GroupChallengeDetail = {
-//   id: 1,
-//   isEvent: true,
-//   category: 'ZERO_WASTE',
-//   title: '클린 그릭',
-//   description:
-//     '챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...챌린지 설명...',
-//   startDate: '2025-05-12' as DateFormatString,
-//   endDate: '2025-05-14' as DateFormatString,
-//   verificationStartTime: '00:00' as TimeFormatString,
-//   verificationEndTime: '23:59' as TimeFormatString,
-//   leafReward: 30,
-//   thumbnailUrl: '/icon/category_zero_waste.png',
-//   exampleImages: [
-//     {
-//       id: 1,
-//       imageUrl: '/icon/category_zero_waste.png',
-//       type: 'SUCCESS',
-//       description: '성공 인증샷 설명 1',
-//       sequenceNumber: 1,
-//     },
-//     {
-//       id: 2,
-//       imageUrl: '/icon/category_zero_waste.png',
-//       type: 'SUCCESS',
-//       description: '성공 인증샷 설명 2',
-//       sequenceNumber: 2,
-//     },
-//     {
-//       id: 3,
-//       imageUrl: '/icon/category_zero_waste.png',
-//       type: 'FAILURE',
-//       description:
-//         '실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명실패 인증샷 설명',
-//       sequenceNumber: 3,
-//     },
-//     {
-//       id: 4,
-//       imageUrl: '/icon/category_zero_waste.png',
-//       type: 'FAILURE',
-//       description: '실패 인증샷 설명',
-//       sequenceNumber: 4,
-//     },
-//   ],
-//   verificationImages: [
-//     '/icon/category_zero_waste.png',
-//     '/icon/category_zero_waste.png',
-//     '/icon/category_zero_waste.png',
-//     '/icon/category_zero_waste.png',
-//     '/icon/category_zero_waste.png',
-//     '/icon/category_zero_waste.png',
-//     '/icon/category_zero_waste.png',
-//     '/icon/category_zero_waste.png',
-//     '/icon/category_zero_waste.png',
-//   ],
-//   maxParticipantCount: 50,
-//   currentParticipantCount: 24,
-//   status: 'NOT_SUBMITTED',
-// }

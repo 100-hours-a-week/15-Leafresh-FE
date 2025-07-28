@@ -2,9 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 
-import styled from '@emotion/styled'
-
 import { LucideIcon } from '@/shared/components'
+
+import * as S from './styles'
 
 export interface BackButtonProps {
   clickHandler?: () => void
@@ -22,18 +22,8 @@ export const BackButton = ({ clickHandler, className }: BackButtonProps) => {
   }
 
   return (
-    <Button aria-label='back' onClick={handleClick} className={className}>
+    <S.Button aria-label='back' onClick={handleClick} className={className}>
       <LucideIcon name='MoveLeft' size={29} color='lfBlack' />
-    </Button>
+    </S.Button>
   )
 }
-
-const Button = styled.button`
-  padding: 4px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-`

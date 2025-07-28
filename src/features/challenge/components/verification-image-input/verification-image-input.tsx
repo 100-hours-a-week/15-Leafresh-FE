@@ -1,14 +1,11 @@
 'use client'
 
-import styled from '@emotion/styled'
-
 import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
 import { LucideIcon } from '@/shared/components'
-import { theme, ThemeColorType } from '@/shared/config'
-import { getThemeColor } from '@/shared/lib'
+import { ThemeColorType } from '@/shared/config'
 
-import { CameraImageInput } from './camera-image-input'
+import * as S from './styles'
 
 const STATUS_ICON_MAP: Record<ChallengeVerificationStatusType, { icon: React.ReactNode; color: ThemeColorType }> = {
   SUCCESS: {
@@ -59,72 +56,29 @@ export const VerificationImageInput = ({
   const { icon, color } = STATUS_ICON_MAP[status]
 
   return (
-    <Container className={className}>
-      <StyledImageInput
-        icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
-        label={label}
-        backgroundColor='lfInputBackground'
-        imageUrl={imageUrl}
-        cameraTitle={cameraTitle}
-        hasDescription
-        type={status}
-        onChange={readOnly ? () => {} : onChange}
-        onZoom={onZoom}
-        readOnly={readOnly}
-      />
+    <S.Container className={className}>
+      <S.ImageArea>
+        <S.StyledImageInput
+          icon={<LucideIcon name='Camera' size={24} color='lfDarkGray' />}
+          label={label}
+          backgroundColor='lfInputBackground'
+          imageUrl={imageUrl}
+          cameraTitle={cameraTitle}
+          hasDescription
+          type={status}
+          onChange={readOnly ? () => {} : onChange}
+          onZoom={onZoom}
+          readOnly={readOnly}
+        />
+        {imageUrl && (
+          <S.ZoomButton type='button' onClick={onZoom}>
+            <LucideIcon name='Scan' size={24} color='lfWhite' />
+          </S.ZoomButton>
+        )}
+      </S.ImageArea>
 
-      <Footer backgroundColor={color}>{icon}</Footer>
-      {imageUrl && <Description>{description}</Description>}
-    </Container>
+      <S.Footer backgroundColor={color}>{icon}</S.Footer>
+      {imageUrl && <S.Description>{description}</S.Description>}
+    </S.Container>
   )
 }
-
-// === Styles ===
-const Container = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 120px;
-  flex-shrink: 0;
-`
-
-const StyledImageInput = styled(CameraImageInput)`
-  width: 100%;
-
-  position: relative;
-
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-`
-
-const Footer = styled.div<{ backgroundColor: ThemeColorType }>`
-  width: 100%;
-  height: 28px;
-  border-bottom-left-radius: ${theme.radius.md};
-  border-bottom-right-radius: ${theme.radius.md};
-  background-color: ${({ backgroundColor }) => getThemeColor(backgroundColor)};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-const Description = styled.p`
-  font-size: ${theme.fontSize.xs};
-  font-weight: ${theme.fontWeight.medium};
-  color: ${theme.colors.lfBlack.base};
-  text-align: center;
-  margin-top: 8px;
-  line-height: 130%;
-  word-break: break-word;
-  white-space: pre-wrap;
-`
-const ZoomButton = styled.button`
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  background: transparent;
-  border: none;
-  padding: 4px;
-  cursor: pointer;
-`

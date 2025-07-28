@@ -1,20 +1,18 @@
 'use client'
 
-import { memo, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { sendGAEvent } from '@next/third-parties/google'
 
 import { Controller, UseFormReturn } from 'react-hook-form'
 
-import styled from '@emotion/styled'
-
 import { CHALLENGE_CATEGORIES_KOR, FullFormValues, PARTICIPANT_RANGE } from '@/entities/challenge/model'
 
-import { DatePicker, ErrorText, Input, LucideIcon, SelectInput, SelectItem, SingleSelect } from '@/shared/components'
-import { TimePicker } from '@/shared/components/timepicker'
-import { theme } from '@/shared/config'
+import { ErrorText, Input, LucideIcon, SelectInput, SelectItem, SingleSelect } from '@/shared/components'
 
-import { ChallengeVerifyExamples, VerificationImageData } from '../challenge-verify-examples'
+import { VerificationImageData } from '../challenge-verify-examples'
+
+import * as S from './styles'
 
 const PARTICIPANT_OPTIONS = Array.from(
   { length: Math.floor((PARTICIPANT_RANGE.MAX - PARTICIPANT_RANGE.MIN) / PARTICIPANT_RANGE.RANGE) + 1 },
@@ -43,16 +41,6 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
     const valid = await trigger(['title', 'category', 'startDate', 'endDate', 'maxParticipant', 'examples'])
     setIsMetaValid(valid)
   }
-  useEffect(() => {
-    handleMetaCheck()
-  }, [
-    watch('title'),
-    watch('category'),
-    watch('startDate'),
-    watch('endDate'),
-    watch('maxParticipant'),
-    watch('examples'),
-  ])
 
   const title = watch('title')
   const category = watch('category')
@@ -62,6 +50,10 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
   const endTime = watch('endTime')
   const maxParticipant = watch('maxParticipant')
   const examples = watch('examples')
+
+  useEffect(() => {
+    handleMetaCheck()
+  }, [title, category, startDate, endDate, maxParticipant, examples])
 
   const handleExamplesChange = useCallback(
     (updated: VerificationImageData[]) => {
@@ -86,18 +78,18 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
   // 상수
   const FORM_TITLE: string = isEdit ? '단체 챌린지 수정하기' : '단체 챌린지 만들기'
   return (
-    <Form onSubmit={handleMetaSubmit}>
-      <DividerWrapper>
-        <Text>{FORM_TITLE}</Text>
-      </DividerWrapper>
+    <S.Form onSubmit={handleMetaSubmit}>
+      <S.DividerWrapper>
+        <S.Text>{FORM_TITLE}</S.Text>
+      </S.DividerWrapper>
 
-      <FieldGroup>
-        <FieldWrapper>
+      <S.FieldGroup>
+        <S.FieldWrapper>
           <Input label='챌린지 제목' value={title} required {...register('title')} />
           <ErrorText text={isSubmitted ? errors.title?.message : ''} />
-        </FieldWrapper>
+        </S.FieldWrapper>
 
-        <FieldWrapper>
+        <S.FieldWrapper>
           <Controller
             name='category'
             control={control}
@@ -112,10 +104,10 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             )}
           />
           <ErrorText text={isSubmitted ? errors.category?.message : ''} />
-        </FieldWrapper>
+        </S.FieldWrapper>
 
-        <FieldWrapper>
-          <StyledDatePicker
+        <S.FieldWrapper>
+          <S.StyledDatePicker
             label='챌린지 기간'
             icon={<LucideIcon name='Calendar' size={16} />}
             startDate={startDate}
@@ -136,10 +128,10 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
           />
           <ErrorText text={isSubmitted ? errors.startDate?.message : ''} />
           <ErrorText text={isSubmitted ? errors.endDate?.message : ''} />
-        </FieldWrapper>
+        </S.FieldWrapper>
 
-        <FieldWrapper>
-          <StyledTimePicker
+        <S.FieldWrapper>
+          <S.StyledTimePicker
             label='인증 가능 시간 *'
             startValue={startTime}
             endValue={endTime}
@@ -154,9 +146,9 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
           />
           <ErrorText text={isSubmitted ? errors.startTime?.message : ''} />
           <ErrorText text={isSubmitted ? errors.endTime?.message : ''} />
-        </FieldWrapper>
+        </S.FieldWrapper>
 
-        <FieldWrapper>
+        <S.FieldWrapper>
           <Controller
             name='maxParticipant'
             control={control}
@@ -171,10 +163,10 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             )}
           />
           <ErrorText text={isSubmitted ? errors.maxParticipant?.message : ''} />
-        </FieldWrapper>
+        </S.FieldWrapper>
 
-        <FieldWrapper>
-          <StyledChallengeVerifyExamples
+        <S.FieldWrapper>
+          <S.StyledChallengeVerifyExamples
             title='인증샷 예시'
             description='* 해당 인증샷은 실제 검증모델에 사용되지 않는 참고용 사진입니다.'
             maxCount={5}
@@ -183,74 +175,10 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             required
           />
           <ErrorText text={isSubmitted ? errors.examples?.message : ''} />
-        </FieldWrapper>
-      </FieldGroup>
+        </S.FieldWrapper>
+      </S.FieldGroup>
 
-      <SubmitButton type='submit'>다음 단계</SubmitButton>
-    </Form>
+      <S.SubmitButton type='submit'>다음 단계</S.SubmitButton>
+    </S.Form>
   )
 }
-
-const Form = styled.form`
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`
-
-const DividerWrapper = styled.div`
-  width: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const Text = styled.div`
-  font-size: ${theme.fontSize.base};
-  font-weight: ${theme.fontWeight.medium};
-  text-decoration: underline;
-  text-underline-offset: 4px;
-`
-
-const FieldGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-
-  position: relative;
-`
-
-const FieldWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`
-
-const SubmitButton = styled.button`
-  height: 50px;
-  border-radius: ${theme.radius.base};
-  background-color: ${theme.colors.lfGreenMain.base};
-  color: ${theme.colors.lfWhite.base};
-  font-weight: ${theme.fontWeight.semiBold};
-  cursor: pointer;
-  border: none;
-`
-
-const StyledDatePicker = memo(styled(DatePicker)`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.semiBold};
-`)
-
-const StyledChallengeVerifyExamples = memo(styled(ChallengeVerifyExamples)`
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-`)
-
-const StyledTimePicker = memo(styled(TimePicker)`
-  width: 100%;
-  font-size: ${theme.fontSize.sm};
-  font-weight: ${theme.fontWeight.medium};
-`)
