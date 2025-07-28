@@ -75,6 +75,10 @@ export const Stats = styled.div`
   padding: 0 0 10px 0;
   font-size: ${({ theme }) => theme.fontSize.base};
 `
+export const Views = styled.div`
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
+`
 
 export const LeftStat = styled.div`
   display: flex;
