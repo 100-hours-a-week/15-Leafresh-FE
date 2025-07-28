@@ -108,7 +108,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
         label = '오늘 인증 실패'
         break
       case 'NOT_SUBMITTED': // 참여는 하였지만 인증을 하지 않은 경우
-        label = '인증하기'
+        label = '인증하러 가기'
         break
     }
     return label
