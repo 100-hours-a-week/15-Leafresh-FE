@@ -141,7 +141,7 @@ export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount
       <S.TitleBox>
         <S.SectionTitle>🔥 지금만 이 가격</S.SectionTitle>
         <S.SubText>세상은 1등만 기억해!</S.SubText>
-        {memberLeafCount && <S.StyledLeafReward reward={memberLeafCount} />}
+        {memberLeafCount !== undefined && <S.StyledLeafReward reward={memberLeafCount} />}
       </S.TitleBox>
       {timeDealContents}
     </S.Container>
