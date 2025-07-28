@@ -90,6 +90,8 @@ export const Stat = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.colors.lfBlack.base};
   gap: 4px;
+
+  cursor: pointer;
 `
 
 export const LikeButton = styled.button`
