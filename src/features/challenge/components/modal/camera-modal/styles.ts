@@ -86,7 +86,8 @@ export const CameraView = styled.video<{
   aspect-ratio: 1/1;
   object-fit: cover;
 
-  transform: ${({ facingMode, isMobile }) => (facingMode === 'environment' && !isMobile ? 'scaleX(-1)' : 'scaleX(1)')};
+  transform: ${({ facingMode, isMobile }) =>
+    !isMobile ? 'scaleX(-1)' : facingMode === 'environment' ? 'scaleX(1)' : 'scaleX(-1)'};
 `
 
 export const ImagePreview = styled(Image)`
