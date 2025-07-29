@@ -3,4 +3,4 @@ name: leafresh-fe
 description: A Helm chart for Leafresh Frontend
 type: application
 version: 0.1.0
-appVersion: "v2.1.37-dev
+appVersion: "v2.1.37-dev"
