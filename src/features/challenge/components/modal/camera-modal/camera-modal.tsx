@@ -32,7 +32,13 @@ export const CameraModal = () => {
   const [scrollTop, setScrollTop] = useState<number>(0)
   const [errorText, setErrorText] = useState<string | undefined>(undefined)
 
+  /**
+   * environment : 정면
+   * user :
+   */
   const [facingMode, setFacingMode] = useState<FacingMode>('environment')
+
+  console.log('✅ facingMode: ', facingMode)
 
   // 카메라 정리 함수를 분리하여 관리
   const stopCamera = () => {
