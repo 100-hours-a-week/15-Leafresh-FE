@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 
 import { ChatFrame, FrameStep } from '../chat-frame'
+import { ChatFrameApi } from '../chat-frame-api'
 import { ChatHeader } from '../chat-header'
 
 import * as S from './styles'
@@ -118,6 +119,7 @@ export function ChatWindow({ open, onClose }: ChatWindowProps) {
 
     onClose()
   }
+  const isSSE = process.env.NEXT_PUBLIC_CHATBOT_TYPE === 'sse' ? true : false
 
   return (
     <AnimatePresence>
@@ -134,7 +136,11 @@ export function ChatWindow({ open, onClose }: ChatWindowProps) {
         >
           <ChatHeader close={handleReset} />
           <S.Body>
-            <ChatFrame key={resetCount} step={currentStep} onSelect={handleSelect} onRetry={handleRetry} />
+            {isSSE ? (
+              <ChatFrame key={resetCount} step={currentStep} onSelect={handleSelect} onRetry={handleRetry} />
+            ) : (
+              <ChatFrameApi key={resetCount} step={currentStep} onSelect={handleSelect} onRetry={handleRetry} />
+            )}
           </S.Body>
         </S.MotionWindow>
       )}

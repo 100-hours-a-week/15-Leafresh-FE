@@ -18,6 +18,7 @@ export const Card = styled.div`
 
   &[data-type='challenge'] {
     width: 230px;
+    margin-left: 40px;
     /* height: 260px; */
     align-items: center;
   }

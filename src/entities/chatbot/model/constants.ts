@@ -1,6 +1,8 @@
+import { ChatHistoryItem } from '@/features/chatbot/api'
+
 import { GCS_BUCKET } from '@/shared/constants'
 
-import { ChatHistoryItem, ChatOption } from './type'
+import { ChatOption } from './type'
 
 export const LOCATION_OPSIONS: ChatOption[] = [
   { label: '도시', value: 'city' },

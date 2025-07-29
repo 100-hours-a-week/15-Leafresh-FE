@@ -11,6 +11,7 @@ export type ChatHistoryItem = {
   subDescription?: string
   buttonText?: string
   isAnswer?: boolean
+  actions?: { buttonText: string; onClick: () => void }[]
   onClick?: () => void
 }
 

@@ -13,6 +13,8 @@ export interface ChatBubbleProps {
   loading?: boolean
   children: ReactNode | string
   subDescription?: string
+  buttonText?: string
+  onClick?: () => void
   isAnswer?: boolean
   actions?: {
     buttonText: string
