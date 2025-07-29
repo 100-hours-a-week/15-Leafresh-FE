@@ -15,11 +15,11 @@ interface CalendarHeaderProps {
 
 export const CalendarHeader = ({ currentMonth, onPrev, onNext }: CalendarHeaderProps) => (
   <S.Header>
-    <S.ArrowButton onClick={onPrev}>
+    <S.ArrowButton onClick={onPrev} type='button'>
       <LucideIcon name='ChevronLeft' size={16} />
     </S.ArrowButton>
     <S.CurrentMonth>{format(currentMonth, 'yyyy년 M월', { locale: ko })}</S.CurrentMonth>
-    <S.ArrowButton onClick={onNext}>
+    <S.ArrowButton onClick={onNext} type='button'>
       <LucideIcon name='ChevronRight' size={16} />
     </S.ArrowButton>
   </S.Header>
