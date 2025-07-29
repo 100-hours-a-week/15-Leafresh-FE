@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Suspense } from 'react'
 
 import { GroupChallengeFormPage } from '@/widgets/challenge'
@@ -5,16 +7,17 @@ import { GroupChallengeFormPage } from '@/widgets/challenge'
 import { DetailFormValues, FullFormValues, MetaFormValues } from '@/entities/challenge/model'
 
 import { Loading } from '@/shared/components'
+import { DateToKst } from '@/shared/lib'
 
 const Page = async () => {
   const defaultMetaFormValues: MetaFormValues = {
     title: '',
     category: '',
-    startDate: new Date(),
-    endDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+    startDate: DateToKst(new Date()),
+    endDate: DateToKst(new Date(Date.now() + 24 * 60 * 60 * 1000)),
     startTime: '00:00',
     endTime: '23:50',
-    maxParticipant: 0,
+    maxParticipant: undefined,
     examples: [
       { url: null, description: '', type: 'SUCCESS' },
       { url: null, description: '', type: 'FAILURE' },

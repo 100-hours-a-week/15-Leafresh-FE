@@ -1,5 +1,6 @@
 // scripts/metrics-server.ts
 import http from 'http'
+
 import client from 'prom-client'
 
 // 전역 객체에 타입 선언 (TypeScript에서 오류 방지)
@@ -38,4 +39,3 @@ server.on('error', (err: NodeJS.ErrnoException) => {
 server.listen(port, '0.0.0.0', () => {
   console.log(`Prometheus metrics server running on port ${port}`)
 })
-

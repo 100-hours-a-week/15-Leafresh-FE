@@ -1,6 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 
-import type { ChatHistoryItem } from '@/entities/chatbot/model'
+import { ChatSelectionProps } from '../components/chat-selection'
+
+export type ChatHistoryItem = {
+  type: 'message' | 'selection' | 'horizontal-cards'
+  role?: 'bot' | 'user'
+  text?: React.ReactNode
+  loading?: boolean
+  selectionProps?: ChatSelectionProps
+  subDescription?: string
+  buttonText?: string
+  isAnswer?: boolean
+  onClick?: () => void
+}
 
 /**
  * 채팅 히스토리와 메시지를 추가하는 함수를 제공하는 커스텀 훅

@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
 
-import { ImageInput } from '@/shared/components'
 import { ThemeColorType } from '@/shared/config'
 import { getThemeColor } from '@/shared/lib'
+
+import { CameraImageInput } from './camera-image-input'
 
 export const Container = styled.div`
   position: relative;
@@ -18,8 +19,10 @@ export const ImageArea = styled.div`
   width: 100%;
 `
 
-export const StyledImageInput = styled(ImageInput)`
+export const StyledImageInput = styled(CameraImageInput)`
   width: 100%;
+  position: relative;
+
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 `

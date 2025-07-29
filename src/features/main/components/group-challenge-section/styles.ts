@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { Loading, NoContent } from '@/shared/components'
+import { Loading, NoContentFeedback } from '@/shared/components'
 import { media } from '@/shared/config'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
@@ -99,7 +99,7 @@ export const ObserverTrigger = styled.div`
   height: 1px;
 `
 
-export const StyledNoContent = styled(NoContent)`
+export const StyledNoContentFeedback = styled(NoContentFeedback)`
   margin: 60px 0;
   min-height: 200px;
 `

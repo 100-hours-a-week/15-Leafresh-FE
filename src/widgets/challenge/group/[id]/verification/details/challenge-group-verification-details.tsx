@@ -58,9 +58,6 @@ export const VerificationDetails = ({
     queryKey: QUERY_KEYS.CHALLENGE.GROUP.VERIFICATION.DETAILS(challengeId, verificationId),
     queryFn: () => getVerificationDetails({ challengeId, verificationId }),
     ...QUERY_OPTIONS.CHALLENGE.GROUP.VERIFICATION.DETAILS,
-    // enabled: isClient,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   })
 
   const { data: commentData } = useQuery({
@@ -129,7 +126,7 @@ export const VerificationDetails = ({
       openConfirmModal({
         title: '로그인이 필요합니다.',
         description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
       })
       return
     }
@@ -156,7 +153,7 @@ export const VerificationDetails = ({
 
   /** 클립보드 복사 */
   const handleCopyVerificationUrl = () => {
-    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
+    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.DETAILS.value(challengeId, verificationId)}`
     copyToClipboard(url)
   }
 
@@ -166,7 +163,7 @@ export const VerificationDetails = ({
       openConfirmModal({
         title: '로그인이 필요합니다.',
         description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
       })
       return
     }
@@ -217,7 +214,7 @@ export const VerificationDetails = ({
       openConfirmModal({
         title: '로그인이 필요합니다.',
         description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
       })
       return
     }
@@ -410,8 +407,7 @@ export const VerificationDetails = ({
             <LucideIcon name='SquareArrowOutUpRight' size={16} strokeWidth={1.5} />
           </S.Stat>
         </S.LeftStat>
-        <S.Stat>조회수 {verifications.counts?.view ?? 0}</S.Stat>
-        {/* <Stat>조회수 {verifications.counts.view}</Stat> */}
+        <S.Views>조회수 {verifications.counts?.view ?? 0}</S.Views>
       </S.Stats>
       <CommentList
         comments={localComments ?? []}

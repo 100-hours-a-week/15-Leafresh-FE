@@ -90,13 +90,23 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
   /** 제출 버튼 비활성화 여부 */
   const isButtonDisabled: boolean = status !== 'NOT_SUBMITTED'
   const getSubmitButtonLabel = (status: ChallengeVerificationStatusType): string => {
-    if (status === 'PENDING_APPROVAL') {
+    let label: string = ''
+    switch (status) {
       // TODO: 인증이 올바르게 AI펍섭에 들어가지 않은 경우 핸들링 필요 (협업)
-      // addChallengeId(challengeId)
-      return '인증여부 판단 중'
+      case 'PENDING_APPROVAL':
+        label = '인증여부 판단 중'
+        break
+      case 'SUCCESS':
+        label = '오늘 인증 성공'
+        break
+      case 'FAILURE':
+        label = '오늘 인증 실패'
+        break
+      case 'NOT_SUBMITTED': // 인증을 하지 않은 경우
+        label = '인증하기'
+        break
     }
-    if (status === 'SUCCESS' || status === 'FAILURE' || status === 'DONE') return '참여 완료'
-    return '참여하기'
+    return label
   }
 
   /** 이미지 촬영 모달 열기 */
@@ -106,7 +116,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
       openConfirmModal({
         title: '로그인이 필요합니다.',
         description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
       })
       return
     }

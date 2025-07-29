@@ -61,9 +61,9 @@ export const ProductList = ({ memberLeafCount, className }: ProductListProps): R
   const hasProducts: boolean = !(products.length === 0)
   if (!hasProducts) {
     contents = (
-      <S.StyledApologizeContent
+      <S.StyledApologizeFeedback
         title='준비된 일반 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+        description={`빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다\n감사합니다`}
       />
     )
   } else {

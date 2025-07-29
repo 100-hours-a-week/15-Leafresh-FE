@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import styled from '@emotion/styled'
 
-import { ApologizeContent } from '@/shared/components'
+import { ApologizeFeedback } from '@/shared/components'
 import { media } from '@/shared/config'
 
 export const CarouselWrapper = styled.div`
@@ -132,6 +132,6 @@ export const LeafIcon = styled(Image)`
   aspect-ratio: 1/1;
 `
 
-export const StyledApologizeContent = styled(ApologizeContent)`
+export const StyledApologizeFeedback = styled(ApologizeFeedback)`
   margin: 24px 0;
 `

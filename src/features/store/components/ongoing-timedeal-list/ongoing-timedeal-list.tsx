@@ -6,11 +6,13 @@ import { useRouter } from 'next/navigation'
 
 import useEmblaCarousel from 'embla-carousel-react'
 
+import { useValidateMemberProfile } from '@/features/member/api'
+
 import { TimeDealProduct } from '@/entities/store/api'
 
 import { LucideIcon } from '@/shared/components'
 import { URL } from '@/shared/constants'
-import { useConfirmModalStore, useUserStore } from '@/shared/context'
+import { useConfirmModalStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
 import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
@@ -26,7 +28,9 @@ interface Props {
 
 export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount, className }: Props): ReactNode => {
   const router = useRouter()
-  const { isLoggedIn } = useUserStore()
+  // const { userInfo, isLoggedIn } = useUserStore()
+  const { isAuthVerified } = useValidateMemberProfile({ enabled: true }) // 로그인 상태 갱신을 위해
+
   const { toast } = useToast()
   const { openConfirmModal } = useConfirmModalStore()
 
@@ -48,18 +52,18 @@ export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount
       }
 
       // 타임딜 시작 60초 전 & 미로그인
-      if (!loginToastShownRef.current && !isLoggedIn && diff <= 60 && diff > 5) {
+      if (!loginToastShownRef.current && !isAuthVerified && diff <= 60 && diff > 5) {
         openConfirmModal({
           title: '타임딜이 곧 시작됩니다!',
           description: '로그인 페이지로 이동하시겠습니까?',
-          onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+          onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
         })
         loginToastShownRef.current = true
       }
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [ongoingData, upcomingData, isLoggedIn, toast])
+  }, [ongoingData, upcomingData, isAuthVerified, toast])
 
   /** 각 재고의 남은 시간 트래킹 */
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위
@@ -96,9 +100,9 @@ export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount
   /** 예외: 타임딜 상품이 없는 경우 */
   if (!ongoingData || ongoingData.length === 0) {
     timeDealContents = (
-      <S.StyledApologizeContent
+      <S.StyledApologizeFeedback
         title='진행 중인 특가 상품이 없습니다'
-        description='빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다'
+        description={`빠른 시일 내로 좋은 상품으로 찾아뵙겠습니다\n감사합니다`}
       />
     )
   } else {
@@ -137,7 +141,7 @@ export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount
       <S.TitleBox>
         <S.SectionTitle>🔥 지금만 이 가격</S.SectionTitle>
         <S.SubText>세상은 1등만 기억해!</S.SubText>
-        {memberLeafCount && <S.StyledLeafReward reward={memberLeafCount} />}
+        {memberLeafCount !== undefined && <S.StyledLeafReward reward={memberLeafCount} />}
       </S.TitleBox>
       {timeDealContents}
     </S.Container>

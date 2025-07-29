@@ -12,7 +12,7 @@ on:
 jobs:
   setup:
     name: Setup and Install Dependencies
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
     outputs:
       pnpm_cache_hit: ${{ steps.cache-pnpm.outputs.cache-hit }}
@@ -40,8 +40,8 @@ jobs:
 
   lint-and-unit-test:
     name: Lint and Unit test
-    needs: setup
-    if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    needs: [setup]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -64,16 +64,30 @@ jobs:
           pnpm dedupe
           pnpm install
       - name: Run Lint
+        env:
+          NEXT_PUBLIC_RUNTIME: ${{ secrets.ENV_FE_PROD }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ secrets.ENV_FE_ANALYTICS }}
         run: |
-          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-          echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-          echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+          # echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
+          # echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
+          # echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+          
+          # NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_PROD }}
+          # NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
+          
           pnpm run lint
       - name: Run Unit Test
+        env:
+          NEXT_PUBLIC_RUNTIME: ${{ secrets.ENV_FE_PROD }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ secrets.ENV_FE_ANALYTICS }}
         run: |
-          echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-          echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-          echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+          # echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
+          # echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
+          # echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
+          
+          # NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_PROD }}
+          # NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
+          
           pnpm run test
 
   # integration-test:
@@ -120,9 +134,10 @@ jobs:
   #         PLAYWRIGHT_TEST_BASE_URL: http://localhost:3000
 
   build-dev:
-    name: Build and Push Docker (dev)
-    if: github.event_name == 'pull_request' && github.base_ref == 'develop'
-    needs: [lint-and-unit-test]
+    name: Build and Push Docker Image (dev)
+    if: >
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
+      (github.event_name == 'pull_request' && github.base_ref == 'develop' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -141,49 +156,44 @@ jobs:
           push: true
           tags: jchanho99/frontend-develop:latest
           build-args: |
-            ${{ secrets.ENV_FE_ANALYTICS }}
-            ${{ secrets.ENV_FE_DEV_PROD }}
+            NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_DEV_PROD }}
+            NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
 
-  # build-prod:
-  #   name: Build and Push Docker (prod)
-  #   if: github.event_name == 'pull_request' && github.base_ref == 'main'
-  #   needs: [integration-test]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
+  build-prod:
+    name: Build and Push Docker Image (Prod)
+    if: >
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main')) ||
+      (github.event_name == 'pull_request' && github.base_ref == 'main' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - name: Set short commit SHA
-  #       run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
 
-  #     - name: Docker Login
-  #       uses: docker/login-action@v3
-  #       with:
-  #         username: ${{ secrets.DOCKER_USERNAME }}
-  #         password: ${{ secrets.DOCKER_TOKEN }}
-
-  #     - name: Build and Push Docker Image
-  #       uses: docker/build-push-action@v5
-  #       with:
-  #         context: .
-  #         file: ./Dockerfile
-  #         push: true
-  #         tags: jchanho99/frontend-prod:${{ env.SHORT_SHA }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: jchanho99/frontend-prod:latest
+          build-args: |
+            NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_PROD }}
+            NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
 
   deploy-dev:
     name: Deploy to Dev Server
-    if: github.ref == 'refs/heads/develop'
+    needs: [build-dev]
     runs-on: ubuntu-latest
     outputs:
       status: ${{ steps.set-status.outputs.status }}
     steps:
       - name: Checkout for git access
         uses: actions/checkout@v3
-
-      - name: Extract tag name
-        id: tag
-        run: |
-          TAG_NAME="${GITHUB_REF#refs/tags/}"
-          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Deploy to Dev
         uses: appleboy/ssh-action@v1.0.3
@@ -210,28 +220,60 @@ jobs:
         run: echo "status=success" >> "$GITHUB_OUTPUT"
 
       - name: Set Status (Dev Failure)
-        if: failure() && steps.deploy-dev.outcome == 'failure' # deploy-step이 실패했을 때만
+        if: failure() && steps.deploy-dev.outcome == 'failure'
         run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   deploy-prod:
-    name: Deploy to Prod Server (Blue-Green)
-    if: github.ref == 'refs/heads/main'
+    name: Deploy to Prod Server
+    needs: [build-prod]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout for git access
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Authenticate to GCP
+      - name: Setup Node.js and pnpm
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install dependencies and build
+        run: pnpm install
+      
+      - name: Create .env and .env.production
+        run: |
+          echo "${{ secrets.ENV_FE_ANALYTICS }}" >> .env
+          echo "${{ secrets.ENV_FE_PROD }}" >> .env.production
+      
+      - name: Build FE
+        run: pnpm run build
+
+      - name: Archive build result
+        run: |
+          tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/ next.config.ts
+
+      - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           project_id: ${{ secrets.PROJECT_ID }}
-          credentials_json: ${{ secrets.GCP_SA_KEY_JSON }}
+          credentials_json: ${{ secrets.SA_KEY_JSON }}
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+      - name: Setup Google Cloud SDK and Set GCP Project
+        uses: 'google-github-actions/setup-gcloud@v2'
 
-      - name: Deploy on VM via IAP (using transferred file)
+      - name: Verify The Installation of gcloud CLI
+        run: gcloud info
+
+      - name: Upload via IAP SCP to FE PROD server
         run: |
+          gcloud compute scp fe-build.tar.gz \
+            ${{ secrets.SSH_USER }}@leafresh-fe-tester-a:~/fe/fe-build.tar.gz \
+            --zone=${{ secrets.AZ }} \
+            --tunnel-through-iap \
+            --project=${{ secrets.PROJECT_ID }}
+
           gcloud compute ssh ${{ secrets.SSH_USER }}@leafresh-fe-tester-a \
             --project=${{ secrets.PROJECT_ID }} \
             --zone=${{ secrets.AZ }} \
@@ -251,30 +293,31 @@ jobs:
     name: Discord Notification
     needs: [deploy-dev, deploy-prod]
     if: |
-      (needs.deploy-dev.result != 'skipped') || (needs.deploy-prod.result != 'skipped')
+        needs.deploy-dev.result != 'skipped' || 
+        needs.deploy-prod.result != 'skipped'
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Message
-        run: |
+        run: | 
           MESSAGE=""
 
-          # Check Dev Deploy Status
-          if [ "${{ needs.deploy-dev.result }}" != "" ]; then
+          # Dev 결과 처리
+          if [[ "${{ needs.deploy-dev.result }}" != 'skipped' ]]; then
             STATUS_DEV="${{ needs.deploy-dev.outputs.status }}"
             if [ "$STATUS_DEV" = "success" ]; then
-              MESSAGE="${MESSAGE}✅ \`[FE develop]\` 배포 완료\n"
+              MESSAGE="${MESSAGE}✅ \`[FE dev]\` 배포 완료\n"
             elif [ "$STATUS_DEV" = "failure" ]; then
-              MESSAGE="${MESSAGE}🚨 \`[FE develop]\` 배포 실패\n"
+              MESSAGE="${MESSAGE}🚨 \`[FE dev]\` 배포 실패\n"
             fi
           fi
 
-          # Check Prod Deploy Status
-          if [ "${{ needs.deploy-prod.result }}" != "" ]; then
+          # Prod 결과 처리
+          if [[ "${{ needs.deploy-prod.result }}" != 'skipped' ]]; then
             STATUS_PROD="${{ needs.deploy-prod.outputs.status }}"
             if [ "$STATUS_PROD" = "success" ]; then
-              MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료 (Blue-Green)\n"
+              MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료\n"
             elif [ "$STATUS_PROD" = "failure" ]; then
-              MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패 (헬스체크 실패 등)\n"
+              MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패\n"
             fi
           fi
 
@@ -285,4 +328,4 @@ jobs:
           curl -H "Content-Type: application/json" \
                -X POST \
                -d "{\"content\": \"$MESSAGE\"}" \
-               ${{ secrets.DISCORD_WEBHOOK_URL }}
+             ${{ secrets.DISCORD_WEBHOOK_URL }}

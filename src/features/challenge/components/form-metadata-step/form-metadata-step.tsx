@@ -8,7 +8,7 @@ import { Controller, UseFormReturn } from 'react-hook-form'
 
 import { CHALLENGE_CATEGORIES_KOR, FullFormValues, PARTICIPANT_RANGE } from '@/entities/challenge/model'
 
-import { ErrorText, Input, LucideIcon } from '@/shared/components'
+import { ErrorText, Input, LucideIcon, SelectInput, SelectItem, SingleSelect } from '@/shared/components'
 
 import { VerificationImageData } from '../challenge-verify-examples'
 
@@ -86,7 +86,7 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
       <S.FieldGroup>
         <S.FieldWrapper>
           <Input label='챌린지 제목' value={title} required {...register('title')} />
-          <ErrorText message={isSubmitted ? errors.title?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.title?.message : ''} />
         </S.FieldWrapper>
 
         <S.FieldWrapper>
@@ -94,18 +94,16 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             name='category'
             control={control}
             render={({ field }) => (
-              <S.CategoryDropdown
-                label='카테고리'
-                required
+              <SingleSelect<string>
+                trigger={<SelectInput label={'카테고리'} selected={field.value} required />}
+                onSelect={val => field.onChange(val)}
                 options={CHALLENGE_CATEGORIES_KOR.slice(0, -1)}
-                selected={field.value}
-                onChange={val => field.onChange(val)}
-                getOptionKey={opt => opt}
-                getOptionLabel={opt => opt}
+                renderOption={option => <SelectItem option={option} />}
+                getOptionKey={option => option}
               />
             )}
           />
-          <ErrorText message={isSubmitted ? errors.category?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.category?.message : ''} />
         </S.FieldWrapper>
 
         <S.FieldWrapper>
@@ -128,8 +126,8 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             }}
             required
           />
-          <ErrorText message={isSubmitted ? errors.startDate?.message : ''} />
-          <ErrorText message={isSubmitted ? errors.endDate?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.startDate?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.endDate?.message : ''} />
         </S.FieldWrapper>
 
         <S.FieldWrapper>
@@ -146,8 +144,8 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
               trigger('endTime')
             }}
           />
-          <ErrorText message={isSubmitted ? errors.startTime?.message : ''} />
-          <ErrorText message={isSubmitted ? errors.endTime?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.startTime?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.endTime?.message : ''} />
         </S.FieldWrapper>
 
         <S.FieldWrapper>
@@ -155,18 +153,16 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             name='maxParticipant'
             control={control}
             render={({ field }) => (
-              <S.ParticipantDropdown
-                label='최대 인원'
-                required
-                selected={field.value}
+              <SingleSelect<number>
+                trigger={<SelectInput label={'최대 인원'} selected={field.value} required />}
+                onSelect={val => field.onChange(val)}
                 options={PARTICIPANT_OPTIONS}
-                onChange={val => field.onChange(val)}
-                getOptionKey={opt => opt}
-                getOptionLabel={opt => `${opt}명`}
+                renderOption={option => <SelectItem option={option} />}
+                getOptionKey={option => option}
               />
             )}
           />
-          <ErrorText message={isSubmitted ? errors.maxParticipant?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.maxParticipant?.message : ''} />
         </S.FieldWrapper>
 
         <S.FieldWrapper>
@@ -178,7 +174,7 @@ export const MetaDataStep = ({ form, handleStepChange, isEdit }: MetaDataStepPro
             onChange={handleExamplesChange}
             required
           />
-          <ErrorText message={isSubmitted ? errors.examples?.message : ''} />
+          <ErrorText text={isSubmitted ? errors.examples?.message : ''} />
         </S.FieldWrapper>
       </S.FieldGroup>
 

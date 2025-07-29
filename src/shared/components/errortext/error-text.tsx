@@ -2,11 +2,11 @@
 import * as S from './styles'
 
 interface ErrorTextProps {
-  message?: string
+  text?: string
   className?: string
 }
 
-export const ErrorText = ({ message, className }: ErrorTextProps) => {
-  if (!message) return null
-  return <S.Text className={className}>{message}</S.Text>
+export const ErrorText = ({ text, className }: ErrorTextProps) => {
+  if (!text) return null
+  return <S.Text className={className}>{text}</S.Text>
 }

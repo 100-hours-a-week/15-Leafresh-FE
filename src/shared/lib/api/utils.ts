@@ -3,7 +3,6 @@
  */
 export const getClientFetchOrigin = () => {
   const runtimeEnv = process.env.NEXT_PUBLIC_RUNTIME
-  console.log('runtimeEnv: ', runtimeEnv)
 
   switch (runtimeEnv) {
     case 'local':
@@ -13,7 +12,8 @@ export const getClientFetchOrigin = () => {
     case 'dev':
       return 'https://dev-leafresh.app/api/next/proxy' // Dev FE 라우트
     case 'prod':
-      return 'https://leafresh.app' // 로드밸런서
+      // return 'https://leafresh.app' // 로드밸런서
+      return 'https://leafresh.click'
     default:
       throw new Error(`Unknown Client NEXT_PUBLIC_RUNTIME: ${runtimeEnv}`)
   }
@@ -31,9 +31,11 @@ export const getServerFetchOrigin = () => {
       return 'https://springboot.dev-leafresh.app'
     case 'dev':
       // return '35.216.18.52' //외부망으로 임시 연결
-      return 'http://10.0.1.67:8080' // 내부망
+      // return 'http://10.0.1.67:8080' // 내부망
+      return 'http://backend-service.default.svc.cluster.local:80'
     case 'prod':
-      return 'https://leafresh.app' // 로드밸런서
+      // return 'https://leafresh.app' // 로드밸런서
+      return 'https://leafresh.click'
     default:
       throw new Error(`Unknown Server NEXT_PUBLIC_RUNTIME: ${runtimeEnv}`)
   }

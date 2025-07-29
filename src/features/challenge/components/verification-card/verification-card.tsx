@@ -71,7 +71,7 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
       openConfirmModal({
         title: '로그인이 필요합니다.',
         description: '로그인 페이지로 이동 하시겠습니까?',
-        onConfirm: () => router.push(URL.MEMBER.LOGIN.value),
+        onConfirm: () => router.push(URL.MEMBER.LOGIN.value()),
       })
       return
     }
@@ -99,7 +99,9 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
   /** 클립보드 복사 */
   const handleCopyVerificationUrl = (e?: React.MouseEvent) => {
     e?.stopPropagation() // 라우팅 방지
-    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
+
+    // 인증 피드 경로 복사
+    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.DETAILS.value(challengeId, verificationId)}`
     copyToClipboard(url)
   }
 
