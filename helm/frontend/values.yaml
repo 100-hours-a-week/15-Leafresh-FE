@@ -1,0 +1,60 @@
+image:
+  repository: 886436932852.dkr.ecr.ap-northeast-2.amazonaws.com/leafresh-fe
+  tag: v2.1.37-dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+
+env:
+  - name: NEXT_PUBLIC_RUNTIME
+    value: "dev"
+  - name: NEXT_PUBLIC_GOOGLE_ANALYTICS
+    value: "G-2BKG11WDXZ"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 2
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 3000
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 2
+
+ingress:
+  enabled: true
+  host: "localhost.test"
+  path: /
+  pathType: Prefix
+  tlsEnabled: false
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false        # 기본적으로 생성하지 않도록 설정 (불필요할 경우)
+  name: ""             # 필요 시 특정 이름 설정
+  automount: false     # 기본적으로 토큰 자동 마운트하지 않음
+  annotations: {}      # 필요한 경우 여기에 IAM Role 등 annotation 추가 가능
