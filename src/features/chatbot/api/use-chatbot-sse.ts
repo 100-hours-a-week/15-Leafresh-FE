@@ -56,6 +56,16 @@ export function useChatbotSSE<Params extends unknown[]>(
         // onError
         (_errEvt: RecommendationEvent) => {
           setLoading(false)
+
+          const errMsg = _errEvt.message || '알 수 없는 오류가 발생했습니다.'
+          const retryAction: Action = {
+            buttonText: '다시 시도해 주세요',
+            onClick: () => console.log('다시 시도해주세요'),
+          }
+          setActions([retryAction])
+          onComplete(errMsg, [retryAction])
+
+          setStreamingText(null)
           // 에러 처리…
         },
         // onClose
