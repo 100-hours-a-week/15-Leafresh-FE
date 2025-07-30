@@ -24,6 +24,7 @@ export const DividerWrapper = styled.div`
 
   display: flex;
   align-items: center;
+
   gap: 12px;
   margin-bottom: 24px;
 `
@@ -40,6 +41,6 @@ export const Text = styled.div`
 `
 
 export const KakaoImage = styled(KakaoLoginButton)`
-  width: 100%;
-  height: 50px;
+  /* width: 100%; */
+  /* height: 50px; */
 `
