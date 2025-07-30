@@ -21,7 +21,9 @@ export function useChatbotSSE<Params extends unknown[]>(
 
   const appendStream = useCallback((fragment: string) => {
     // 1) 모든 </s> 토큰을 제거하고 trim
-    const cleaned = fragment.replace(/<\/s>/g, '').trim()
+    // const cleaned = fragment.replace(/<\/s>/g, '').trim()
+    const cleaned = fragment.replace(/<\/s>/g, '').replace(/```/g, '')
+
     if (!cleaned) return
 
     // 2) 마침표·물음표·느낌표 뒤에 줄바꿈 삽입
