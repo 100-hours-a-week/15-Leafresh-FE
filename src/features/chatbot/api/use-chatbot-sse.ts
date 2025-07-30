@@ -31,7 +31,7 @@ export function useChatbotSSE<Params extends unknown[]>(
     // .replace(/([.?!])\s*/g, '$1\n')
 
     // 3) 이전 스트림에 공백 + processed 누적
-    streamRef.current = streamRef.current ? `${streamRef.current} ${processed}` : processed
+    streamRef.current = streamRef.current ? `${streamRef.current}${processed}` : processed
 
     // 4) 상태 업데이트
     setStreamingText(streamRef.current)
