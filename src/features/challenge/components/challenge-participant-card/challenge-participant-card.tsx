@@ -17,6 +17,7 @@ interface ChallengeProps {
   successCount: number
   maxCount: number
   record?: AchievementRecord[]
+  imagePriority?: boolean
   onClick?: () => void
 }
 
@@ -29,6 +30,7 @@ export const GroupChallengeParticipantCard = ({
   successCount,
   maxCount,
   record = [],
+  imagePriority,
   onClick,
 }: ChallengeProps): ReactNode => {
   const getColor = (status: FeedVerificationStatusType): string => {
@@ -57,7 +59,13 @@ export const GroupChallengeParticipantCard = ({
   return (
     <S.CardContainer className={className} onClick={onClick}>
       <S.LeftSection>
-        <S.ChallengeImage src={imageUrl} alt={title} fill />
+        <S.ChallengeImage
+          src={imageUrl}
+          alt={title}
+          fill
+          sizes='(max-width: 430px) 33vw, 150px'
+          priority={imagePriority}
+        />
       </S.LeftSection>
       <S.RightSection>
         <S.TitleSection>

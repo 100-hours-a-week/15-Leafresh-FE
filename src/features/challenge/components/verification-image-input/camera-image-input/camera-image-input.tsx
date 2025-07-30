@@ -140,10 +140,12 @@ interface PreviewImageViewProps {
 const PreviewImageView = ({ imageUrl, onRemove, readOnly, aspectRatio, onZoom }: PreviewImageViewProps) => {
   return (
     <S.ImageBox aspectRatio={aspectRatio}>
-      <S.PreviewImage alt='preview' src={imageUrl} fill />
+      <S.PreviewImage alt='preview' src={imageUrl} fill sizes='(max-width: 430px) 30vw, 120px' quality={80} />
       {!readOnly && (
         <S.RemoveButton type='button' onClick={onRemove}>
-          <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
+          <S.RemoveButton type='button' onClick={onRemove}>
+            <LucideIcon name='X' size={20} strokeWidth={2.5} color='lfBlack' />
+          </S.RemoveButton>
         </S.RemoveButton>
       )}
     </S.ImageBox>

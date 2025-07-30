@@ -12,9 +12,6 @@ import { QUERY_KEYS, QUERY_OPTIONS } from '@/shared/config'
 import { useOAuthStateStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
-import KakaoLoginButton from '@public/image/kakao_login.svg'
-import LogoImage from '@public/image/logo.svg'
-
 import * as S from './styles'
 
 interface LoginPageProps {
@@ -80,17 +77,13 @@ export const LoginPage = ({ authorized, isExpired }: LoginPageProps) => {
 
   return (
     <S.Container>
-      <S.Logo src={LogoImage} alt='Leafresh' width={160} height={60} />
+      <S.Logo width={160} height={60} />
       <S.DividerWrapper>
         <S.Line />
         <S.Text>로그인 / 회원가입</S.Text>
         <S.Line />
       </S.DividerWrapper>
-      {!isLoading ? (
-        <S.KakaoImage src={KakaoLoginButton} alt='kakao' onClick={() => handleLogin('kakao')} />
-      ) : (
-        <Loading />
-      )}
+      {!isLoading ? <S.KakaoImage onClick={() => handleLogin('kakao')} /> : <Loading />}
     </S.Container>
   )
 }

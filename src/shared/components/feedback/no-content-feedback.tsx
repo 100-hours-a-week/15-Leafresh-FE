@@ -1,4 +1,4 @@
-import LogoCharacterImage from '@public/image/main-icon.svg'
+import { LogoCharacterImage } from '@/shared/assets'
 
 import { Feedback } from './feedback'
 
@@ -12,7 +12,7 @@ interface NoContentFeedbackProps {
 export const NoContentFeedback = ({ title, buttonText, clickHandler, className }: NoContentFeedbackProps) => {
   return (
     <Feedback className={className}>
-      <Feedback.Image src={LogoCharacterImage} />
+      <Feedback.Image src={LogoCharacterImage} fill />
       <Feedback.Title text={title} />
       <Feedback.Action clickHandler={clickHandler} text={buttonText} />
     </Feedback>

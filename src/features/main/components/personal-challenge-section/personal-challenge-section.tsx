@@ -42,11 +42,18 @@ export const PersonalChallengeSection = ({
       <S.CarouselWrapper>
         <S.EmblaContainer ref={emblaRef}>
           <S.EmblaSlideContainer>
-            {personalChallenges.map(ch => (
-              <S.EmblaSlide key={ch.id}>
+            {personalChallenges.map((ch, index) => (
+              <S.EmblaSlide key={ch.id} index={index}>
                 <S.DailyCard>
                   <S.DailyImageArea>
-                    <S.DailyImage src={ch.thumbnailUrl} alt={ch.description} fill />
+                    <S.DailyImage
+                      src={ch.thumbnailUrl}
+                      alt={ch.description}
+                      fill
+                      sizes='(max-width: 430px) 100vw, 430px'
+                      priority={index === 0}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                    />
                   </S.DailyImageArea>
                   <S.DailyCardDescriptions>
                     <S.CardTitle>{ch.title}</S.CardTitle>

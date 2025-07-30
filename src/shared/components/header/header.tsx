@@ -5,10 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { BackButton } from '@/shared/components'
 import { BACK_BUTTON_ROUTES, convertToRegexPattern, URL } from '@/shared/constants'
 
-import LogoImage from '@public/image/logo.svg'
-
 import * as S from './styles'
-
 interface HeaderProps {
   padding: number
 }
@@ -26,7 +23,7 @@ export const Header = ({ padding }: HeaderProps) => {
       <S.CustomWidthWrapper padding={padding}>
         {!hasBackButton ? (
           <S.LogoWrapper onClick={() => router.push(URL.MAIN.INDEX.value)}>
-            <S.StyledImage src={LogoImage} alt='Leafresh 로고' priority />
+            <S.StyledImage />
           </S.LogoWrapper>
         ) : (
           <BackButton />

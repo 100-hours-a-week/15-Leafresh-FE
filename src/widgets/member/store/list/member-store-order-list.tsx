@@ -9,13 +9,11 @@ import { useInfiniteMemberStoreOrderList } from '@/features/member/api'
 
 import { PurchaseProduct } from '@/entities/member/api'
 
+import { LeafIcon } from '@/shared/assets'
 import { URL } from '@/shared/constants'
 import { getTimeDiff } from '@/shared/lib'
 
-import LeafIcon from '@public/icon/leaf.svg'
-
 import * as S from './styles'
-
 export const MemberOrderListPage = (): ReactNode => {
   const router = useRouter()
 

@@ -32,10 +32,10 @@ export const Introduce = () => {
 
   return (
     <S.Wrapper>
-      <Image src='/image/main/character.svg' alt='친환경 캐릭터' width={400} height={400} />
+      <Image src='/image/main/character.png' alt='친환경 캐릭터' width={400} height={400} />
       <S.ItemWrapper>
         <S.StatItem>
-          <S.StyledImage src='/image/main/verification.svg' alt='챌린지 인증' width={100} height={100} />
+          <S.StyledImage src='/image/main/verification.png' alt='챌린지 인증' width={100} height={100} />
           <S.DataWrapper>
             <S.VerificationCount>
               {isVerificationLoading ? '불러오는 중...' : animatedVerificationCount?.toLocaleString()}
@@ -45,7 +45,7 @@ export const Introduce = () => {
         </S.StatItem>
 
         <S.StatItem>
-          <S.StyledImage src='/image/main/leaf.svg' alt='친환경 인증' width={100} height={100} />
+          <S.StyledImage src='/image/main/leaf.png' alt='친환경 인증' width={100} height={100} />
           <S.DataWrapper>
             <S.LeafCount>{isLeafLoading ? '불러오는 중...' : animatedLeafCount?.toLocaleString()}</S.LeafCount>
             <S.Text>나뭇잎 수</S.Text>
