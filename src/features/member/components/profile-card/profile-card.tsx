@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 import { treeLevelMap } from '@/entities/member/model'
 
-import { LogoCharacterImage } from '@/shared/assets'
+import { LeafIcon, LogoCharacterImage } from '@/shared/assets'
 import { useScrollLock } from '@/shared/hooks'
 
 import { GuideOverlay } from '../guide-overlay'
@@ -193,12 +193,12 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
               <S.LeafValueWrapper>
                 <S.ProgressTitle>누적 나뭇잎</S.ProgressTitle>
                 <S.LeafStatWrapper>
-                  <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
+                  <LeafIcon width={24} height={24} />
                   <S.SumLeavesStat>{data.totalLeafPoints}</S.SumLeavesStat>
                 </S.LeafStatWrapper>
                 <S.ProgressTitle>다음 단계까지</S.ProgressTitle>
                 <S.LeafStatWrapper>
-                  <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
+                  <LeafIcon width={24} height={24} />
                   <S.RemainLeavesStat>{data.leafPointsToNextLevel}</S.RemainLeavesStat>
                 </S.LeafStatWrapper>
               </S.LeafValueWrapper>
