@@ -67,27 +67,15 @@ jobs:
         env:
           NEXT_PUBLIC_RUNTIME: ${{ secrets.ENV_FE_PROD }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ secrets.ENV_FE_ANALYTICS }}
+          NEXT_PUBLIC_CHATBOT_TYPE: ${{ secrets.ENV_FE_CHATBOT_TYPE }}
         run: |
-          # echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-          # echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-          # echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
-          
-          # NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_PROD }}
-          # NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
-          
           pnpm run lint
       - name: Run Unit Test
         env:
           NEXT_PUBLIC_RUNTIME: ${{ secrets.ENV_FE_PROD }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ secrets.ENV_FE_ANALYTICS }}
+          NEXT_PUBLIC_CHATBOT_TYPE: ${{ secrets.ENV_FE_CHATBOT_TYPE }}
         run: |
-          # echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> .env
-          # echo "${{  secrets.ENV_FE_TEST  }}" >> .env.test
-          # echo "${{  secrets.ENV_FE_PROD  }}" >> .env.production
-          
-          # NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_PROD }}
-          # NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
-          
           pnpm run test
 
   build-dev:
