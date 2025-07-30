@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { NoContent } from '@/shared/components'
+import { NoContentFeedback } from '@/shared/components'
 import { responsiveHorizontalPadding } from '@/shared/styles'
 
 export const Container = styled.div`
@@ -108,6 +108,6 @@ export const Observer = styled.div`
   height: 1px;
 `
 
-export const StyledNoContent = styled(NoContent)`
+export const StyledNoContentFeedback = styled(NoContentFeedback)`
   height: 100%;
 `

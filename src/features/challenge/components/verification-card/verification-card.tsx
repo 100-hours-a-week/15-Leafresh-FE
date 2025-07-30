@@ -103,7 +103,9 @@ export const VerificationCard = ({
   /** 클립보드 복사 */
   const handleCopyVerificationUrl = (e?: React.MouseEvent) => {
     e?.stopPropagation() // 라우팅 방지
-    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
+
+    // 인증 피드 경로 복사
+    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.DETAILS.value(challengeId, verificationId)}`
     copyToClipboard(url)
   }
 

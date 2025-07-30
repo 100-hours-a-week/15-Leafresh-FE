@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import useEmblaCarousel from 'embla-carousel-react'
 
+import { LucideIcon } from '@/shared/components'
 import { useImageZoomStore } from '@/shared/context'
 import { useKeyClose, useScrollLock } from '@/shared/hooks'
 
@@ -51,7 +52,7 @@ export const ImageZoomModal = () => {
         <span>
           {targetIndex + 1}/{IMAGE_COUNT}
         </span>
-        <S.StyledLucideIcon name='X' size={24} onClick={close} color='lfWhite' />
+        <LucideIcon name='X' size={20} onClick={close} />
       </S.Header>
 
       <S.ResultBar result={result}>{result === 'SUCCESS' ? '성공 인증샷' : '실패 인증샷'}</S.ResultBar>

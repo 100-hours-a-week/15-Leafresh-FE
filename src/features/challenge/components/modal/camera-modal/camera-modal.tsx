@@ -4,16 +4,20 @@ import { useEffect, useRef, useState } from 'react'
 
 import { CheckIcon, ErrorText, LucideIcon, SwitchTap } from '@/shared/components'
 import { useCameraModalStore } from '@/shared/context'
-import { useUploadImageToBucket, useScrollLock, useToast } from '@/shared/hooks'
+import { useScrollLock, useToast, useUploadImageToBucket } from '@/shared/hooks'
 
 import { VerificationGuideModal } from '../verification-guide-modal'
 
 import * as S from './styles'
+import { FacingMode } from './types'
 
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
 
-type FacingMode = 'user' | 'environment'
+function isMobileDevice() {
+  return /Mobi|Android/i.test(navigator.userAgent)
+}
+
 export const CameraModal = () => {
   const { toast } = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
@@ -32,7 +36,19 @@ export const CameraModal = () => {
   const [scrollTop, setScrollTop] = useState<number>(0)
   const [errorText, setErrorText] = useState<string | undefined>(undefined)
 
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(/Mobi|Android/i.test(navigator.userAgent))
+  }, [])
+
+  /**
+   * environment : 정면
+   * user :
+   */
   const [facingMode, setFacingMode] = useState<FacingMode>('environment')
+
+  console.log('✅ facingMode: ', facingMode)
 
   // 카메라 정리 함수를 분리하여 관리
   const stopCamera = () => {
@@ -58,12 +74,7 @@ export const CameraModal = () => {
     try {
       // facingMode를 직접 전달하고 후면 카메라 감지 로직 개선
       const constraints = {
-        video: {
-          facingMode: mode,
-          width: { min: 640, ideal: 1280, max: 1920 },
-          height: { min: 480, ideal: 720, max: 1080 },
-          aspectRatio: 1, // 4:3
-        },
+        video: { facingMode: mode },
       }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
@@ -110,9 +121,20 @@ export const CameraModal = () => {
     if (!canvasRef.current || !videoRef.current) return
     const ctx = canvasRef.current.getContext('2d')
     if (!ctx) return
-    canvasRef.current.width = videoRef.current.videoWidth
-    canvasRef.current.height = videoRef.current.videoHeight
-    ctx.drawImage(videoRef.current, 0, 0)
+
+    const width = videoRef.current.videoWidth
+    const height = videoRef.current.videoHeight
+
+    canvasRef.current.width = width
+    canvasRef.current.height = height
+
+    if (facingMode === 'environment') {
+      // ✅ 좌우 반전
+      ctx.translate(width, 0)
+      ctx.scale(-1, 1)
+    }
+
+    ctx.drawImage(videoRef.current, 0, 0, width, height)
 
     /** S3 이미지 업로드 */
     canvasRef.current.toBlob(async blob => {
@@ -222,7 +244,7 @@ export const CameraModal = () => {
         <S.TextAreaLabel status={status}>{label}</S.TextAreaLabel>
         <S.TextAreaDescription>인증 참여 이미지를 사람들에게 설명해주세요.</S.TextAreaDescription>
         <S.TextArea value={description} onChange={e => setDescription(e.target.value)} placeholder='예) Placeholder' />
-        <ErrorText message={errorText} />
+        <ErrorText text={errorText} />
       </S.TextAreaWrapper>
     )
   }
@@ -243,7 +265,7 @@ export const CameraModal = () => {
           {previewUrl ? (
             <S.ImagePreview src={previewUrl} alt='촬영된 이미지' fill />
           ) : (
-            <S.CameraView ref={videoRef} autoPlay playsInline />
+            <S.CameraView ref={videoRef} autoPlay playsInline facingMode={facingMode} isMobile={isMobile} />
           )}
         </S.CameraWrapper>
         <canvas ref={canvasRef} style={{ display: 'none' }} />

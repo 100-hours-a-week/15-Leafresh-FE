@@ -6,6 +6,8 @@ import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
 import { LucideIcon } from '@/shared/components'
 
+import { FacingMode } from './types'
+
 export const Overlay = styled.div`
   position: absolute;
   top: 0;
@@ -69,10 +71,23 @@ export const CameraWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lfInputBackground.base};
 `
 
-export const CameraView = styled.video`
+// export const CameraView = styled.video<{ facingMode: FacingMode }>`
+//   height: 100%;
+//   aspect-ratio: 1/1;
+//   object-fit: cover;
+
+//   transform: ${({ facingMode }) => (facingMode === 'environment' ? 'scaleX(-1)' : 'scaleX(1)')};
+// `
+export const CameraView = styled.video<{
+  facingMode: FacingMode
+  isMobile: boolean
+}>`
   height: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
+
+  transform: ${({ facingMode, isMobile }) =>
+    !isMobile ? 'scaleX(-1)' : facingMode === 'environment' ? 'scaleX(1)' : 'scaleX(-1)'};
 `
 
 export const ImagePreview = styled(Image)`

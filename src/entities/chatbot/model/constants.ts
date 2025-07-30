@@ -1,3 +1,7 @@
+import { ChatHistoryItem } from '@/features/chatbot/api'
+
+import { GCS_BUCKET } from '@/shared/constants'
+
 import { ChatOption } from './type'
 
 export const LOCATION_OPSIONS: ChatOption[] = [
@@ -17,7 +21,7 @@ export const WORKTYPE_OPTIONS: ChatOption[] = [
 export const CHAT_CHALLENGE_OPTIONS: ChatOption[] = [
   { label: '제로웨이스트', value: 'ZERO_WASTE' },
   { label: '플로깅', value: 'PLOGGING' },
-  { label: '탄소발자국', value: 'CATBON_FOOTPRINT' },
+  { label: '탄소발자국', value: 'CARBON_FOOTPRINT' },
   { label: '에너지 절약', value: 'ENERGY_SAVING' },
   { label: '업사이클', value: 'UPCYCLE' },
   { label: '문화 공유', value: 'MEDIA' },
@@ -37,15 +41,27 @@ export const categoryDescriptions: [string, string][] = [
 ]
 
 export const liveImages = [
-  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/beach.jpg',
-  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/city.jpg',
-  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/mountain.jpg',
-  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/farm.jpg',
+  `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/beach.jpg`,
+  `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/city.jpg`,
+  `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/mountain.jpg`,
+  `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/farm.jpg`,
 ]
 
 export const workImages = [
-  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/athome.jpg',
-  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/sales.jpg',
-  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/fieldwork.jpg',
-  'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/business.jpg',
+  `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/athome.jpg`,
+  `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/sales.jpg`,
+  `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/fieldwork.jpg`,
+  `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/business.jpg`,
+]
+
+export const initialMessages: ChatHistoryItem[] = [
+  {
+    type: 'message',
+    role: 'bot',
+    text:
+      '안녕하세요! 저는 Leafresh의 챗봇 수피입니다.\n' +
+      '저는 당신의 취향에 맞는 챌린지를 찾아드리고 싶어요!\n' +
+      '먼저, 응답의 정확도를 위해 거주 지역과 직장 형태를 선택해주세요!',
+  },
+  { type: 'horizontal-cards' },
 ]

@@ -9,10 +9,10 @@ import { ChallengeVerifyCarousel, VerificationImageData } from '@/features/chall
 
 import {
   getGroupChallengeDetails,
+  GroupChallengeStatus,
   ParticipateGroupChallengeResponse,
   ParticipateGroupChallengeVariables,
 } from '@/entities/challenge/api'
-import { ChallengeVerificationStatusType } from '@/entities/challenge/model'
 
 import { Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
@@ -77,6 +77,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
     leafReward,
     status,
   } = challengeData
+  console.log(challengeData)
 
   const totalDays = differenceInCalendarDays(new Date(endDate), new Date(startDate)) + 1 /** 지속일 */
   const verificationExampleImages: VerificationImageData[] = exampleImages.map(img => ({
@@ -86,11 +87,31 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
   }))
 
   /** 제출 버튼 비활성화 여부 */
-  const isButtonDisabled: boolean = status !== 'NOT_SUBMITTED'
-  const getSubmitButtonLabel = (status: ChallengeVerificationStatusType): string => {
-    if (status === 'PENDING_APPROVAL') return '인증여부 판단 중'
-    if (status === 'SUCCESS' || status === 'FAILURE' || status === 'DONE') return '참여 완료'
-    return '참여하기'
+  const isButtonDisabled: boolean = status === 'SUCCESS' || status === 'FAILURE' || status === 'PENDING_APPROVAL'
+  const getSubmitButtonLabel = (status: GroupChallengeStatus): string => {
+    let label: string = ''
+    switch (status) {
+      // 1. 참여하지 않은 경우
+      case 'NOT_PARTICIPATED':
+        label = '참여하기'
+        break
+      // 2. 참여한 경우
+      // TODO: 인증이 올바르게 AI펍섭에 들어가지 않은 경우 핸들링 필요 (협업)
+      case 'PENDING_APPROVAL':
+        // addChallengeId(challengeId)
+        label = '인증여부 판단 중'
+        break
+      case 'SUCCESS':
+        label = '오늘 인증 성공'
+        break
+      case 'FAILURE':
+        label = '오늘 인증 실패'
+        break
+      case 'NOT_SUBMITTED': // 참여는 하였지만 인증을 하지 않은 경우
+        label = '인증하러 가기'
+        break
+    }
+    return label
   }
 
   /** 제출하기 */
@@ -109,45 +130,50 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
       })
       return
     }
+    /** 참여하지 않음 */
+    if (status === 'NOT_PARTICIPATED') {
+      const now = new Date()
+      const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
 
-    const now = new Date()
-    const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const localStartDate: Date = new Date(startDate)
+      const startDateOnly = new Date(localStartDate.getFullYear(), localStartDate.getMonth(), localStartDate.getDate())
 
-    const localStartDate: Date = new Date(startDate)
-    const startDateOnly = new Date(localStartDate.getFullYear(), localStartDate.getMonth(), localStartDate.getDate())
+      const localEndDate: Date = new Date(endDate)
+      const endDateOnly = new Date(localEndDate.getFullYear(), localEndDate.getMonth(), localEndDate.getDate())
 
-    const localEndDate: Date = new Date(endDate)
-    const endDateOnly = new Date(localEndDate.getFullYear(), localEndDate.getMonth(), localEndDate.getDate())
+      // 1. 오늘이 챌린지 날짜 범위 내에 있는지 확인
+      if (todayDateOnly < startDateOnly || todayDateOnly > endDateOnly) {
+        toast('Error', '챌린지 진행 기간이 아닙니다!')
+        return
+      }
 
-    // 1. 오늘이 챌린지 날짜 범위 내에 있는지 확인
-    if (todayDateOnly < startDateOnly || todayDateOnly > endDateOnly) {
-      toast('Error', '챌린지 진행 기간이 아닙니다!')
-      return
-    }
+      // 2. 현재 시간이 인증 가능 시간 범위 내에 있는지 확인
+      const nowMinutes = now.getHours() * 60 + now.getMinutes()
 
-    // 2. 현재 시간이 인증 가능 시간 범위 내에 있는지 확인
-    const nowMinutes = now.getHours() * 60 + now.getMinutes()
+      const [startHour, startMinute] = verificationStartTime.split(':').map(Number)
+      const [endHour, endMinute] = verificationEndTime.split(':').map(Number)
+      const startMinutes = startHour * 60 + startMinute
+      const endMinutes = endHour * 60 + endMinute
 
-    const [startHour, startMinute] = verificationStartTime.split(':').map(Number)
-    const [endHour, endMinute] = verificationEndTime.split(':').map(Number)
-    const startMinutes = startHour * 60 + startMinute
-    const endMinutes = endHour * 60 + endMinute
+      if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
+        toast('Error', '현재는 인증 가능한 시간이 아닙니다!')
+        return
+      }
 
-    if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
-      toast('Error', '현재는 인증 가능한 시간이 아닙니다!')
-      return
-    }
-
-    /** 제출하기 */
-    ParticipateMutate(
-      { challengeId },
-      {
-        onSuccess: () => {
-          toast('Success', `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
-          router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value('not_started')) // 참여중인 챌린지로 이동
+      /** 제출하기 */
+      ParticipateMutate(
+        { challengeId },
+        {
+          onSuccess: () => {
+            toast('Success', `참여 성공!\n인증 제출을 해주세요`) // 성공 메시지
+            router.replace(URL.MEMBER.CHALLENGE.PARTICIPATE.LIST.value('not_started')) // 참여중인 챌린지로 이동
+          },
         },
-      },
-    )
+      )
+    } else if (status === 'NOT_SUBMITTED') {
+      /** 참여한 경우 */
+      router.push(URL.MEMBER.CHALLENGE.VERIFICATION.STATUS.value(challengeId)) // 참여중인 챌린지 인증 페이지로 이동
+    }
   }
 
   /** 단체 챌린지 참여 이력 페이지로 이동 */
@@ -157,7 +183,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
   return (
     <S.Wrapper className={className}>
       <S.DescriptionSection>
-        <S.StyledBackButton onClick={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
+        <S.StyledBackButton clickHandler={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
         <S.ThumbnailImageWrapper>
           <S.Thumbnail src={thumbnailUrl} alt='썸네일' fill sizes='(max-width: 430px) 100vw, 400px' priority />
         </S.ThumbnailImageWrapper>

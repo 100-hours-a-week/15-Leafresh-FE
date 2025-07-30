@@ -27,7 +27,7 @@ import {
 import { ActiveLikeIcon, InActiveLikeIcon } from '@/shared/assets'
 import { Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
-import { URL } from '@/shared/constants'
+import { GCS_BUCKET, URL } from '@/shared/constants'
 import { useConfirmModalStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { getTimeDiff } from '@/shared/lib'
@@ -151,7 +151,7 @@ export const VerificationDetails = ({
 
   /** 클립보드 복사 */
   const handleCopyVerificationUrl = () => {
-    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.LIST.value(challengeId)}`
+    const url = `${window.location.origin}${URL.CHALLENGE.GROUP.VERIFICATION.DETAILS.value(challengeId, verificationId)}`
     copyToClipboard(url)
   }
 
@@ -174,8 +174,7 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl:
-        userInfo?.imageUrl ?? 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot.png',
+      profileImageUrl: userInfo?.imageUrl ?? `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbot.png`,
       parentCommentId: null,
       isMine: true,
       deleted: false,
@@ -228,8 +227,7 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl:
-        userInfo?.imageUrl ?? 'https://storage.googleapis.com/leafresh-gcs-images/init/chatbot/chatbot.png',
+      profileImageUrl: userInfo?.imageUrl ?? `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbot.png`,
       parentCommentId,
       isMine: true,
       deleted: false,
@@ -413,8 +411,7 @@ export const VerificationDetails = ({
             <LucideIcon name='SquareArrowOutUpRight' size={16} strokeWidth={1.5} />
           </S.Stat>
         </S.LeftStat>
-        <S.Stat>조회수 {verifications.counts?.view ?? 0}</S.Stat>
-        {/* <Stat>조회수 {verifications.counts.view}</Stat> */}
+        <S.Views>조회수 {verifications.counts?.view ?? 0}</S.Views>
       </S.Stats>
       <CommentList
         comments={localComments ?? []}

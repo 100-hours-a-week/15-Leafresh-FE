@@ -42,7 +42,7 @@ export const MemberOrderListPage = (): ReactNode => {
   // 1. 데이터가 없는 경우
   if (isEmpty) {
     contents = (
-      <S.StyledNoContent
+      <S.StyledNoContentFeedback
         title='상품 구매내역이 없습니다'
         buttonText='나뭇잎 상점가기'
         clickHandler={() => {

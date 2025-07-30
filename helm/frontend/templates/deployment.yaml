@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "leafresh-fe.fullname" . }}
+  labels:
+    app: {{ include "leafresh-fe.name" . }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.autoscaling.minReplicas }}
+{{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "leafresh-fe.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "leafresh-fe.name" . }}
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: http
+          env:
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}

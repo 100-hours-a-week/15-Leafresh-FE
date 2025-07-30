@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { KakaoLoginButton, LogoImage } from '@/shared/assets'
 
 export const Container = styled.div`
-  height: calc(100dvh - 60px);
+  height: 100%;
 
   position: relative;
   display: flex;

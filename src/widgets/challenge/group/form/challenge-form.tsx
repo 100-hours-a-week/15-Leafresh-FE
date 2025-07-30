@@ -52,6 +52,10 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
 
   const [step, setStep] = useState<1 | 2>(1)
 
+  const title: string = searchParams.get('title') ?? ''
+  const description: string = searchParams.get('description') ?? ''
+  //   const categoryKor: string =
+  //     convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(searchParams.get('category') ?? '') ?? ''
   const categoryFromQuery = searchParams.get('category') ?? ''
   const categoryKor: string =
     convertLanguage(CHALLENGE_CATEGORY_PAIRS, 'eng', 'kor')(categoryFromQuery as ChallengeCategoryType) ?? ''
@@ -59,12 +63,14 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
   const mergedDefaultValues = useMemo(() => {
     const createdDefaultValues: FullFormValues = {
       ...defaultValues,
+      title: title,
+      description: description,
       category: categoryKor,
     }
     const modifyDefaultValues: FullFormValues = { ...defaultValues }
 
     return !isEdit ? createdDefaultValues : modifyDefaultValues
-  }, [categoryFromQuery, defaultValues])
+  }, [title, description, categoryKor, defaultValues])
 
   const form = useForm<FullFormValues>({
     resolver: zodResolver(fullSchema),
@@ -120,7 +126,7 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
         'kor',
         'eng',
       )(category as ChallengeCategoryTypeKor) as ChallengeCategoryType,
-      maxParticipantCount: maxParticipant,
+      maxParticipantCount: maxParticipant as number,
       thumbnailImageUrl: thumbnailUrl,
       startDate: getKstMidnightToUtcISOString(startDate),
       endDate: getKstMidnightToUtcISOString(endDate),
@@ -128,7 +134,6 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
       verificationEndTime: endTime as TimeFormatString,
       exampleImages: exampleImages,
     }
-
     CreateChallengeMutate(
       { body },
       {
@@ -199,7 +204,7 @@ export const GroupChallengeFormPage = ({ defaultValues, isEdit = false, challeng
         'kor',
         'eng',
       )(category as ChallengeCategoryTypeKor) as ChallengeCategoryType,
-      maxParticipantCount: maxParticipant,
+      maxParticipantCount: maxParticipant as number,
       thumbnailImageUrl: thumbnailUrl,
       startDate: getKstMidnightToUtcISOString(startDate),
       endDate: getKstMidnightToUtcISOString(endDate),

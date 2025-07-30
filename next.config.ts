@@ -39,8 +39,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'storage.googleapis.com', // 정확히 이 도메인이어야 함
-        pathname: `/${gcsHostname}/**`, // 해당 경로 하위 모든 이미지 허용
+        hostname: 'storage.googleapis.com/**', // 정확히 이 도메인이어야 함
+        // pathname: `/${gcsHostname}/**`, // 해당 경로 하위 모든 이미지 허용
+      },
+      {
+        protocol: 'https',
+        hostname: 'leafresh-images.s3.ap-northeast-2.amazonaws.com', // 정확히 이 도메인이어야 함
+        pathname: `/**`, // 해당 경로 하위 모든 이미지 허용
       },
       {
         protocol: 'http',

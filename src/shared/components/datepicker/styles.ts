@@ -1,5 +1,8 @@
 import styled from '@emotion/styled'
 
+import { Calendar } from '../calender'
+import { ComponentSelect } from '../select'
+
 export const Wrapper = styled.div`
   width: 100%;
   display: flex;
@@ -72,4 +75,28 @@ export const CalendarWrapper = styled.div`
   position: absolute;
   z-index: 10;
   top: calc(100% + 12px);
+`
+
+export const StyledComponentSelect = styled(ComponentSelect)<{ readOnly?: boolean }>`
+  flex: 1;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  cursor: ${({ readOnly }) => (readOnly ? 'default' : 'pointer')};
+`
+
+export const StyledCalendar = styled(Calendar)`
+  position: absolute;
+  top: calc(100% + 20px);
+
+  z-index: 10;
+`
+
+export const StyledStartCalendar = styled(StyledCalendar)`
+  left: 50%;
+  transform: translateX(-50%);
 `
