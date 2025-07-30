@@ -12,7 +12,7 @@ interface NoContentFeedbackProps {
 export const NoContentFeedback = ({ title, buttonText, clickHandler, className }: NoContentFeedbackProps) => {
   return (
     <Feedback className={className}>
-      <Feedback.Image src={LogoCharacterImage} fill />
+      <Feedback.Image src={LogoCharacterImage} />
       <Feedback.Title text={title} />
       <Feedback.Action clickHandler={clickHandler} text={buttonText} />
     </Feedback>
