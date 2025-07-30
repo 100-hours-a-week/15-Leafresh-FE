@@ -26,7 +26,7 @@ import {
 
 import { Loading, LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/shared/config'
-import { URL } from '@/shared/constants'
+import { GCS_BUCKET, URL } from '@/shared/constants'
 import { useConfirmModalStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { getTimeDiff } from '@/shared/lib'
@@ -176,7 +176,7 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
+      profileImageUrl: userInfo?.imageUrl ?? `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbot.png`,
       parentCommentId: null,
       isMine: true,
       deleted: false,
@@ -229,7 +229,7 @@ export const VerificationDetails = ({
       createdAt: new Date().toISOString() as ISOFormatString,
       updatedAt: new Date().toISOString() as ISOFormatString,
       nickname: userInfo?.nickname ?? '나',
-      profileImageUrl: userInfo?.imageUrl ?? '/image/chatbot/chatbot.png',
+      profileImageUrl: userInfo?.imageUrl ?? `https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbot.png`,
       parentCommentId,
       isMine: true,
       deleted: false,

@@ -5,6 +5,7 @@ import { ReactNode } from 'react'
 import Image from 'next/image'
 
 import { LucideIcon } from '@/shared/components'
+import { GCS_BUCKET } from '@/shared/constants'
 
 import * as S from './styles'
 
@@ -16,7 +17,12 @@ export const ChatHeader = ({ close }: ChatHeaderProps): ReactNode => {
   return (
     <S.HeaderWrapper>
       <S.IconWrapper>
-        <Image src='/image/chatbot/chatbot_bubble.png' alt='챗봇' width={36} height={36} />
+        <Image
+          src={`https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbot_bubble.png`}
+          alt='챗봇'
+          width={36}
+          height={36}
+        />
         수피
       </S.IconWrapper>
       <S.CloseButton onClick={close}>
