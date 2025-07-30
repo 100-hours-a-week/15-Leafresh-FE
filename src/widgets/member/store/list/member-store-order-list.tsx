@@ -88,7 +88,7 @@ const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
       <S.ProductTitle>{title}</S.ProductTitle>
       <S.InfoRow>
         <S.PriceRow>
-          <Image src={LeafIcon} alt='leaf' width={24} height={24} />
+          <LeafIcon width={24} height={24} />
           <S.Price>{price}</S.Price>
         </S.PriceRow>
         <S.TimeAgo>{getTimeDiff(purchasedAt)}</S.TimeAgo>
