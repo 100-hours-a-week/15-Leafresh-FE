@@ -130,8 +130,8 @@ export const CameraModal = () => {
 
     if (facingMode === 'environment') {
       // ✅ 좌우 반전
-      ctx.translate(width, 0)
-      ctx.scale(-1, 1)
+      // ctx.translate(width, 0)
+      // ctx.scale(-1, 1)
     }
 
     ctx.drawImage(videoRef.current, 0, 0, width, height)
