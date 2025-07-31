@@ -21,7 +21,7 @@ import { MUTATION_KEYS, QUERY_KEYS, QUERY_OPTIONS, useMutationStore } from '@/sh
 import { URL } from '@/shared/constants'
 import { useCameraModalStore, useConfirmModalStore, usePollingStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
-import { DayType } from '@/shared/lib'
+import { convertUtcToKstTimeString, DayType } from '@/shared/lib'
 
 import * as S from './styles'
 
@@ -80,6 +80,11 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     leafReward,
     status,
   } = challengeData
+
+  const [convertedVerificationStartTime, convertedVerificationEndTime] = [
+    convertUtcToKstTimeString(verificationStartTime),
+    convertUtcToKstTimeString(verificationEndTime),
+  ]
 
   const verificationExampleImages: VerificationImageData[] = exampleImages.map(img => ({
     url: img.imageUrl,
@@ -160,8 +165,8 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
     }
 
     /** #예외3: 참여 가능한 시간이 아닐 경우 */
-    const [startH, startM] = verificationStartTime.split(':').map(Number)
-    const [endH, endM] = verificationEndTime.split(':').map(Number)
+    const [startH, startM] = convertedVerificationStartTime.split(':').map(Number)
+    const [endH, endM] = convertedVerificationEndTime.split(':').map(Number)
     const nowMinutes = now.getHours() * 60 + now.getMinutes()
     const startMinutes = startH * 60 + startM
     const endMinutes = endH * 60 + endM
@@ -226,7 +231,7 @@ export const ChallengePersonalDetails = ({ challengeId, className }: ChallengePe
 
           <S.TimeArea>
             <S.TimeText>
-              오늘, {verificationStartTime} ~ {verificationEndTime} 인증하기
+              오늘, {convertedVerificationStartTime} ~ {convertedVerificationEndTime} 인증하기
             </S.TimeText>
           </S.TimeArea>
         </S.Section>
