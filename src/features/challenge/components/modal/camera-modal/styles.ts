@@ -71,13 +71,6 @@ export const CameraWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lfInputBackground.base};
 `
 
-// export const CameraView = styled.video<{ facingMode: FacingMode }>`
-//   height: 100%;
-//   aspect-ratio: 1/1;
-//   object-fit: cover;
-
-//   transform: ${({ facingMode }) => (facingMode === 'environment' ? 'scaleX(-1)' : 'scaleX(1)')};
-// `
 export const CameraView = styled.video<{
   facingMode: FacingMode
   isMobile: boolean
