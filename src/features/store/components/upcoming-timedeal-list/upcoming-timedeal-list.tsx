@@ -10,6 +10,8 @@ import useEmblaCarousel from 'embla-carousel-react'
 
 import { TimeDealProduct } from '@/entities/store/api'
 
+import { LeafIcon } from '@/shared/assets'
+
 import * as S from './styles'
 
 interface UpcomingTimeDealListProps {
@@ -38,7 +40,13 @@ export const UpcomingTimeDealList = ({ data, className }: UpcomingTimeDealListPr
           {data.map(item => (
             <S.CarouselSlide key={item.dealId}>
               <S.UpcomingImageBox>
-                <Image src={item.imageUrl} alt={item.title} fill style={{ objectFit: 'cover' }} />
+                <Image
+                  src={item.imageUrl}
+                  alt={item.title}
+                  fill
+                  sizes='(max-width: 430px) 100vw, 420px'
+                  style={{ objectFit: 'cover' }}
+                />
                 <S.UpcomingDateText>{format(new Date(item.dealStartTime), 'M월 d일 HH:mm')} 오픈</S.UpcomingDateText>
               </S.UpcomingImageBox>
               <S.DescriptionSection>
@@ -47,7 +55,7 @@ export const UpcomingTimeDealList = ({ data, className }: UpcomingTimeDealListPr
                 <S.PriceRow>
                   <S.Discount>{item.discountedPercentage}%</S.Discount>
                   <S.Price>
-                    <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} /> {item.discountedPrice}
+                    <LeafIcon width={24} height={24} /> {item.discountedPrice}
                   </S.Price>
                   <S.Origin>{item.defaultPrice}</S.Origin>
                 </S.PriceRow>

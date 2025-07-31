@@ -185,7 +185,7 @@ export const ChallengeGroupDetails = ({ challengeId, className }: ChallengeGroup
       <S.DescriptionSection>
         <S.StyledBackButton clickHandler={() => router.push(URL.CHALLENGE.GROUP.LIST.value(category))} />
         <S.ThumbnailImageWrapper>
-          <S.Thumbnail src={thumbnailUrl} alt='썸네일' fill />
+          <S.Thumbnail src={thumbnailUrl} alt='썸네일' fill sizes='(max-width: 430px) 100vw, 400px' priority />
         </S.ThumbnailImageWrapper>
         <S.Participant>
           <LucideIcon name='UsersRound' size={24} color='lfBlue' /> {currentParticipantCount}명 참여중

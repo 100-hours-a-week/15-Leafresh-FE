@@ -1,4 +1,4 @@
-import ApologizeImage from '@public/image/apologize_character.svg'
+import { ApologizeImage } from '@/shared/assets'
 
 import { Feedback } from './feedback'
 

@@ -2,19 +2,26 @@
 
 import { ReactNode } from 'react'
 
-import Image, { StaticImageData } from 'next/image'
+import Image from 'next/image'
 
 import styled from '@emotion/styled'
 
 import { theme } from '@/shared/config'
 
+import { ImageSource, SVGComponent } from './type'
+
 export const Feedback = ({ children, className }: { children: ReactNode; className?: string }) => (
   <Wrapper className={className}>{children}</Wrapper>
 )
 
-const ImageComponent = ({ src }: { src: StaticImageData | string }) => (
-  <Image src={src} alt='피드백 이미지' width={140} height={140} />
-)
+const ImageComponent = ({ src }: { src: ImageSource }) => {
+  if (typeof src === 'function') {
+    const Svg = src as SVGComponent
+    return <Svg width={140} height={140} aria-label='피드백 이미지' />
+  }
+  // 나머지는 Next.js Image로 렌더링
+  return <Image src={src} alt='피드백 이미지' width={140} height={140} />
+}
 
 const Title = ({ text }: { text: string }) => <TitleText>{text}</TitleText>
 

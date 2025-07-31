@@ -4,6 +4,8 @@ import React, { ReactNode } from 'react'
 
 import Image from 'next/image'
 
+import { GCS_BUCKET } from '@/shared/constants'
+
 import * as S from './styles'
 
 export interface ChatBubbleProps {
@@ -12,49 +14,53 @@ export interface ChatBubbleProps {
   children: ReactNode | string
   subDescription?: string
   buttonText?: string
-  isAnswer?: boolean
   onClick?: () => void
+  isAnswer?: boolean
+  actions?: {
+    buttonText: string
+    onClick: () => void
+  }[]
 }
 
 export const ChatBubble: React.FC<ChatBubbleProps> = React.memo(function ChatBubble({
   role,
-  loading = false,
+  loading,
   children,
   subDescription,
-  buttonText,
   isAnswer,
-  onClick,
+  actions,
 }) {
-  // 1) 로딩 중 텍스트
-  // 2) children 이 문자열(string)일 때만 split 처리
-  // 3) 나머지는 그대로 렌더링
-  let content: ReactNode
-  if (loading && role == 'bot') {
-    content = '잠시만 기다려주세요…'
-  } else if (typeof children === 'string') {
-    content = children.split('\n').map((line, i) => (
-      <React.Fragment key={i}>
-        {line}
-        <br />
-      </React.Fragment>
-    ))
-  } else {
-    content = children
-  }
-
   return (
     <S.Container role={role}>
       {role === 'bot' && (
         <S.Avatar role={role}>
-          <Image src='/image/chatbot/chatbot_bubble.png' alt='chatbot' width={30} height={30} />
+          <Image
+            src={`https://storage.googleapis.com/${GCS_BUCKET}/init/chatbot/chatbot_bubble.png`}
+            alt='chatbot'
+            width={30}
+            height={30}
+          />
         </S.Avatar>
       )}
       <S.BubbleWrapper>
         <S.NameText role={role}>{role === 'bot' ? '수피' : ''}</S.NameText>
         <S.Bubble role={role} isAnswer={isAnswer}>
-          {content}
+          {loading
+            ? '잠시만 기다려주세요…'
+            : typeof children === 'string'
+              ? children.split('\n').map((line, i) => (
+                  <React.Fragment key={i}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))
+              : children}
           {subDescription && <S.SubDescription role={role}>{subDescription}</S.SubDescription>}
-          {buttonText && onClick && <S.RetryButton onClick={onClick}>{buttonText}</S.RetryButton>}
+          {actions?.map((act, i) => (
+            <S.ActionButton key={i} onClick={act.onClick}>
+              {act.buttonText}
+            </S.ActionButton>
+          ))}
         </S.Bubble>
       </S.BubbleWrapper>
     </S.Container>

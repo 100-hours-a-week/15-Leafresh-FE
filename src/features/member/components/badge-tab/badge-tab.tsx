@@ -37,13 +37,12 @@ export const BadgeTab = ({ categories, badgeData }: BadgeTabProps) => {
           <S.Underline $index={selectedIndex} />
         </S.UnderlineWrapper>
       </S.TabBar>
-
       <S.GridWrapper>
         <S.FadeGrid key={selectedCategory}>
-          {badgeData[selectedCategory]?.map(badge => (
+          {badgeData[selectedCategory]?.map((badge, index) => (
             <S.Item key={badge.id} onClick={() => handleBadgeClick(badge.name, badge.condition)}>
               <S.BadgeImageWrapper>
-                <S.BadgeImage src={badge.imageUrl} alt={badge.name} width={120} height={120} />
+                <S.BadgeImage src={badge.imageUrl} alt={badge.name} width={120} height={120} priority={index === 4} />
               </S.BadgeImageWrapper>
               <S.Name isLocked={badge.isLocked}>{badge.name}</S.Name>
             </S.Item>

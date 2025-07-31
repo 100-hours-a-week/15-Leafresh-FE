@@ -142,7 +142,13 @@ export const GroupChallengeCard = ({
   return (
     <S.ChallengeCard onClick={() => handleShowDetails(id)}>
       <S.TopImageWrapper>
-        <S.ChallengeImage src={imageUrl} alt='챌린지 이미지' />
+        <S.ChallengeImage
+          src={imageUrl}
+          alt='챌린지 이미지'
+          fill
+          sizes='(max-width: 430px) 100vw, 400px'
+          loading={isAuth ? 'eager' : 'lazy'}
+        />
         <S.Badge className='badge'>{KOR_category}</S.Badge>
       </S.TopImageWrapper>
       <S.CardBody>

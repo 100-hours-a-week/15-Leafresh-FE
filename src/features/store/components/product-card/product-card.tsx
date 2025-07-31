@@ -15,6 +15,7 @@ import {
   Product,
 } from '@/entities/store/api'
 
+import { LeafIcon } from '@/shared/assets'
 import { MUTATION_KEYS, useMutationStore, QUERY_KEYS } from '@/shared/config'
 import { URL } from '@/shared/constants'
 import { useConfirmModalStore, useIdempotencyKeyStore, useUserStore } from '@/shared/context'
@@ -141,7 +142,7 @@ export const ProductCard = ({ product, memberLeafCount }: ProductCardProps) => {
           {isSoldOut ? `남은 재고 없음` : `남은 재고 ${localStock}개`}
         </S.StockNotice>
         <S.PriceRow>
-          <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
+          <LeafIcon width={24} height={24} />
           <S.Price>{price.toLocaleString()}</S.Price>
         </S.PriceRow>
       </S.TextContent>

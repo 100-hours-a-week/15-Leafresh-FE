@@ -12,8 +12,13 @@ export const Card = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.lfBlack.base};
   margin: 8px 0;
 
+  &[data-type='location'] {
+    margin-left: 40px;
+  }
+
   &[data-type='challenge'] {
     width: 230px;
+    margin-left: 40px;
     /* height: 260px; */
     align-items: center;
   }

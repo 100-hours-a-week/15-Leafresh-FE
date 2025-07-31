@@ -14,6 +14,7 @@ import {
   TimeDealProduct,
 } from '@/entities/store/api'
 
+import { LeafIcon } from '@/shared/assets'
 import { LucideIcon } from '@/shared/components'
 import { getQueryClient, MUTATION_KEYS, QUERY_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -144,7 +145,14 @@ export const OngoingTimeDealCard = ({
       </S.Timer>
       <S.Card>
         <S.ImageBox>
-          <Image src={data.imageUrl} alt={data.title} fill style={{ objectFit: 'cover' }} />
+          <Image
+            src={data.imageUrl}
+            alt={data.title}
+            fill
+            sizes='(max-width: 430px) 100vw, 420px'
+            priority
+            style={{ objectFit: 'cover' }}
+          />
         </S.ImageBox>
         <S.DescriptionSection>
           <S.Title>{data.title}</S.Title>
@@ -152,7 +160,7 @@ export const OngoingTimeDealCard = ({
           <S.PriceRow>
             <S.Discount>{data.discountedPercentage}%</S.Discount>
             <S.Price>
-              <Image src='/icon/leaf.svg' alt='leaf' width={18} height={18} /> {data.discountedPrice}
+              <LeafIcon width={18} height={18} /> {data.discountedPrice}
             </S.Price>
             <S.Origin>{data.defaultPrice}</S.Origin>
           </S.PriceRow>

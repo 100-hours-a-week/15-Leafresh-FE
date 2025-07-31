@@ -37,15 +37,27 @@ export interface VerificationStatusCardProps {
   day: number
   imageUrl: string
   status: VerificationStatus
+  isPriority?: boolean
 }
 
-export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({ day, imageUrl, status }) => {
+export const VerificationStatusCard: React.FC<VerificationStatusCardProps> = ({
+  day,
+  imageUrl,
+  status,
+  isPriority,
+}) => {
   const { barColor, iconName, iconColorKey } = statusMap[status]
 
   return (
     <S.Card>
       <S.ImageWrapper>
-        <S.StyledImg src={imageUrl} alt={`${day}일차 인증`} />
+        <S.StyledImg
+          src={imageUrl}
+          alt={`${day}일차 인증`}
+          fill
+          sizes='(max-width: 430px) 100vw, 220px'
+          priority={isPriority}
+        />
         <S.DayLabel>{day}일차</S.DayLabel>
       </S.ImageWrapper>
       <S.BottomBar bg={barColor}>

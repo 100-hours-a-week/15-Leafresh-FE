@@ -5,7 +5,9 @@ metadata:
   labels:
     app: {{ include "leafresh-fe.name" . }}
 spec:
-  replicas: {{ .Values.autoscaling.enabled | ternary 1 .Values.autoscaling.minReplicas }}
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.autoscaling.minReplicas }}
+{{- end }}
   selector:
     matchLabels:
       app: {{ include "leafresh-fe.name" . }}
