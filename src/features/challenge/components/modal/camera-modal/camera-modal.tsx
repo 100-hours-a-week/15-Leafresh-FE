@@ -128,6 +128,7 @@ export const CameraModal = () => {
     canvasRef.current.width = width
     canvasRef.current.height = height
 
+
     // ✅ 좌우 반전 조건은 styled에서 사용한 조건과 동일하게
     const shouldFlip = !isMobile
       ? true // PC 환경은 무조건 반전
