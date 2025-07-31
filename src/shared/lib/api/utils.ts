@@ -8,7 +8,8 @@ export const getClientFetchOrigin = () => {
     case 'local':
       // return 'https://dev-leafresh.app/api/next/proxy' // Dev FE 라우트
       // return 'https://fe.dev-leafresh.app/api/next/proxy'
-      return 'https://springboot.dev-leafresh.app' // TODO: 현재는 백엔드 임시 개방 -> 추후 프론트엔드 프록시로 연결
+      // return 'https://springboot.dev-leafresh.app' // TODO: 현재는 백엔드 임시 개방 -> 추후 프론트엔드 프록시로 연결
+      return 'https://leafresh.click'
     case 'dev':
       return 'https://dev-leafresh.app/api/next/proxy' // Dev FE 라우트
     case 'prod':
@@ -28,7 +29,8 @@ export const getServerFetchOrigin = () => {
   switch (runtimeEnv) {
     case 'local':
       // return 'https://dev-leafresh.app/api/next/proxy' // Dev FE 라우트
-      return 'https://springboot.dev-leafresh.app'
+      // return 'https://springboot.dev-leafresh.app'
+      return 'https://leafresh.click'
     case 'dev':
       // return '35.216.18.52' //외부망으로 임시 연결
       // return 'http://10.0.1.67:8080' // 내부망
