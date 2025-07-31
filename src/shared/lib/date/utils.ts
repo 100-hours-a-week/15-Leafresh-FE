@@ -134,6 +134,11 @@ export function DateToKst(date: Date): Date {
  * @param timeStr HH:MM
  * @returns Date 객체를
  */
+/**
+ * HH:MM을 KST 기준 문자열로 변환 (UTC 입력 → KST 반환)
+ * @param timeStr HH:MM (UTC 기준)
+ * @returns HH:MM (KST 기준)
+ */
 export const convertUtcToKstTimeString = (timeStr: string): string => {
   const [hours, minutes] = timeStr.split(':').map(Number)
 
@@ -141,14 +146,14 @@ export const convertUtcToKstTimeString = (timeStr: string): string => {
     throw new Error('Invalid time format')
   }
 
-  const utcDate = new Date()
-  utcDate.setUTCHours(hours, minutes, 0, 0)
+  // 기준: UTC 기준 1970-01-01T00:00:00
+  const utcBase = Date.UTC(1970, 0, 1, hours, minutes)
 
-  // 9시간 더함 (KST)
-  const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000)
+  // KST = UTC + 9시간
+  const kstDate = new Date(utcBase + 9 * 60 * 60 * 1000)
 
-  const kstHours = kstDate.getHours().toString().padStart(2, '0')
-  const kstMinutes = kstDate.getMinutes().toString().padStart(2, '0')
+  const kstHours = kstDate.getUTCHours().toString().padStart(2, '0')
+  const kstMinutes = kstDate.getUTCMinutes().toString().padStart(2, '0')
 
   return `${kstHours}:${kstMinutes}`
 }
