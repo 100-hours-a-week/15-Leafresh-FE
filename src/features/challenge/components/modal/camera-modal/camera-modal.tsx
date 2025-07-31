@@ -128,15 +128,19 @@ export const CameraModal = () => {
     canvasRef.current.width = width
     canvasRef.current.height = height
 
-    if (facingMode === 'environment') {
-      // ✅ 좌우 반전
-      // ctx.translate(width, 0)
-      // ctx.scale(-1, 1)
+
+    // ✅ 좌우 반전 조건은 styled에서 사용한 조건과 동일하게
+    const shouldFlip = !isMobile
+      ? true // PC 환경은 무조건 반전
+      : facingMode !== 'environment' // 모바일은 전면(user)만 반전
+
+    if (shouldFlip) {
+      ctx.translate(width, 0)
+      ctx.scale(-1, 1)
     }
 
     ctx.drawImage(videoRef.current, 0, 0, width, height)
 
-    /** S3 이미지 업로드 */
     canvasRef.current.toBlob(async blob => {
       if (!blob) return
       try {

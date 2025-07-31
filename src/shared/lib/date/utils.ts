@@ -140,15 +140,13 @@ export const convertUtcToKstTimeString = (timeStr: string): string => {
   if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
     throw new Error('Invalid time format')
   }
+  // 기준: UTC 기준 1970-01-01T00:00:00
+  const utcBase = Date.UTC(1970, 0, 1, hours, minutes)
 
-  const utcDate = new Date()
-  utcDate.setUTCHours(hours, minutes, 0, 0)
+  // KST = UTC + 9시간
+  const kstDate = new Date(utcBase + 9 * 60 * 60 * 1000)
 
-  // 9시간 더함 (KST)
-  const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000)
-
-  const kstHours = kstDate.getHours().toString().padStart(2, '0')
-  const kstMinutes = kstDate.getMinutes().toString().padStart(2, '0')
-
+  const kstHours = kstDate.getUTCHours().toString().padStart(2, '0')
+  const kstMinutes = kstDate.getUTCMinutes().toString().padStart(2, '0')
   return `${kstHours}:${kstMinutes}`
 }
