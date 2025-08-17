@@ -15,6 +15,7 @@ import {
 } from '@/entities/challenge/api'
 import { CHALLENGE_CATEGORY_PAIRS, convertLanguage } from '@/entities/challenge/model'
 
+import { ActiveLikeIcon, InActiveLikeIcon } from '@/shared/assets'
 import { LucideIcon } from '@/shared/components'
 import { MUTATION_KEYS, useMutationStore } from '@/shared/config'
 import { URL } from '@/shared/constants'
@@ -22,18 +23,21 @@ import { useConfirmModalStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 import { copyToClipboard, getTimeDiff } from '@/shared/lib'
 
-import ActiveLikeIcon from '@public/icon/like_active.svg'
-import InActiveLikeIcon from '@public/icon/like_inactive.svg'
-
 import * as S from './styles'
 
 interface VerificationCardProps {
   challengeId: number
   verificationData: Verification
   className?: string
+  isPriority?: boolean
 }
 
-export const VerificationCard = ({ challengeId, verificationData, className }: VerificationCardProps): ReactNode => {
+export const VerificationCard = ({
+  challengeId,
+  verificationData,
+  className,
+  isPriority,
+}: VerificationCardProps): ReactNode => {
   const router = useRouter()
   const { toast } = useToast()
   const { openConfirmModal } = useConfirmModalStore()
@@ -122,7 +126,13 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
 
       <S.VerificationWrapper onClick={handleDetailsRoute}>
         <S.ImageWrapper>
-          <S.VerificationImage src={verificationImageUrl} alt='인증 이미지' fill />
+          <S.VerificationImage
+            src={verificationImageUrl}
+            alt='인증 이미지'
+            fill
+            sizes='(max-width: 430px) 100vw, 420px'
+            priority={isPriority}
+          />
           <S.Badge className='badge'>{category_kor}</S.Badge>
         </S.ImageWrapper>
 
@@ -131,16 +141,14 @@ export const VerificationCard = ({ challengeId, verificationData, className }: V
 
           <S.InteractionWrapper>
             <S.LikeInteraction isLiked={isLiked} onClick={toggleLike}>
-              <motion.img
+              <motion.div
                 key={isLiked ? 'liked' : 'unliked'}
-                src={isLiked ? ActiveLikeIcon.src : InActiveLikeIcon.src}
-                alt='좋아요'
-                width={24}
-                height={24}
                 initial={isLiked ? { scale: 1.4 } : false} // 좋아요 추가일 때만 애니메이션
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', stiffness: 100, damping: 20, mass: 0.5 }}
-              />
+              >
+                {isLiked ? <ActiveLikeIcon width={24} height={24} /> : <InActiveLikeIcon width={24} height={24} />}
+              </motion.div>
               <S.InteractionCount>{likesCount}</S.InteractionCount>
             </S.LikeInteraction>
             <S.Interaction>

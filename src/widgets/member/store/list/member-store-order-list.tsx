@@ -9,13 +9,11 @@ import { useInfiniteMemberStoreOrderList } from '@/features/member/api'
 
 import { PurchaseProduct } from '@/entities/member/api'
 
+import { LeafIcon } from '@/shared/assets'
 import { URL } from '@/shared/constants'
 import { getTimeDiff } from '@/shared/lib'
 
-import LeafIcon from '@public/icon/leaf.svg'
-
 import * as S from './styles'
-
 export const MemberOrderListPage = (): ReactNode => {
   const router = useRouter()
 
@@ -90,7 +88,7 @@ const ProductCard = ({ data, className }: ProductCardProps): ReactNode => {
       <S.ProductTitle>{title}</S.ProductTitle>
       <S.InfoRow>
         <S.PriceRow>
-          <Image src={LeafIcon} alt='leaf' width={24} height={24} />
+          <LeafIcon width={24} height={24} />
           <S.Price>{price}</S.Price>
         </S.PriceRow>
         <S.TimeAgo>{getTimeDiff(purchasedAt)}</S.TimeAgo>

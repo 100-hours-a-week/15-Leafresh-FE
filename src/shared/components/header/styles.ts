@@ -1,7 +1,6 @@
-import Image from 'next/image'
-
 import styled from '@emotion/styled'
 
+import { LogoImage } from '@/shared/assets'
 import { LucideIcon } from '@/shared/components'
 
 export const HeaderContainer = styled.header`
@@ -31,7 +30,7 @@ export const LogoWrapper = styled.div`
   cursor: pointer;
 `
 
-export const StyledImage = styled(Image)`
+export const StyledImage = styled(LogoImage)`
   height: 40px;
   width: auto;
 `

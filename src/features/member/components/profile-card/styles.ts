@@ -145,12 +145,6 @@ export const LeafValueWrapper = styled.div`
 
   gap: 8px;
 `
-export const LeafIcon = styled(Image)`
-  width: 24px;
-  height: 24px;
-
-  object-fit: cover;
-`
 export const ProgressTitle = styled.span`
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.lfBlack.base};

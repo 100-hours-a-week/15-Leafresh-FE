@@ -90,8 +90,9 @@ export function ChallengeParticipatePage() {
   if (isChallengeExists) {
     challengeContents = (
       <S.ListWrapper>
-        {challenges.map(challenge => {
+        {challenges.map((challenge, index) => {
           const { id, title, thumbnailUrl, startDate, endDate, achievement, achievementRecords } = challenge
+          const isPriorityCard = tab === 1 && index === 0
           return (
             <GroupChallengeParticipantCard
               key={id}
@@ -102,6 +103,7 @@ export function ChallengeParticipatePage() {
               successCount={achievement.success}
               maxCount={achievement.total}
               record={achievementRecords}
+              imagePriority={isPriorityCard}
               onClick={() => router.push(URL.MEMBER.CHALLENGE.VERIFICATION.STATUS.value(id))}
             />
           )

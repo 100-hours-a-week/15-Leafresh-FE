@@ -1,5 +1,7 @@
 import styled from '@emotion/styled'
 
+import { LogoCharacterImage } from '@/shared/assets'
+
 export const EmptyWrapper = styled.div`
   width: 100%;
   flex: 1; // height 대신 부모 기준으로 확장
@@ -8,6 +10,11 @@ export const EmptyWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+`
+
+export const NoContentImage = styled(LogoCharacterImage)`
+  align-self: center;
+  display: flex;
 `
 
 export const NoChallengeMessage = styled.div`

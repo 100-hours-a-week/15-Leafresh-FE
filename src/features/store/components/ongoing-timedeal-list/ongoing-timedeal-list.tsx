@@ -6,13 +6,11 @@ import { useRouter } from 'next/navigation'
 
 import useEmblaCarousel from 'embla-carousel-react'
 
-import { useValidateMemberProfile } from '@/features/member/api'
-
 import { TimeDealProduct } from '@/entities/store/api'
 
 import { LucideIcon } from '@/shared/components'
 import { URL } from '@/shared/constants'
-import { useConfirmModalStore } from '@/shared/context'
+import { useConfirmModalStore, useUserStore } from '@/shared/context'
 import { useToast } from '@/shared/hooks'
 
 import { OngoingTimeDealCard } from '../ongoing-timedeal-card'
@@ -28,9 +26,7 @@ interface Props {
 
 export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount, className }: Props): ReactNode => {
   const router = useRouter()
-  // const { userInfo, isLoggedIn } = useUserStore()
-  const { isAuthVerified } = useValidateMemberProfile({ enabled: true }) // 로그인 상태 갱신을 위해
-
+  const { isLoggedIn } = useUserStore()
   const { toast } = useToast()
   const { openConfirmModal } = useConfirmModalStore()
 
@@ -52,7 +48,7 @@ export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount
       }
 
       // 타임딜 시작 60초 전 & 미로그인
-      if (!loginToastShownRef.current && !isAuthVerified && diff <= 60 && diff > 5) {
+      if (!loginToastShownRef.current && !isLoggedIn && diff <= 60 && diff > 5) {
         openConfirmModal({
           title: '타임딜이 곧 시작됩니다!',
           description: '로그인 페이지로 이동하시겠습니까?',
@@ -63,7 +59,7 @@ export const OngoingTimeDealList = ({ ongoingData, upcomingData, memberLeafCount
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [ongoingData, upcomingData, isAuthVerified, toast])
+  }, [ongoingData, upcomingData, isLoggedIn, toast])
 
   /** 각 재고의 남은 시간 트래킹 */
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]) // "초" 단위

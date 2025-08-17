@@ -14,6 +14,10 @@ import { FacingMode } from './types'
 const CAMERA_TABS = ['카메라']
 const CHALLENGE_TABS = ['카메라', '인증 방법']
 
+function isMobileDevice() {
+  return /Mobi|Android/i.test(navigator.userAgent)
+}
+
 export const CameraModal = () => {
   const { toast } = useToast()
   const { isOpen, title, challengeData, hasDescription, onComplete, close, status } = useCameraModalStore()
@@ -31,6 +35,12 @@ export const CameraModal = () => {
   const [showGuide, setShowGuide] = useState<boolean>(false)
   const [scrollTop, setScrollTop] = useState<number>(0)
   const [errorText, setErrorText] = useState<string | undefined>(undefined)
+
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(/Mobi|Android/i.test(navigator.userAgent))
+  }, [])
 
   /**
    * environment : 정면
@@ -118,15 +128,19 @@ export const CameraModal = () => {
     canvasRef.current.width = width
     canvasRef.current.height = height
 
-    if (facingMode === 'environment') {
-      // ✅ 좌우 반전
+
+    // ✅ 좌우 반전 조건은 styled에서 사용한 조건과 동일하게
+    const shouldFlip = !isMobile
+      ? true // PC 환경은 무조건 반전
+      : facingMode !== 'environment' // 모바일은 전면(user)만 반전
+
+    if (shouldFlip) {
       ctx.translate(width, 0)
       ctx.scale(-1, 1)
     }
 
     ctx.drawImage(videoRef.current, 0, 0, width, height)
 
-    /** S3 이미지 업로드 */
     canvasRef.current.toBlob(async blob => {
       if (!blob) return
       try {
@@ -247,7 +261,7 @@ export const CameraModal = () => {
           {previewUrl ? (
             <S.BackButton name='ChevronLeft' size={30} onClick={handleRestart} color='lfWhite' />
           ) : (
-            <LucideIcon name='X' onClick={close} size={30} />
+            <S.CloseButton name='X' onClick={close} size={30} />
           )}
           <S.Title>{title}</S.Title>
         </S.Header>
@@ -255,7 +269,7 @@ export const CameraModal = () => {
           {previewUrl ? (
             <S.ImagePreview src={previewUrl} alt='촬영된 이미지' fill />
           ) : (
-            <S.CameraView ref={videoRef} autoPlay playsInline facingMode={facingMode} />
+            <S.CameraView ref={videoRef} autoPlay playsInline facingMode={facingMode} isMobile={isMobile} />
           )}
         </S.CameraWrapper>
         <canvas ref={canvasRef} style={{ display: 'none' }} />

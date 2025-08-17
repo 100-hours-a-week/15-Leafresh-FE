@@ -1,8 +1,9 @@
 import localFont from 'next/font/local'
 
 export const pretendard = localFont({
-  src: '../../../../public/font/PretendardVariable.woff2',
+  src: '../../../../public/font/PretendardSubset.woff2',
   display: 'swap',
-  weight: '45 920',
+  weight: '100 920',
   variable: '--font-pretendard',
+  preload: true,
 })

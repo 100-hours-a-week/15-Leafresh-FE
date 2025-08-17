@@ -6,6 +6,7 @@ import Image from 'next/image'
 
 import { treeLevelMap } from '@/entities/member/model'
 
+import { LeafIcon, LogoCharacterImage } from '@/shared/assets'
 import { useScrollLock } from '@/shared/hooks'
 
 import { GuideOverlay } from '../guide-overlay'
@@ -192,12 +193,12 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
               <S.LeafValueWrapper>
                 <S.ProgressTitle>누적 나뭇잎</S.ProgressTitle>
                 <S.LeafStatWrapper>
-                  <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
+                  <LeafIcon width={24} height={24} />
                   <S.SumLeavesStat>{data.totalLeafPoints}</S.SumLeavesStat>
                 </S.LeafStatWrapper>
                 <S.ProgressTitle>다음 단계까지</S.ProgressTitle>
                 <S.LeafStatWrapper>
-                  <S.LeafIcon src='/icon/leaf.svg' alt='leaf' width={24} height={24} />
+                  <LeafIcon width={24} height={24} />
                   <S.RemainLeavesStat>{data.leafPointsToNextLevel}</S.RemainLeavesStat>
                 </S.LeafStatWrapper>
               </S.LeafValueWrapper>
@@ -230,7 +231,13 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
                   {data.badges.map(badge => (
                     <S.BadgeItem key={badge.id}>
                       <S.BadgeImage>
-                        <Image src={badge.imageUrl} alt={badge.name} fill style={{ objectFit: 'cover' }} />
+                        <Image
+                          src={badge.imageUrl}
+                          alt={badge.name}
+                          fill
+                          sizes='(max-width: 430px) 30vw, 100px'
+                          style={{ objectFit: 'cover' }}
+                        />
                       </S.BadgeImage>
                       <S.BadgeName>{badge.name}</S.BadgeName>
                     </S.BadgeItem>
@@ -243,7 +250,7 @@ export const ProfileCard = ({ data, onDismiss }: ProfileCardProps) => {
           </S.CardFace>
           {/* 뒷면 */}
           <S.CardFace className='back'>
-            <Image src='/image/main-icon.svg' alt='supy2' width={160} height={160} />
+            <LogoCharacterImage width={160} />
           </S.CardFace>
         </S.Card>
       </S.CardContainer>

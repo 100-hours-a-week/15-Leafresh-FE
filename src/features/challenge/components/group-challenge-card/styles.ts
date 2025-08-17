@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import styled from '@emotion/styled'
 
 import { LeafReward } from '@/shared/components'
@@ -33,7 +35,7 @@ export const TopImageWrapper = styled.div`
   overflow: hidden;
 `
 
-export const ChallengeImage = styled.img`
+export const ChallengeImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;

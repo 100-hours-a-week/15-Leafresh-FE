@@ -85,9 +85,18 @@ export const VerificationCarousel = ({ verifications }: Props) => {
           {chunks.map((group, index) => (
             <S.Slide key={index}>
               <S.Grid>
-                {group.map(v => (
-                  <VerificationStatusCard key={v.day} day={v.day} imageUrl={v.imageUrl} status={v.status} />
-                ))}
+                {group.map((v, cardIndex) => {
+                  const isPriority = index === 0 && cardIndex === 0
+                  return (
+                    <VerificationStatusCard
+                      key={v.day}
+                      day={v.day}
+                      imageUrl={v.imageUrl}
+                      isPriority={isPriority}
+                      status={v.status}
+                    />
+                  )
+                })}
               </S.Grid>
             </S.Slide>
           ))}

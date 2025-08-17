@@ -1,4 +1,4 @@
-import LogoCharacterImage from '@public/image/main-icon.svg'
+import { LogoCharacterImage } from '@/shared/assets'
 
 import { Feedback } from './feedback'
 

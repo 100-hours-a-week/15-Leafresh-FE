@@ -1,18 +1,15 @@
 'use client'
 
-import Image from 'next/image'
-
 import styled from '@emotion/styled'
 
+import { ServiceReadyImage } from '@/shared/assets'
 import { media, theme } from '@/shared/config'
-
-import ServiceReadyImage from '@public/image/service_ready.svg'
 
 export default function ServiceReady() {
   return (
     <Wrapper>
       <ImageWrapper>
-        <Image src={ServiceReadyImage} alt='서비스 준비중 이미지' fill />
+        <ServiceReadyImage style={{ width: '100%', height: '100%' }} />
       </ImageWrapper>
       <TitleWrapper>
         <Title>더 나은 서비스를 제공하기 위해</Title>

@@ -76,3 +76,22 @@ export const RetryButton = styled.button`
     background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
   }
 `
+
+export const ActionButton = styled.button`
+  width: 164px;
+  height: 37px;
+  align-self: center;
+  background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
+  color: ${({ theme }) => theme.colors.lfWhite.base};
+  border: none;
+  border-radius: 10px;
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.lfGreenMain.base};
+  }
+`

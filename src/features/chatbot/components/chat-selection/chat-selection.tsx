@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react'
 
-import { CHAT_CHALLENGE_OPTIONS, type ChatOption, LOCATION_OPSIONS, WORKTYPE_OPTIONS } from '@/entities/chatbot/model'
+import { CHAT_CHALLENGE_OPTIONS, ChatOption, LOCATION_OPSIONS, WORKTYPE_OPTIONS } from '@/entities/chatbot/model'
 
 import * as S from './styles'
 
