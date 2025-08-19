@@ -5,9 +5,6 @@ on:
     branches: ['develop', 'main']
   push:
     branches: ['develop', 'main']
-    tags:
-      - 'v*-dev'
-      - 'v*'
 
 jobs:
   setup:
@@ -101,7 +98,7 @@ jobs:
           push: true
           tags: jchanho99/frontend-develop:latest
           build-args: |
-            NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_DEV_PROD }}
+            NEXT_PUBLIC_RUNTIME=${{ secrets.ENV_FE_PROD }}
             NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.ENV_FE_ANALYTICS }}
             NEXT_PUBLIC_CHATBOT_TYPE=${{ secrets.ENV_FE_CHATBOT_TYPE }}
 
@@ -150,15 +147,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/ubuntu/frontend/app
-            echo "${{  secrets.ENV_FE_ANALYTICS  }}" >> sudo tee -a .env
-            echo "${{  secrets.ENV_FE_DEV_PROD  }}" >> sudo tee -a .env.production
-
-            IMAGE="jchanho99/frontend-develop:latest"
-            cd /home/ubuntu/frontend
-            sudo docker compose down --rmi all
-            sudo docker compose pull
-            sudo docker compose up -d
+            sudo docker compose stop frontend
+            sudo docker compose rm -f frontend
+            sudo docker compose pull frontend
+            sudo docker compose up -d frontend
             sudo docker compose ps
 
       - name: Set Status (Dev)
@@ -170,78 +162,77 @@ jobs:
         if: failure() && steps.deploy-dev.outcome == 'failure'
         run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
-  deploy-prod:
-    name: Deploy to Prod Server
-    needs: [build-prod]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  # deploy-prod:
+  #   name: Deploy to Prod Server
+  #   needs: [build-prod]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Setup Node.js and pnpm
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
+  #     - name: Setup Node.js and pnpm
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 'lts/*'
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: latest
+  #     - uses: pnpm/action-setup@v2
+  #       with:
+  #         version: latest
 
-      - name: Install dependencies and build
-        run: pnpm install
+  #     - name: Install dependencies and build
+  #       run: pnpm install
       
-      - name: Create .env and .env.production
-        run: |
-          echo "${{ secrets.ENV_FE_ANALYTICS }}" >> .env
-          echo "${{ secrets.ENV_FE_PROD }}" >> .env.production
+  #     - name: Create .env and .env.production
+  #       run: |
+  #         echo "${{ secrets.ENV_FE_ANALYTICS }}" >> .env
+  #         echo "${{ secrets.ENV_FE_PROD }}" >> .env.production
       
-      - name: Build FE
-        run: pnpm run build
+  #     - name: Build FE
+  #       run: pnpm run build
 
-      - name: Archive build result
-        run: |
-          tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/ next.config.ts
+  #     - name: Archive build result
+  #       run: |
+  #         tar -czf fe-build.tar.gz .next public node_modules package.json .env .env.production scripts/ next.config.ts
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          project_id: ${{ secrets.PROJECT_ID }}
-          credentials_json: ${{ secrets.SA_KEY_JSON }}
+  #     - name: Authenticate to Google Cloud
+  #       uses: google-github-actions/auth@v2
+  #       with:
+  #         project_id: ${{ secrets.PROJECT_ID }}
+  #         credentials_json: ${{ secrets.SA_KEY_JSON }}
 
-      - name: Setup Google Cloud SDK and Set GCP Project
-        uses: 'google-github-actions/setup-gcloud@v2'
+  #     - name: Setup Google Cloud SDK and Set GCP Project
+  #       uses: 'google-github-actions/setup-gcloud@v2'
 
-      - name: Verify The Installation of gcloud CLI
-        run: gcloud info
+  #     - name: Verify The Installation of gcloud CLI
+  #       run: gcloud info
 
-      - name: Upload via IAP SCP to FE PROD server
-        run: |
-          gcloud compute scp fe-build.tar.gz \
-            ${{ secrets.SSH_USER }}@leafresh-fe-tester-a:~/fe/fe-build.tar.gz \
-            --zone=${{ secrets.AZ }} \
-            --tunnel-through-iap \
-            --project=${{ secrets.PROJECT_ID }}
+  #     - name: Upload via IAP SCP to FE PROD server
+  #       run: |
+  #         gcloud compute scp fe-build.tar.gz \
+  #           ${{ secrets.SSH_USER }}@leafresh-fe-tester-a:~/fe/fe-build.tar.gz \
+  #           --zone=${{ secrets.AZ }} \
+  #           --tunnel-through-iap \
+  #           --project=${{ secrets.PROJECT_ID }}
 
-          gcloud compute ssh ${{ secrets.SSH_USER }}@leafresh-fe-tester-a \
-            --project=${{ secrets.PROJECT_ID }} \
-            --zone=${{ secrets.AZ }} \
-            --tunnel-through-iap \
-            --command="bash -c 'cd fe && ./deploy.sh'"
+  #         gcloud compute ssh ${{ secrets.SSH_USER }}@leafresh-fe-tester-a \
+  #           --project=${{ secrets.PROJECT_ID }} \
+  #           --zone=${{ secrets.AZ }} \
+  #           --tunnel-through-iap \
+  #           --command="bash -c 'cd fe && ./deploy.sh'"
 
-      - name: Set Status (Prod)
-        id: set-status
-        if: success()
-        run: echo "status=success" >> "$GITHUB_OUTPUT"
+  #     - name: Set Status (Prod)
+  #       id: set-status
+  #       if: success()
+  #       run: echo "status=success" >> "$GITHUB_OUTPUT"
 
-      - name: Set Status (Prod Failure)
-        if: failure() && steps.deploy-step.outcome == 'failure'
-        run: echo "status=failure" >> "$GITHUB_OUTPUT"
+  #     - name: Set Status (Prod Failure)
+  #       if: failure() && steps.deploy-step.outcome == 'failure'
+  #       run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   notify:
     name: Discord Notification
-    needs: [deploy-dev, deploy-prod]
+    needs: [deploy-dev]
     if: |
-        needs.deploy-dev.result != 'skipped' || 
-        needs.deploy-prod.result != 'skipped'
+        needs.deploy-dev.result != 'skipped'
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Message
@@ -258,15 +249,15 @@ jobs:
             fi
           fi
 
-          # Prod 결과 처리
-          if [[ "${{ needs.deploy-prod.result }}" != 'skipped' ]]; then
-            STATUS_PROD="${{ needs.deploy-prod.outputs.status }}"
-            if [ "$STATUS_PROD" = "success" ]; then
-              MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료\n"
-            elif [ "$STATUS_PROD" = "failure" ]; then
-              MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패\n"
-            fi
-          fi
+          # # Prod 결과 처리
+          # if [[ "${{ needs.deploy-prod.result }}" != 'skipped' ]]; then
+          #   STATUS_PROD="${{ needs.deploy-prod.outputs.status }}"
+          #   if [ "$STATUS_PROD" = "success" ]; then
+          #     MESSAGE="${MESSAGE}✅ \`[FE prod]\` 배포 완료\n"
+          #   elif [ "$STATUS_PROD" = "failure" ]; then
+          #     MESSAGE="${MESSAGE}🚨 \`[FE prod]\` 배포 실패\n"
+          #   fi
+          # fi
 
           if [ -z "$MESSAGE" ]; then
             MESSAGE="⚠️ 배포 상태 정보를 찾을 수 없습니다."
